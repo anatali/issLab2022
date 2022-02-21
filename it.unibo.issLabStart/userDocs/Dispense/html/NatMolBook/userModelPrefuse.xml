@@ -1,0 +1,1699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Radial graph  -->
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns">
+<graph edgedefault="undirected">
+<!-- data schema -->
+<key id="name" for="node" attr.name="name" attr.type="string"/>
+<key id="href" for="node" attr.name="href" attr.type="string"/>
+<key id="level" for="node" attr.name="level" attr.type="string"/>
+<key id="type" for="edge" attr.name="type" attr.type="string"/>
+<!-- nodes -->  
+    <node id="Costruire sistemi software: dai modelli al codice">
+        <data key="name">Costruire sistemi software: dai modelli al codice</data>
+        <data key="href"> </data>
+        <data key="level">1</data>
+    </node>
+
+    <node id="introduzione">
+        <data key="name">Introduzione</data>
+        <data key="href">content/book/introduzione/introduzione.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="introduzione"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="crisiSoftware">
+        <data key="name">La crisi del software</data>
+        <data key="href">content/book/introduzione/crisiSoftware.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="introduzione" target="crisiSoftware"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="dimAlgoritmica">
+        <data key="name">La dimensione algoritmica</data>
+        <data key="href">content/book/introduzione/dimAlgoritmica.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="introduzione" target="dimAlgoritmica"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="dimSistemistica">
+        <data key="name">La dimensione sistemistica</data>
+        <data key="href">content/book/introduzione/dimSistemistica.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="introduzione" target="dimSistemistica"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="ingSoftware">
+        <data key="name">Ingegenria del software</data>
+        <data key="href">content/book/ingSoft/ingSoftware.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="introduzione" target="ingSoftware"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="metodoMetodologia">
+        <data key="name">Meetodo e metodologia</data>
+        <data key="href">content/book/ingSoft/metodoMetodologia.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="ingSoftware" target="metodoMetodologia"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="storiaDelleMetodologie">
+        <data key="name">Storia delle metodologie</data>
+        <data key="href">content/book/ingSoft/storiaDelleMetodologie.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="ingSoftware" target="storiaDelleMetodologie"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="cmm">
+        <data key="name">Capability Maturity Model</data>
+        <data key="href">content/book/ingSoft/cmm.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="ingSoftware" target="cmm"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="processiSviluppoSoftware">
+        <data key="name">Processi di produzione del software</data>
+        <data key="href">content/book/processi/processiSviluppoSoftware.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="processiSviluppoSoftware"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="qualita">
+        <data key="name">Qualita'?</data>
+        <data key="href">content/book/processi/qualita.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processiSviluppoSoftware" target="qualita"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="processiACasscata">
+        <data key="name">Processi a cascata</data>
+        <data key="href">content/book/processi/processiACasscata.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processiSviluppoSoftware" target="processiACasscata"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="processiASpirale">
+        <data key="name">Processi a spirale</data>
+        <data key="href">content/book/processi/processiASpirale.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processiSviluppoSoftware" target="processiASpirale"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="processiBasatiSuModelli">
+        <data key="name">Processi basati su modelli</data>
+        <data key="href">content/book/processi/processiBasatiSuModelli.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processiSviluppoSoftware" target="processiBasatiSuModelli"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="processiAgili">
+        <data key="name">Processi agili</data>
+        <data key="href">content/book/processi/processiAgili.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processiSviluppoSoftware" target="processiAgili"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="xpPratiche">
+        <data key="name">Pratiche dell'eXtreme Programming</data>
+        <data key="href">content/book/processi/xpPratiche.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="processiAgili" target="xpPratiche"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="qualeProcesso">
+        <data key="name">Quale processo?</data>
+        <data key="href">content/book/processi/qualeProcesso.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processiSviluppoSoftware" target="qualeProcesso"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="versoUnProcesso">
+        <data key="name">Verso un processo di sviluppo</data>
+        <data key="href">content/book/modelBased/versoUnProcesso.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="versoUnProcesso"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="paradigmi">
+        <data key="name">Linguaggi e paradigmi computazionali</data>
+        <data key="href">content/book/paradigmi/paradigmi.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="versoUnProcesso" target="paradigmi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="sintassiSemantica">
+        <data key="name">Sintassi e semantica</data>
+        <data key="href">content/book/paradigmi/sintassiSemantica.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="sintassiSemantica"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="macchineBase">
+        <data key="name">Macchine base</data>
+        <data key="href">content/book/paradigmi/macchineBase.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="macchineBase"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="macchineAstratte">
+        <data key="name">Macchine astratte</data>
+        <data key="href">content/book/paradigmi/macchineAstratte.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="macchineBase" target="macchineAstratte"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="funzioniProcedure">
+        <data key="name">Funzionai e procedure</data>
+        <data key="href">content/book/paradigmi/funzioniProcedure.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="funzioniProcedure"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="moduliOggetti">
+        <data key="name">Moduli</data>
+        <data key="href">content/book/paradigmi/moduliOggetti.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="moduliOggetti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="oggetti">
+        <data key="name">Il paradigma ad oggetti</data>
+        <data key="href">content/book/paradigmi/oggetti.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="oggetti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="daOggettiAUML">
+        <data key="name">Dagli oggetti a UML</data>
+        <data key="href">content/book/paradigmi/daOggettiAUML.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="daOggettiAUML"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="componentiSoftware">
+        <data key="name">Componenti Software</data>
+        <data key="href">content/book/paradigmi/componentiSoftware.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="componentiSoftware"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="inversioneControllo">
+        <data key="name">Inversione di controllo</data>
+        <data key="href">content/book/paradigmi/inversioneControllo.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="componentiSoftware" target="inversioneControllo"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="paradigmaAgenti">
+        <data key="name">Il paradigma ad agenti</data>
+        <data key="href">content/book/paradigmi/paradigmaAgenti.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="paradigmi" target="paradigmaAgenti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="agenti">
+        <data key="name">Agenti</data>
+        <data key="href">content/book/paradigmi/agenti.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="paradigmaAgenti" target="agenti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="agentiVsOggetti">
+        <data key="name">Agenti vs. oggetti</data>
+        <data key="href">content/book/paradigmi/agentiVsOggetti.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="paradigmaAgenti" target="agentiVsOggetti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="umlFirst">
+        <data key="name">Il linguaggio UML</data>
+        <data key="href">content/book/uml/umlFirst.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="versoUnProcesso" target="umlFirst"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="concettoDiModello">
+        <data key="name">Il concetto di modello</data>
+        <data key="href">content/book/uml/concettoDiModello.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="concettoDiModello"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="introUml">
+        <data key="name">introUml</data>
+        <data key="href">content/book/uml/introUml.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="introUml"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="layerUml">
+        <data key="name">layerUml</data>
+        <data key="href">content/book/uml/layerUml.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="layerUml"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="introMOF">
+        <data key="name">introMOF</data>
+        <data key="href">content/book/uml/introMOF.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="introMOF"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="diagrammiAM">
+        <data key="name">diagrammiAM</data>
+        <data key="href">content/book/uml/diagrammi.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="diagrammiAM"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="introUMLProfili">
+        <data key="name">introUMLProfili</data>
+        <data key="href">content/book/uml/introUMLProfili.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="introUMLProfili"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="umlComeLinguaggio">
+        <data key="name">coreUML</data>
+        <data key="href">content/book/uml/umlComeLinguaggio.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="umlComeLinguaggio"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="introUMLAction">
+        <data key="name">introUMLAction</data>
+        <data key="href">content/book/uml/introUMLAction.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="introUMLAction"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="introOCL">
+        <data key="name">introOCL</data>
+        <data key="href">content/book/ocl/introOCL.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="umlFirst" target="introOCL"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="architettureSistemi">
+        <data key="name">Architetture</data>
+        <data key="href">content/book/sistemi/architettureSistemi.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="versoUnProcesso" target="architettureSistemi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="stileArchitetturale">
+        <data key="name">Stile architetturale</data>
+        <data key="href">content/book/sistemi/stileArchitetturale.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="architettureSistemi" target="stileArchitetturale"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="mda">
+        <data key="name">Architetture model driven</data>
+        <data key="href">content/book/sistemi/mda.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="architettureSistemi" target="mda"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="dimensioniSistemi">
+        <data key="name">Dimensioni</data>
+        <data key="href">content/book/sistemi/dimensioniSistemi.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="versoUnProcesso" target="dimensioniSistemi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="struttura">
+        <data key="name">Struttura</data>
+        <data key="href">content/book/sistemi/struttura.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="dimensioniSistemi" target="struttura"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="strutturaIntro">
+        <data key="name">strutturaIntro</data>
+        <data key="href">content/book/uml/struttura/introduzione.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="struttura" target="strutturaIntro"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="classi">
+        <data key="name">classi</data>
+        <data key="href">content/book/uml/struttura/classi.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="strutturaIntro" target="classi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="package">
+        <data key="name">package</data>
+        <data key="href">content/book/uml/struttura/package.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="strutturaIntro" target="package"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="strutComp">
+        <data key="name">strutComp</data>
+        <data key="href">content/book/uml/struttura/strutturacomposita.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="strutturaIntro" target="strutComp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="componentiD">
+        <data key="name">componentiD</data>
+        <data key="href">content/book/uml/struttura/componenti.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="strutturaIntro" target="componentiD"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="deploymentD">
+        <data key="name">deploymentD</data>
+        <data key="href">content/book/uml/struttura/deployment.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="strutturaIntro" target="deploymentD"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="interazione">
+        <data key="name">Interazione</data>
+        <data key="href">content/book/sistemi/interazioneSistemi.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="dimensioniSistemi" target="interazione"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="interazioneIntro">
+        <data key="name">interazioneIntro</data>
+        <data key="href">content/book/uml/interazione/interazione.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="interazione" target="interazioneIntro"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="sequenzaIntro">
+        <data key="name">sequenzaIntro</data>
+        <data key="href">content/book/uml/interazione/diagrammaSequenza.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="interazioneIntro" target="sequenzaIntro"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="messaggio">
+        <data key="name">Messaggio</data>
+        <data key="href">content/book/uml/interazione/messaggio.dita</data>
+        <data key="level">6</data>
+    </node>
+    <edge source="sequenzaIntro" target="messaggio"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="combinedfragment">
+        <data key="name">combinedfragment</data>
+        <data key="href">content/book/uml/interazione/combinedfragment.dita</data>
+        <data key="level">6</data>
+    </node>
+    <edge source="sequenzaIntro" target="combinedfragment"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="esempiInterazione">
+        <data key="name">esempiInterazione</data>
+        <data key="href">content/book/uml/interazione/esempiInterazione.dita</data>
+        <data key="level">6</data>
+    </node>
+    <edge source="sequenzaIntro" target="esempiInterazione"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="sincroni">
+        <data key="name">sincroni</data>
+        <data key="href">content/book/uml/interazione/sincroni.dita</data>
+        <data key="level">7</data>
+    </node>
+    <edge source="esempiInterazione" target="sincroni"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="asincroni">
+        <data key="name">asincroni</data>
+        <data key="href">content/book/uml/interazione/asincroni.dita</data>
+        <data key="level">7</data>
+    </node>
+    <edge source="esempiInterazione" target="asincroni"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="conclusioni">
+        <data key="name">conclusioni</data>
+        <data key="href">content/book/uml/interazione/conclusioni.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="interazioneIntro" target="conclusioni"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="comportamento">
+        <data key="name">Comportamento</data>
+        <data key="href">content/book/sistemi/comportamentoSistemi.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="dimensioniSistemi" target="comportamento"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="comportamentoIntro">
+        <data key="name">comportamentoIntro</data>
+        <data key="href">content/book/uml/comportamento/introComportamento.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="comportamento" target="comportamentoIntro"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="stato">
+        <data key="name">stato</data>
+        <data key="href">content/book/uml/comportamento/diagrammaStato.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="comportamentoIntro" target="stato"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="attivita">
+        <data key="name">attivita</data>
+        <data key="href">content/book/uml/comportamento/diagrammaAttivita.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="comportamentoIntro" target="attivita"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+
+    <node id="introPattern">
+        <data key="name">I pattern</data>
+        <data key="href">content/book/pattern/introPattern.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="versoUnProcesso" target="introPattern"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="ruoloPattern">
+        <data key="name">Ruolo dei pattern</data>
+        <data key="href">content/book/pattern/ruoloPattern.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="introPattern" target="ruoloPattern"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="insiemiDiPattern">
+        <data key="name">Insisemi di pattern</data>
+        <data key="href">content/book/pattern/insiemiDiPattern.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="introPattern" target="insiemiDiPattern"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="patternLanguages">
+        <data key="name">Pattern languages</data>
+        <data key="href">content/book/pattern/patternLanguages.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="introPattern" target="patternLanguages"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="piattaforme">
+        <data key="name">Piattaforme operative model driven</data>
+        <data key="href">content/book/piattaforme/piattaforme.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="versoUnProcesso" target="piattaforme"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="processoLogico">
+        <data key="name">Percorso Logico</data>
+        <data key="href">content/book/wkflow/processoLogico.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="processoLogico"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="impostazioneGenerale">
+        <data key="name">Impostazione generale</data>
+        <data key="href">content/book/wkflow/impostazioneGenerale.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="impostazioneGenerale"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="sitoApplicazione">
+        <data key="name">Workflow ed artefatti</data>
+        <data key="href">content/book/wkflow/sitoApplicazione.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="sitoApplicazione"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="workflowRequisiti">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/workflowRequisiti.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="workflowRequisiti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="ieeeRequisiti">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/ieeeRequisiti.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowRequisiti" target="ieeeRequisiti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="analisiRequisiti">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/analisiRequisiti.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowRequisiti" target="analisiRequisiti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="useCase">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/useCase.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="analisiRequisiti" target="useCase"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="relazioniUsecases">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/relazioniUsecases.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="useCase" target="relazioniUsecases"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="scenari">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/scenari.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="useCase" target="scenari"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="requisitNonFunzionali">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/requisitNonFunzionali.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowRequisiti" target="requisitNonFunzionali"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="workflowAnalisi">
+        <data key="name">Analisi workflow</data>
+        <data key="href">content/book/modelBased/fasi/workflowAnalisi.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="workflowAnalisi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="analisiProblema">
+        <data key="name">Analisi del problema</data>
+        <data key="href">content/book/modelBased/fasi/analisiProblema.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowAnalisi" target="analisiProblema"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="architetturaLogica">
+        <data key="name">Architettura logica</data>
+        <data key="href">content/book/modelBased/fasi/architetturaLogica.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="analisiProblema" target="architetturaLogica"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="schemiArchitettura">
+        <data key="name">Schemi architetturali</data>
+        <data key="href">content/book/modelBased/fasi/schemiArchitettura.dita</data>
+        <data key="level">5</data>
+    </node>
+    <edge source="architetturaLogica" target="schemiArchitettura"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="layers">
+        <data key="name">Layers</data>
+        <data key="href">content/book/modelBased/fasi/layers.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="analisiProblema" target="layers"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="analisiRischi">
+        <data key="name">Analisi dei rischi</data>
+        <data key="href">content/book/modelBased/fasi/analisiRischi.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowAnalisi" target="analisiRischi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="pianoCollaudo">
+        <data key="name">Piano di collaudo</data>
+        <data key="href">content/book/modelBased/fasi/pianoCollaudo.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="pianoCollaudo"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="pianoLavoro">
+        <data key="name">Piano di lavoro</data>
+        <data key="href">content/book/modelBased/fasi/pianoLavoro.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="pianoLavoro"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="workflowProgetto">
+        <data key="name">Progetto</data>
+        <data key="href">content/book/modelBased/fasi/workflowProgetto.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="workflowProgetto"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="progettazione">
+        <data key="name">Progettazione</data>
+        <data key="href">content/book/modelBased/fasi/progettazione.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowProgetto" target="progettazione"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="sviluppoBottomUp">
+        <data key="name">Sviluppo borrom-up</data>
+        <data key="href">content/book/modelBased/fasi/sviluppoBottomUp.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowProgetto" target="sviluppoBottomUp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="piattaformeFramework">
+        <data key="name">Piattaforme e framework</data>
+        <data key="href">content/book/modelBased/fasi/piattaformeFramework.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="sviluppoBottomUp" target="piattaformeFramework"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="applicationFramework">
+        <data key="name">Application framework</data>
+        <data key="href">content/book/modelBased/fasi/applicationFramework.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="sviluppoBottomUp" target="applicationFramework"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="sviluppoTopDown">
+        <data key="name">Sviluppo top-down</data>
+        <data key="href">content/book/modelBased/fasi/sviluppoTopDown.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="workflowProgetto" target="sviluppoTopDown"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="projectByPattern">
+        <data key="name">Progetti basati su pattern</data>
+        <data key="href">content/book/pattern/projectByPattern.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="sviluppoTopDown" target="projectByPattern"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="implementazione">
+        <data key="name">Implementazione</data>
+        <data key="href">content/book/modelBased/fasi/implementazione.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="implementazione"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="workflowCollaudo">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/book/modelBased/fasi/workflowCollaudo.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="workflowCollaudo"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="deployment">
+        <data key="name">Deployment</data>
+        <data key="href">content/book/modelBased/fasi/deployment.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="deployment"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="maintenance">
+        <data key="name">Maintenance</data>
+        <data key="href">content/book/modelBased/fasi/maintenance.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="processoLogico" target="maintenance"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="esempioModelBased">
+        <data key="name">Espressioni</data>
+        <data key="href">content/lab/exp/esempioModelBased.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="esempioModelBased"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="analisiRequisitiExp">
+        <data key="name">Analisi dei requisiti</data>
+        <data key="href">content/lab/exp/analisiRequisitiExp.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="esempioModelBased" target="analisiRequisitiExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="modelloDominioExp">
+        <data key="name">modelloDominioExp</data>
+        <data key="href">content/lab/exp/modelloDominioExp.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="analisiRequisitiExp" target="modelloDominioExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="modelloTokenExp">
+        <data key="name">modelloTokenExp</data>
+        <data key="href">content/lab/exp/modelloTokenExp.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="modelloDominioExp" target="modelloTokenExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="modelloExpExp">
+        <data key="name">modelloExpExp</data>
+        <data key="href">content/lab/exp/modelloExpExp.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="modelloDominioExp" target="modelloExpExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="pianoCollaudoExp">
+        <data key="name">pianoCollaudoExp</data>
+        <data key="href">content/lab/exp/pianoCollaudoExp.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="analisiRequisitiExp" target="pianoCollaudoExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="sintassiAstrattaExp">
+        <data key="name">modelloDominioExp</data>
+        <data key="href">content/lab/exp/sintassiAstrattaExp.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="analisiRequisitiExp" target="sintassiAstrattaExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="genCodeToolsExp">
+        <data key="name">genCodeToolsExp</data>
+        <data key="href">content/lab/exp/genCodeToolsExp.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="analisiRequisitiExp" target="genCodeToolsExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="analisiProblemaExp">
+        <data key="name">analisiProblemaExp</data>
+        <data key="href">content/lab/exp/analisiProblemaExp.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="esempioModelBased" target="analisiProblemaExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="archLogicaExp">
+        <data key="name">archLogicaExp</data>
+        <data key="href">content/lab/exp/archLogicaExp.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="analisiProblemaExp" target="archLogicaExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="archLogicaStruttura">
+        <data key="name">archLogicaStruttura</data>
+        <data key="href">content/lab/exp/archLogicaStruttura.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="archLogicaExp" target="archLogicaStruttura"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="archLogicaInterazione">
+        <data key="name">archLogicaInterazione</data>
+        <data key="href">content/lab/exp/archLogicaInterazione.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="archLogicaExp" target="archLogicaInterazione"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="archLogicaComportamento">
+        <data key="name">archLogicaComportamento</data>
+        <data key="href">content/lab/exp/archLogicaComportamento.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="archLogicaExp" target="archLogicaComportamento"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="comportamentoSistema">
+        <data key="name">comportamentoSistema</data>
+        <data key="href">content/lab/exp/comportamentoSistema.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="archLogicaExp" target="comportamentoSistema"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="pianoLavoroExp">
+        <data key="name">pianoLavoroExp</data>
+        <data key="href">content/lab/exp/pianoLavoroExp.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="esempioModelBased" target="pianoLavoroExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="progettoExp">
+        <data key="name">progettoExp</data>
+        <data key="href">content/lab/exp/progettoExp.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="esempioModelBased" target="progettoExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="inputDev08Project">
+        <data key="name">inputDev08Project</data>
+        <data key="href">content/lab/exp/inputDev08Project.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="progettoExp" target="inputDev08Project"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="lexer08Project">
+        <data key="name">Progetto lexer</data>
+        <data key="href">content/lab/exp/lexer08Project.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="progettoExp" target="lexer08Project"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="parser08Project">
+        <data key="name">Progetto parser</data>
+        <data key="href">content/lab/exp/parser08Project.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="progettoExp" target="parser08Project"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="evaluator08Project">
+        <data key="name">evaluator08Project</data>
+        <data key="href">content/lab/exp/evaluator08Project.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="progettoExp" target="evaluator08Project"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="implementazioneExp">
+        <data key="name">implementazioneExp</data>
+        <data key="href">content/lab/exp/implementazioneExp.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="esempioModelBased" target="implementazioneExp"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="inputDevImplementation">
+        <data key="name">inputDevImplementation</data>
+        <data key="href">content/lab/exp/inputDevImplementation.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="implementazioneExp" target="inputDevImplementation"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="lexer08Implementation">
+        <data key="name">lexer08Implementation</data>
+        <data key="href">content/lab/exp/lexer08Implementation.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="implementazioneExp" target="lexer08Implementation"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="parser08Implementation">
+        <data key="name">parser08Implementation</data>
+        <data key="href">content/lab/exp/parser08Implementation.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="implementazioneExp" target="parser08Implementation"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="evaluatorImplementation">
+        <data key="name">evaluatorImplementation</data>
+        <data key="href">content/lab/exp/evaluatorImplementation.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="implementazioneExp" target="evaluatorImplementation"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="sysExpImplementation">
+        <data key="name">sysExpImplementation</data>
+        <data key="href">content/lab/exp/sysExpImplementation.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="implementazioneExp" target="sysExpImplementation"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="introTecnologie">
+        <data key="name">Tecnologie</data>
+        <data key="href">content/book/tecno/introTecnologie.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="introTecnologie"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="componenti">
+        <data key="name">Componenti</data>
+        <data key="href">content/book/tecno/componenti/componenti.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="introTecnologie" target="componenti"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="osgi">
+        <data key="name">OSGi</data>
+        <data key="href">content/book/tecno/OSGi/osgi.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="componenti" target="osgi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="bundle">
+        <data key="name">Bundle</data>
+        <data key="href">content/book/tecno/OSGi/bundle.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="bundle"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="bundleDependency">
+        <data key="name">bundleDependency</data>
+        <data key="href">content/book/tecno/OSGi/bundleDependency.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="bundleDependency"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="classLoading">
+        <data key="name">classLoading</data>
+        <data key="href">content/book/tecno/OSGi/classLoading.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="classLoading"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="bundleLifeCycle">
+        <data key="name">bundleLifeCycleOSGi</data>
+        <data key="href">content/book/tecno/OSGi/bundleLifeCycle.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="bundleLifeCycle"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="bundleObject">
+        <data key="name">bundleObject</data>
+        <data key="href">content/book/tecno/OSGi/bundleObject.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="bundleObject"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="bundleContext">
+        <data key="name">bundleContext</data>
+        <data key="href">content/book/tecno/OSGi/bundleContext.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="bundleContext"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="osgiServices">
+        <data key="name">osgiServices</data>
+        <data key="href">content/book/tecno/OSGi/osgiServices.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="osgiServices"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="osgiServiceDependency">
+        <data key="name">osgiServiceDependency</data>
+        <data key="href">content/book/tecno/OSGi/osgiServiceDependency.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="osgiServiceDependency"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="osgiServiceTracker">
+        <data key="name">osgiServiceTracker</data>
+        <data key="href">content/book/tecno/OSGi/osgiServiceTracker.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="osgiServiceTracker"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="osgiServiceBinder">
+        <data key="name">osgiServiceBinder</data>
+        <data key="href">content/book/tecno/OSGi/osgiServiceBinder.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="osgiServiceBinder"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="equinoxUsageTutorial">
+        <data key="name">equinoxUsageTutorial</data>
+        <data key="href">content/book/tecno/OSGi/equinoxUsageTutorial.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="equinoxUsageTutorial"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="realizzareBundle">
+        <data key="name">realizzareBundle</data>
+        <data key="href">content/book/tecno/OSGi/realizzareBundle.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="osgi" target="realizzareBundle"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+
+    <node id="introMdsd">
+        <data key="name">introMdsd</data>
+        <data key="href">content/book/modelDriven/introMdsd.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="introMdsd"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="introUml2">
+        <data key="name">introUml2</data>
+        <data key="href">content/book/uml211/introUml2.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="introMdsd" target="introUml2"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="razionaleMOF">
+        <data key="name">razionaleMOF</data>
+        <data key="href">content/book/uml211/razionaleMOF.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="introUml2" target="razionaleMOF"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="riusoInMOF">
+        <data key="name">riusoInMOF</data>
+        <data key="href">content/book/uml211/riusoInMOF.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="introUml2" target="riusoInMOF"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="introEMOFCMOF">
+        <data key="name">introEMOFCMOF</data>
+        <data key="href">content/book/uml211/introEMOFCMOF.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="introUml2" target="introEMOFCMOF"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="mdsd">
+        <data key="name">mdsd</data>
+        <data key="href">content/book/modelDriven/mdsd.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="introMdsd" target="mdsd"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="oaw">
+        <data key="name">oaw</data>
+        <data key="href">content/book/modelDriven/oaw.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="mdsd" target="oaw"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="oawExample">
+        <data key="name">oawExample</data>
+        <data key="href">content/book/modelDriven/oawExample.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="oaw" target="oawExample"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="lexerBundle">
+        <data key="name">lexerBundle</data>
+        <data key="href">content/lab/bundle/lexerBundle.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="mdsd" target="lexerBundle"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="fabbricaBundle">
+        <data key="name">fabbricaBundle</data>
+        <data key="href">content/lab/bundle/fabbricaBundle.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="lexerBundle" target="fabbricaBundle"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+    <node id="dslComm">
+        <data key="name">dslComm</data>
+        <data key="href">content/book/modelDriven/dslComm.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="mdsd" target="dslComm"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="piattaformaComm">
+        <data key="name">piattaformaComm</data>
+        <data key="href">content/book/modelDriven/piattaformaComm.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="dslComm" target="piattaformaComm"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="semanticaContact">
+        <data key="name">semanticaContact</data>
+        <data key="href">content/book/modelDriven/semanticaContact.dita</data>
+        <data key="level">4</data>
+    </node>
+    <edge source="dslComm" target="semanticaContact"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+
+    <node id="agentWorld">
+        <data key="name">Un mondo ad agenti</data>
+        <data key="href">content/book/agenti/agentWorld.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="agentWorld"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="agentiArchitetturaSocieta">
+        <data key="name">agentiArchitetturaSocieta</data>
+        <data key="href">content/book/agenti/agentiArchitetturaSocieta.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="agentWorld" target="agentiArchitetturaSocieta"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="agentiArchitetturaAmbiente">
+        <data key="name">agentiArchitetturaAmbiente</data>
+        <data key="href">content/book/agenti/agentiArchitetturaAmbiente.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="agentWorld" target="agentiArchitetturaAmbiente"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="aUMLIntro">
+        <data key="name">aUMLIntro</data>
+        <data key="href">content/book/agenti/aUMLIntro.dita</data>
+        <data key="level">2</data>
+    </node>
+    <edge source="agentWorld" target="aUMLIntro"> 
+    <data key="type">parent</data>
+    </edge>
+    
+    <node id="f_aUMLProtocolli">
+        <data key="name">aUMLProtocolli</data>
+        <data key="href">content/book/agenti/aUMLProtocolli.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="aUMLIntro" target="f_aUMLProtocolli"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="aUMLProtocolliRuoliMultipli">
+        <data key="name">aUMLProtocolliRuoliMultipli</data>
+        <data key="href">content/book/agenti/aUMLProtocolliRuoliMultipli.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="aUMLIntro" target="aUMLProtocolliRuoliMultipli"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="aUMLProtocolliMessaggi">
+        <data key="name">f_aUMLProtocolliMessaggi</data>
+        <data key="href">content/book/agenti/aUMLProtocolliMessaggi.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="aUMLIntro" target="aUMLProtocolliMessaggi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="aUMLProtocolliVincoli">
+        <data key="name">aUMLProtocolliVincoli</data>
+        <data key="href">content/book/agenti/aUMLProtocolliVincoli.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="aUMLIntro" target="aUMLProtocolliVincoli"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="aUMLProtocolliAlternativi">
+        <data key="name">aUMLProtocolliAlternativi</data>
+        <data key="href">content/book/agenti/aUMLProtocolliAlternativi.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="aUMLIntro" target="aUMLProtocolliAlternativi"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="aUMLProtocolliCombinati">
+        <data key="name">aUMLProtocolliCombinati</data>
+        <data key="href">content/book/agenti/aUMLProtocolliCombinati.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="aUMLIntro" target="aUMLProtocolliCombinati"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="aUMLLingComm">
+        <data key="name">aUMLLingComm</data>
+        <data key="href">content/book/agenti/aUMLLingComm.dita</data>
+        <data key="level">3</data>
+    </node>
+    <edge source="aUMLIntro" target="aUMLLingComm"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+
+    <node id="bibliografia">
+        <data key="name">Bibliografia</data>
+        <data key="href">content/biblio/bibliografia.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="bibliografia"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="mapProcess">
+        <data key="name">Map: process</data>
+        <data key="href">content/book/maps/mapProcess.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="mapProcess"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="mapModelling">
+        <data key="name">Map: modelling</data>
+        <data key="href">content/book/maps/mapModelling.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="mapModelling"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="mapWorkflow">
+        <data key="name">Map: workflow</data>
+        <data key="href">content/book/maps/mapWorkflow.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="mapWorkflow"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+    <node id="mapProcessActivity">
+        <data key="name">Map: mapProcessActivity</data>
+        <data key="href">content/book/maps/mapProcessActivity.dita</data>
+        <data key="level">1</data>
+    </node>
+    <edge source="Costruire sistemi software: dai modelli al codice" target="mapProcessActivity"> 
+    <data key="type">parent</data>
+    </edge>
+    
+
+
+</graph>
+</graphml>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Piattaforme e framework" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/sviluppoBottomUp.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Piattaforme e framework</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Piattaforme e framework</h1>
+
+<div>
+<p>
+Nella pratica comune, l'uso di una piattforma operativa viene quesi
+sempre deciso <strong><em>prima</em></strong> di iniziare la costruzione dell'applicazione,
+con inevatibili consegenze sul processo di produzione del software, tanto
+che si può parlare di un <em>platform-based design</em>.
+Abbiamo infatti già osservato 
+(si veda <a href="sviluppoBottomUp.html">Sviluppo bottom-up</a>)
+come una piattaforma non solo fattorizzi elementi comuni a tutte le
+applicazioni, ma fornisca anche un insieme di astrazioni che
+permettono di ridurre l'<em>abstraction gap</em> tra il livello
+operativo e il dominio del problema.
+</p>
+<p>
+Sul piano progettuale-operativo, il contributo principale di una
+piattaforma  consiste nella possibilità di impostare lo sviluppo
+del software in termini di assemblaggio di componenti configurabili 
+(<em>development by assembly</em> ).
+Il termine "componente" è usato qui in senso lato, per indicare unità modulari, 
+capaci di promuovere il riuso e di essere
+adattabili / estendibili in relazione alle esigenze di una specifica applicazione.
+</p>
+<div class="p">
+Un'applicazione sviluppata partendo da una delle piattaforme 
+doperative oggi più diffuse mostra una precisa 
+macro-organizzazione logica che viene spesso riflessa
+a livello di  codice. Ad esempio, nel caso di una applicazione <tt>J2EE</tt>:
+
+<ul>
+<li>l'applicazione è organizzata in layer orizzontali e verticali;</li>
+
+<li>i processi applicativi sono realizzati da componenti distribuiti;</li>
+
+<li>i componenti usano interfacce per esporre metodi invocabili 
+localmente o in modo remoto e metodi per gestire l'identità,
+individuare factory e istanze, accedere ai metadati e gestire errori;</li>
+
+<li>le interfacce sono implementate attraverso pattern quali ([GHJV95] [POSA2])
+<tt>factory, proxy, facade, adapter, delegate, event, command, exception,
+metadata</tt>;  </li>
+
+<li>i componenti potrebbero utilizzare connection factories, connections
+e adapter per interagire con componenti esterni;</li>
+
+<li>i componenti potrebbero utilizzare descrizioni di Web Services,
+gestori di risorse, servizi di discovery, schemi di documenti  e documenti  per interagire
+con altri processi applicativi;</li>
+
+<li>i componenti potrebbero utilizzare servizi di sistema per
+inizializzre e registrare istanze e per gestire aspetti legati allo stato,
+distribuzione, concorrenza, transazioni, naming, security;</li>
+
+<li>i componenti potrebbero usare <tt>server pages, forms, scripts, servlet</tt>
+per definire la parte di presentazione all'utente;</li>
+
+<li>la descrizione dei componenti sarebbe espressa in termini
+di molteplici artefatti, quali codice Java, file JXML, AR, WAR, EAR, etc</li>
+
+</ul>
+
+
+Una  piattaforma permette l'adattamento 
+allo specifico problema tramite meccanismi di tipo white-box o black-box.
+I meccanismi di tipo <strong>white-box</strong>  si basano principalmente sulla <em>ereditarietà</em>
+tra classi e sul pattern [GHJV95] quali <tt>Factory Method</tt> e <tt>Template Method</tt>.
+Questo approccio richiede una conoscenza profonda della struttura delle classi
+della piattaforma e può condurre a inconsistenza.
+I meccanismi di tipo <strong>black-box</strong> nascondono il codice sorgente,
+si basano sulla associazione e implicano spesso l'uso di pattern quali <tt>Decorator</tt>
+e <tt>Visitor</tt>.
+
+</div>
+<p>
+Le piattaforme stanno decisamente  evolvendo [JF88] da framework basati su
+white-box a framework basati su black-box che sono più
+flessibili (in quanto le associazioni sono modificabili a tempo
+di esecuzione), richiedono solo la conoscenza di specifiche,
+incapsulano l'implementazione e portano
+a maggior stabilità. 
+Rimanendo nell'alveo del paradigma ad oggetti, pPer <strong>framework</strong> 
+si può intendere quanto riportato in  [JF88]:
+"<em>a set of classes that embodies an abstract design for solutions to
+a family of related problems</em>". 
+In generale per framework si può intendere un sistema software che cattura 
+l'esperienza di risoluzione di problemi generali ricorrenti in forma
+di algoritmi riusabili, componenti software ed architetture
+estendibili.
+</p>
+<p>
+Un framework pone a fattor comune le parti riusabili di un progetto
+e di una implementazione, separando la <em>generic part</em> dalla
+<em>specific part</em> di un'applicazione.
+La parti che si prevedano cambino più spesso sono incapsulabili
+adottando il  pattern <em>PluggableObjects</em> [RJ96]. 
+
+Un framework propone/impone uno <em>stile architetturale</em>
+(si veda <a href="../../sistemi/stileArchitetturale.html">Lo stile architetturale</a>)
+introducendo
+meccanismi volti a permettere variazioni e presenta un insieme di aspetti
+ricorrenti quali: <em>definition, discovery, composability, 
+adaptability, deployment, distribution</em>. 
+</p>
+<p>
+Piattaforme come <tt>J2EE</tt> e <tt>.NET</tt> realizzano la previsione di Gamma 
+che la crescente
+importanza dei framework avrebbe condotto ad impostare applicazioni di
+grandi dimensioni come layer di framework interagenti, ciascuno dedicato
+a qualche rilevante aspetto dell'applicazione (GUI, persistence, etc).
+</p>
+<p>
+In un proceso di sviluppo di tipo top-down, un  framework 
+specializzato potrebbe scaturire dall'analisi
+(del dominio) del problema [RJ96] ;
+una ditta potrebbe valutare conveniente investire nel suo
+sviluppo al fine di  creare,
+secondo un adatto stile architetturale,
+il supporto ad una possibile famiglia di applicazioni,
+prevedendo la possibilità di riuso ed estensione.
+</p>
+
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/modelBased/fasi/sviluppoBottomUp.html">Sviluppo bottom-up</a></div>
+</div>
+</div>
+
+</body>
+</html>

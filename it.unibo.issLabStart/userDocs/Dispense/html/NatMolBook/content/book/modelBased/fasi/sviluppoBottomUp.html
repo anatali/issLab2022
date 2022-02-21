@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Sviluppo bottom-up" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/workflowProgetto.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/piattaformeFramework.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/applicationFramework.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Sviluppo bottom-up</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Sviluppo bottom-up</h1>
+
+<div>
+<p>
+Un'astrazione cattura conoscenza acquisita dall'esperienza su problemi
+ricorrenti, rendendo tale conoscenza riusabile come possibile
+punto di arrivo durante la fase di decomposizione
+di un problema.
+Di solito una nuova astrazione viene introdotta come una pratica isolata;
+successivamente viene riconosciuta come pattern e quindi incapsulata
+in uno strumento di produzione o in una piattaforma. 
+Come ultimo passo un'astrazione viene accolta entro un linguaggio.
+</p>
+<p>
+Tecnologie come <tt>Java-J2EE</tt> o <tt>C#-.NET</tt> possono essere caratterizzate
+dal tipo di allineamento piattaforma-linguaggio. Nel caso in cui
+il linguaggio sia più astratto della piattaforma, le astrazioni del 
+linguaggio devono essere supportate e gestite da tools quali
+compilatori, debugger, generatori, etc. 
+Nel caso in cui la piattaforma sia più astratta del linguaggio,
+l'utente deve farsi carico diretto dei concetti non incapsulati
+nel linguaggio, con conseguente aumento di complessità. 
+Un caso classico è il concetto di <em>evento</em> assente in Java
+ma presente fin dalla Java Virtual Machine (<tt>JVM</tt>).
+</p>
+<p>
+Spesso le moderna piattaforme permettono di utilizzare le astrazioni 
+nelle forme promosse
+dal paradigma ad oggetti 
+quali classi, oggetti, componenti software, servizi, etc.
+Questo fatto induce a impostare la progettazione (in tutto o in parte) non tanto come
+un processo (analitico) di decomposizione/raffinamento
+(<em>top-down</em>) quanto come un processo (sintetico)
+ di composizione (<em>bottom-up</em>) che perviene alla
+soluzione di un problema attraverso una aggregazione di feature  
+rese disponibili dalla piattaforma. 
+</p>
+<p>
+Nel loro complesso queste feature formano un nuovo <em>spazio di soluzione</em>
+per i problemi.
+La complessità viene ridotta in quanto una piattaforma
+presenta un numero di feature
+più limitato rispetto ai livelli sottostanti
+e quindi un minore insieme  di combinazioni possibili.
+ 
+L'adattamento alle esigenze di una specifica applicazione è
+reso più agevole dal fatto che  i componenti sono 
+spesso progettati e realizzati in modo da essere estendibili e adattabili
+attraverso la esposizione di informazione via metadati usabili offline o
+a run time.
+</p>
+<p>
+Naturalmente tutto questo ha un prezzo: la piattaforma incapsula
+e spesso congela decisioni di progetto che sarebbero state 
+oggetto di una decisione esplicita in un processo top-down.
+</p>
+<p>
+Il punto importante quindi è riconoscere da un lato la necessità
+pratica all'uso di piattaforme di alto livello per lo
+sviluppo industriale del software; da un altro alto occorre però anche riconoscere come sia necessario
+continuare a pensare in termini di astrazione senza focalizzarsi
+sullo spazio di soluzione fornito da una piattaforma.
+Solo così infatti si può pensare di creare nuovi domini
+di soluzione in grado di affrontare in modo sistematico nuovi problemi,
+rimpiazzando i domini di soluzione connessi alle tecnologie
+esistenti e quindi  aprire la via alla <em>innovazione di prodotto e di processo</em>.
+
+
+
+
+</p>
+<p>
+</p>
+
+
+
+
+ 
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../../content/book/modelBased/fasi/piattaformeFramework.html">Piattaforme e framework</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/modelBased/fasi/applicationFramework.html">Application framework</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/modelBased/fasi/workflowProgetto.html">Progetto</a></div>
+</div>
+</div>
+
+</body>
+</html>

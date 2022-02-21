@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Funzioni e procedure" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/paradigmi/paradigmi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Funzioni e procedure</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Funzioni e procedure</h1>
+
+<div>
+<p>
+I linguaggi di programmazione più diffusi 
+(<tt>Cobol, FORTRAN, C, C++, C#, Java, Lisp, Prolog, CLR, ByteCode</tt>, etc) sono
+tutti <em>computazionalmente completi</em>, cioè dotati della capacità tipica
+del formalismo della <tt>TM</tt> di poter esprimere la soluzione
+ad ogni problema computabile (che viene definito tale proprio perchè è possibile definire
+una <tt>TM</tt> che lo risolve).
+</p>
+<p>
+Ciò che differenzia i linguaggi e che segna la storia stessa della evoluzione dei linguaggi
+è la capacità di esprimere elementi utili alla organizzazione del software.
+</p>
+<p>
+Già i primi linguaggi di programmazione (<tt>FORTRAN</tt> e <tt>LISP</tt>) nascono con l'intento di
+fornire costrutti utili ad elevare il livello di astrazione e a promuovere la modularità del software. 
+Due di questi costrutti risultano ancora oggi fondamentali: la procedura e la funzione.
+
+</p>
+<p>
+
+Le <strong>procedure</strong> e le <strong>funzioni</strong> 
+costituiscono una prima, elementare, ma tuttora fondamentale
+forma di "componente software riusabile" all'interno 
+di una proto-infrastruttura costituite dal programma principale. 
+Sul piano semantico questi costrutti catturano l'idea di un automa risolutore che può 
+anche riusare (copie di) sè stesso per fornire la soluzione ad un problema, 
+dando pieno supporto a schemi di ragionamento ricorsivo e iterativo. 
+</p>
+<div class="p">
+Ne scaturisce il classico modello organizzatico delle computazioni noto come
+"read-eval-print":
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"> </td>
+<td valign="top" width="50%">
+<div class="fignone"><span class="figcap">Figure 1. Read-Eval-Print</span>
+<img src="../../images/book/read-eval-print.jpg" />
+</div>
+
+</td>
+
+<td valign="top" width="25%"> </td>
+
+</tr>
+
+</table>
+
+
+Ad esempio, un sistema software concepito con l'ottica del linguaggio <tt>C</tt>
+ha come elemento centrale il componente (programma)
+che esprime il flusso di controllo con cui sono attivate le azioni di elaborazione
+espresse da funzioni; le interazioni tra funzioni avvengono mediante invocazioni
+(con trasferimento di controllo oltre che di dati), mentre le interazioni
+con l'utente attraverso i dispositivi di <tt>I/O</tt>.
+</div>
+<p>
+L'evoluzione introdotta negli anni 70 dalla <strong>programmazione strutturata</strong> 
+ha promosso l'eliminazione dai programmi del salto incondizionato (<tt>goto</tt>) 
+a favore di costrutti (<tt>for, while-do</tt>) capaci di catturare l'essenza 
+del ragionamento iterativo, di disciplinare la progettazione e costruzione di
+cicli e di aumentare l'efficienza rispetto a iterazioni realizzate da chiamate
+ricorsive di funzioni in assenza della ottimizzazione relativa all <em>tail-recursion</em>.
+</p>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/paradigmi/paradigmi.html">Linguaggi e paradigmi computazionali</a></div>
+</div>
+</div>
+
+</body>
+</html>

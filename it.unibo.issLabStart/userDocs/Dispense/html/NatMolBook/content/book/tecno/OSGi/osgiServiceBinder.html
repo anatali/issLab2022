@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Service Binder" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Service Binder</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Service Binder</h1>
+
+<div>
+<p>
+Un altro approccio al problema della gestione delle dipendenze è quello 
+proposto da H.Cervantes [CH04] con la realizzazione di <em>Service Binder</em>. 
+ 
+In questo approccio 
+si è cercato di estrarre la gestione delle dipendenze dai bundle e trasferirla 
+ad un ambiente di esecuzione, creando un nuovo livello (di fatto un nuovo framework) 
+sopra al framework OSGi. Il nuovo ambiente è realizzato installando 
+il bundle <tt>ServiceBinder</tt> sul framework OSGi, come mostra la figura. 
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 1. Environment realizzato dal Service Binder</span>
+<img src="../../../images/OSGi/ServiceBinder.bmp" />
+</div>
+
+
+</div>
+<p>
+I componenti in esecuzione in questo nuovo ambiente sono chiamati 
+<em>Service Component</em> e hanno al loro interno un descrittore <tt>XML</tt> che ne elenca 
+le caratteristiche. La figura mostra lo schema logico di questi componenti. 
+Ognuno di essi dichiara l'insieme delle interfacce di servizio che fornisce e 
+che richiede assieme alle sue proprietà. Questi componenti, inoltre, espongono 
+un'interfaccia di controllo (<tt>ControlInterface</tt>) che serve per poter implementare 
+il pattern <em>Inversion Of Control</em> 
+(si veda  xref href="../../paradigmi/InversioneControllo.dita"/&gt;), 
+cioè per permettere al nuovo ambiente di gestire il life cycle delle istanze. 
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 2. Schema logico di un Service-Component.</span>
+<img src="../../../images/OSGi/ServiceComponent.bmp" />
+</div>
+
+
+</div>
+<p>
+Durante l'esecuzione, una istanza di un <em>Service Component</em> implementa i servizi 
+forniti ed è connessa alle altre istanze per creare un'applicazione. 
+Le proprietà dei servizi identificano l'istanza e sono usate quando tali 
+servizi sono pubblicati sul <tt>Service Register</tt> OSGi. 
+</p>
+<div class="p">
+Un esempio di descrittore <tt>XML</tt> per <em>Service Binder</em> può essere il seguente:
+<pre class="pre">
+&lt;?xmlversion="1.0"encoding="UTF??8"?&gt;
+&lt;bundle&gt;
+  &lt;componentclass="org.simpleclient.impl.ServiceImpl"&gt;
+	&lt;providesservice="org.simpleclient.interfaces.
+			SimpleClientServiceA"/&gt;
+	&lt;providesservice="org.simpleclient.interfaces.
+				SimpleClientServiceB"/&gt;
+	&lt;propertyname="provider"value="Beanome.org"type="string"/&gt;
+	&lt;requires
+		service="org.simpleservice.interfaces.SimpleService"
+		filter="(version=*)"
+		cardinality="1..n"
+		policy="static"
+		bind??method="setServiceReference"
+		unbind??method="unsetServiceReference"
+	/&gt;
+   &lt;/component&gt;
+&lt;/bundle&gt;
+</pre>
+
+Si notino in particolare 
+le varie proprietà che possono essere specificate per un servizio richiesto. 
+La proprietà <tt>filter</tt> specifica un filtro in accordo con la strategia di ricerca 
+di servizi OSGi, <tt>policy</tt> permette di distinguere 
+tra una politica associativa statica (in cui il servizio non può essere cambiato) 
+o dinamica (in cui un servizio può essere sostituito con un altro). 
+</div>
+<p>
+Le ultime due proprietà descrivono i metodi da eseguire durante l'arrivo 
+di un nuovo servizio o la sua dipartita. La proprietà <tt>cardinality</tt> specifica 
+la cardinalità del servizio richiesto (i cui valori possono 
+essere <tt>0..1, 0..n, 1..1, 1..n</tt>). Il primo valore di questa coppia rappresenta 
+l'opzionalità del servizio (<tt>0</tt> se ne può fare a meno, <tt>1</tt> se è indispensabile), 
+mentre il secondo valore rappresenta la molteplicità (<tt>1</tt> una sola istanza di servizio, 
+<tt>n</tt> diverse istanze). Per approfondimenti su questo sistema si veda [CH04b].
+</p>
+
+
+ 
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

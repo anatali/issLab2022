@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Life cycle" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Life cycle</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Life cycle</h1>
+
+<div>
+
+<p>
+Le fasi di vita di un bundle sono: installazione, risoluzione, attivazione, 
+disattivazione, disinstallazione e aggiornamento, quest'ultima realizzata come 
+combinazione delle precedenti. 
+ 
+Ognuna di queste fasi può far cambiare lo stato di un bundle. 
+Un bundle può trovarsi in uno dei seguenti stati: 
+</p>
+<div class="p">
+<ul>
+<li><strong>INSTALLED</strong>: il bundle è stato installato con successo. </li>
+
+<li><strong>RESOLVED</strong>: tutte le risorse di cui il bundle necessita sono disponibili. 
+	Questo stato indica che il bundle è pronto per essere attivato o è stato disattivato. </li>
+
+<li><strong>STARTING</strong>: il bundle sta per essere attivato (il metodo <tt>start()</tt> dell'<tt>Activator</tt>, 
+	è stato chiamato ma non ha ancora fornito un risultato). </li>
+
+<li><strong>ACTIVE</strong>: il bundle è stato attivato con successo ed è in esecuzione. </li>
+
+<li><strong>STOPPING</strong>: il bundle sta per essere disattivato (il metodo <tt>stop()</tt> dell'<tt>Activator</tt> 
+	è stato chiamato ma non ha ancora fornito un risultato). </li>
+
+<li><strong>UNINSTALLED</strong>: il bundle è stato disinstallato. Rappresenta lo stato finale. </li>
+
+</ul>
+
+</div>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 1. OSGi Life-Cycle</span>
+<img src="../../../images/OSGi/osgi_lifecycle.png" />
+</div>
+
+</div>
+<p>
+
+Per aggiungere un bundle ad un'istanza del framework lo si deve innanzitutto 
+installare al suo interno. 
+L'installazione può essere effettuata soltanto da un altro bundle oppure 
+dal framework stesso (ad esempio come comando passato da console) 
+che a sua volta è un bundle (<tt>System-Bundle</tt>). L'interfaccia <tt>BundleContext</tt> 
+fornita ad ogni bundle dal framework  (si veda <a href="bundleContext.html">Bundle context</a>)
+consente di installare un bundle tramite il metodo <tt>installBundle(String URL)</tt>. 
+</p>
+<p>
+Se il bundle supera una fase di validazione relativa alla sicurezza 
+viene installato (<tt>INSTALLED</tt>) ed il metodo <tt>installBundle</tt> 
+produce come risultato un <tt>bundle object</tt>
+(si veda <a href="bundleObject.html">Bundle object</a>)
+ovvero la rappresentazione a run-time di un bundle che consente di 
+controllare tutte le restanti fasi di vita del bundle. 
+</p>
+<div class="p">
+La locazione del bundle può essere sia remota che locale; in ogni caso 
+il framework ne esegue il download e ne tiene una copia in una cartella locale. 
+La fase di installazione gode delle seguenti proprietà: 
+<ul>
+<li><strong>persistenza</strong>: un bundle rimane installato nonostante la terminazione 
+	del framework o della macchina virtuale Java a meno che non venga 
+	esplicitamente disinstallato; </li>
+
+<li><strong>atomicità</strong>: la fase di installazione deve installare completamente 
+	il bundle o, se l'installazione fallisce, deve lasciare il sistema 
+	nello stato consistente precedente il tentativo d'installazione. </li>
+
+</ul>
+	
+</div>
+<p>
+Una volta installato il bundle, il framework tenta di risolvere tutte 
+le dipendenze dichiarate nel file <tt>manifest</tt> attraverso un processo iterativo 
+di risoluzione. Se tale processo andrà a buon fine il bundle assumerà 
+lo stato <tt>RESOLVED</tt> e potrà essere attivato, altrimenti resterà nello stato 
+<tt>INSTALLED</tt> fino a che tutte le dipendenze non verranno risolte: 
+in questo caso il bundle non potrà essere messo in esecuzione ma i package 
+che esporta potranno comunque essere utilizzati dagli altri bundle. 
+</p>
+<p>
+Quindi se il bundle passa nello stato <tt>RESOLVED</tt> può essere attivato 
+utilizzando il metodo <tt>start()</tt> del suo <tt>Activator</tt>. Tale metodo pone il bundle 
+nello stato <tt>STARTING</tt>, registra i servizi forniti dal bundle e svolge le 
+operazioni di inizializzazione. Se tutto ciò va a buon fine il bundle passa 
+nello stato <tt>ACTIVE</tt> ed è in esecuzione. La terminazione di un bundle può avvenire per 
+mezzo di un altro bundle o del bundle stesso che di fatto può autoterminarsi. 
+</p>
+<p>
+Ad una richiesta di terminazione, il bundle entra nello stato di <tt>STOPPING</tt> 
+ed il framework esegue il metodo <tt>stop()</tt> dell'<tt>Activator</tt>. Questo metodo deve 
+eseguire la cosiddetta chiusura dolce, finendo di servire i clienti ancora in 
+attesa nel caso stia erogando un servizio (si veda <a href="osgiServiceDependency.html">Service Dependency</a>), 
+informando il framework che i servizi da lui erogati non sono più disponibili 
+e liberando le risorse allocate dopo l'attivazione. Se tutto va buon fine il bundle 
+viene disattivato e ritorna nello stato <tt>RESOLVED</tt>. Naturalmente anche in
+questo stato il bundle non è attivo ma i package da lui esportati restano utilizzabili 
+dagli altri bundle nel framework. 
+</p>
+<p>
+A questo punto il bundle può essere disinstallato 
+(ed eliminato dal framework) tramite il metodo <tt>uninstall()</tt> fornito dal <tt>BundleContext</tt>. 
+In tal caso il bundle viene posto nello stato <tt>UNINSTALLED</tt>, l'evento viene notificato 
+agli altri bundle del framework e vengono liberate tutte le risorse che erano state 
+destinate a quel bundle. 
+</p>
+<p>
+Oltre alle operazioni citate è possibile eseguire anche 
+l'operazione di <tt>update</tt> (o <tt>refresh</tt>). Questa operazione ha come risultato 
+l'aggiornamento del codice 
+del bundle (che potrebbe cambiare versione, ma deve mantenere lo stesso nome simbolico). 
+
+Un bundle aggiornato rende immediatamente disponibili i package che esporta. 
+Allo stesso tempo i package esportati dalla versione precedente restano 
+disponibili finché il framework non viene riavviato (o non viene chiamato 
+il metodo <tt>refresh-Packages()</tt>). Il comando di <tt>update</tt> (che come gli altri 
+può essere inviato solo da un bundle) può arrivare anche quando il bundle 
+si trova nello stato <tt>ACTIVE</tt>, in tal caso viene automaticamente terminato, 
+aggiornato e fatto ripartire.
+
+
+</p>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

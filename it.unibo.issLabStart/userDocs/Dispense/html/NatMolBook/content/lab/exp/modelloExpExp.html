@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Modello delle espressioni" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/modelloDominioExp.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Modello delle espressioni</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Modello delle espressioni</h1>
+
+	
+<div>
+<p>
+<em>Espressioni: struttura </em>
+</p>
+<div class="p">
+Un modello logico delle espressioni può essere impostato
+attraverso una accurata analisi delle regole grammaticali date.
+Queste infatti possono produrre:
+<ul>
+<li>epressioni atomiche formate da singoli fattori (<tt>F</tt>) costituiti
+da numeri o da variabili; esempi di espressione di queto tipo sono <tt>"237"</tt>,
+ <tt>"(21)"</tt>, <tt>"((413))"</tt>, <tt>"s12"</tt>, <tt>"(s313)"</tt>. 
+ </li>
+
+<li>epressioni composte formate da più fattori e da operatori binari;
+un esempio di espressione di queto tipo è <tt>"2 + 3*(5 - 4)"</tt>.
+</li>
+
+</ul>
+
+Su queste basi il modello delle espressioni può essere definito
+facendo riferimento al xref href="../pattern/Composite.dita"/&gt;:
+</div>
+<div class="p"> 
+<div class="fignone"><span class="figcap">Figura 1. Modello delle espressioni</span>
+<br /><img src="../../images/exp/exp09.jpg" /><br />
+</div>
+ 
+</div>
+<p> 
+La classe (astratta) <tt>Exp</tt> rappresenta l'entità alla radice del pattern
+<tt>Composite</tt>;
+la classe <tt>NumExp</tt> rappresenta una foglia, mentre 
+la classe <tt>OpExp</tt> rappresenta un elemento composto
+da due entità selezionabili attraverso le associazioni <em>left</em> e <em>right</em>.
+</p>
+<p> 
+Il modello delle espressioni costituisce
+un punto di riferimento per la costruzione di
+una rappresentazione ad oggetti delle espressioni 
+da parte di un analizzatore
+sintattico  (parser). Poichè la rappresentazione interna prodotta dal parser
+è detta <em>Abstract Parse Tree</em> (<tt>APT</tt>), gli elementi (nodi) di questo albero
+saranno istanze delle classi definite dal modello. Ad esempio
+all'espressione <tt>2 + 3 * 5</tt> corrisponderà il seguente <tt>APT</tt>:
+</p>
+<div class="p"> 
+<div class="fignone"><span class="figcap">Figura 2. APT di 2+3*5</span>
+<br /><img src="../../images/exp/apt.jpg" /><br />
+</div>
+
+</div>
+<p> 
+Si noti che la classe <tt>NumExp</tt> è  definita  in modo da denotare un valore
+di tipo <tt>float</tt> per tenere conto del tipo dei valori denotabili
+da una espressione e non solo del tipo di valori (interi naturali) che
+possono essere direttamente espressi in essa. In altre parole,
+il risultato dalla valutazione di una espressione potrà essere un oggetto
+di tipo <tt>NumExp</tt>.
+</p>
+<p>
+Una espressione rappresenta un oggetto nel senso più classico del termine: 
+è cioè un ente che nasconde la propria rappresentazione interna 
+e che può essere uitlizzato avvelendosi solo di operazioni 
+definite in una opportuna interfaccia (<tt>IExpn</tt>
+o <tt>INumExp</tt>, etc.). 
+Questo implica che le dimensioni interazione e comportamento sono 
+riconducibili all'idea di oggetto come ente passivo e dotato di stato 
+(modificabile o meno). 
+
+</p>
+<p>
+<em>Espressioni: interazione</em>
+</p>
+<p>
+La interazione con una espressione avviene invocando una operazione
+resa disponibile dalla interfaccia. Il meccanismo di supporto
+e la chiamata di procedura/funzione, che prevede un trasferimento di controllo
+e di evetuali argomenti dal chiamante e la eventuale
+restituzione di un valore.
+
+
+</p>
+<p>
+
+<em>Espressioni: comportamento</em>
+</p>
+<p>
+Una espressione è un oggetto atomico o composto 
+il cui stato non è modificabile.
+Il comportamento di ogni operazione di un token
+è quindi riconducibile al comportamento di una funzione priva di effetti
+collaterali. Nel caso di espressioni composte alcune funzioni possono fungere
+da selettori ciascuno dei quali restituisce il valore relativo
+ad una parte costituente. Spesso a queste funzioni viene dato un nome del tipo
+<tt>getXXX</tt> ove <tt>XXX</tt> è il nome della proprietà o della parte.
+
+</p>
+<p>
+E' anche possibile aggiungere una indicazione
+relativa al modo con cui costruire una espressione.
+</p>
+<p>
+<em>Espressioni: costruzione</em>
+</p>
+<p>
+Il costruttore di una espressione atomica è una operazione
+che ha tanti argomenti quante le propietà che il token deve assumere.
+
+Il costruttore di una espressione composta è una operazione
+che ha tanti argomenti quante le parti costituenti.
+Compito del costruttore è "assemblare" le parti date
+in modo da formare un "organismo" capace di assicurare
+il soddisfacimento di proprietà globali esprimibili
+come <em>invarianti</em> (di classe). 
+</p>
+<p> 
+Le operazioni di costruzione relative alle classi concrete possono essere
+duqnue impostate come segue:
+</p>
+<div class="p"> 
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="14.285714285714286%"><tt>NumExp</tt> </td>
+<td valign="top" width="85.71428571428572%">Per costruire una espressione
+atomica <tt>NumExp</tt>  basta disporre di un valore intero.</td>
+</tr>
+
+<tr><td valign="top"><tt>VarExp</tt> </td>
+<td valign="top">Per costruire una espressione
+atomica <tt>VarExp</tt>  occorre disporre di una stringa che denota il
+nome della variabile.</td>
+</tr>
+
+<tr><td valign="top"><tt>OpExp</tt></td>
+<td valign="top">Per costruire una espressione
+composta <tt>OpExp</tt> occorre disporre di una tripla di valori:
+una stringa che denota l'operatore e due oggetti di tipo <tt>IExp</tt> 
+che denotano gli operandi.</td>
+</tr>
+
+</table>
+
+</div>
+<div class="p"> 
+Ad esempio la frase <tt>Java</tt>
+<pre class="pre">
+IExp e1  = new OpExp( "/", new NumExp(3), new NumExp(2) );
+</pre>
+
+esprime la dichiarazione di una variabile <tt>e1</tt> come
+simbolo atto a denotare un oggetto di tipo <tt>IExp</tt> 
+e la inizializzazione di tale variabile al riferimento
+ad un oggetto di classe <tt>OpExp</tt> che rappresenta
+una operazione di divisione con operandi <tt>3</tt> e <tt>2</tt>.
+</div>
+<p>
+Al momento escludiamo dal modello la presenza di operazioni del tipo 
+<tt>setXXX</tt> che sono spesso introdotte per inizializzare
+il valore di una proprietà di un oggetto creato con un costruttore
+privo di argomenti.
+Operazioni di questo tipo sono introdotte in modo sistematico
+accanto a funzioni <tt>getXXX</tt>, quando si vogliono applicare
+tecniche di inversione di controllo 
+(si veda <a href="../../book/paradigmi/inversioneControllo.html">Inversione del controllo</a>)
+per la risoluzione di dipendenze
+tra oggetti. La loro presenza è però molto pericolosa in quando
+rende dinamicamente modificabile un oggetto che dovrebbe rappresentare una costante. 
+
+
+</p>
+
+ 
+ 
+
+ 
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/modelloDominioExp.html">Espressioni: modellazione del dominio</a></div>
+</div>
+</div>
+
+</body>
+</html>

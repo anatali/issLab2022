@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Esempio di sviluppo model based" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/analisiRequisitiExp.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/analisiProblemaExp.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/pianoLavoroExp.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/lexer08Project.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/parser08Project.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Esempio di sviluppo model based</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Esempio di sviluppo model based</h1>
+
+	
+<div>
+<div class="p">
+Una ditta che produce sistemi di automazione industriale 
+ha incaricato la nostra software house di progettare e costruire 
+il software relativo alla centrale di controllo di un impianto industriale.
+
+Una caratteristica importante della centrale è che il suo
+funzionamento è legato (in un modo che qui non interessa approfondire)
+ad una espressione aritmetica formata in 
+accordo alle regole grammaticali che seguono: 
+
+<pre class="pre">
+E ::= T | E + T | E - T
+T ::= F | T * F | T / F
+F ::= N | ( E ) | S
+N ::= D | N D
+S ::= sN
+D ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+</pre>
+
+<tt>E,T,F,N,D</tt> denotano simboli non terminali, <tt>E</tt> denota
+lo scopo della gramatica e <tt>+ - * / ( ) 1 2 3 4 5 6 7 8 9 s</tt> 
+denotano simboli terminali. I simboli <tt>+ - * /</tt> rappresentano gli usuali 
+operatori di somma, sottrazione, prodotto, divisione e quoziente.
+</div>
+<div class="p">
+Il linguaggio generato dal metasimbolo <tt>N</tt> denota la rappresentazione in base 
+<tt>10</tt> di un numero naturale. 
+Una frase generate dal metasimbolo <tt>S</tt> denota una "variabile"
+che rappresenta un  valore numerico (reale) dato da
+un particolare sensore innestato sull'impianto.
+
+Ad esempio, in un dato momento del suo fuznionamento, la centrale 
+potrebbe dipendere dall'espressione che segue:
+<pre class="pre">
+s3 * ( s1 - s2 ) / 10 * 3
+</pre>
+
+in cui <tt>s1, s3, s3</tt> sono variabili relative a tre diversi sensori.
+Al mutare del valore di un sensore, il valore della espressione 
+cambia e il risultato influenza in qualche modo il comportamento
+della centrale di controllo.
+</div>
+<p>
+La software house incarica quindi il nostro gruppo di lavoro
+di impostare un (sotto)sistema software per il riconoscimento
+e la valazione di espressioni espresse dalla grammatica data.
+</p>
+<p>
+</p>
+
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/analisiRequisitiExp.html">Espressioni: analisi dei requisiti</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/analisiProblemaExp.html">Analisi del problema</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/pianoLavoroExp.html">Piano di lavoro</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/lexer08Project.html">Lexer: struttura e comportamento</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/parser08Project.html">Analisi sintattica</a></strong><br />
+</li>
+</ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Il Core package" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/uml211/introUml2.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Il Core package</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Il Core package</h1>
+
+<div>
+<p>
+La parte centrale riusabile
+della <tt>InfrastructureLibrary</tt>  è il <tt>Core package</tt>, definito
+in modo che elementi della modellazione possano essere condivisi 
+tra <tt>MOF</tt> e <tt>UML</tt>.
+
+
+</p>
+<div class="p">
+
+<div class="fignone"><span class="figcap">Figure 1. Il Core package </span>
+<img src="../../images/uml211/core.jpg" />
+</div>
+
+
+Ogni model element di <tt>UML</tt> è anche istanza di esattamente un model element in <tt>MOF</tt>.
+Nel caso di <tt>MOF</tt> le metaclassi della <tt>InfrastructureLibrary</tt> sono usate come sono,
+mentre nel caso di <tt>UML</tt> a questi elementi sono fornite proprietà addizionali, per
+tenere conto di requisiti specifici.
+</div>
+<p>
+Il <tt>Core package</tt> è a sua volta suddiviso 
+(si veda <a href="riusoInMOF.html">Riuso in MOF</a>)
+in altri packages
+:
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 2. Core packages</span>
+<img src="../../images/uml211/corePackages.jpg" />
+</div>
+
+<ul>
+<li>Il package <em>PrimitiveTypes</em> contiene alcuni tipi predefiniti di uso comune
+(<tt>Integer</tt>, <tt>Boolean</tt>, <tt>String</tt>, <tt>UnlimitedNatural</tt>).</li>
+
+<li>Il package <em>Abstractions</em> contiene principalmente metaclassi astratte
+suddivise in sotto-package  (si veda la figura più sotto).</li>
+
+<li>Il package <em>Constructs</em> contiene metaclassi concrete che inducono
+a object oriented modeling (si veda la figura più sotto).</li>
+
+<li>Il package <em>Basic</em> contiene costrutti-base per la
+definizione di un linguaggio di modellazione minimale class-based.
+Questi costrutti (<tt>Tyeps, Classes, DataTypes, Packages</tt>) 
+sono riusati per la definizione di <tt>EMOF</tt> 
+(si veda <a href="introEMOFCMOF.html">EMOF e CMOF</a>)
+e per la produzione
+di rappresentazioni <tt>XMI</tt> di <tt>UML</tt>, <tt>MOF</tt> e altri
+metamodelli basati sulla <tt>InfrastructureLibrary</tt>.
+Questi costrutti sono un sottoinsieme dei costrutti definiti in <em>Constructs</em>
+che ne fornisce una definzione più complessa che viene riusata
+in <tt>CMOF</tt> e nella <tt>Superstructure specification</tt>.</li>
+
+
+</ul>
+
+</div>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 3. Core abstraction packages</span>
+<img src="../../images/uml211/coreAbstraction.jpg" />
+</div>
+
+</div>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 4. Core constructs packages</span>
+<img src="../../images/uml211/coreConstructs.jpg" />
+</div>
+
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Le metaclassi-base</h2>
+<p>
+Le definizioni dei costrutti-base sono impostate come riportato dai diagrammi
+che seguono.
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 5. Types</span>
+<br /><img src="../../images/uml211/coreTypes.jpg" /><br />
+</div>
+
+</div>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 6. Classes</span>
+<br /><img src="../../images/uml211/coreClasses.jpg" /><br />
+</div>
+
+</div>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 7. DataTypes</span>
+<br /><img src="../../images/uml211/coreDataTypes.jpg" /><br />
+</div>
+
+</div>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 8. Packages</span>
+<br /><img src="../../images/uml211/corePackagesDiagr.jpg" /><br />
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/uml211/introUml2.html">UML2</a></div>
+</div>
+</div>
+
+</body>
+</html>

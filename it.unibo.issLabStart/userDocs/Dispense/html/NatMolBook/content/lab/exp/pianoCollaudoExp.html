@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Espressioni: piano di collaudo" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/analisiRequisitiExp.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Espressioni: piano di collaudo</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Espressioni: piano di collaudo</h1>
+
+	
+<div>
+<p>
+
+Per meglio definire il comportamento atteso di token ed
+espressioni, impostiamo un insieme di piano di collaudo 
+(si veda <a href="../../book/modelBased/fasi/pianoCollaudo.html">Piano di collaudo</a>)
+facendo riferimento ad alcuni criteri di carattere generale 
+relativi ai tipi di dato (astratto).
+
+</p>
+<p>
+<em>Piano di collaudo dei token</em>
+</p>
+<p>
+Un token è una entità atomica non modificabile; un piano di collaudo
+può essere impostato facendo riferimento al seguente criterio:
+</p>
+<p>
+<em>i predicati di una entità atomica non modificabile
+devono restituire valori coerenti con le proprietà attribuite
+all'entità al momento della costruzione</em>.
+
+</p>
+<div class="p">
+Di qui e da quanto detto nel <a href="modelloTokenExp.html">Modello dei token</a>
+risulta immediato impostare operazioni di collaudo come le seguenti:
+<pre class="pre">
+public final void testOpToken(){
+	IToken fixture = new MulToken("*");
+	assertEquals("testOpToken", fixture.getName(), "*" );	
+}
+	
+public final void testNumToken(){
+	IToken fixture = new NumToken(12);
+	assertTrue("testNumToken", fixture.getVal()==12 );	
+}	
+</pre>
+
+
+</div>
+<p>
+<em>Piano di collaudo delle espressioni</em>
+</p>
+<p>
+Una espressione (<tt>Exp</tt>) è una entità atomica o
+composta non modificabile; il piano di collaudo
+può essere impostato con riferimento al criterio già introdotto
+per i token più il seguente:
+</p>
+<div class="p">
+<em>i selettori di una entità composta
+devono restituire valori coerenti con le parti specifiocate
+al momento della costruzione</em>.
+
+Di qui e da quanto detto nel <a href="modelloExpExp.html">Modello delle espressioni</a>
+risulta immediato impostare operazioni di collaudo come le seguenti:
+
+<pre class="pre">
+public class OpExpTest extends junit.framework.TestCase {
+private IComposedExp fixture;
+...
+protected void setUp() throws Exception{
+	super.setUp();		
+	fixture = new OpExp( "+", new NumExp(10), new NumExp(20) );
+}
+	
+public final void testGetLeft(){
+	assertTrue("testGetLeft", fixture.getLeft().isAtomic());
+}
+
+public final void testGetOpName(){
+	assertTrue("testGetOpName", fixture.getOpName().equals("+"));
+}
+
+public final void testGetRight(){
+	assertTrue("testGetRight", fixture.getRight().isAtomic() &amp;&amp;
+		((INumExp)fixture.getRight()).getVal == 20.0 );
+}
+}
+</pre>
+
+Il codice di collaudo è opportuno venga incluso  
+ in un package distinto da quello dell'applicazione; si può
+ pensare di introdurre a questo punto la seguente suite <tt>JUnit</tt>:
+ <pre class="pre">
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
+ 
+ public class ExpAllTest extends TestSuite{
+	
+	public ExpAllTest(String name) {
+		super(name);
+	}
+
+	public static Test suite() {
+		TestSuite suite = new ExpAllTest("Expr Tests");
+		suite.addTestSuite(AtomicExpTest.class);
+		suite.addTestSuite(OpExpTest.class);
+		suite.addTestSuite(ExpTest.class);
+		return suite;
+	}
+
+	public static void main(String[] args) {
+		TestRunner.run(suite());
+	}
+}
+ </pre>
+
+ In questa suite è stato anche introdotto un main che permette l'attivazione
+ del collaudo come una normale applicazione Java sotto il controllo
+ della utility <tt>junit.textui.TestRunner</tt> che può essere anche lanciata
+ (posizionandosi nella directory del progetto che contiente la directory <tt>bin</tt>
+ del bytecode) attraverso un comando del tipo:
+ <pre class="pre">
+java -cp ./bin;C:/repo/junit/junit/3.8.1/junit-3.8.1.jar 
+	junit.swingui.TestRunner
+java -cp ./bin;C:/repo/junit/junit/3.8.1/junit-3.8.1.jar  
+	junit.textui.TestRunner it.unibo.exp.exp.test.ExpAllTest 
+</pre>
+
+
+</div>
+
+ 
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/analisiRequisitiExp.html">Espressioni: analisi dei requisiti</a></div>
+</div>
+</div>
+
+</body>
+</html>

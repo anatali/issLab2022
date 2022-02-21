@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Agent UML" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/agentWorld.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLProtocolli.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLProtocolliRuoliMultipli.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLProtocolliMessaggi.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLProtocolliVincoli.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLProtocolliAlternativi.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLProtocolliCombinati.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLLingComm.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Agent UML</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Agent UML</h1>
+
+<div>
+<p>
+
+<em>Agent UML</em> (<tt>AUML</tt>) [], una estensione del linguaggio <tt>UML</tt>, nasce per supportare
+i progettisti dei sistemi basati sugli agenti nei primi anni del 2000.
+AUML è stato sviluppato nel contesto di <tt>FIPA</tt> (<em>Foundation for Intelligent Physical Agent</em>) 
+che è stata recentemente inglobata dalla <tt>IEEE</tt> ed 
+ora promuove la standardizzazione delle tecnologie basate sugli agenti e l'interoperabilità 
+tra gli standard ad agenti promossi e le altre 
+tecnologie che attualmente risultano essere standard nel mondo industriale.   
+La filosofia generale dietro allo sviluppo di <tt>AUML</tt> è quella di estendere/riusare porzioni 
+di <tt>UML</tt>, e ove questo non sia possibile gli sviluppatori
+propongono di usare qualche altro formalismo o di crearne uno nuovo.  
+</p>
+
+<p>
+Il lavoro di estensione di <tt>UML</tt> è iniziato intorno al 2000 e si è concentrato inizialmente 
+sulla definizione dei requisiti necessari al supporto
+e alla modellazione degli agenti e dei sistemi multi-agente. Successivamente è stata 
+approfonditamente studiata la versione <tt>UML1</tt>, che all'epoca era 
+lo standard, e sono state fatte le prime proposte di estensione.
+</p>
+
+<p>
+Le principali critiche mosse ad <tt>UML1</tt> riguardavano l'incapacità di modellare propriamente:
+</p>
+<div class="p">
+<ul>
+<li>le <em>interazioni</em>  tra agenti e i relativi protoccoli adottati, </li>
+
+<li> il concetto di <em>ruolo</em> giocato dagli agenti e i cambiamenti di ruolo durante
+l'esecuzione,</li>
+
+<li>l'<em>architettura interna</em> degli agenti con particolare riferimenti agli agenti 
+intelligenti che prevedono una base di conoscenza ed elaborati
+meccanismi di pianificazione delle azioni, </li>
+
+<li>il <em>contesto sociale</em> nel quale gli agenti sono immersi e le regole sociali 
+a cui devono sottostare.</li>
+
+</ul>
+ 
+</div>
+<p>
+Inizialmente il Comitato tecnico di <tt>FIPA</tt> preposto alla definizione e allo sviluppo 
+di <tt>AUML</tt> si è concentrato sull'estensione di <tt>UML</tt> per il supporto alla
+<strong>modellazione delle interazioni</strong> definendo prima di tutto il concetto di 
+"agent interaction protocol" (<tt>AIP</tt>) come 
+<em> 
+a communication pattern, with  an allowed sequence of messages between agents having 
+different roles, constraints on the content of the messages, 
+and  a semantics that is consistent with the communicative acts (CAs) within a communication pattern.
+</em> 
+</p>
+<p>
+
+I <strong>messaggi</strong> dovevano quindi essere espressi attraverso uno specifico linguaggio 
+di comunicazione per agenti, come per esempio <tt>FIPA-ACL</tt> 
+(vedi nel seguito) che ne vincolava la semantica, mentre i protocolli dovevano 
+vincolare i parametri, l'ordine e il tipo dei messaggi scambiati.
+</p>
+<p>
+Attualmente il lavoro del Comitato di programma per lo sviluppo di <tt>AUML</tt> risulta 
+fermo in quanto parte dei requisiti identificati per la modellazione
+dei sistemi ad agenti sono stati recepiti dall'<tt>OMG</tt> e introdotti nella versione
+<tt>UML2</tt> come per esempio alcuni requisiti legati alla modellazione
+delle interazioni.
+</p>
+
+<p>
+Nel sequito presenteremo brevemente la specifica <tt>FIPA</tt> per la rappresentazione 
+dei protocolli di interazione e la specifica <tt>FIPA</tt> per il lingaggio
+di comunicazione.
+</p>
+
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../content/book/agenti/aUMLProtocolli.html">FIPA Interaction</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/agenti/aUMLProtocolliRuoliMultipli.html">Ruoli multipli</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/agenti/aUMLProtocolliMessaggi.html">Messaggi</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/agenti/aUMLProtocolliVincoli.html">Vincoli</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/agenti/aUMLProtocolliAlternativi.html">Percorsi alternativi</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/agenti/aUMLProtocolliCombinati.html">Protocolli combinati</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/agenti/aUMLLingComm.html">FIPA ACL</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/agentWorld.html">Un mondo ad agenti</a></div>
+</div>
+</div>
+
+</body>
+</html>

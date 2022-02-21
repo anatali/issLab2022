@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Piano di collaudo" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/wkflow/processoLogico.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="workflowPianoLavoro" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Piano di collaudo</title>
+</head>
+<body id="workflowPianoLavoro"><a name="workflowPianoLavoro"><!-- --></a>
+
+
+<h1 class="topictitle1">Piano di collaudo</h1>
+
+<div>
+
+<p>
+Al termine dell'analisi dei requisiti e dell'analisi del problema, 
+i modelli che definiscono il dominio e
+l'architettura logica del sistema dovrebbero dare suffcienti informazioni
+su <em>cosa</em> le varie (macro)parti del sistema debbano fare senza specificare
+ancora molti dettagli del loro comportamento interno.
+Il "cosa fare" di una parte dovrà comprendere anche le forme
+di interazione con le altre parti.
+</p>
+<p>
+Lo scopo del <em>piano di collaudo</em> è cercare di precisare il comportamento
+atteso da parte di una entità prima ancora di iniziarne il progetto
+e la realizzazione. 
+Focalizando l'attenzione sulle interfacce delle entità
+e sulle interazioni è possibile
+impostare scenari in cui specificare in modo
+già piuttosto dettagliato la "risposta" di una parte ad uno "stimolo"
+di un'altra parte.
+</p>
+<p>
+Lo sforzo di definire nel modo più preciso possibile un piano di
+collaudo di un sistema prima ancora di averne iniziato la fase di progettazione
+viene ricompensato da una miglior comprensione dei requisiti,
+da un approfodimento nella compresione dei problemi e da
+una più precisa definizione dell'insieme
+delle funzionalità (operazioni) che ciascuna parte deve fornire
+alle altre per una effettiva integrazione nel "tutto" che costituirà
+il sistema da costruire.
+</p>
+<p>
+In attesa di individuare modi per esprimere in modo
+organico, sistematico ed efficace la <em>semantica</em> delle
+entità che costituiscono un sistema, la definizione di
+piani di collaudo può introdurre elementi utili a comprendere
+il significato delle entità e specificarne nel modo
+più chiaro possibile il comportamento atteso.
+</p>
+<p>
+Un piano di collaudo va dunque concepito ed impostato 
+da un punto di vista logico,
+cercando di individuare categorie di comportamenti e punti crtici.
+In molti casi tuttavia può anche risultare possibile definire 
+in modo precoce piani di collaudo concretamente eseguibili, avvelendosi di 
+strumenti del tipo <tt>JUnit</tt> che sono ormai diffusi
+in tutti gli ambienti di programmazione.
+</p>
+<p>
+Lo sforzo di definire un piano 
+di collaudo concretamente eseguibile su una data piattaforma
+implementativa è una pratica tipica dei processi
+agili in quanto promuove uno sviluppo
+molto più controllato, sicuro e consapevole
+del codice poichè il progettista
+e l'implementatore possono verificare subito
+in modo concreto la correttezza (o meglio la non scorrettezza rispetto
+ai collaudi) di quanto sviluppato.
+Per definire collaudi eseguibili prima
+di disporre del codice implementativo,
+risulta spesso utile fare il riferimento  
+ai pattern <tt>Interface</tt> e <tt>Factory</tt>.
+</p>
+<p>
+Il tema della pianificazione del collaudo 
+verrà approfondito nel seguito con riferimento a casi
+concreti (si veda ad esempio 
+<a href="../../../lab/exp/esempioModelBased.html">Esempio di sviluppo model based</a>).
+Anticipiamo in questa sede una breve introduzione a <tt>Junit</tt>
+in quanto portatore di concetti e meccanismi ormai 
+indispensabili in ogni processo di produzione del software.
+ 
+</p>
+
+
+><a name="JUnit"><div class="section"><h2 class="sectiontitle">JUnit</h2>
+<div class="p"</a>
+<tt>Junit</tt> (<a href="http://www.junit.org/index.htm">http://www.junit.org/index.htm</a>)
+è uno strumento ideato da <em>Beck</em> e <em>Gamma</em> come supporto
+al concetto di <em>collaudo continuo</em> nell'ambito di processi di sviluppo
+agili e incrementali. Esso introduce alcuni concetti e termini ormai
+divenuti comuni in tutti gli ambienti di sviluppo:
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><tt>Test fixture</tt> </td>
+
+<td valign="top" width="75%">Insieme delle risorse richieste da un collaudo per poter operare.</td>
+
+</tr>
+
+<tr><td valign="top"><tt>Test case</tt> </td>
+
+<td valign="top">Associa un fixture ad un insieme di attività di collaudo (tests).</td>
+
+</tr>
+
+<tr><td valign="top"><tt>Test suite</tt> </td>
+
+<td valign="top">Una collezione di Test Cases tra loro collegati.</td>
+
+</tr>
+
+</table>
+
+
+Una classe di collaudo deve essere definita come specializzazione 
+di una classe predefinita (in Java la classe <tt>junit.framework.TestCase</tt>)
+ed internamente organizzata secondo la struttura che segue:
+ 
+<pre class="pre">
+public class XXX extends junit.framework.TestCase{
+/* --------------------------------------------
+  Costruttore (non indispensabile ma opportuno)
+ ----------------------------------------------- */
+  public XXX(String name) {
+	super(name);
+  }
+
+/* --------------------------------------------
+* Operazione opzionale di inizializzazione 
+ ----------------------------------------------- */
+protected void setUp() throws Exception { super.setUp();...}
+
+/* --------------------------------------------
+  Operazione opzionale per definire 
+  una suite di collaudo
+----------------------------------------------- */
+public static Test suite() {
+  return new TestSuite(XXX.class);
+}
+
+/* --------------------------------------------
+* Operazione di collaudo
+----------------------------------------------- */
+public void testYYY() {
+  ...
+  assertTrue( comment, booleanExpression );
+}
+
+/* --------------------------------------------
+* Operazione opzionale di finalizzazione 
+----------------------------------------------- */
+protected void tearDown() throws Exception{ super.tearDown();...}
+
+ /* =====================================================
+  Il main trasmette la classe di collaudo a un tool
+  specializzato per l'esecuzione di operazioni di testing
+   =====================================================  */
+ public static void main(String args[]) {
+   <em>junit.textui.TestRunner.run(XXX.class)</em>;
+ }//main
+
+}//myTest
+
+</pre>
+
+La tabella che segue riporta il significato e
+il  ruolo degli elementi principali:
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><tt>void testYYY()</tt> </td>
+
+<td valign="top" width="75%">Operazione di collaudo (priva di argomenti) 
+eseguita in modo automatico.</td>
+
+</tr>
+
+<tr><td valign="top"><tt>void setUp()</tt> </td>
+
+<td valign="top">Metodo invocato prima di ogni operazione di collaudo  per definire
+dati ed oggetti globali, che costituiscono la <em><strong>test fixture</strong>.</em>
+</td>
+
+</tr>
+
+
+<tr><td valign="top"><tt>void tearDown()</tt> </td>
+
+<td valign="top">Metodo invocato alla fine di ogni operazione di collaudo 
+per ripulire le <em>fixture</em> da informazioni non eliminabili in modo automatico.</td>
+
+</tr>
+
+ 
+<tr><td valign="top"><tt>junit.textui.TestRunner</tt> </td>
+
+<td valign="top">Strumento che automatizza
+l'esecuzione delle operazioni di collaudo, generando un rapporto.</td>
+
+</tr>
+
+ </table>
+
+
+</div>
+<div class="p">
+
+La classe adibita al collaudo eredita da <tt>junit.framework.TestCase</tt>
+la capacità di individuare ed eseguire automaticamente le operazioni di collaudo
+in essa definite con signature della forma
+
+<pre class="pre">public void testYYY(){...}</pre>
+
+
+ove <tt>YYY</tt> denota una qualsiasi stringa definita dall'utente.
+</div>
+<div class="p">
+La classe eredita inoltre la capacità di visualizzare automaticamente
+i messaggi di spiegazione relativi ad operazioni di asserzione
+quali:
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="33.333333333333336%"><tt>assertTrue(b)</tt> </td>
+
+<td valign="top" width="66.66666666666667%">Il test ha successo se il valore
+booleano <tt>b</tt> vale <tt>true</tt>.</td>
+</tr>
+
+<tr><td valign="top"><tt>assertFalse(b)</tt> </td>
+
+<td valign="top">Il test ha successo se il valore
+booleano <tt>b</tt> vale <tt>false</tt>.</td>
+</tr>
+
+<tr><td valign="top"><tt>assertNull(obj)</tt> </td>
+
+<td valign="top">Il test ha successo se 
+<tt>obj</tt> ha valore <tt>null</tt>.</td>
+</tr>
+
+<tr><td valign="top"><tt>assertNotNull(obj)b</tt> </td>
+
+<td valign="top">Il test ha successo se 
+<tt>obj</tt> ha valore <tt>not null</tt>.</td>
+</tr>
+
+<tr><td valign="top"><tt>assertTrue(b)</tt> </td>
+
+<td valign="top">Il test ha successo se il valore
+booleano <tt>b</tt> vale <tt>true</tt>.</td>
+</tr>
+
+<tr><td valign="top"><tt>assertEquals(x,y)</tt> </td>
+
+<td valign="top">Il test ha successo se <tt>x</tt> e <tt>y</tt>
+denotano valori primitivi uguali o denotano oggetti uguali (secondo
+il metodo <tt>equals</tt>).</td>
+</tr>
+
+<tr><td valign="top"><tt>assertSame(ox,oy)</tt> </td>
+
+<td valign="top">Il test ha successo se <tt>ox</tt> e <tt>oy</tt>
+denotano lo stesso oggetto.</td>
+</tr>
+
+<tr><td valign="top"><tt>assertNotSame(ox,oy)</tt> </td>
+
+<td valign="top">Il test ha successo se <tt>ox</tt> e <tt>oy</tt>
+non denotano lo stesso oggetto.</td>
+</tr>
+
+<tr><td valign="top"><tt>fail()</tt> </td>
+
+<td valign="top">Il test fallisce.</td>
+</tr>
+
+</table>
+
+
+
+
+</div>
+
+</div>
+ 
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/wkflow/processoLogico.html">Un percorso di riferimento</a></div>
+</div>
+</div>
+
+</body>
+</html>

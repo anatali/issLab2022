@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Eclipse Ecore" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/uml211/introUml2.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Eclipse Ecore</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Eclipse Ecore</h1>
+
+<div>
+
+<p>
+Eclipse [GBG03] fornisce un framework per la generazione model driven
+	denominato <em>Eclipse Modeling Framework</em> [BSMEG07]
+(<a href="http://help.eclipse.org/ganymede/index.jsp?topic=/org.eclipse.emf.doc/references/overview/EMF.html">
+EMF</a>). Tale framework si colloca 
+a metà strada tra un approccio <tt>MDA</tt> vero e proprio 
+e un approccio totalmente
+privo di modelli (code-based) cercando di raggiungere un bilanciamento
+pragmaticamente utile tra cofica e modellazione.
+</p>
+<p>
+Il metalinguaggio usato in <tt>EMF</tt> per rappresentare i modelli è denominato
+<tt>Ecore</tt> 
+(si veda <a href="http://wiki.eclipse.org/Ecore_Tools">http://wiki.eclipse.org/Ecore_Tools</a>)
+e può essere visto come una implementazione allineata con
+ xref href="../uml/EMOF-2003.pdf" format ="pdf"/&gt; . 
+</p>
+<div class="p">
+<tt>Ecore</tt>  introduce i seguenti concetti
+<ul>
+<li><tt>ECLass</tt> per rappresentare una classe, dotata di zero o più
+attributi e zero o più references.</li>
+
+<li><tt>EAttribute</tt> per rappresentare un attributo, dotato di un nome e di un tipo.</li>
+
+<li><tt>EReference</tt> per rappresentare un terminale di associazione
+tra classi, dotato di un nome, di un boolean per indicare contenimento
+e un referene target type che è una seconda classe.</li>
+
+<li><tt>EDataType </tt>per rappresentare il tipo di un attributo.</li>
+
+ 
+</ul>
+
+
+
+</div>
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/uml211/introUml2.html">UML2</a></div>
+</div>
+</div>
+
+</body>
+</html>

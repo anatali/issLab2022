@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Ruoli multipli" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLIntro.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Ruoli multipli</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Ruoli multipli</h1>
+
+<div>
+<p>
+
+<tt>UML</tt> definisce un ruolo come <em> a named set of behaviours possessed by a class 
+or part participating in a particular context</em>
+Una lifeline in una diagramma di sequenza definisce il periodo di tempo durante 
+il quale un ruolo esiste nel contesto della specifica interazione,
+rappresentato da una linea tratteggiata verticale. Quando una lifetime viene creata 
+il relativo ruolo diventa attivo nel contesto del protocollo e rimane
+attivo sino alla fine della lifeline.
+</p>
+<p>
+Un agente però è capace di assumere ruoli multipli durante una interazione 
+(<em>classificazione multipla</em>), così come è possibile che durante 
+l'interazione l'agente possa  cambiare ruolo (<em>classificazione dinamica</em>).
+Queste abilità vengono rappresentate mediante una serie di diagrammi di sequenza 
+attraverso una connessione tra il corrente ruolo giocato 
+dall'agente e il successi. 
+</p>
+<p>
+I ruoli multipli invece implicano che gli agenti abbiano 
+diverse partecipazioni nella stessa interazione: se un 
+messaggio è mandato sia ad un ruolo m che ad un ruolo n, un agente che gioca entrambi 
+i ruoli riceverà entrambi i messaggi, uno per il ruolo m
+e uno per il ruolo n. La classificazione dinamica si riferisce all'abilità di cambiare
+ruolo durante l'interazione: se ad uno specifico momento
+t l'agente ha il ruolo m e cambia il ruolo m da n a t+1 significa che l'agente 
+a t+1 riceverà messaggi solo per il ruolo n.
+</p>
+<p>
+Se l'agente stava giocando diversi ruoli oltre ad m esso lascia solo il ruolo m. 
+Inoltre la classificazione multipla e quella dinamica sono 
+operazioni atomiche: non è possibile che un messaggio possa essere spedito o 
+ricevuto durante il cambiamento del ruolo.
+Le dinamiche dei ruoli comunque non sono direttamente catturate nei diagrammi di 
+sequenza, esse vengono propriamente rappresentate nei <em>diagrammi
+di ruolo</em>  questo per risolvere le problematiche relative a vincoli che possono 
+sussistere durante il cambiamento di un ruolo.
+</p>
+<div class="p">
+Infine, uno specifico ruolo può assumere comportamenti differente a seconda del 
+gruppo in cui si trova per questo motivo i progettisti possono
+adottare il nome del gruppo come suffisso al nome ruolo per rendere chiara la 
+distinzione. Un gruppo viene visto come un insieme di agenti che
+sono relazionati tra loro attraverso i ruoli che giocano.  
+
+
+<div class="fignone"><span class="figcap">Figure 1. Lifelines</span>
+
+<br /><img src="../../images/agenti/AUML4.bmp" alt="Lifelines" /><br />
+</div>
+
+
+La cardinalità del ruolo è aggiunta alle lifeline per mostrare i numero di agenti 
+che giocano lo stesso ruolo e sono coinvolti nell'interazione.
+Ai progettisti sono offerte diverse opzioni per rappresentare la cardinalità:
+</div>
+<div class="p">
+<ol>
+<li>il progettista conosce l'esatto numero degli agenti coinvolti nel ruolo</li>
+
+<li>il progettista conosce il range e può scriverne i limiti</li>
+
+<li>il numero degli agenti non è conosciuto e in questo caso la cardinalità può 
+essere formulata attraverso una formula logica o una condizione</li>
+
+</ol>
+
+</div>
+<p>
+Una lifeline è composta da due elementi: una label presente nel rettangolo in alto 
+della lifeline e una linea tratteggiate verticale ancorata 
+a tale rettangolo. I ruoli sono sempre sottolineati nella label della lifeline. 
+Le label inoltre contengono la cardinalità del ruolo per 
+la quale esistono diversi tipi di formati:
+</p>
+<div class="p">
+<ol>
+<li>n: rappresenta il numero esatto degli agenti che giocheranno il ruolo 
+all'interno dell'interazione</li>
+
+<li><em>m op i op n</em> specifica il range dei valori per la cardinatilità. 
+Op si riferisce agli operatori tradizionali di confronto</li>
+
+<li>una condizione o una formula logica </li>
+
+</ol>
+
+</div>
+<p>
+La classificazione dinamica è rappresentata nel diagramma di sequenza come 
+una linea diretta dal ruolo corrente al nuovo ruolo con lo stereotipo
+<em>change role</em>, mentre per la classficazione multipla gli agenti possono 
+aggiungere nuovi ruoli attraverso una linea diretta verso il
+nuovo ruolo con lo stereotipo <em>add role</em> come mostrato in figura.
+</p>
+
+
+<div class="fignone"><span class="figcap">Figure 2. Ruoli multipli in AUML</span>
+
+<br /><img src="../../images/agenti/AUML5.bmp" alt="Ruoli multipli in AUML" /><br />
+</div>
+
+
+
+<p>
+La figura sottostante riporta un riassunto delle possibili notazioni per 
+i diversi tipi di lifeline introdotti.
+</p>
+
+
+<div class="fignone"><span class="figcap">Figure 3. Notazioni delle possibili lifeline</span>
+
+<br /><img src="../../images/agenti/AUML7.bmp" alt="Riassunto delle possibili lifeline" /><br />
+</div>
+
+
+<p>
+Le lifeline modellano la presenza degli agenti nelle interazioni attraverso 
+la loro identità o attraverso il loro ruolo nell'interazione. 
+La parte 
+</p>
+<div class="p">
+<ul><li>a) descrive un ruolo dell'agente;</li>
+
+<li>b) un agente con il suo identificatore e ruolo;</li>
+
+<li>c) rappresenta la forma completa della label: l'identificatore dell'agente, 
+il ruolo e il gruppo dell'agente.</li>
+
+<li>d) descrive un ruolo e il suo gruppo senza 
+far riferimento a nessun agente specifico;</li>
+
+<li>e) f) e g) considerano la cardinalità 
+dell'agente. In particolare in e) è conosciuto l'esatto numero degli agenti 
+mentre in f) viene considerato il range della cardinalità. 
+Infine in g) la cardinalità di un agente è basata su una condizione.</li>
+
+</ul>
+
+</div>
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/aUMLIntro.html">Agent UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="L'ingegneria del software" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/introduzione/introduzione.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/ingSoft/metodoMetodologia.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/ingSoft/storiaDelleMetodologie.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/ingSoft/cmm.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>L'ingegneria del software</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">L'ingegneria del software</h1>
+
+<div>
+<p>
+Sommerville definisce [Sommerville07] l'Ingegneria del Software come
+<em>"an engineering discipline that is concerned with all aspects 
+of software production from the early stage of system specification to maintaining the system 
+after it has gone into use." </em>
+In questa definizione ci sono due frasi chiave: 
+</p>
+<div class="p">
+<ol>
+<li><em>Engineering discipline</em> - gli ingegneri fanno funzionare le cose. 
+Essi applicano teorie, metodologie e tool dove questi sono appropriati, ma li usano 
+selettivamente e spesso cercano di scoprire soluzioni a problemi anche quando non 
+ci sono teorie e metodologie applicabili a questi. Gli ingegneri inoltre riconoscono 
+che devono lavorare sotto stretti vincoli organizzazionali e finanziari, così cercano 
+soluzioni che rispettino anche tali vincoli.</li>
+
+<li><em>All aspects of software production</em> - l'ingegneria del software non si 
+occupa solamente del processo tecnico dello siluppo software, ma si occupa anche 
+dello sviluppo dei tool, delle metodologie e delle teorie per supportare la produzione software.</li>
+
+</ol>
+
+</div>
+<p>
+Riflettendo su questa definizione
+possiamo osservare 
+che l'ingegneria viene considerata una scienza di acquisizione e applicazione di conoscenza 
+rivolta all'analisi, progettazione e costruzione di prodotti dell'ingegno con scopi pratici.
+L'Associazione Americana degli Ingegneri per lo sviluppo professionale definisce 
+l'ingegneria come <em>The creative application of scientific principles to 
+design or develop structures, machines, apparatus, or manufacturing processes, 
+or works utilising them singly or in combination; or to construct or operate 
+the same with full cognizance of their design; or to forecast their behaviour 
+under specific operating conditions; all as respects an intended function, 
+economics of operation and safety to life and property.</em> 
+</p>
+<p>
+Gli ingegneri si basano su teorie dalla fisica e sulla matematica per trovare soluzioni 
+adatte al problema da risolvere: essi applicano il metodo scientifico per derivare 
+la soluzione migliore in presenza di opzioni multiple valutando le diverse scelte 
+di progettazione e scegliendo quella che soddisfa i requisiti del sistema da sviluppare. 
+</p>
+<p>
+Compito cruciale dell'ingegnere è quindi identificare, capire e interpretare 
+tutti i vincoli progettuali al fine di produrre un risultato di successo. 
+Tali vincoli possono essere rappresentati dalla disponibilità delle risorse, 
+da limitazioni fisiche o tecnologiche, flessibilità per future modifiche ed estensioni 
+del prodotto, o altri fattori come per esempio requisiti di costo, sicurezza, marketing, 
+produttività, durevolezza del prodotto. 
+Attraverso la comprensione di questi vincoli gli ingegneri derivano la specifica dei 
+limiti entro cui il nuovo sistema può essere prodotto e potrà poi funzionare. 
+</p>
+<p>
+Gli aspetti salienti legati al lavoro dell'ingegnere possono essere riassunti come segue:
+</p>
+<div class="p">
+<ul>
+<li>Seguire un chiaro e disciplinato processo di sviluppo.</li>
+
+<li>Adottare una metodologia di progettazione.</li>
+
+<li>Creare un modello (matematico) appropriato del problema che consenta di analizzarlo al meglio. </li>
+
+<li>Testare le potenziali soluzioni.</li>
+
+<li>Valutare le differenti scelte progettuali e scegliere quella che meglio 
+incontra i requisiti degli utilizzatori.</li>
+
+<li>Usare: prototipi, modelli in scala, simulazioni, test distruttivi 
+test non-distruttivi e stress test.</li>
+
+</ul>
+
+</div>
+<p>
+
+La produzione di software 
+con un ben definito livello di qualità non è però abbastanza: c'è la necessità 
+di modellare e ingegnerizzare anche il processo di sviluppo che deve essere controllabile 
+e ben documentato (si veda <a href="cmm.html">Capability Maturity Model</a>). 
+</p>
+<p>
+
+Questa necessità richiede la presenza di astrazioni, processi, 
+metodologie e strumenti a supporto di tutto il processo di ingegnerizzazione.
+Il software ha a che fare con entità che hanno tipicamente una controparte reale come 
+i numeri, le date, i nomi, le persone, i documenti e così via. Queste entità devono 
+essere modellate da opportune <em>astrazioni</em>. Le astrazioni rappresentano 
+i "blocchi di costruzione" dell'ingegenre del software
+per creare i propri prodotti e dipendono dalle tecnologie disponibili: 
+funzioni, oggetti, componenti, agenti, etc... . 
+</p>
+<p>
+Questa ultima affermazione dovrebbe far riflettere su come 
+ogni paradigma computazionale (funzionale, a processi,
+ad oggetti, ad agenti,..) 
+porti ad una sorta di "specializzazione" dell'ingegneria del software. 
+Di fatto ogni paradigma influenza il modo in cui il sistema viene pensato 
+e modellato, perchè ogni paradigma porta con sè le proprie astrazioni di 
+base attraverso le quali il sistema viene pensato e costruito: differenti tipi di 
+astrazioni portano sia a differenti modi di pensare il problema e la sua
+relativa soluzione, sia a differenti livelli di complessità dei modelli: 
+la dimensione sistemistica può
+essere meglio affrontata usando oggetti, componenti e agenti
+(si veda  xref href="../paradigmi/paradigmi.dita"/&gt;)
+piuttosto che semplici prcoedure o funzioni, che potrebbero portare a schemi
+di soluzione molto più intricati 
+introducendo una ulteriore ed inutile 
+dimensione di complessità.
+</p>
+<p>
+Possiamo quindi pensare di avere una 
+<em>famiglia di "Ingegnerie del software" </em>
+ognuna ispirata da uno specifico paradigma computazionale
+e che adotta specifici tipi di 
+astrazioni per la modellazione dei sistemi, ma tutte queste condividono le 
+linee guida generali e i principi cardine del processo di ingnerizzazione dei sistemi.  
+</p>
+
+
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../content/book/ingSoft/metodoMetodologia.html">Metodo e metodologia</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/ingSoft/storiaDelleMetodologie.html">Breve storia delle metodologie</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/ingSoft/cmm.html">Capability Maturity Model</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/introduzione/introduzione.html">Costruire software</a></div>
+</div>
+</div>
+
+</body>
+</html>

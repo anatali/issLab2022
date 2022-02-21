@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Azioni e comportamenti" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/uml/umlFirst.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Azioni e comportamenti</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Azioni e comportamenti</h1>
+
+<div>
+<p>
+<tt>MOF</tt> è definito formalmente in quanto è associato a una precisa semantica.
+La semantica statica dei metamodelli viene  espressa tramite espressioni <tt>OCL</tt>.
+La definizione formale della semantica dinamica costituisce ancora un problema aperto.
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Action semantics</h2>
+<p>
+Per permettere la definizione di comportamenti, <tt>UML2</tt> definisce la sintassi
+astratta (senza alcuna sintassi concreta) di elementi utili
+a formulare una <strong>action semantics</strong>. 
+
+</p>
+<p>
+Questi elementi, la cui
+semantica è espressa in linguaggio naturale, sono: le usuali operazioni aritmetico-logiche,
+feature tipiche di linguaggi sequenziali quali <tt>if, for, switch</tt>, 
+la creazione-distruzione di istanze, la navigazione lungo associazioni tra classi,
+la generazione di istanze di associazioni (<tt>links</tt>), la generazione di segnali,
+la definizione di funzioni con parametri di input-output, timers
+e infine variabili (detti <tt>instance handle</tt>) ed operazioni di assegnamento
+e lettura di valori, anche i forme aggregate (<tt>sets, bags,sequences</tt>). 
+</p>
+<p>
+L'action semantics non contiene costrutti strutturali come classi e relazioni: 
+i relativi elementi hanno senso solo in relazione ad altri elementi di un modello, quali ad esempio
+le operazioni di una classe o le azioni di una statemachine.
+</p>
+<p>
+<tt>iUML</tt> è la versione realizzata da Kennedy Carter [www.kc.com] di x<tt>UML</tt> [MB02]
+una versione di <tt>UML</tt> privata degli elementi "sematically weak" (in pratica core <tt>UML</tt>)
+e aumentata dall'action semantics espressa dall'<em>Action Specification Language</em> (<tt>ASL</tt>)
+descritto in [MB02] capitolo 10.
+<tt>iUML</tt>  fornisce una sintassi concreta per l'action semantics,
+nel contesto di una linea di ricerca volta a rendere eseguibili i modelli <tt>UML</tt>
+definiti in base ai soli elementi cui può essere associata una semantica di esecuzione.
+
+
+
+
+</p>
+
+ 
+</div>
+
+
+
+
+<div class="section"><h2 class="sectiontitle">Il comportamento</h2>
+<p>
+Il comportamento può essere implicito nel significato degli elementi di un metamodello
+e può essere vincolato da frasi <tt>OCL</tt> che possono portare alla
+generazione (anche automatica) di codice di controllo/collaudo. 
+</p>
+<p>
+
+In generale, una grande parte del comportamento del sistema può essere
+comportamento definito dall'architettura.
+
+</p>
+<p>
+Per esprimere il comportamento <tt>UML</tt> offre <tt>activity diagrams</tt> e <tt>state diagrams</tt>
+e permette di  introdurre notazioni in forma di 
+<em>description tags</em> per indicare
+alternative (ad es. comportamento sincrono / asincrono) 
+A questo approccio descrittivo / configurativo si contrappone un approccio
+creativo in cui il comportamento è espresso da sistemi formali, quali ad
+esempio <em>state charts</em> [HP88]. Il vantaggio di questo approccio è che 
+è chiaro come passare dalla specifica alla realizzazione, anche in modo
+automatizzato attraverso tools.
+Il limite è costituito dal fatto che il formalismo potrebbe essere non adeguato
+alle esigenze di specifica di comportamento in un dato dominio. 
+</p>
+<p>
+Nel caso non si trovi un formalismo adeguato, si potrebbe
+pensare di definire un nuovo linguaggio; il problema è che non è facile
+specificare la semantica di questo nuovo linguaggio, passo necessario
+cui ricavare l'implementazione (engine del formalismo).
+
+Un ulteriore modo è fare ricorso a un linguaggio computazionalmente completo,
+ad esempio un linguaggio basato sulla action semantics.
+
+</p>
+<p>
+La specifica di un comportamento deve essere sempre associata a un elemento
+strutturale. Questo fatto è la ragione per cui si introducono spesso
+"behavioral wrappers", cioè sottotipi di elementi strutturali dedicati a
+svolgere un dato comportamento espresso con un certo formalismo.
+L'implementazione del comportamento può essere basato su interpreti,
+capaci ad esempio di leggere ed eseguire una state machine decritta in <tt>XML</tt>.
+
+</p>
+<p>
+
+</p>
+
+</div>
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/uml/umlFirst.html">Il linguaggio UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

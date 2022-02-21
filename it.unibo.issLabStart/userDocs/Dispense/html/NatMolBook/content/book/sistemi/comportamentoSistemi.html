@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Comportamento" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/sistemi/dimensioniSistemi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Comportamento</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Comportamento</h1>
+
+<div>
+
+<p>
+Per descrivere il comportamento di un elemento, <tt>UML</tt> 
+propone due tipi di diagrammi: <tt>activity diagram, state diagram</tt>.
+</p>
+<p>
+<tt>UML2.0</tt> introduce nuovi concetti quali:
+<tt>composition, references, exceptions, loops</tt> e <tt>alternatives</tt>.
+</p>
+<div class="p">
+I comportamenti sono di solito connessi alle
+operazioni associate ad un elemento; queste
+possono essere inquadrate in diverse categorie, tra cui;
+<ul>
+<li><em>primitive</em>: operazioni sulla base delle quali può essere realizzata 
+ogni altra operazione relativa a quel componente; </li>
+
+<li><em>proprietà</em>: forniscono un attributo o una proprietà ; </li>
+
+<li><em>predicati</em>: forniscono un valore di verità su attributi e/o stato;</li>
+ 
+<li><em>selettori</em>: forniscono (accesso a) una parte costituente;</li>
+ 
+<li><em>operatori relazionali</em>: operazioni che decidono la verità di una 
+relazione tra il componente e un altro componente; </li>
+
+<li><em>modificatori</em>: modificano lo stato interno e assumono spesso la forma di
+<tt>setter methods</tt>;</li>
+ 
+<li><em>convertitori</em>: convertono la rappresentazione interna 
+in altra rappresentazione; 
+in particolare ne forniscono la rappresentazione esterna (di solito in forma di stringa).</li>
+ 
+</ul>
+
+</div>
+<p>
+Notiamo che se un elemento è composto, esso potrebbe fornire non solo selettori,
+ma anche operazioni (detta <em>iniettori</em>) che permettono
+di attribuire in modo dinamico ad un elemento una sua parte costituitiva,
+come completamnento della fase di costruzione dell'elemento.
+Queste operazioni sono particolarmente presenti adottando schemi di inversione
+del controllo (si veda xref href="../paradigmi/InversioneControllo.dita"/&gt;).
+</p>
+<p>
+Un componente privo di modificatori può essere considerato "puramente funzionale".
+Un componente privo di selettori può essere considerato "atomico".
+</p>
+<p>
+Per individuare le <em>operazioni primitive</em> di un elemento composto può
+essere utile osservare che disporre di operazioni per disgregare una struttura 
+ negli elementi componenti e per ricomporla è tutto ciò che occorre per poter 
+ operare con essa disponendo di un linguaggio general-purpose computazionalmente completo.
+ Infatti, una volta disgregata la struttura sarà possibile ricreare 
+ la stessa struttura oppure una struttura diversa, vuoi per una diversa 
+ composizione dei suoi elementi, vuoi per l'introduzione di nuovi elementi. 
+
+
+
+
+
+</p>
+
+ 
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/sistemi/dimensioniSistemi.html">Dimensioni</a></div>
+</div>
+</div>
+
+</body>
+</html>

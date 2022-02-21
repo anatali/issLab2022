@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Specifica dei Messaggi in UML 2.0" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/diagrammaSequenza.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Specifica dei Messaggi in UML 2.0</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Specifica dei Messaggi in UML 2.0</h1>
+
+<div>
+
+ 
+<div class="p">
+Dalla specifica UML SuperStructure (pag. 483) la definizione di messaggio risulta essere la seguente:
+
+<blockquote>A Message is a NamedElement that defines one specific kind of communication in an Interaction. 
+A communication can be, for example, raising a signal, invoking an Operation, creating or destroying an Instance. 
+The Message specifies not only the kind of communication given by the dispatching ExecutionSpecification, but also 
+the sender and the receiver. A Message associates normally two OccurrenceSpecifications - one sending 
+OccurrenceSpecification and one receiving OccurrenceSpecification.</blockquote>
+
+</div>
+
+
+<p>
+Il meta-modello del Messaggio è riportato nella figura sottostante.
+</p>
+
+
+<div class="fignone"><span class="figcap">Figure 1. Meta-modello Messaggio (tratto da UML SuperStructure pag. 462)</span>
+<br /><img src="../../images/UML/DSequenza/Messaggio.jpg" alt="Meta-modello Messaggio" /><br />
+</div>
+
+
+<div class="p">
+Un messaggio rappresenta quindi un'interazione realizzata come comunicazione fra Lifeline, una rappresentante il mittente e 
+l'altra rappresentante il destinatario. Questa interazione può consistere nella creazione o distruzione di un'istanza, 
+nell'invocazione di un'operazione, o nell'emissione di un segnale. 
+Dal meta-modello del messaggio riportato nella figura, è molto interessante notare che 
+un primo modo di classificare i messaggi riguarda gli eventi di invio e ricezione che viene espresso attraverso 
+l'attributo <em>"messageKind"</em> che è un enumerativo.
+In particolare:
+<ul>
+ <li> Se sono specificati entrambi allora è un <em>complete message</em>; la semantica è 
+ rappresentata quindi dall'occorrenza della coppia di eventi &lt;sendEvent, receiveEvent&gt;. </li>
+
+ <li> Se il destinatario non è stato specificato allora è un <em>lost message</em>; in questo caso è noto solo l'evento
+ di invio del messaggio e quindi è possibile immaginare che il messaggio non sia mai giunto a destinazione.</li>
+
+ <li> Se il mittente non è stato specificato allora  è un <em>found message</em>; in questo caso è noto solo l'evento
+ di ricezione del messaggio mentre la sorgente rimane sconosciuta. Tale può essere usata per rappresentare messaggi
+ la cui sorgente è fuori dallo scope di interesse, esempi di queto tipo possono essere il rumore oppure attività
+ che non si vuole descrivere in dettaglio. </li>
+
+ <li> Nel caso non sia noto ne il destinatario ne il mittente allora è un <em>unknown message</em>.</li>
+
+</ul>
+
+</div>
+
+
+<div class="p">
+Una seconda classificazione deriva invece dal tipo di comunicazione rappresentato dai messaggi. Tale 
+classificazione viene espressa dall'attributo 
+<em>"messageSort"</em> di tipo enumerativo come si può vedere nella figura del meta-modello. In particolare:
+<ul>
+<li> <em>call</em>: è un complete message associato all'invocazione di un'operazione
+che può avvenire in modo sincrono (<em>synchCall</em> valore di default) 
+o asincrono (<em>asynchCall</em>), il cui nome corrisponde a quello dell'operazione. Se la call è sincrona, il chiamante
+attende il completamento del comportamento richiamato, mentre se la call è asincrona il chiamante continua la sua
+esecuzione senza aspettare nessun valore di ritorno (cfr SuperStructure pagg. 243-244, elemento "CallAction").</li>
+
+<li> <em>signal</em>: rappresenta un puro scambio d'informazioni generato da un evento asincrono. Il mittente
+non aspetta nessun valore di ritorno, nel caso però questo sia presente esso verrà semplicemente ignorato e non
+trasmesso al mittente.</li>
+
+</ul>
+
+
+Un invio asincrono implica la prosecuzione del mittente senza la certezza che il messaggio sia effettivamente 
+giunto a destinazione; al contrario il mittente non prosegue finchè il destinatario non è disponibile alla 
+ricezione nel caso sincrono. Se una comunicazione è asincrona può accadere che l'ordine in cui i messaggi arrivano 
+al ricevente differisca da quello con cui sono stati inviati.
+</div>
+
+<p>
+Un messaggio può quindi essere inteso sia come un'operazione di call (con conseguente inizio di una attività di esecuzione),
+sia come l'invio o la ricezione di un segnale. 
+Quando un messaggio rappresenta l'invocazione di una operazione, gli argomenti 
+del messaggio rappresentano gli argomenti della CallOperationAction sulla Lifeline del mittente e gli argomenti 
+dell'occorrenza della CallEvent sulla Lifeline del ricevente. Inoltre in questo caso tipicamente sarà presente un
+ <em>replay message</em>
+dalla Lifeline del chiamato alla Lifeline del chiamante prima che quest'ultimo possa procedere con l'esecuzione.
+
+Quando un messaggio, invece, rappresenta un segnale, gli argomenti del messaggio sono gli argomenti della SendAction 
+sulla Lifeline del 
+mittente e sulla Lifeline del ricevente gli argomenti sono disponibili in SignalEvent.
+
+</p>
+
+
+<div class="p">
+In base all'evento che generano, se non è  un CallEvent o un SignalEvent, i messaggi possono essere:
+
+<ul>
+<li><em>create message</em>: è un complete message che causa la creazione di un'istanza;</li>
+
+<li><em>delete message</em>: è un complete message che causa la distruzione di un'istanza;</li>
+
+<li> <em>reply message</em>: è un complete message che rappresenta una risposta ad una interazione precedente.</li>
+
+</ul>
+
+
+Un messaggio può avere degli argomenti associati ad esso: se abbiamo una call questi devono corrispondere alla 
+signature dell'operazione, altrimenti non ci sono vincoli; il primo degli argomenti è definito <em>return-value</em>, 
+cioè cosa ci aspettiamo in risposta.
+</div>
+
+<p>
+Come possiamo notare dal meta-modello le classificazioni non si traducono in una specializzazione del concetto di 
+messaggio. Non possiamo parlare di call e signal come tipi, perchè quello che cambia è come viene realizzata la 
+comunicazione.
+</p>
+
+
+ 
+
+<div class="section"><h2 class="sectiontitle"> Rappresentazione dei messaggi </h2>
+
+<div class="p">
+Un messaggio è rappresentato con una freccia che parte dal mittente e indica il destinatario come mostrato nella figura sottostante: 
+<ul>
+<li>se la punta della freccia è aperta allora il messaggio è asincrono, se invece è piena il messaggio è sincrono;</li>
+
+<li> se è rappresentato con una freccia tratteggiata con la
+punta aperta allora è un replay message;</li>
+
+<li> se è rappresentato con una freccia tratteggiata con la
+punta aperta che indica l'oggetto creato allora è un create message;</li>
+
+<li> se la freccia punta ad un cerchio nero allora rappresenta un lost message, se parte da un cerchio nero rappresenta un found message.</li>
+
+</ul>
+
+</div>
+
+
+<div class="fignone"><span class="figcap">Figure 2. Notazione dei Messaggi (tratto da UML SuperStructure pag. 507)</span>
+<br /><img src="../../images/UML/DSequenza/NotazioneMessaggi.jpg" alt="Notazione dei Messaggi " /><br />
+</div>
+
+</div>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/interazione/diagrammaSequenza.html">Diagramma di Sequenza</a></div>
+</div>
+</div>
+
+</body>
+</html>

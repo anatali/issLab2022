@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Service Tracker" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Service Tracker</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Service Tracker</h1>
+
+<div>
+<p>
+OSGi definisce una utility, il <em>Service Tracker</em>, allo scopo di tenere traccia 
+di registrazioni, modifiche e cancellazioni di servizi sul <tt>Service Register</tt>. 
+</p>
+<p>
+Tale utility è composta da una classe <tt>ServiceTracker</tt> e un'interfaccia 
+<tt>ServiceTrackerCustomizer</tt>, ed è caratterizzata da leggerezza e semplicità d'uso. 
+
+Il suo compito è quello di permettere la creazione di una lista di servizi da monitorare, 
+mettersi in ascolto dei relativi <tt>ServiceEvent</tt> e gestire tali eventi in maniera 
+personalizzabile. La classe <tt>ServiceTracker</tt> ha tre diversi costruttori 
+che permettono di specificare come parametri, oltre al <tt>BundleContext</tt> e 
+ad un'implementazione dell'interfaccia <tt>ServiceTrackerCustomizer</tt>, un filtro, 
+una classe o una <tt>ServiceReference</tt>, in modo da permettere la più vasta scelta 
+di servizi da monitorare. L'utility comincia a monitorare i servizi solo dopo 
+l'esecuzione del metodo <tt>open()</tt>, e termina il compito 
+dopo l'esecuzione del metodo <tt>close()</tt>. 
+</p>
+<p>
+Una volta attivata, essa fornisce metodi per l'acquisizione di servizi già registrati 
+(<tt>getService()</tt>) o per porsi in attesa di servizi che non lo sono ancora 
+(<tt>waitForService(long)</tt>); in quest'ultimo caso occorre impostare un <tt>timeout</tt>. 
+</p>
+<p>
+La personalizzazione del comportamento del <tt>ServiceTracker</tt> avviene creando 
+un implementazione dell'interfaccia <tt>ServiceTrackerCustomizer</tt>, 
+in genere estendendo la classe <tt>ServiceTracker</tt> e ridefinendone i metodi 
+di risposta agli eventi. Così facendo è possibile personalizzare i
+comportamento in risposta all'arrivo, alla modifica, 
+o alla cancellazione di un nuovo servizio tra quelli impostati 
+nel <tt>ServiceTracker</tt>. 
+</p>
+<p>
+Si noti che la ridefinizione di questi metodi potrebbe essere utile per 
+una selezione più mirata dei servizi. Ad esempio all'arrivo della notifica 
+di registrazione di un nuovo servizio, la ridefinizione del metodo <tt>addingService()</tt> 
+potrebbe  analizzare dettagli aggiuntivi su quel servizio 
+(come scoprire il bundle che lo implementa) per decidere se è compatibile con quanto richiesto oppure no. 
+
+</p>
+
+
+ 
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="topic" name="DC.Type" />
+<meta name="DC.Title" content="Progettazione" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/workflowProgetto.html" />
+<meta content="anatali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="hgge7jnojt4v" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Progettazione</title>
+</head>
+<body id="hgge7jnojt4v"><a name="hgge7jnojt4v"><!-- --></a>
+
+
+	<h1 class="topictitle1">Progettazione</h1>
+
+	
+	<div>
+<p>
+</p>
+<p>
+Per pervenire in modo sistematico ad un modello di progetto che sia già sensibile 
+al livello di codifica, Jacobson [JCJO92] propone di articolare gli oggetti dell'analisi in blocchi
+(assimilabili ai moduli o ai package dei linguaggi di programmazione) e di porre 
+particolare attenzione sulla interazione tra i blocchi. 
+</p>
+<p>
+A questo fine è utile l'uso di <em>interaction diagrams</em> 
+con cui descrivere gli <em>use case</em> in termini di sequenze di stimoli tra blocchi. 
+Poichè per stimolo si intende ogni elemento che permette la comunicazione tra blocchi, 
+l'obiettivo di questa fase è definire 
+le <em>comunicazione esterne</em> tra i blocchi. 
+</p>
+<p> 
+Tra le scelte da effettuare nella fase di progetto vi è anche 
+(a meno non sia un requisito) la individuazione del linguaggio di programmazione, 
+della piattaforma operativa di supporto e degli strumenti ritenuti utili 
+alla costruzione del sistema. 
+
+
+ 
+ </p>
+
+ <div class="section"><h2 class="sectiontitle">Artefatti di progetto</h2>
+ <p>
+ L'insiene degli artefatti relativi al progetto è costituito da un
+insieme di diagrammi UML che definisce la organizzazione logica della soluzione, cioè
+l'architettura di un sistema che soddisfa tutti i requisiti.
+</p>
+<p>
+L'<em>architettura di progetto</em> può essere ottenuta in modo sistematico
+da una progressiva trasformazione dell'architettura logica in 
+forme più articolate che preservano i vincoli stabiliti al livello precedente.
+
+Nel caso siano disponibili generatori / configuratori automatici di codice,
+la forma finale dell'architettura di progetto costituisce "il sistema".
+In caso contrario essa costituisce l'artefatto chiave con cui validare la soluzione
+prima di passare alla costosa fase di implementazione/codifica.
+</p>
+<p>
+Un ruolo strategisco nel processo di trasformazione dell'architettura
+logica del sistema in una architettura di progetto capace di
+soddisfare i requisiti,
+è costituito dall'uso dai pattern e dai pattern languages
+che promuove la motivazione sistematica delle scelte che progressivamente
+portano al raffinamento dell'architettura, fino alla sua forma finale.
+</p>
+<div class="p"> 
+La figura che segue mostra una panoramica di impiego dei pattern POSA2
+nel contesto di una piattaforma a livelli 
+(si veda  <a href="../../piattaforme/piattaforme.html">Piattaforme operative</a>).
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="20%"> </td>
+<td valign="top" width="60%">
+<div class="fignone"><span class="figcap">Figura 1. Esempio di impatto dei pattern POSA2</span>
+<img src="../../../images/book/patternNelProgettoSmall.jpg" />
+</div>
+
+</td>
+
+<td valign="top" width="20%"> </td>
+
+</tr>
+
+</table>
+
+<h2 class="sectiontitle"><a name="macroparts"></a>Macro-parts of a software system</h2>
+ 
+
+Se supponiamo di analizzare una moderna
+applicazione software "ben fatta" è assai probabile che essa si presenti
+logicamente organizzata in tre macro-parti: 
+<ul>
+<li>una parte 
+che potrebbe essere condivisa in tutte le applicazioni future 
+(<em>generic part</em>);</li>
+
+<li>una parte organizzata secondo alcuni schemi ben riconoscibili 
+(ad esempio in forma di pattern) riusabili in diversi contesti 
+(<em>schematic part</em>);</li>
+
+<li>una parte del tutto specifica per l'applicazione e non
+generalizzabile in alcun modo (<em>specific part</em>).</li>
+
+</ul>
+
+
+Ciascuna delle parti individuate potrebbe (dopo un refactoring del codice,
+se necessario) essere incapsulata in un 
+sottosistema; la generic part potrebbe essere inserita nel
+sottosistema <em>piattaforma</em>, la schematic part in
+un sottosistema  che si appoggia alla piattaforma
+e la specific part in un sottositema che si appoggia ai due precedenti.
+</div>
+<p>
+Questa articolazione può costituire un importtante punto di riferimento
+sia per progetti di tipo <em>bottom-up</em>, che partono
+da ciò che disponibile (linguaggio di programmazione, piattaforma,
+framework, etc) per giungere (con preossi di sintesi) 
+al sistema voluto, sia per
+progetti di tipo <em>top-down</em> che partono dal problema da ricolvere
+e cercsno di decomportlo progressivamente (con processi di analisi) 
+fino a giungere
+a elementi temrinali disponibili (istruzioni, componenti, etc.).
+</p>
+<p>
+Le sezioni che seguono sono destinate ad approfondire
+entrambi i tipi di progettazione. 
+</p>
+	
+</div>
+
+	</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../../content/book/modelBased/fasi/workflowProgetto.html">Progetto</a></div>
+</div>
+</div>
+
+</body>
+</html>

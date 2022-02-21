@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Analisi sintattica" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/esempioModelBased.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090311080950" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Analisi sintattica</title>
+</head>
+<body id="id20090311080950"><a name="id20090311080950"><!-- --></a>
+
+
+	<h1 class="topictitle1">Analisi sintattica</h1>
+
+	
+<div>
+<div class="p">
+Il primo prototipo di analizzatore sintattico può essere
+costruito seguendo la stessa sequenza di azioni impostata
+per il prototipo del lexer. 
+
+L'interfaccia del <em>Parser</em> può essere così definita:
+<pre class="pre">
+public interface IParser{
+   /**
+   * Effettua l'analisi sintattica della stringa s, 
+   * restituendo l'Abstract Parse Tree dell'espressione.
+   */
+   public Exp parse( String frase );
+}//IParser
+</pre>
+
+Il piano di collaudo avrà una forma del tipo che segue:
+<pre class="pre">
+public class TestParser extends TestCase {
+private IParser parser;
+
+ public TestParser(String name) {
+    super(name);
+ }
+
+ protected void setUp() {
+    parser = ParserFactory.create( );
+ }//setUp
+
+ public static Test suite() {
+	TestSuite ts = new TestSuite();
+	ts.addTest( new TestParser("testFraseOk") );
+	ts.addTest( new TestParser("testFraseKo") );
+	return ts;
+ }
+
+ public void testFraseOk() {
+ String frase = "5 - 3 - 2" ;
+ IExp resultExpected = 
+  	new OpExp ('*' , 
+		new OpExp('+', 
+			new NumExp(1), new NumExp(2) ),
+ 		new NumExp(3) );
+ 	IExp result = parser.parse( frase );
+ 	checkExp( result, resultExpected );
+  }//testFraseOk
+
+ public void testFraseKo() {
+ String frase = "(1+2)*)";
+ String resultExpected = null;
+ IExp result = parser.parse( frase );
+ 	checkExp( result, resultExpected );
+ }//testFraseKo
+ 
+}//TestParser
+</pre>
+
+Durante la fase di pianificazione del collaudo emergono alcuni casi
+notevoli:
+</div>
+<div class="p"> 
+<ul>
+<li>l'analisi della frase <tt>5-2-3a</tt> cosa restituisce?</li>
+
+<li>l'analisi della frase <tt>(1+2)*3-)</tt> cosa restituisce?</li>
+
+<li>l'analisi della frase <tt>(1+2</tt> cosa restituisce?</li>
+
+</ul>
+
+</div>
+<p> 
+Per rispondere oseerviamo che un parser
+può essere impostato secondo diversi pattern di progettazione.
+Uno dei più diffusi e semplici da realizzare si fonda su schemi di
+<em>analisi ricorsiva discendente</em> e prevede l'introduzione
+di tante procedure di analisi sintattica
+quante le produzioni grammaticali.
+In questo modo si stabilisce (come già avvenuto nel progetto
+del lexer) una corrispondenza sistematica tra
+la struttura della grammatica che definisce il linguaggio
+e la struttura del codice del riconoscitore, agevolando la modifica
+del prototipo in caso di modifica della grammatica.
+</p>
+<div class="p"> 
+Da questa impostazione scaturisce una tecnica di analisi ricorsiva discendente 
+che consiste nell'associare ad ogni produzione <tt>P</tt> della grammatica
+una procedura di riconoscimento con una signature del tipo: 
+<pre class="pre">
+IExp ricP( Source )
+</pre>
+
+ove <tt>Source</tt> denota (un dispositivo che rappresenta) la frase di ingresso, 
+e <tt>IExp</tt> l'albero sintattico che fornisce il risultato dell'analisi. 
+Di solito si assegna alla procedura il compito di determinare il <em>più lungo prefisso</em> in 
+<tt>Source</tt> che costituisce una frase del linguaggio generato dalla produzione <tt>P</tt>. 
+
+</div>
+<p> 
+Nel seguito le procedure di riconoscimento verranno definite associando 
+all'argomento <tt>Source</tt>  l'analizzatore lessicale (<tt>Lexer</tt>) 
+definito in precedenza. In tal modo il <tt>Parser</tt> potrà avvantaggiarsi del lavoro
+svolto dal <tt>Lexer</tt> analizzando una sequenza di  
+<em>token</em> e non una sequenza di caratteri.
+</p>
+<p> 
+Con queste premesse:
+</p>
+<div class="p"> 
+<ul>
+<li>l'analisi della frase <tt>5-2-3a</tt>  restituisce l'albero che rappresenta
+l'espressione <tt>5-2-3</tt> lasciando come primo token
+"non consumato" il token relativo al carattere <tt>a</tt>;</li>
+
+<li>l'analisi della frase <tt>(1+2)*3-)</tt> potrebbe restituire <tt>(1+2)*3</tt>
+lasciando come primo token "non consumato" il token relativo al carattere
+<tt>-</tt>;</li>
+
+<li>l'analisi della frase <tt>(1+2</tt> restituisce <tt>null</tt> in quanto
+non riesce a trovare il token necessario a completare con successo l'analisi.</li>
+
+</ul>
+
+</div>
+<p> 
+Nel caso della frase <tt>(1+2)*3-)</tt>
+la tecnica dell'analisi ricorsiva che adotteremo per il primo prototipo indurrà il parser 
+alla consumazione (potremmo dire in modo "eager") del token relativo al carattere
+<tt>-</tt> in quanto esso rsulta accettabile in quel punto della frase;
+solo in seguito il parser si potrà accorgere
+che l'analisi della frase non può essere completata con successo.
+Nel nostro piano di collaudo prefigureremo quindi che anche per questa frase
+il parser restituisca il valore <tt>null</tt> ad indicare 
+la sua incapacità a completare con successo il riconoscimento, anche
+se un riconoscimento parziale ha avuto luogo.
+
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Ricnoscimento dei fattori</h2>
+<div class="p"> 
+Il codice che segue definisce una possibile realizzazione di un metodo
+dedicato al riconoscimento dei fattori, cioeè del linguaggio generato dalle produzioni
+che hanno come meta-simbolo <tt>F</tt>:
+<pre class="pre">
+F	:=  N
+F	::= ( E )
+</pre>
+
+Il metodo viene costruito sulla base del seguente ragionamento:
+<em>il metodo <tt>F</tt> deve "consumare" - partendo dal
+token corrente non ancora analizzato - tutti i token che si possono
+presentare in base alle regole che riscrivono il meta-simbolo <tt>F</tt></em>.
+</div>
+<p> 
+Ogni frase prodotta dal meta-simbolo <tt>F</tt> ha come token
+iniziale o un  <tt>NumToken</tt> o un <tt>LParToken</tt> relativo alla a <tt>(</tt> .
+Nel secondo caso il token <tt>LParToken</tt> deve essere seguito
+da una sequenza di token generabile
+dal meta-simbolo <tt>E</tt> a sua volta seguita dal
+token <tt>RParToken</tt> relativo alla <tt>)</tt>.
+
+</p>
+<div class="p"> 
+In base a questo ragionamento possiamo impostare la struttura del metodo riconoscitore
+anche se non abbiamo ancora scritto il codice del metodo dedicato al riconoscimento
+del linguaggio generato dal meta-simbolo <tt>E</tt>.
+Supponendo che la variabile non-locale <tt>curToken</tt> di tipo <tt>Exp0Token</tt>
+denoti il primo token non ancora analizzato, il codice può essere scritto come segue:
+<pre class="pre">
+public class Parser implements IParser{
+
+protected ILexer   lexer;
+protected Exp0Token curToken;
+
+...
+	public IExp F() throws Exception {
+	IExp myExp = null;	//espressione riconosciuta da F
+ 		if( curToken instanceof NumToken ){
+		//Produzione F := N
+			NumToken num = (NumToken)curToken;
+			curToken     = lexer.next();
+			return new NumExp( num.getVal() ) ;
+		}
+		if( curToken instanceof LParToken ){
+		//Produzione F := ( E )
+			curToken = lexer.next();
+			myExp = E();
+			if( myExp == null ) return null;
+			if( curToken instanceof RParToken ){
+				curToken  = lexer.next();
+				return myExp;
+			}else return null;
+		}
+		else return null;
+	}//F
+</pre>
+
+Si noti che, dopo avere riconosciuto un token, il metodo
+modifica <tt>curToken</tt> in modo che esso referenzi il successivo
+token da analizzare. 
+</div>
+<p> 
+Nel caso il metodo <tt>F</tt> sia chiamato ad operare in un momento in cui
+il valore di <tt>curToken</tt> non sia nè
+un <tt>NumToken</tt> nè un <tt>LParToken</tt>, il valore restituito è <tt>null</tt>
+in accordo a quanto discusso in fase di pianificazione del collaudo.
+</p>
+
+</div>
+
+<div class="section"><h2 class="sectiontitle">Ricnoscimento dei termini</h2>
+<div class="p"> 
+In modo analogo a quanto fatto per i fattori è possibile definire in modo sistematico
+un metodo per il riconoscimento dei termini, cioè del linguaggio generato
+dalle produzioni che hanno come meta-simbolo <tt>T</tt>:
+<pre class="pre">
+T	:=  F
+T	::= T * F
+T	::= T / F
+</pre>
+
+In questo caso <em>il metodo <tt>T</tt> deve "consumare" - partendo dal
+token corrente non ancora analizzato - tutti i token che si possono
+presentare in base alla regole che riscrivono il meta-simbolo <tt>T</tt></em>.
+Per mettere in luce quale sia la sequenza di token lecita è opportuno
+eliminare le ricorsioni sinistre dalle ultime due regole, riscrivendole
+in notazione <tt>BNF</tt> come segue:
+<pre class="pre">
+T	:=  F
+T	::= F { * F }
+T	::= F { / F }
+</pre>
+
+In questa notazione le riscritture contenute entro i meta-simbli <tt>{ }</tt> 
+possono essere ripetute <em>0 o più volte</em>.
+<pre class="pre">
+public class Parser implements IParser{
+
+protected ILexer   lexer;
+protected Exp0Token curToken;
+
+...
+	public IExp T() throws Exception{
+	Expr0Token myOp;
+	IExp myExp,fact2;
+	  //Produzione T := F
+	   myExp = F();
+	   if( myExp == null ) return null;
+	   while( curToken instanceof MulToken ) {
+	   //Produzioni T := F { * F } | F { / F }
+		   myOp = curToken; //push the op
+		   curToken = lexer.next();
+		   fact2 = F();
+		   if( fact2 == null ) return null;
+		   myExp = new OpExp( myOp.getName(), myExp, fact2 );
+	   }//while
+	   return myExp;	   
+	}
+</pre>
+
+Si noti che:
+</div>
+<div class="p"> 
+<ul>
+<li>Il ciclo <tt>while</tt> esprime il concetto di ripetizione dell'attività
+di riconoscimento <em>0 o più volte</em>;</li>
+
+<li>il metodo di riconoscimento <tt>F</tt> viene invocato nella speranza
+che la sequenza di token sia corretta; nel caso in cui ciò non accada 
+il metoodo <tt>F</tt> restuirà <tt>null</tt> come segno di mancato riconoscimento,
+il che indurra il metodo <tt>T</tt> a restituire <tt>null</tt> a sua volta;</li>
+
+<li>il metodo <tt>T</tt>, come ogni altro metodo di riconoscimento
+lascia nella variabile non locale <tt>curToken</tt> il primo token "non consumato";
+</li>
+
+<li>l'assegnamento <tt>myOp = curToken;</tt> alla variabile <tt>myOp</tt>
+locale alla procedura equivale ad una operazione di <tt>push</tt> 
+(immissione in uno stack) del token che rappresenta l'operatore.
+Lo stack è in questo caso quello usato dalla macchina virtuale Java 
+per gestire i record di attivazione delle procedure;</li>
+
+<li>il metodo <tt>T</tt> accumula nella variabile locale <tt>myExp</tt> 
+la parte di frase che riesce a riconoscere applicando un criterio di associatività
+a sinistra, per cui una frase del tipo <tt>12 / 3 / 2 </tt> viene considerata 
+(tenendo conto delle regole ricorsive iniziali) equivalente a <tt>(12 / 3) / 2 </tt>
+anzichè a <tt>12 / (3 / 2) </tt>.</li>
+
+</ul>
+
+</div>
+<p> 
+</p>
+
+</div>
+
+<div class="section"><h2 class="sectiontitle">Ricnoscimento delle espressioni</h2>
+<div class="p"> 
+Il linguaggio geenrato dallo scopo <tt>E</tt> della grammatica può venire riconosciuto da un metodo
+organizzato in modo del tutto analogo a quanto fatto nel caso dei termini:
+<pre class="pre">
+public class Parser implements IParser{
+protected ILexer   lexer;
+protected Exp0Token curToken;
+
+ public Parser(String s){
+  lexer = LexerFactory.createLexerPojo(s);
+ }
+ 
+ public Parser(ILexer lexer){
+  this.lexer = lexer;
+ }
+
+ public IExp parse( ) throws Exception{
+  curToken = lexer.next();
+  return E();		
+ }
+
+ public IExp E() throws Exception{
+ Expr0Token myOp;
+ IExp myExp,term2;
+ //Produzione E := T
+ myExp = T();
+ if( myExp == null ) return null;
+	while( curToken instanceof AddToken ) {
+	//Produzioni T := T { + T } | T { - T }
+	 myOp = curToken; //push the op
+	 curToken = lexer.next();
+	 term2 = T();
+	 if( term2 == null ) return null;
+	 myExp = new OpExp( myOp.getName(), myExp, term2 );
+	}//while
+	return myExp;	   
+ }
+	...
+}
+</pre>
+
+Si noti che il codice del <tt>Parser</tt> definisce anche due costruttori:
+</div>
+<div class="p"> 
+<ul>
+<li>un costruttore che riceve dall'esterno il <tt>Lexer</tt> relativo
+alla frase da nalizzare;</li>
+
+<li>un costruttore che riceve dall'esterno una stringa che rappresenta la frase
+ da analizzare e provvede alla costruzione di un <tt>Lexer</tt>
+ attraverso una classe factory <tt>LexerFactory</tt>.</li>
+
+</ul>
+
+</div>
+<p> 
+Il secondo costruttore facilita il collaudo del parser.
+</p>
+
+</div>
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/esempioModelBased.html">Esempio di sviluppo model based</a></div>
+</div>
+</div>
+
+</body>
+</html>

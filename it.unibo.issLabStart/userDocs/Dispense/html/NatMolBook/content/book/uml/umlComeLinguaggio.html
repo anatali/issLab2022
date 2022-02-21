@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="UML come famiglia di linguaggi" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/uml/umlFirst.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>UML come famiglia di linguaggi</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">UML come famiglia di linguaggi</h1>
+
+<div>
+<p>
+Il concetto di sintassi astratta e di semantica statica 
+(si veda <a href="../paradigmi/sintassiSemantica.html">Sintassi (astratta) e semantica</a>)
+sono al centro della definizione
+di  <tt>UML</tt> attraverso costrutti quali <tt>class, attribute,
+operation, association</tt>,
+La sintassi concreta è espressa in forma grafica da rettangoli, frecce, etc.
+e in forma testuale da <tt>XMI</tt> [XMI]. Il linguaggio <tt>OCL</tt> 
+(si veda xref href="../ocl/OCL.dita"/&gt;)
+permette
+di esprimere espressioni che fanno riferimento alla sintassi astratta di <tt>UML</tt>;
+tali espressioni sono usate per definire formalmente la semantica statica dei profili 
+<tt>UML</tt>
+(si veda <a href="introUMLProfili.html">Profili</a>).
+</p>
+<p>
+Naturalmente per descrivere la sintassi astratta di un linguaggio occorre un linguaggio.
+Nel caso di <tt>UML</tt> questo linguaggio è <tt>MOF</tt>
+(si veda <a href="introMOF.html">Meta Object Facility</a>) cui è associata una sola
+sintassi concreta.
+</p>
+<p>
+L'iniziativa  <tt>MDA</tt> (si veda  <a href="../sistemi/mda.html">Architecture model-driven</a>)
+si focalizza su <tt>UML</tt> e <tt>MOF</tt> come linguaggio
+per esprimere meta-modelli specificamente rivolti a un particolare dominio
+papplicativo. Per questo motivo 
+<tt>MOF</tt> costituisce un meta-metamodello, cioè un modo per esprimere
+un meta-modello. Ma <tt>MOF</tt> può essere considerato anche un
+linguaggio cone cui esprimere un <strong>domain specific language</strong> (<tt>DSL</tt>) 
+la cui sintassi concreta dovrebbe essere basata (nella raccomandazione <tt>MDA</tt>) 
+su profili <tt>UML</tt>.
+</p>
+<p>
+Considerando <tt>UML</tt> come una <em>famiglia di linguaggi</em> piuttosto che un singolo
+linguaggio, un  profilo può essere visto come un linguaggio concreto nell'ambito di tale famiglia.
+Nella proposta <tt>MDA</tt>  ogni <tt>DSL</tt> è predisposto per usare 
+come base <tt>UML</tt> e  espressioni <tt>OCL</tt> per specificare la
+sua semantica statica.
+</p>
+
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/uml/umlFirst.html">Il linguaggio UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

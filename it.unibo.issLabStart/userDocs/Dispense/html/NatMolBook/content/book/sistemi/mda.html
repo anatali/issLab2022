@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Architecture model-driven" />
+<meta content="MDA, PIM, PSM, PSI" name="DC.subject" />
+<meta content="MDA, PIM, PSM, PSI" name="keywords" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/sistemi/architettureSistemi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Architecture model-driven</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Architecture model-driven</h1>
+
+
+<div>
+
+<p>
+Il processo noto come <em>Model Driven Architecture</em> 
+(<tt>MDA</tt>) si basa sull'idea di modellare 
+diversi aspetti e diversi livelli di astrazione di un sistema, sfruttando
+regole di corrispondenza tra modelli per garantire 
+coesione e interoperabilità.
+</p>
+<p>
+La  <a href="http://www.omg.org/mda/">MDA-guide</a>
+caratterizza l'<tt>MDA</tt> attraverso una precisa sequenza di fasi:
+</p>
+<div class="p">
+<ol>
+<li>specifica di un sistema software in modo indipendente dalla piattaforma di supporto;</li>
+
+<li>specifica di un insieme di piattaforme di supporto o selezione di specifiche 
+di piattaforme già esistenti;</li>
+
+<li>selezione di una particolare piattaforma;</li>
+
+<li>trasformazione della specifica del sistema specifica nelle specifica
+relativa alla piattaforma selezionata.</li>
+
+</ol>
+
+</div>
+<p>
+
+La guida denota con il termine <strong>PIM</strong> (<em>platform independent model</em>)
+un modello che descrive un sistema in modo
+indipendente da ogni piattaforma operativa e con il termine
+<strong>PSM</strong> (<em>platform specific model</em>)
+un modello che descrive un sistema con piena
+conoscenza di una particolare piattaforma operativa.
+Un <strong>PSI</strong> (<em>platform specific implementation</em>) è una possibile
+espressione di un <strong>PSM</strong>.
+
+</p>
+<p>
+L'attenzione di <tt>MDA</tt> si focalizza sui linguaggi
+di descrizione dei modelli e nella introduzione di <em>regole di trasformazione</em>
+capaci di trasformare un <tt>PIM</tt> in uno o più  <tt>PSM</tt>
+attraverso l'uso di appositi tools.
+</p>
+<p>
+Per rendere eseguibile le trasformazione tra modelli da parte di una macchina
+è esenziale che il linguaggi usati per definire i modelli
+abbiano una definizione formale. questo obiettivo viene oggi ottenuto
+derivando i linguaggi di descrizione dei modelli dal linguaggio
+<strong>MOF</strong> (si veda <a href="../uml/introMOF.html">Meta Object Facility</a>) 
+definito da <tt>OMG</tt>, che ha introdotto anche
+il linguaggio <strong>QVT</strong> (<em>Query, Views and Transformation</em>) [QVT]  come linguaggio
+per standardizzare le trasformazioni.
+</p>
+<p>
+Un altro punto importante è che <tt>MDA</tt> fonda la definzione dei linguaggi
+sul concetto di <em>metamodello</em> piuttosto che sull'idea classica di grammatica;
+in altre parole un linguaggio è definito da un modello che descrive
+gli elementi che lo formano (si veda xref href="../uml/introUml.dita"/&gt;)
+</p>
+ 
+ 
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/sistemi/architettureSistemi.html">Il ruolo dell'architettura</a></div>
+</div>
+</div>
+
+</body>
+</html>

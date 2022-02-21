@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Vincoli" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLIntro.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Vincoli</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Vincoli</h1>
+
+<div>
+<p>
+I <strong>vincoli</strong> influenzano il modo in cui i messaggi e il percorsi 
+alternativi nei protocolli di interazione vengono usati.
+Diversi messaggi possono essere inibiti se i vincoli associati ad essi 
+non sono soddisfatti. Tipicamente i vincoli sono usati
+per scegliere un percorso tra diverse possibili alternative.
+
+Due tipi principali di vincoli vengono considerati: vincoli <em>bloccanti</em> e <em>non-bloccanti</em>. 
+</p>
+<p>
+I vincoli bloccanti implicano che l'interazione rimane bloccata sino a che 
+il vincolo non viene soddisfatto, mentre i non-bloccanti implicano
+che l'elemento regolato dai vincoli viene eseguito solo se il vincolo è soddisfatto.
+I vincoli bloccanti possono essere applicati a ruoli, a specifici agenti 
+in un ruolo o a un insieme di ruoli. Se i vincoli bloccanti sono applicati
+ad un ruolo significa che tutti gli agenti che giocano tale ruolo coinvolti 
+nell'interazione sono bloccati sino a che i vincoli non sono 
+soddisfatti. Gli agenti sono bloccati solo per questo ruolo e possono 
+continuare l'interazione con gli altri ruoli coinvolti.
+</p>
+<p>
+I vincoli non-bloccanti sono tipicamente usati nelle alternative e nella 
+selezione dei percorsi e possono anche utilizzare un caso di default
+chiamato <em>else</em> che viene usato se nessuno dei vincoli precedenti 
+è soddisfatto.
+I vincoli possono essere definiti sia come testo in formato libero sia 
+formalmente attraverso l'uso di <tt>OCL</tt>. I vincoli sono riportati vicino
+all'elemento su cui il vincolo deve essere applicato. Quando i vincoli 
+sono applicati ad alternative essi sono posti sopra ad ogni alternativa.
+I vincoli bloccanti vengono rappresentati attraverso lo stereotipo <em>blocking</em>, 
+mentre quelli non-bloccanti sono rappresentati
+tra parentesi quadre.
+</p>
+
+
+<p>
+La figura sottostante mostra di protocolli con vincoli bloccanti e non-bloccati.
+</p>
+
+
+<div class="fignone"><span class="figcap">Figure 1. Protocollo vincoli</span>
+
+<br /><img src="../../images/agenti/AUML10.bmp" alt="Protocollo con vincoli" /><br />
+</div>
+
+
+
+<p>
+Particolari tipi di vincoli sono i <strong>vincoli temporali</strong> che rappresentano 
+il tempo nei diagrammi di sequenza. Esempi sono riportati
+nelle figure sottostanti
+</p>
+
+
+
+<div class="fignone"><span class="figcap">Figure 2. Esempio vincoli temporali</span>
+
+<br /><img src="../../images/agenti/AUML11.bmp" alt="Esempio vincoli temporali" /><br />
+</div>
+
+
+
+
+<div class="fignone"><span class="figcap">Figure 3. Esempio vincoli temporali</span>
+
+<br /><img src="../../images/agenti/AUML12.bmp" alt="Esempio vincoli temporali" /><br />
+</div>
+
+
+ 
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/aUMLIntro.html">Agent UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

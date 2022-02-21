@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Servizi OSGi" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Servizi OSGi</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Servizi OSGi</h1>
+
+<div>
+
+<p>
+
+Un servizio OSGi può essere definito come l'implementazione di una funzionalità 
+il cui stato non dipende dal contesto in cui è usato. L'idea di OSGi è quella 
+di separare la specifica del servizio dalla sua realizzazione, per cui un servizio 
+è definito semanticamente da un'interfaccia ed implementato da un oggetto. 
+</p>
+<p>
+L'interfaccia del servizio deve essere specificata in modo
+platform-independent tramite il costrutto <tt>interface</tt> di Java.
+</p>
+<p>
+L'oggetto realizzatore del servizio è creato e gestito da un bundle, 
+il quale lo deve registrare su un registro pubblico (il <tt>Service Register</tt> OSGi) 
+in modo da renderlo disponibile agli altri bundle. Le dipendenze tra il servizio 
+e il bundle che lo possiede sono risolte direttamente dal framework: ad esempio 
+se un bundle viene terminato, i servizi che aveva registrato vengono eliminati 
+automaticamente dal <tt>Service Register</tt>.
+</p>
+<div class="p">
+
+La figura descrive il modello a servizi OSGi, che si svolge in tre fasi: 
+pubblicazione del servizio da parte di un fornitore, ricerca (e ottenimento) 
+di un servizio da parte del cliente, consumo del servizio. 
+
+<div class="fignone"><span class="figcap">Figure 1. Pubblicazione, ricerca e acquisizione di un servizio</span>
+<img src="../../../images/OSGi/serviceBR.jpg" />
+</div>
+
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Processo di pubblicazione di un servizio</h2>
+<p>
+
+Se si vuole creare un bundle che eroghi un servizio, si deve per prima cosa 
+decidere l'interfaccia del servizio (OSGi definisce numerose interfacce standard
+per i servizi di uso più comune). 
+Il secondo passo è creare una classe che implementi quell'interfaccia: gli oggetti 
+di tale classe costituiranno l'implementazione del servizio. 
+A questo punto 
+è necessario pubblicare il servizio su un registro, in modo che tutti i bundle possano 
+venirne a conoscenza. 
+</p>
+<div class="p">
+Il registro in questione è il <tt>Service Register</tt> OSGi 
+e la registrazione avviene tramite il metodo <tt>registerService</tt> del <tt>BundleContext</tt>
+<pre class="pre">
+ServiceRegistration registerService(
+ String clazz, Object service, java.util.Dictionary properties)
+</pre>
+ 
+Il parametro <tt>clazz</tt> fornisce il nome dell'interfaccia del servizio, 
+mentre il parametro <tt>service</tt> è in generale un oggetto 
+e può essere o un'istanza di classe che implementa 
+l'interfaccia del servizio oppure un'istanza di <tt>ServiceFactory</tt>, 
+che viene utilizzata per personalizzare il servizio in base a chi lo richiede. 
+Il parametro <tt>properties</tt> serve 
+per attribuire delle proprietà alla registrazione del servizio. 
+Tali proprietà sono delle coppie <tt>attributo = valore</tt>, che aggiungono delle 
+specifiche alla descrizione del servizio. Il metodo restituisce 
+(se tutto va a buon fine) un oggetto <tt>ServiceRegistration</tt> che può essere usato 
+per cancellare il servizio o per accedere alle sue proprietà (per leggerle o modificarle). 
+</div>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Processo di ricerca di un servizio</h2>
+<p>
+Un cliente che voglia accedere ad un servizio deve anzitutto essere a conoscenza 
+dell'interfaccia del servizio richiesto. Nota tale interfaccia, è sufficiente accedere 
+al <tt>ServiceRegister</tt> OSGi per vedere se qualche bundle implementa quel servizio: 
+a tale fine si può utilizzare uno dei metodi messi a disposizione dal 
+<tt>BundleContext</tt>. 
+</p>
+<div class="p">
+Uno di questi metodi è ad esempio
+<pre class="pre">
+ServiceReference[] getServiceReferences(
+			String clazz, String filter)
+</pre>
+ 
+
+in cui il primo parametro fornisce il nome dell'interfaccia Java associata 
+al servizio, mentre il secondo è una stringa rappresentante un filtro di ricerca 
+da applicare alle proprietà del servizio richiesto. Il metodo restituisce un'array 
+di oggetti di tipo <tt>ServiceReference</tt> che soddisfano la ricerca, oppure <tt>null</tt> 
+se non ce ne sono. Un oggetto <tt>ServiceReference</tt> rappresenta un riferimento al servizio 
+e ne incapsula le proprietà e le altre meta-informazioni. 
+</div>
+<p>
+Come noto 
+l'interfaccia Java da sola potrebbe non essere sufficiente a caratterizzare il 
+servizio che rappresenta; in questo caso è possibile registrare il servizio con 
+ proprietà aggiuntive che ne 
+completino le specifiche. Il filtro potrebbe poi 
+selezionare solo i servizi di interesse, ad esempio quelli
+erogati in una certa lingua, 
+oppure con certi requisiti non funzionali (come i tempi di risposta, l'efficienza, ecc). 
+</p>
+<p>
+L'oggeto <tt>ServiceReference</tt> può  essere memorizzato e passato agli altri bundle 
+senza implicazioni di dipendenza. Si deve però tenere in conto che la sua validità 
+è legata alla presenza della registrazione del servizio sul <tt>ServiceRegister</tt>: 
+se il servizio viene cancellato dal registro il <tt>ServiceReference</tt> ottenuto 
+in precedenza diventa inconsistente. 
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Processo di consumo del servizio</h2>
+<div class="p">
+L'ultima fase è ovviamente il consumo del servizio, cioè la fase in cui il produttore 
+fornisce il servizio e il cliente lo utilizza. Questa fase ha inizio con la richiesta 
+da parte del cliente di ottenere il servizio effettivo, che viene eseguita utilizzando 
+il metodo del <tt>BundleContext</tt>
+<pre class="pre">
+Object getService(ServiceReference ref)
+</pre>
+ 
+Il metodo ha come parametro il 
+<tt>ServiceReference</tt> ottenuto durante la ricerca e restituisce un generico <tt>Object</tt>. 
+La prassi è quella di eseguire un <em>cast</em> esplicito da <tt>Object</tt> all'interfaccia Java del 
+servizio così da poterne utilizzare i metodi. In altre parole, il bundle che offre 
+il servizio ne fornisce un'istanza al cliente. 
+Le caratteristiche dell'oggetto servizio dipendono da come è stato registrato, 
+in particolare tutti i clienti potrebbero ottenere la stessa istanza, oppure 
+potrebbero essere forniti servizi personalizzati
+(si veda <a href="osgiServiceTracker.html">Service Tracker</a>). 
+</div>
+ 
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Rilascio di un servizio</h2>
+<div class="p">
+Quando il bundle richiedente ha terminato di usare il servizio, può eseguire 
+un'operazione di rilascio, allo scopo di migliorare l'efficienza rilasciando 
+le risorse impegnate. 
+Questa operazione si esegue tramite il metodo del <tt>BundleContext</tt>, 
+<pre class="pre">
+ungetService(ServiceReference ref)
+</pre>
+ 
+in cui il parametro è il <tt>ServiceReference</tt> ottenuto 
+durante la ricerca del servizio. 
+</div>
+<p>
+É importante notare che questo metodo non libera immediatamente le risorse, 
+ma si limita a decrementare un contatore relativo all'uso di un certo servizio 
+da parte di un certo bundle. Quando il contatore raggiunge lo <tt>0</tt>, il bundle 
+fornitore sa che quel bundle non ha più bisogno del servizio e può eventualmente 
+liberare delle risorse o terminarsi. In altri termini l'unico scopo di questa 
+operazione è eliminare la dipendenza tra il bundle che realizza il servizio 
+e quello che lo usa.
+</p>
+<div class="p">
+Per questa ragione occorre molta cautela, 
+come mostra il seguente stralcio di codice. 
+<pre class="pre">
+ServiceReference ref =  
+	context.getServiceReference( IService.class.getName() );
+ if( ref != null ){
+	IService s1 = IService context.getService( ref );
+	IService s2 = IService context.getService( ref );
+	//primo rilascio del servizio
+	context.ungetService( ref );
+	//secondo rilascio del servizio
+	context.ungetService( ref );
+ }
+</pre>
+
+Il programma esegue una ricerca per trovare dei servizi 
+di tipo <tt>IService</tt>. 
+
+Due chiamate successive (<tt>getService</tt>) allo stesso 
+servizio da parte dello stesso bundle, forniscono lo stesso oggetto; in altri termini 
+l'istanza del servizio è unica per ciascun richiedente (è comunque possibile fornire 
+istanze diverse a bundle diversi). Le operazioni di <tt>ungetService</tt> non hanno alcuna
+infiuenza apparente sul bundle che richiede il servizio, infatti sia dopo una che 
+dopo due chiamate di questo metodo il risultato sembra essere lo stesso. 
+</div>
+<p>
+In effetti, l'oggetto servizio non può essere distrutto dal garbage collector 
+di Java fino all'annullamento di tutti i suoi riferimenti, per cui rimane ancora 
+utilizzabile. Purtroppo, una volta eseguito il rilascio del servizio, 
+il bundle fornitore del servizio non ha più legami con il bundle richiedente
+e potrebbe tranquillamente cancellare il servizio dal <tt>Service Register</tt>, 
+terminare o essere disinstallato. Questo può diventare un problema soprattutto 
+se l'oggetto servizio esegue delle callback ad altri oggetti istanziati 
+dal bundle fornitore, o se necessita di risorse private di quel bundle, 
+che potrebbero non essere più disponibili. In altre parole, dopo avere eseguito 
+il rilascio di un servizio, il riferimento a quel servizio è da considerarsi 
+inconsistente e non deve essere più utilizzato. In ogni caso, dopo 
+l'esecuzione del metodo <tt>stop</tt>, le risorse relative ai servizi vengono comunque 
+rilasciate automaticamente. 
+</p>
+ 
+ 
+</div>
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Il paradigma ad oggetti" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/paradigmi/paradigmi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Il paradigma ad oggetti</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Il paradigma ad oggetti</h1>
+
+<div>
+
+<p>
+
+L'introduzione di linguaggi oritentati agli oggetti ha segnato la storia
+dell'informatica promuovendo un rapporto tra struttura e funzionamento più articolato della semplice coppia 
+istruzioni-dati ed offrendo uno spazio concettuale molto più ricco 
+che caratterizza (e condiziona) il modo con cui
+si analizzano, si progettano e si costruiscono oggi i sistemi software.
+</p>
+<p>
+Il termine <em>oggetto</em> inizia a fare la sua comparsa nei primi anni 70, in modo indipendente 
+in settori diversi dell'informatica, per catturare l'idea di un ente 
+che abbina una parte dati ad un insieme di operazioni: 
+</p>
+<div class="p">
+<ul>
+<li>nelle architetture dei calcolatori per dare supporto ai sistemi operativi; </li>
+
+<li>nei linguaggi per sostenere metodologie di programmazione modulare e incrementale; </li>
+
+<li>in intelligenza artificiale, nella forma di frames per la rappresentazione della conoscenza; </li>
+
+<li>nei sistemi informativi come base dei modelli semantici. </li>
+
+</ul>
+
+</div>
+<p>
+
+Impostare il progetto e la costruzione di un sistema software partendo dallo stile
+computazionale ad oggetti, permette di modulare nel modo più conveniente il rapporto tra la
+parte puramente algortimica e la parte strutturale ed architetturale del sistema. Infatti, anche il
+neofita è indotto, fin dalle prime fasi, a superare la tradizionale concezione di
+<tt>programma=sequenza di istruzioni</tt> che opera su una collezione di dati a favore di un sistema
+costituito da una <em>rete (grafo) di oggetti</em>, tra loro interagenti attraverso un insieme di interfacce
+accuratamente progettate per garantire indipendenza dalla struttura interna.
+</p>
+<p>
+Lo spazio concettuale di riferimento è molto più articolato della semplice coppia
+istruzioni(procedure)-dati; tra i suoi elementi più importanti, che formano parte integrante dei
+più diffusi linguaggi di programmazione come C++, Java, C#, vi sono infatti i seguenti:
+</p>
+<div class="p">
+<ul>
+<li><strong>oggetto</strong>:  un aggregato di dati ed operazioni, istanza di una classe;</li>
+
+<li><strong>classe</strong>: descrizione della struttura e del comportamento di un oggetto. E' un costrutto che
+permette la creazione di oggetti. In taluni linguaggi la classe è essa stessa un oggetto,
+descritto da una metaclasse;</li>
+
+<li><strong>metodo</strong>: un servizio reso da un oggetto;</li>
+
+<li><strong>interfaccia</strong>: l'insieme dei metodi ed altre proprietà visibili di un oggetto;</li>
+
+<li><strong>messaggio</strong>: la richiesta ad un oggetto di eseguire un metodo;</li>
+
+<li><strong>ereditarietà</strong>: una relazione tra classi che permette il riuso delle specifiche e del codice;</li>
+
+<li><strong>delegazione</strong>: una relazione tra oggetti che permette ad un oggetto di svolgere lavoro per
+conto di un altro;</li>
+
+<li><strong>tassonomia</strong> (gerarchia di classi): una struttura dati ad albero che rappresenta la relazione
+di ereditarietà;</li>
+
+<li><strong>polimorfismo</strong>: la possibilità di porre dietro ad una singola interfaccia diverse
+implementazioni;</li>
+
+<li><strong>binding dinamico</strong>: il meccanismo che stabilisce il valore associato ad un identificatore
+solo a tempo di esecuzione.</li>
+
+</ul>
+
+
+</div>
+<p>
+Questo nuovo spazio concettuale:
+</p>
+<div class="p">
+
+<ul>
+<li>promuove metodologie basate sull'astrazione ed una chiara distinzione tra la fase di
+dichiarazione (di struttura e proprietà) e la fase operazionale di funzionamento;</li>
+
+<li>realizza un bilanciamento tra diversi paradigmi computazionali
+(dichiarativo, operazionale e interattivo);</li>
+
+<li>sussume i meccanismi legati ai principi dell'information hiding e ai concetti
+dell'astrazione di dato supportati dai linguaggi precedenti;</li>
+
+<li>propone nuovi meccanismi e forme di asterazione (polimorfismo, ereditarietà) utili sia
+per la progettazione sia per lo sviluppo e per la manutenzione del software
+(progettazione incrementale, riusabilità);</li>
+
+<li>informa senza discontinuità (<em>seamless</em>) tutte le fasi della produzione del software
+(specifica dei requisiti ed analisi, progetto, implementazione, testing, manutenzione);</li>
+
+<li>permette di esprimerere sia computazioni sequenziali sia computazioni concorrenti
+fornendo armi per aggredire l'intrinseca complessità dello sviluppo di applicazioni
+distribuite.</li>
+
+</ul>
+
+</div>
+<p>
+Nell'Aprile 1999 undici compagnie hanno fondato l'<em>Object Management Group</em> 
+(<strong>OMG</strong>, <a href="www.omg.org">www.omg.org</a>) 
+che oggi comprende circa 800 organizzazioni, con l'intento di fornire
+linee-guida e di definire specifiche di object management per
+framework comuni di supporto allo sviluppo di applicazioni.
+
+</p>
+
+<div class="section"><h2 class="sectiontitle">Oltre gli oggetti</h2>
+<p>
+Lo sviluppo delle applicazioni distribuite in Internet ha "messo alle corde"
+il paradigma ad oggetti, che rivela mancanze su importanti 
+concetti come l'autonomia, l'orientamento ai compiti da svolgere, la collocazione in 
+un ambiente e la capacità di interagire in modo flessibile. 
+Ad esempio, approcci basati sugli oggetti non catturano l'idea che
+l'interazione possa essere basata sulla negoziazione 
+e non forniscono nessun supporto su come mantenere un 
+bilanciamento tra il comportamento reattivo e quello proattivo 
+in situazioni complesse e dinamiche.
+</p>
+<p>
+L'adozione del paradigma ad oggetti
+induce a costruire le applicazioni adottando una prospettiva 
+orientata alle funzionalità e porta o alla costruzione di architetture 
+statiche o alla necessità di adottare complesse infrastrutture per 
+la gestione delle dinamiche, delle riconfigurazioni e per il supporto 
+della negoziazione di risorse e compiti.   
+</p>
+<p>
+L'ulteriore passo evolutivo potrebbe esere costituito dal 
+<em>paradigma a componenti</em> e/o dal <em>paradigma ad agenti</em>,
+di cui si discuterà tra poco.
+
+</p>
+
+</div>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/paradigmi/paradigmi.html">Linguaggi e paradigmi computazionali</a></div>
+</div>
+</div>
+
+</body>
+</html>

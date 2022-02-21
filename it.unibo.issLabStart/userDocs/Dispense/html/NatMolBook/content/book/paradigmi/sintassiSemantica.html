@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Sintassi (astratta) e semantica" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/paradigmi/paradigmi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Sintassi (astratta) e semantica</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Sintassi (astratta) e semantica</h1>
+
+<div>
+
+<p>
+La descrizione dei linguaggi 
+viene effettuata introducendo notazioni formali diverse per la descrizione della struttura  
+delle frasi (<strong>sintassi</strong>) e per la descrizione 
+del significato di una frase (<strong>semantica</strong>).
+La struttura delle frasi lecite di un linguaggio può essere descritta attraverso un dispositivo 
+formale denominato <strong>grammatica</strong>. 
+Pur se meno diffusi per via della loro relativa maggior complessità, sono disponibili anche vari metodi 
+formali per la descrizione della semantica di un linguaggio.
+</p>
+<p>
+
+La <strong>sintassi astratta</strong> di un linguaggio fornisce una descrizione indipendente da ogni
+notazione concreta specificando il linguaggio in termini delle strutture che lo formano.
+Tecnicamente la sintassi astratta di un linguaggio è istanziata dall'analizzatore sintattico
+del linguaggio (<em>parser</em>) come forma interna del codice sorgente. Ad esempio un documento
+scritto in sintassi concreta <tt>XML</tt> [XML] viene rappresentato in memoria da un <tt>DOM</tt> [DOM]
+(<em>Document Object Model</em>) la cui organizzazione strutturale costituisce la sintassi astratta di <tt>XML</tt>.
+</p>
+<p>
+La <strong>semantica statica</strong> determina i criteri di corretta formazione delle strutture di
+un linguaggio. Ad esempio una regola di molti linguaggi di programmazione
+di alto livello "tipati" è che ogni variabile deve essere dichiarata prima di essere
+usata; questa regola non può essere specificata dalla sintassi (nè astratta nè concreta).
+Poichè la regola viene controllata dal compilatore si parla di semantica anche
+se concettualmente la semantica statica appartiene più al campo sintattico. 
+</p>
+<p>
+La <strong>semantica dinamica</strong> determina il significato dei costrutti del linguaggio.
+</p>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/paradigmi/paradigmi.html">Linguaggi e paradigmi computazionali</a></div>
+</div>
+</div>
+
+</body>
+</html>

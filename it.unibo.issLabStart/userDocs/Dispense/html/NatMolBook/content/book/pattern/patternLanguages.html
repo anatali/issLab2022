@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Pattern languages" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/pattern/introPattern.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Pattern languages</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Pattern languages</h1>
+
+<div>
+
+
+<p>
+
+Una generica idea di insieme o netwok di pattern
+risulta però  insoddisfacente se si vuole individuare
+un concetto che possa supportare l'applicazione dei pattern per
+creare in modo olistico sistemi software per specifici domini e/o per affrontare in modo
+sistematico aspetti rilevanti e strategici quali comunicazione,
+interazione, distribuzione, fault-tolernace, 
+life-time management di oggetti/componenti, etc.
+</p>
+<p> 
+
+Il concetto attualmente preso a rifieremento per una "holistic, systematic, and
+costructive support for developing software with patterns" ([POSA5] pag. 244)
+è quello di <strong>pattern language</strong> definito in [POSA5] pag. 260 come
+<em>"a network of tightly interwoven patterns that defines a process for
+systematically resolving a set of related and interdpendent software development problems"</em>.
+</p>
+<p> 
+Il concetto di linguaggio va qui inteso in senso lato. Con riferimento alla usuale
+intepretazione di linguaggio, i singoli pattern possono
+essere visti come gli elementi terminali (<em>words</em>) mentre le regole grammaticali
+sono più difficili da individuare; in [POSA5] (pag 281) si lega l'idea di grammatica
+alle pattern sequences ammissibili e si discutono (pag 282-284)  
+anche i possibili formalismi per esprimre tali sequenze, tra cui la "railroad notation"
+usata per definire la sitassi del linguaggio Pascal [JW75].
+</p>
+<p> 
+Il punto importante da comprendere è che (POSA5] pag. 260) così come
+un singolo pattern è molto più che "a solution that arises within a specific context",
+<em>"a pattern language is much more than a network of tightly interwoven patterns"</em>.
+L'idea di fondo consiste nel privilegiare
+la visione di insieme (il tutto) rispetto ai casi particolari (le parti).
+</p>
+<p> 
+Le principali forze di un pattern language sono riconducibili non solo alle
+unione delle forze dei pattern costituenti, ma a come
+il complesso dei pattern può risolvere le forze globali che si presentano nel dominio.
+In questa visione un pattern language è il mezzo
+per definire uno o più <em>stili architetturali</em>
+(si veda <a href="../sistemi/stileArchitetturale.html">Lo stile architetturale</a>)
+.
+</p>
+<p> 
+Un pattern language ha in sè l'idea che ogni pattern del linguaggio 
+debba essere applicato all'interno
+di una specifica sequenza. Per raggiungere questo fine,
+il contesto di un pattern che fa parte di un pattern language 
+descrive i pattern che devono essere introdotti prima che esso possa essere realizzato con successo.
+Inoltre ogni pattern descrive un <em>resulting context</em>  che descrive quali altri
+pattern possono essere usati per la sua implementazione o per procedere
+nel processo di raffinamento dei problemi.
+L'insieme dei contesti di tutti i pattern di un pattern language forma quella
+che [POSA5] chiama (pag. 278) la <strong>topologia</strong> dei pattern, una struttura
+parzialmente ordinata con un unico punto di ingresso.
+</p>
+<p> 
+Idealmente si potrebbe pensare di definire 
+due pattern languages diversi per uno stesso dominio adottando uno stesso
+insieme di pattern ma modificando la topologia. I due linguaggi sarebbero
+caraterizzati da due diversi stili architetturali proprio in virtù del 
+diverso modo di organizzare la topologia dei contesti.
+</p>
+<p>
+Pertanto, un pattern language non definisce solo un insieme di pattern logicamente correlati, 
+ma fornisce anche
+linee guida su come affrontare i problemi di un dominio e su quali soluzioni
+concrete avanzare in termini di progetto o implementazione
+in quanto fornisce indicazioni sull'ordine logico (in termini di <em>pattern sequences</em>) 
+con cui affrontare i problemi, le possibili vie per una costruzione
+efficace del tutto.
+Il "tutto" potenzialmente generabile da un buon pattern language 
+dovrebbe possedere una qualità spesso denotata come <tt>QWAN</tt>: <em>quality without
+a name</em> riconducibile ad una universale idea di bellezza ed ordine.
+(si veda anche [Gelernter88] <em>Machine Beauty: Elegance and the Heart of Technology</em>). 
+</p>
+<p> 
+Un sotware design pattern language  è sempre definito con specifico riferimento
+a un dato dominio, con l'obiettivo di rappresentare e trasferire conoscenze e metodi che sono stati
+ripetutamente applicati con successo per creare e supportare architetture
+software sostenibili in quel dominio e non per rappresentare idee che <em>potrebbero</em> risultare utili.
+</p>
+<p> 
+Ad esempio il pattern language descritto in [POSA4] riguarda i sistemi distribuiti
+e mira a catturare le diverse situazioni del software distribuito senza compromettere
+fattori di qualità come scalabilità e performance. Il testo presenta 114 pattern
+suddivisi in 13 aree di problemi: <em>from mud to  structure,
+distribution infrastructure, event demultiplexing and dispatching, interface partitioning,
+component partitioning, application control,, concurrency, synchronization, object interaction,
+adpatation and extension, modal behaviour, resource management, database access</em>.
+</p>
+<p> 
+Altri pattern language sono stati proposti ([POSA5] pag. 370) 
+ad esempio per   
+progettare i componenti di un server [VSW02], 
+realizzare comunicazioni remote in ambiente distribuito [VKZ04],
+realizzare applicazioni sicure [SFHBS06] o web services [SNL05],
+per gestire processi di sviluppo con metodi agili o model-driven quali
+aspect oriented software development [Schmidt06] e
+model driven software development [SV05], fino a interessare
+campi diversi dall'Informatin Technology (<tt>IT</tt>)
+come nel caso del 
+<a href="http://www.pedagogicalpatterns.org">
+pedagogical patterns project </a>.
+</p>
+<p> 
+Molti importanti domini di intersse  IT sono ancora scoperti
+o non pienamente affrontati, tra cui ([POSA5] pag. 377-280)
+le service oriented architectures (SOA), distributed real time and embedded systems,
+mobile and pervasive systems,
+collaborative working e collective intelligence.
+Il progetto di Booch per la creazione di un 
+<a href="http://www.booch.com/architecture/index.jsp">
+Handbook of Software Architecture </a> ha oggi in elenco circa 2000
+pattern.
+
+</p>
+<p> 
+
+
+</p>
+
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/pattern/introPattern.html">I (design) pattern</a></div>
+</div>
+</div>
+
+</body>
+</html>

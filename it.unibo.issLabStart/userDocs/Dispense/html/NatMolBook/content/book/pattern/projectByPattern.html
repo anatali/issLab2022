@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Progetti a crescita incrementale" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/sviluppoTopDown.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090109121713" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Progetti a crescita incrementale</title>
+</head>
+<body id="id20090109121713"><a name="id20090109121713"><!-- --></a>
+
+
+	<h1 class="topictitle1">Progetti a crescita incrementale</h1>
+
+	
+	<div>
+
+
+<p>
+L'uso dei pattern languages viene associato a un processo evolutivo, incrementale e ricorsivo
+di <em>piecemeal growth</em> che, partendo da una visione del "tutto", applica
+gradualmente i pattern per trasformare una prima situazione e/o architettura di base,
+in cui si manifesta un particolare problema, in una nuova
+situazione e/o architettura in cui il problema è risolto, ripetendo
+il procedimento per i nuovi problemi che si possono porre nella nuova situazione.
+</p>
+<p>
+Questo tipo di processo non è composizionale nè a cascata ([POSA5] pg. 301) e
+condivide molti aspetti dei processi agili [CoHa04],  in cui il sistema evolve attraverso forme intermedie stabili
+e logicamente integrate: ogni struttura è trasformata preservando la visione
+e le proprietà della struttura più ampia di cui prende il posto.
+</p>
+<p>
+Nell'ottica <em>piecemeal growth</em> lo schema logico 
+introdotto in <a href="../wkflow/processoLogico.html">Un percorso di riferimento</a>  può essere riletto
+attraverso una sequenza di domande-risposte. 
+</p>
+<div class="p">
+<ol>
+<li>Una volta compresi i requisiti ci si può chiedere:
+<em>come organizzare le funzionaltà richieste
+in insiemi coerenti  in modo che ciascun insieme possa essere sviluppato
+e modificato in modo indipendente dagli altri?</em>
+Una tipica risposta consiste nella
+definizione di un'<em>architettura logica di base </em> organizzata in layer orizzontali 
+applicando il pattern <tt>Layers</tt> (pg. 185).
+<div class="fignone"><span class="figcap">Figura 1. Pattern Layers</span>
+<img src="../../images/book/patternLayers.jpg" />
+</div>
+
+
+<div class="fignone"><span class="figcap">Figura 2. Relazioni del pattern Layers</span>
+<img src="../../images/book/layersRel.jpg" />
+</div>
+
+
+E' frequente individuare i seguenti livelli orizzontali (POSA4 pg. 67):
+	<br /><ol type="a">
+		<li><em>Presentazione</em>: ha la responsabilità di contenere le intrafcce di
+		accesso alle operazioni del sistema e il supporto all'utente.</li>
+
+		<li><em>Processi di business</em>: ha la responsabilità di 
+		realizzare le funzionalità dell'applicazione.</li>
+
+		<li><em>Oggetti di business</em>: ha la responsabilità di definire
+		e gestire le entità del dominio applicativo, sulle quali operano
+		i processi di business del livello superiore.</li>
+
+		<li><em>Infrastruttura</em>: ha la responsabilità di realizzare funzionalità
+		indipendenti dal dominio; da essa può dipendere il soddisfacimento
+		di molti requisiti non funzionali.
+		</li>
+
+		<li><em>Accesso</em>: ha la responsabilità di gestire
+		gli accessi a supporti esterni al sistema, in primo luogo ai
+		database. </li>
+
+	</ol>
+
+Va  ricordato che questa organizzazione è puramente logica e potrebbe ben rappresentare
+l'architettura logica complessiva del sistema finale;
+nulla vieta che l'architettura finale del sistema sia poi realizzata diversamente. 
+<p />
+
+</li>
+
+<li>Subito dopo si può avanzare una seconda domanda di carattere
+generale:  <em>come raffinare ciascun layer
+in parti cui assegnare specifiche responsabilità applicative?</em>
+Una tipica risposta consiste nell'applicare il pattern <tt>Domain Model</tt> 
+per definire un insiene di parti auto-contenute ciascuna associata a precise
+responsabilità funzionali; queste parti corrispondono in pratica agli oggetti di business 
+derivati/derivabili dall'analisi.
+<div class="fignone"><span class="figcap">Figura 3. Pattern Domain Model</span>
+<img src="../../images/book/domain.jpg" />
+</div>
+
+<div class="fignone"><span class="figcap">Figura 4. Relazioni del pattern Domain Model</span>
+<img src="../../images/book/domainRel.jpg" />
+</div>
+
+
+Ciascuno dei layer orizzontali 
+viene quindi articolato attraverso una decomposiozne verticale
+in diversi <tt>domain objects</tt>.
+<p />
+
+</li>
+
+
+<li>L'obiettivo di definire un'architettura logica del problema
+astraendo da ogni dettaglio implementativo implica che si debba anche
+dare risposta ad un'ulteriore domanda:
+<em>come evitare che una parte debba
+dipendere in modo diretto dalla realizzazione di un'altra?</em>.
+La risposta consiste nel separare, per ogni layer e domain object,
+la specifica delle funzionalita  offerte dalla loro
+realiizazione, adottando i pattern <tt>Explicit Interface</tt> (pg. 281)
+e <tt>Encapsulated Implementation</tt> (pg. 313).
+<div class="fignone"><span class="figcap">Figura 5. Pattern Explicit Interface</span>
+<img src="../../images/book/explicitInterface.jpg" />
+</div>
+
+
+<div class="fignone"><span class="figcap">Figura 6. Pattern Encapsulated Implementation</span>
+<img src="../../images/book/ecapsulatedImplementation.jpg" />
+</div>
+
+
+<div class="fignone"><span class="figcap">Figura 7. Relazioni Encapsulated Implementation</span>
+<img src="../../images/book/ecapsulatedImplementationRel.jpg" />
+</div>
+
+
+
+</li>
+
+
+<li>A livello di architettura logica è anche opportuno porsi il seguente problema: 
+<em>come evitare che un domain obejct debba affrontare in modo diretto
+dettagli sulle modalità di comunicazione</em> con gli altri domain objects?
+Una tipica risposta è fare riferimento al pattern <tt>Broker</tt> (pg. 237).
+<div class="fignone"><span class="figcap">Figura 8. Pattern Broker</span>
+<img src="../../images/book/broker.jpg" />
+</div>
+
+
+</li>
+
+
+
+</ol>
+
+</div>
+<div class="p">
+Tutta la fase di progettazione può 
+essere affrontata in modo sistematico cercando di trasformare
+l'architettura logica  in una architettura di progetto
+seguendo ancora uno schema domanda-risposta.
+Una tipica domanda può essere ad esempio:
+<em>come evitare overhead e inefficienze senza distruggere il sistema logico a layer?</em>
+Questo caso è molto frequente in tutti i sistemi in cui sia necessario
+mantenere allineato un domain object del presentation layer (ad esempio
+una vista) con lo stato di un oggetto di un livello inferiore
+(ad esempio del business object layer).
+Una tipica risposta è applicare pattern che si basano sul
+principo della <em>inversione del controllo</em> quali <tt>Model View Controller (MVC) </tt>
+o <tt>Presentation-Abstraction.Control (PAC) </tt>.
+<div class="fignone"><span class="figcap">Figura 9. Pattern MVC</span>
+<img src="../../images/book/MVC.jpg" />
+</div>
+
+
+
+<div class="fignone"><span class="figcap">Figura 10. Pattern PAC</span>
+<img src="../../images/book/PAC.jpg" />
+</div>
+
+
+
+</div>
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/book/modelBased/fasi/sviluppoTopDown.html">Sviluppo top-down</a></div>
+</div>
+</div>
+
+</body>
+</html>

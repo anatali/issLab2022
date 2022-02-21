@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Analisi dei requisiti" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/workflowRequisiti.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/useCase.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Analisi dei requisiti</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Analisi dei requisiti</h1>
+
+<div>
+<div class="p">
+La lettura dei requisiti può essere condotta in diversi modi, ciascuno correlato a diverso
+punto di vista "organizzativo":
+
+<ul><li>cercando di definire un <em>modello dei casi d'us</em>o basato sulle relazioni di
+generalizzazione, inclusione, estensione;</li>
+
+
+<li>cercando di definire le <em>features</em> con cui l'applicazione si mostra ad un osservatore
+esterno, articolando ciascuna <em>feature</em> in una gerarchia di funzioni;
+</li>
+
+<li>cercando di organizzare i requisiti in classi;</li>
+
+
+<li>cercando di associare i requisiti ai diversi <em>stati</em> in cui l'applicazione 
+si può trovare. Per ciascun stato si determinano gli <em>eventi</em> che possono
+colpire l'applicazione mentre si trova in quello stato.
+</li>
+
+</ul>
+
+
+Un modo per impostare l'analisi è rivolgere
+particolare attenzione 
+ai <em><strong>sostantivi</strong></em> e ai <em><strong>verbi</strong></em> che compaiono nel testo.
+
+Da una sistematica analisi dei <em>sostantivi</em> è possibile  infatti
+formalizzare la conoscenza sul dominio applicativo e favorire la 
+produzione di un modello del dominio basato
+su insiemi di astrazioni (<em><strong>entitità del dominio</strong></em>) 
+caratterizzati da proprietà, politiche e vincoli comuni.
+
+Dalla analisi dei <em>verbi</em> è possibile individuare l'iniseme delle <em><strong>azioni</strong></em> che il sistema
+dovrà compiere. </div>
+<div class="p">
+Sia le entità che le azioni possono essere rappresentate da diagrammi <tt>UML</tt>.
+A tal fine può essere utile distinguere tra classi che modellano:
+<ul>
+<li><em><strong>Entità concettuali</strong></em>, spesso correlate a cose tangibili e 
+a <em>nomi</em> nel documento dei requisiti.</li>
+
+<li><em><strong>Ruoli</strong></em>  classi che rappresentano ruoli giocati da cose, persone od organizzazioni.
+Si manifestano spesso come <strong><em>sottotipi</em></strong>.
+</li>
+
+<li><em><strong>Episodi</strong></em> (<em>incidents</em>), che rappresentano qualcosa 
+che accade in qualche istante specifico di tempo, presente, passato o futuro.
+
+</li>
+
+<li><em><strong>Interazioni</strong></em>, che rappresentano operazioni (<em>transazioni</em>) o contratti
+che coinvolgono due o più classi. Le interazioni possono essere <em>asincrone</em> o <em>sincrone</em>
+
+ </li>
+
+<li><em><strong>Specifiche</strong></em> che rappresentano qualità comuni possedute da oggetti di 
+un'altra classe</li>
+
+
+</ul>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Artefatti relativi ai requisiti</h2>
+<p>
+Gli artefatti  devono definire i requisiti funzionali 
+e non funzionali che l'applicazione è chiamata a soddisfare.
+
+I requisiti vengono normalmente espressi da documenti scrtti in
+linguaggio naturale. In particolari contesti applicativi (ad esempio nei
+<em>sistemi real time</em>) questa descrizione deve essere completata da
+specifiche formali.
+</p>
+<div class="p">
+Una pratica ormai diffusa è definire
+
+<ul> 
+<li>un <em>glossario</em>  che riporta una spiegazione/definizione dei termini usati
+nel testo che descrive i requisiti;</li>
+
+<li>una traduzione dei requisiiti in modelli UML dei <em>casi d'uso</em> 
+(si veda xref href="../wflow/useCase.dita"/&gt;); </li>
+
+<li>documenti volti a descrivere <em>scenari</em> 
+(si veda xref href="../wflow/scenari.dita"/&gt;)
+che illustrano  le attività connesse ad un caso d'uso con dati reali.</li>
+
+</ul>
+
+
+Con questi artefatti l'analista dei requisiti  cerca di chiarire il significato
+delle richieste del committente,
+ponendosi anche dal punto di vista dell'utilizzatore finale dell'applicazione, in modo 
+da evitare ambiguità, incomprensioni e omissioni. 
+</div>
+<p>
+Un importante artefatto che può accompagnare il modello dei requisiti è
+costituito da una prima versine del <em>modello del dominio</em>, che sarà poi
+sviluppata nella fase dell'analisi del problema.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Modellazione del dominio applicativo</h2>
+<p>In generale,
+se si decide di organizzare i requisiti in classi, queste classi non
+è detto siano in alcun modo pensate per essere utlizzabili in fase di progetto 
+e di implememtazione.
+Tuttavia, individuare classi che possano essere mantenute anche nelle fasi di progetto
+e di implementazione promuove la correlazione tra requisiti, progetto e
+implementazione e quindi la tracciabilità.
+</p>
+<p>
+La raccolta e l'analisi dei requisiti mira ad una corretta
+<strong>identificazione</strong> e modellazione del dominio applicativo
+e delle funzioni che l'applicazione deve svolgere, cioè la specifica
+di <em>cosa</em> il sistema deve fare. 
+Nella modellazione di un dominio è di fondamentale importanza usare esclusivamente
+il <strong>vocabolario</strong> terminologico di quel dominio.
+
+Il <em><strong>vocabolario</strong></em> di un dominio è una lista
+di definizioni dei termini usati nel definire i requisiti di una applicazione in quel dominio
+</p>
+<p>
+La definizione  del vocabolario di dominio è uno dei fattori
+chiave per migliorare la comunicazione tra i diversi attori del processo di costruzione,
+in particolare tra analisti e progettisti.
+
+In particolare, ciascuna entità di dominio che è possibile evincere dalla analisi
+dei requisiti può essere espressa da una classe <tt>UML</tt> e posta in relazione
+logica con altre entità del dominio sfruttando le diverse relazione di <em>associazione</em> 
+che <tt>UML</tt> permette di esprimere. 
+
+</p>
+<p>
+La modellazione del dominio applicativo costituisce spesso
+uno dei cardini nel processo di sviluppo.
+</p>
+
+</div>
+
+
+ 
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../../content/book/modelBased/fasi/useCase.html">Casi d'uso</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/modelBased/fasi/workflowRequisiti.html">Requisiti</a></div>
+</div>
+</div>
+
+</body>
+</html>

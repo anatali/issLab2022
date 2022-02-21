@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Messaggi" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLIntro.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Messaggi</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Messaggi</h1>
+
+<div>
+<p>
+
+Nel contesto di <tt>UML2</tt> e <tt>AUML</tt>, un <strong>messaggio</strong> definisce 
+una particolare comunicazione tra due lifeline in un diagramma di sequenza.
+I mittenti e i destinatari di un messaggio possono essere sulla stessa 
+lifeline o no. Quando la lifeline è la medesima sia per il mittente che
+per il destinatario occorre tener presente due situazioni:
+</p>
+<div class="p">
+<ol>
+<li>Il mittente vuole ricevere il messaggio così com'è</li>
+
+<li>Il mittente vuole essere omesso dalla lista dei riceventi</li>
+
+</ol>
+
+</div>
+<p>
+Queste due differenti situazioni devono essere distinte nella notazione 
+del messaggio (vedi figura).
+Al messaggio possono altresì essere associati dei vincoli che influiscono sul suo uso. 
+Gli agenti possono usare sia messaggi sincroni che asincroni. 
+Il contenuto del messaggio è dato sopra alla freccia senza nessuna 
+formalizzazione riguardo al contenuto che dipende dal tipo di linguaggio di
+comunicazione adottato.
+Visto che le lifeline tipicamente rappresentano ruoli che possono essere 
+giocati da diversi agenti contemporaneamente è importante specificare la
+cardinalità. La cardinalità dei messaggi segue direttamente da quella 
+relativa ai ruoli già presentata. Tipicamente la cardinalità deve essere
+specificata sia per i mittenti che per i destinatari ed è omessa solo quando è ovvia.
+La figura sottostante riporta un riassunto delle possibili notazioni per i diversi tipi di messaggi.
+</p>
+
+
+<div class="fignone"><span class="figcap">Figure 1. Notazioni dei possibili messaggi</span>
+
+<br /><img src="../../images/agenti/AUML6.bmp" alt="Riassunto delle possibili messaggi" /><br />
+</div>
+
+
+<p>
+La figura mostra le notazioni adottate nello scambio dei messaggi tra agenti. 
+In particolare: 
+</p>
+<div class="p">
+<ul>
+<li>a) messaggio asincrono;</li>
+
+<li>b) messaggio sincrono;</li>
+ 
+<li>c) messaggio 
+con cardinalità sia per mittente che per ricevente (esatto numero di agenti coinvolti);</li>
+ 
+<li>d) messaggio con cardinalità rappresentata attraverso un range;</li>
+ 
+<li>e) messaggio con cardinalità espressa mediante una condizione;</li>
+ 
+<li>f) messaggio per un agente specifico;</li>
+
+<li>g) messaggio asincrono per la stessa 
+lifeline dove il mittente riceve una copia del messaggio;</li>
+
+<li>h) messaggio asincrono per la stessa lifeline dove il mittente 
+non riceve una copia del messaggio;</li>
+ 
+<li>i) messaggio sincrono per 
+la stessa lifeline dove il mittente non riceve una copia del messaggio;</li>
+
+</ul>
+
+</div>
+<p>
+Le figure sottostanti mostrano due esempi di protocolli il primo con 
+messaggi asincroni e il secondo con messaggi sincroni.
+</p>
+
+
+<div class="fignone"><span class="figcap">Figure 2. Protocollo con messaggi asincroni</span>
+
+<br /><img src="../../images/agenti/AUML8.bmp" alt="Protocollo con messaggi asincroni" /><br />
+</div>
+
+
+
+<div class="fignone"><span class="figcap">Figure 3. Protocollo con messaggi sincroni</span>
+
+<br /><img src="../../images/agenti/AUML9.bmp" alt="Protocollo con messaggi sincroni" /><br />
+</div>
+
+
+ 
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/aUMLIntro.html">Agent UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

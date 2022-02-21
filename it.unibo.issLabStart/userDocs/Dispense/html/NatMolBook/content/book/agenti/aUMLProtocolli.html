@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="FIPA Interaction" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLIntro.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>FIPA Interaction</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">FIPA Interaction</h1>
+
+<div>
+<p>
+I diagrammi di sequenza di <tt>Agent UML</tt> sono stati adottati inizialmente da <tt>FIPA</tt> 
+per esprimere i protocolli di interazione tra agenti.
+Nei diagrammi vengono considerate due parti principali: il frame che delimita 
+il diagramma di sequenza e il flusso dei messaggi 
+tra i ruoli che viene  rappresentato per mezzo dell'insieme delle lifeline e dei messaggi.
+Da notare che mentre in un diagramma di sequenza di <tt>UML</tt> i rettangoli rappresentano 
+oggetti, nel caso dei diagrammi di sequenza di <tt>UML</tt> i 
+rettangoli rappresentano agenti o ruoli giocati dagli agenti.
+</p>
+
+
+
+<div class="fignone"><span class="figcap">Figure 1. AUML Frame </span>
+
+<br /><img src="../../images/agenti/AUML1.bmp" alt="AUML Frame" /><br />
+</div>
+
+
+
+
+
+<p>
+La keyword <strong>sd</strong> sta per "sequence diagram" e proviene delle specifiche di <tt>UML2</tt>. 
+Dopo la keyword tipicamente troviamo il nome del 
+protocollo di interazione. Diversamente da quanto avviene in <tt>UML2</tt>, i parametri 
+non sono seguono il nome del protocolli ma sono posti come commento esterno
+al diagramma di sequenza (vedi figura sottostante). I parametri sono prefissati attraverso 
+lo stereotipo <em>parameters</em>, inoltre in <tt>AUML</tt> tali parametri non
+sono legati ai parametri dei messaggi come avviene in <tt>UML2</tt>  ma sono invece 
+legati all'instanziazione dello specifico template .
+Per l'esempio della figura che segue il protocollo tipico dell'asta inglese è stato instanziato in 
+un caso specifico strettamente legato ai parametri associati
+al diagramma: vendere l'auto ad un certo prezzo e prima di una certa data prefissata.
+</p>
+
+
+
+<div class="fignone"><span class="figcap">Figure 2. Frame con parametri</span>
+
+<br /><img src="../../images/agenti/AUML2.bmp" alt="Frame con parametri" /><br />
+</div>
+
+
+<p>
+Un template di protocollo viene tipicamente denotato attraverso l'uso dello stereotipo 
+<em>template</em> che viene posto prima del nome del 
+protocollo stesso come mostrato in figura. Inoltre i progettisti dei protocolli 
+devono obbligatoriamente specificare 3 tipi di parametri chiave che sono l'ontologia (keyword "ontology"),
+il linguaggio del contenuto (<tt>CL</tt>) e il linguaggio usato nel protocollo (<tt>ACL</tt>).
+</p>
+
+
+<div class="fignone"><span class="figcap">Figure 3. Template di protocollo</span>
+
+<br /><img src="../../images/agenti/AUML3.bmp" alt="template di protocollo" /><br />
+</div>
+
+
+<p>
+L'uso delle <strong>lifelines</strong> in <tt>AUML</tt> è  diverso rispetto a quello di
+<tt>UML2</tt>, in cui le lifeline
+rappresentano un partecipante individuale nell'interazione. In <tt>AUML</tt> invece è possibile 
+rappresentare diversi agenti sulla stessa lifeline.
+Questo è possibile perchè in <tt>AUML</tt> una lifeline tipicamente rappresenta un ruolo che può 
+essere giocato da diversi agenti.
+
+</p>
+
+ 
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/aUMLIntro.html">Agent UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

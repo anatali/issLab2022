@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Verso un nuovo paradigma" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/agentWorld.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Verso un nuovo paradigma</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Verso un nuovo paradigma</h1>
+
+<div>
+<p>
+Le architetture tradizionali promosse dall'approccio orientato agli oggetti 
+e riportate nella figura ([Zambonelli04]) promuovono una visione di entità "funzionali" 
+o "orientate al servizio" che influenzano direttamente il modo in cui i sistemi software 
+vengono progettati architetturalmente. 
+</p>
+
+<div class="fignone"><span class="figcap">Figure 1. Architettura di un sistema ad oggetti</span>
+<br /><img src="../../images/agenti/Fig2.bmp" alt="Architettura di un sistema ad oggetti" /><br />
+</div>
+
+<p>
+Tipicamente la progettazione globale del sistema si basa su di una architettura piuttosto 
+statica che deriva da una decomposizione (e modularizzazione) delle funzionalità e dei dati
+richiesti dal sistema per portare a termine i suoi obiettivi globali e sulla definizione 
+delle interdipendenze tra questi moduli ([Zambonelli03b]). In particolare ([Shaw96[, [Bass03]):
+</p>
+<div class="p">
+<ul>
+<li>gli oggetti sono usualmente considerati come fornitori di servizi, resposabili di 
+specifiche porzioni di dati e incaricati di fornire servizi per altri oggetti (il modello 
+"contrattuale" dello sviluppo software promuove esplicitamente questa visione)</li>
+
+<li>le interazioni tra gli oggetti sono usualmente esperessione di interdipendenze: due 
+oggetti interagiscono per accedere a servizi e dati che sono disponibili localmente</li>
+
+<li>ogni cosa in un sistema tende ad essere modellata in termini di oggetti e ogni 
+distinzione tra attori attivi e risorse passive viene così trascurata.</li>
+
+</ul>
+ 
+</div>
+
+<p>
+In altre parole, lo sviluppo orientato agli oggetti da una parte promuove l'incapsulamento 
+dei dati e delle funzionalità oltre che il concetto di interazione orientata alle funzioni, 
+dall'altra parte tende a trascurare la modellazione e l'incapsulamento del controllo dell'esecuzione.
+Viene assunta qualche sorta di "controllo globale" sull'insieme delle attività del sistema 
+(per esempio la presenza di un singolo flusso di esecuzione o un insieme limitato di flussi 
+di esecuzione controllabili e globalmente sincronizzati). 
+</p>
+<p>
+Assumere e/o imporre un tale tipo di controllo potrebbe non essere realizzabile nei sistemi 
+complessi: piuttosto che incorrere in rischi di perdita di controllo, una soluzione migliore 
+potrebbe essere quella di delegare esplicitamente il controllo dell'esecuzione ai componenti 
+del sistema come avviene per esempio nei <tt>MAS</tt>. Infatti:
+</p>
+<div class="p">
+<ul>
+<li>delegare il controllo a componenti autonomi può essere considerato come una nuova dimensione 
+di modularità e incapsulamento. Quando le entità possono incapsulare il controllo, oltre che i 
+dati e gli algoritmi, essi possono meglio gestire le dinamicità degli ambienti complessi 
+(le contingenze locali possono essere gestite localmente dai componenti) e si possono ridurre 
+le interdipendenze tra i componenti limitando l'esplicito trasferimento del controllo dell'esecuzione. 
+Questo porta ad amplificare la separazione tra le due dimensioni di progettazione: 
+il livello-componente (cioè quello intra-agente) e il livello-sistema (cioè quello inter-agente); </li>
+
+<li>la dinamicità e l'apertura degli scenari applicativi rende impossibile conoscere 
+a priori tutte le potenziali interdipendenze tra i componenti (per esempio quali i servizi 
+saranno necessari ad un dato punto dell'esecuzione e con quali altri componenti sarà 
+necessario interagire) come richiesto da una prospettiva orientata alle funzioni. 
+I componenti autonomi a cui è stato delegato il controllo possono essere arricchiti 
+con abilità sociali sofisticate, che sono la capacità di prendere decisioni riguardo 
+allo scope e alla natura delle loro interazioni e di iniziare interazioni in modo flessibile 
+(per esempio attraverso la negoziazione dei servizi e delle informazioni);</li>
+
+<li>per i sistemi complessi una chiara distinzione tra gli attori attivi (autonomi e con 
+il proprio flusso di controllo) del sistema e le risorse passive (oggetti passivi senza 
+controllo autonomo) potrebbe fornire un modello semplificato del problema. Infatti, 
+i componenti software di una applicazione spesso hanno una controporte nel mondo reale 
+che può essere  attiva o passiva e di conseguenza è un sistema di questo tipo viene modellato 
+in modo più adatto in termini di entità attive (agenti) e passive (risorse ambientali).</li>
+
+</ul>
+ 
+</div>
+<p>
+Cercare di arricchire gli approcci più convenzionali con nuove proprietà e caratteristiche 
+per far fronte alle nuove necessità può portare ad introdurre una pericolosa discrepanza tra 
+il livello di astrazione adottato e il livello concettuale nel quale devono essere risolti 
+i problemi applicativi.
+In parole semplici, oggetti e componenti sono ad un livello di astrazione troppo basso per 
+affrontare la complessità che i sistemi software richiedono, e mancano di importanti concetti 
+come l'autonomia, l'orientamento ai compiti da svolgere, la collocazione in un ambiente e la 
+capacità di interagire in modo flessibile. 
+</p>
+<p>
+Per esempio, approcci basati sugli oggetti o sui componenti non sono in grado di supportare la 
+progettazione di algoritmi di negoziazione per governare le interazioni, e non forniscono nessun 
+supporto su come mantenere un bilanciamento tra il comportamento reattivo e quello proattivo in 
+situazioni complesse e dinamiche.
+Questo forza a costruire le applicazioni adottando una prospettiva orientata alle funzionalità 
+e porta o alla costruzione di architetture statiche o alla necessità di adottare complesse 
+infrastrutture per la gestione delle dinamiche, delle riconfigurazioni e per il supporto della 
+negoziazione di risorse e compiti.   
+</p>
+<p>
+Riassumendo, la computazione basata sugli agenti promuove un livello di astrazione più 
+adatto per gli scenari moderni e che risulta più appropriato per la costruzione di sistemi 
+flessibili, altamente modulari e robusti qualunque sia la tecnologia veramente utilizzata 
+per costruire gli agenti.
+Questo ci porta a considerare la computazione basata sugli agenti come un nuovo
+possibile paradigma  di ingegnerizzazione del software.
+</p>
+
+
+
+</div>
+
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/agentWorld.html">Un mondo ad agenti</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Framework-based development" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/sviluppoConFramework.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Framework-based development</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Framework-based development</h1>
+
+<div>
+<p>
+La possibilità di disporre di un application framework modifica ulteriormente
+il processo di produzione del software in quanto lo sviluppo di un'applicazione
+nel dominio del framework avviene di fatto in modo molto più vincolato rispetto all'uso
+di una piattaforma general purpose: il framework, imponendo un preciso stile
+architetturale, ha di fatto già "risolto" un importante
+insieme delle forze che caratterizzano
+quel dominio, riducendo la complessità del problema agli occhi sia dell'analista
+sia del progettista, che possono ora meglio concentrarsi sulla "business logic" del problema.
+</p>
+<p>
+Una parte rilevante della complessità della costruzione
+del software si traduce ora nella produzione/gestione dei diversi artefatti
+relativi  ai punti di flessibilità (<em>variation points</em>) previsti dal framework per
+permettere l'adattamento ai requisiti della specifica applicazione.
+Questa complessità viene ridotta dall'uso di appositi tools; altri tools
+possono aiutare nella produzione di artefatti di deployment che possono essere
+assemblati, configurati e packaged per produrre <em>executables</em> da
+replicare, installare, registrare, etc. su piattaforme
+target quali applications servers, database servers, messaging systems,
+transaction monitors, web services, etc.
+</p>
+<p>
+Un application framework tuttavia non può essere definito una volta per tutte;
+il dominio applicativo presenterà inevitabilmente nuove forze o nuove prospettive
+per cui occorre rimettere mano alla parte architetturale comune.
+Inoltre vi possono essere retroazioni (feedback) sul framework da parte di coloro che sviluppano le
+applicazioni che possono indurre a un refactoring del framework stesso.
+</p>
+<p>
+D'altra parte un application framework deve essere quanto più stabile possibile
+in quanto mira a  supportare l'unione dei requisiti di un intero
+dominio applicativo.
+Per ottenere questo obiettivo puà essere opportuno usare <em>metodi agili</em> 
+(si veda <a href="../../processi/ProcessiAgili.html">Processi agili</a>)
+che permettano
+un continuo refactoring preservando l'integrità architetturale del framework
+e un collaudo continuo al variare dei requisiti supportati (per non
+compromettere l'integrità delle applicazioni).
+Nella progettazione e sviluppo di un framework i pattern (languages)
+svolgono un ruolo
+molto importante per individuare le alternative di progettazione
+che permettono di raggiungere specifiche proprietà, prima tra tutte la
+riusabilità, e per ridurre i costi dei cambiamenti minimizzando
+i loro effetti.
+</p>
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/modelBased/fasi/sviluppoConFramework.html">Sviluppo basato su framework</a></div>
+</div>
+</div>
+
+</body>
+</html>

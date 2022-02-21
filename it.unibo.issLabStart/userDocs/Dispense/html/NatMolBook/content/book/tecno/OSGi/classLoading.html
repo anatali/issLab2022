@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Class loading" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Class loading</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Class loading</h1>
+
+<div>
+
+<p>
+
+Per capire appieno come il Framework OSGi gestisce la Deployment Dependency è necessario 
+esaminare accuratamente l'architettura di supporto al class-loading che esso fornisce. 
+</p>
+<p>
+Più bundle possono condividere la stessa macchina virtuale Java.
+All'interno di tale macchina virtuale essi possono nascondere package e classi 
+agli altri bundle oppure condividerli con essi. La strategia adottata da OSGi 
+consiste nel <em>associare un singolo class loader ad ogni bundle</em> e
+nel creare una rete di delegazione gerarchica fra tali class loader sfruttando 
+i meccanismi di supporto al class loading fornito dalla JVM:
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 1. Architettura del class-loading OSGi</span>
+<img src="../../../images/OSGi/class-load-arch.JPG" />
+</div>
+
+</div>
+<p>
+Il class loader può caricare classi e risorse dal: 
+</p>
+<div class="p">
+<ul>
+<li><strong>Boot Class Path</strong>: 
+la boot class path contiene i package che compongono la piattaforma Java. </li>
+
+<li><strong>Framework Class Path</strong>: 
+il Framework di solito ha un proprio class loader per caricare le classi che lo
+implementano. </li>
+ 
+<li><strong>Bundle Space</strong>: 
+il bundle space è composto dal file <tt>jar</tt> associato al bundle, più ogni altro file <tt>jar</tt> 
+ad esso strettamente collegato, come ad esempio i così detti <em>fragments</em>
+(OSGi fornisce un meccanismo che permette ai bundle di essere sintetizzati come somma
+di più frammenti ognuno situato nel proprio <tt>URL</tt>. Questo è ad esempio il metodo usato
+per fornire ad un plug-in internazionale il supporto per lingue multiple). </li>
+ 
+</ul>
+
+</div>
+<div class="p">
+
+Se un <tt>class-loader</tt> riceve la richiesta di caricare una classe che non è fra quelle sopra 
+elencate potrà richiederla ai class-loader suo parent così come questi ai propri parent 
+e così via. 
+
+Se si definisce il <strong>class-space</strong> come tutte le classi raggiungibili da un 
+certo class loader associato ad un particolare bundle, allora un <tt>class-space</tt> potrà 
+essere composto dalle classi contenute: 
+<ul>
+<li>nel parent class loader (normalmente i package della 
+piattaforma Java contenuti nella boot class path ); </li>
+
+<li>nei package importati, elencati nella voce
+<tt>Import-Package</tt> del manifest;</li>
+
+<li>nei bundle richiesti, elencati nella voce <tt>Require-Bundle</tt> del manifest; </li>
+
+<li>nei package propri del bundle, elencati nella voce <tt>Bundle-ClassPath</tt> del manifest; </li>
+
+<li>nei fragments allegati al bundle.</li>
+
+</ul>
+	
+</div>
+<p>
+Un <tt>class-space</tt> deve essere consistente, nel senso che non potrà contenere classi 
+con lo stesso nome. Al contrario più class-space, nella stessa piattaforma OSGi, 
+possono contenere classi con lo stesso nome. Il Module Layer supporta un modello 
+per cui versioni multiple della stessa classe possono essere presenti nella stessa 
+macchina virtuale. 
+</p>
+<p>
+Prima che ad un bundle venga associato un class-loader 
+è necessario risolvere tutte le dipendenze dichiarate nel suo file manifest. 
+Sarà il framework a farsi carico di tale 
+compito attraverso un processo iterativo il cui risultato sarà una rete di connessioni 
+fra bundle. 
+</p>
+<p>
+Il framework OSGi è un framework dinamico pertanto può accadere che 
+in qualsiasi momento ad un bunlde, per il quale il processo di risoluzione delle 
+dipendenze aveva dato esito positivo, vengano a mancare delle risorse necessarie 
+al suo funzionamento. La gestione di questa eventualità viene lasciata al programmatore; 
+l'unico supporto dato dal framework è la voce <tt>DinamicImport-Package</tt> nel file <tt>manifest</tt> 
+che consente di specificare una lista di package alternativi in cui è possibile trovare 
+la risorsa richiesta. Inoltre il framework può ritardare la creazione di un particolare 
+<tt>class-loader</tt> finché non è realmente necessario.
+
+
+</p>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

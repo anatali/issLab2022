@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Espressioni: analisi dei requisiti" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/esempioModelBased.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/modelloDominioExp.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/pianoCollaudoExp.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/sintassiAstrattaExp.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Espressioni: analisi dei requisiti</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Espressioni: analisi dei requisiti</h1>
+
+	
+<div>
+<p>
+La fase di analisi dei requisiti 
+(si veda <a href="../../book/modelBased/fasi/analisiRequisiti.html">Analisi dei requisiti</a>)
+richiede forti interazioni con
+il committente al fine di chiarire il significato dei vocaboli
+usati e quello che si vuole che il sistema faccia.
+</p>
+
+
+
+
+<div class="section"><h2 class="sectiontitle">Use cases</h2>
+<div class="p"> 
+Dalla interazione con il committente si è capito
+che questi desidera che siano realizzati sia un analizzatore 
+lessicale (<em>lexer</em>) sia  un 
+analizzatiore sintattico (<em>parser</em>) relativi al linguaggio 
+generato dalla grammatica. L'analisi
+lessicale l'analisi sintattica di una frase costituiscono
+quindi due requisiti funzonali (<em>C-requirements</em>,
+si veda <a href="../../book/modelBased/fasi/workflowRequisiti.html">Requisiti</a>)
+centrali, che il seguente modello dei <em>casi d'uso</em> 
+(si veda <a href="../../book/modelBased/fasi/useCase.html">Casi d'uso</a>)
+colloca all'interno di altre funzionalità desiderate.  
+<div class="fignone"><span class="figcap">Figura 1. Casi d'uso</span>
+<img src="../../images/exp/exp09UseCases.jpg" />
+</div>
+ 
+</div>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Glossario</h2>
+<div class="p">
+Il  significato dei principali termini usati
+nei requisiti è, in prima battuta, espresso da seguente glossario:
+
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><strong>Termine</strong> </td>
+<td valign="top" width="75%"><strong>Significato</strong></td>
+</tr>
+
+<tr><td valign="top"><em>Espressione aritmetica</em> </td>
+
+<td valign="top">Un modo per denotare un numero (reale)
+attraverso una stringa in cui compaiono reppresentazione in base
+<tt>10</tt> di numeri naturali, simboli di operazione e variabili (che denotano valori reali). 
+La stringa
+deve essere scritta in accordo alle regole grammaticali date.  </td>
+</tr>
+
+<tr><td valign="top"><em>Scopo della grammatica </em> </td>
+
+<td valign="top">Simbolo non terminale scelto come simbolo iniziale
+di riscrittura per la generazione di raqppresentazioni sintatticamente corrette
+di una espressione. </td>
+</tr>
+
+<tr><td valign="top"><em>Simboli non terminali </em> </td>
+
+<td valign="top">Detti anche <em>metasimboli</em> o <em>variabli sintattiche</em>,
+sono simboli che possono essere riscritti.</td>
+</tr>
+
+<tr><td valign="top"><em>Simboli terminali </em> </td>
+
+<td valign="top">Simboli che fanno parte del linguaggio descritto dall grammatica:
+non possono essere riscritti. Formano un insieme disgiunto
+rispetto ai simboli non terminali.</td>
+</tr>
+
+<tr><td valign="top"><em>Token</em> </td>
+
+<td valign="top">Elemento del linguaggio prodotto dall'analizzatore
+lessicale.</td>
+</tr>
+
+<tr><td valign="top"><em>Analizzatore lessicale (lexer)</em> </td>
+
+<td valign="top">Automa che analizza una stringa con riferimento ad una specifica
+grammatica e individua elementi lessicali
+(terminali semplici o composti) del linguaggio quali numeri, 
+nomi di variabili ed operatori
+restituendoli come oggetti denominati <em>token</em>.</td>
+</tr>
+
+<tr><td valign="top"><em>Analizzatore sintattico (parser)</em> </td>
+
+<td valign="top">Automa che analizza una sequenza di token  
+con riferimento ad una specifica
+grammatica e decide se tale sequenza è ben formata (sintatticamente).
+In caso positico restituisce una rappresentazione itnerna della frase
+reòativa alla sequenza 
+in forma di albero (binario). </td>
+</tr>
+
+<tr><td valign="top"><em>Valutazione</em> </td>
+
+<td valign="top">Attività che porta alla individuazione di un valore 
+numerico equivalente alla espressione, cioè 
+sostuibile ad essa. </td>
+</tr>
+
+</table>
+
+</div>
+<p>
+A questo possiamo aggiungere il significato tradizionalmente attribuito
+alle parti di una espressione generate dai diversi simboli temrinali:
+</p>
+<div class="p">
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><strong>Nome</strong> </td>
+<td valign="top" width="75%"><strong>Significato</strong></td>
+</tr>
+
+<tr><td valign="top"><em>Espressione</em> </td>
+
+<td valign="top">La frase generata dal metasimbolo <tt>E</tt>.</td>
+
+</tr>
+
+<tr><td valign="top"><em>Termine</em> </td>
+
+<td valign="top">La frase generata dal metasimbolo <tt>T</tt>.</td>
+
+</tr>
+<tr><td valign="top"><em>Fattore</em> </td>
+
+<td valign="top">La frase generata dal metasimbolo <tt>F</tt>.</td>
+
+</tr>
+<tr><td valign="top"><em>Variabile</em> </td>
+
+<td valign="top">La frase generata dal metasimbolo <tt>S</tt>.</td>
+
+</tr>
+</table>
+
+
+
+</div>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Scenari</h2>
+<p> 
+Limitandoci al momento alle sole funzionalità relative al
+sottoproblema affidatoci, quello che si vuole che il sistema faccia
+viene descritto dagli scenari che seguono.
+</p>
+<p>
+(si veda <a href="../../book/modelBased/fasi/scenari.html">Scenari</a>)
+</p>
+<p>
+<em><strong>Immissione espressione</strong></em>
+</p>
+<div class="p">
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><strong>Campo</strong> </td>
+
+<td valign="top" width="75%"><strong>Descrizione</strong></td>
+
+</tr>
+
+<tr><td valign="top"><em>ID (Nome)</em> </td>
+
+<td valign="top"><tt>UC1 - Immisione frase</tt></td>
+
+</tr>
+
+<tr><td valign="top"><em>Descrizione</em> </td>
+
+<td valign="top">Fornire una nuova espressione di controllo alla centrale.</td>
+
+</tr>
+
+<tr><td valign="top"><em>Attori</em> </td>
+
+<td valign="top">Operatore.</td>
+
+</tr>
+
+<tr><td valign="top"><em>Precondizioni</em> </td>
+
+<td valign="top">La centrale non ha segnalto malfunzionamenti </td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenario principale</em> </td>
+
+<td valign="top">L'operatore utilizza un dispostivo di ingresso per
+scrivere una frase e per inviarla alla centrale.
+L'operatore quindi attende dal sistema un messaggio che segnala il successo
+o il fallimento dell'operazione, in relazione all'esito
+dell'analisi sintattica della frase. Nel caso di esito negativo
+l'operatore riscrive la frase cercando di correggere gli errori.
+ </td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenari alternativi</em> </td>
+
+<td valign="top">L'operatore non riceve alcun messaggio di risposta
+entro un dato intervallo di tempo (ad esmepio <tt>60</tt> secondi); 
+in tal caso l'operatore ripete
+l'operazione di invio della frase. </td>
+</tr>
+
+<tr><td valign="top"><em>Postcondizioni</em> </td>
+
+<td valign="top">Nel caso la frase inserita sia corretta,
+la centrale di controllo ha in memoria la nuova espressione. </td>
+
+</tr>
+
+</table>
+
+
+</div>
+<p>
+<em><strong>Analisi sintattica</strong></em>
+</p>
+<div class="p">
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><strong>Campo</strong> </td>
+
+<td valign="top" width="75%"><strong>Descrizione</strong></td>
+
+</tr>
+
+<tr><td valign="top"><em>ID (Nome)</em> </td>
+
+<td valign="top"><tt>UC2 - Analisi sintattica</tt></td>
+
+</tr>
+
+<tr><td valign="top"><em>Descrizione</em> </td>
+
+<td valign="top">Controlla che una frase sia scritta in accordo
+alle regole grammaticali date; in caso positivo produce una rappresentazione
+interna ad albero. </td>
+
+</tr>
+
+<tr><td valign="top"><em>Attori</em> </td>
+
+<td valign="top">Operatore.</td>
+
+</tr>
+
+<tr><td valign="top"><em>Precondizioni</em> </td>
+
+<td valign="top">E' disponibile una frase da analizzare
+o un parte di essa. </td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenario principale</em> </td>
+
+<td valign="top">Disponendo della frase completa,
+l'analizzatore invoca un lexer per ottenere la sequenza di token
+corrispondente alla frase data; quindi esso
+verifica che la sequenza sia in accordo
+alle regole grammaticali. In caso postivo esso genera una
+rappresentazione interna ad albero (binario).
+In caso negativo segnala un errore.</td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenari alternativi</em> </td>
+
+<td valign="top">L'analizzatore riceve la frase via rete; esso potrebbe
+quindi disporre solo di un prefisso della frase da analizzare. 
+In tal caso l'analizzatore può decidere di iniziare comunque
+l'analisi, col vantaggio di poter
+individuare e segnalare eventuali errori non appena
+questi si presentano.
+ </td>
+</tr>
+
+<tr><td valign="top"><em>Postcondizioni</em> </td>
+
+<td valign="top">Nel caso l'analizzatore lessicale segnali
+un errore, la sequenza di token non viene scandita
+e il segnale di errore viene propagato
+Nel caso la frase di ingresso sia corretta,
+la sequenza di token risulta completamente consumata. Nel caso la
+frase di ingresso sia sintatticamente errata,
+la sequenza risulta consumata fino al primo errore rilevato. </td>
+
+</tr>
+
+</table>
+
+ 
+</div>
+<p>
+<em><strong>Analisi lessicale</strong></em>
+</p>
+<div class="p">
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><strong>Campo</strong> </td>
+
+<td valign="top" width="75%"><strong>Descrizione</strong></td>
+
+</tr>
+
+<tr><td valign="top"><em>ID (Nome)</em> </td>
+
+<td valign="top"><tt>UC3 - Analisi lessicale</tt></td>
+
+</tr>
+
+<tr><td valign="top"><em>Descrizione</em> </td>
+
+<td valign="top">Controlla che gli elementi lessicali di
+una frase siano scritti in accordo
+alle regole date; in caso positivo produce una 
+sequenza di token. In caso negativo segnala un errore. </td>
+
+</tr>
+
+<tr><td valign="top"><em>Attori</em> </td>
+
+<td valign="top">Operatore</td>
+
+</tr>
+
+<tr><td valign="top"><em>Precondizioni</em> </td>
+
+<td valign="top">E' disponibile una frase da analizzare
+o un parte di essa. </td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenario principale</em> </td>
+
+<td valign="top">Disponendo della frase completa,
+l'analizzatore individua gli elementi lessicali.
+Nel caso la frase sia lessicalmente corretta,
+esso genera una sequenza di elementi in forma di token.
+In caso contrario segnala un errore. </td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenari alternativi</em> </td>
+
+<td valign="top">L'analizzatore riceve la frase via rete; esso potrebbe
+quindi disporre solo di un prefisso della frase da analizzare. 
+In tal caso l'analizzatore può decidere di iniziare comunque
+l'analisi, col vantaggio di poter
+individuare e segnalre eventuali errori non appena
+questi si presentano. </td>
+</tr>
+
+<tr><td valign="top"><em>Postcondizioni</em> </td>
+
+<td valign="top">Nel caso la frase di ingresso sia corretta,
+essa risulta completamente scandita. 
+Nel caso la
+frase di ingresso sia  errata,
+essa risulta scandita fino al primo errore rilevato.  </td>
+
+</tr>
+
+</table>
+
+
+ 
+</div>
+<p>
+<em><strong>Valutazione</strong></em>
+</p>
+<div class="p">
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><strong>Campo</strong> </td>
+
+<td valign="top" width="75%"><strong>Descrizione</strong></td>
+
+</tr>
+
+<tr><td valign="top"><em>ID (Nome)</em> </td>
+
+<td valign="top"><tt>UC4 - Valutazione</tt></td>
+
+</tr>
+
+<tr><td valign="top"><em>Descrizione</em> </td>
+
+<td valign="top">Dato l'albero (binario) che fornisce
+la rappresentazione interna di una espressione,
+determina il valore numerico dell'espressione in base
+alle regole semantiche del linguaggio.  </td>
+
+</tr>
+
+<tr><td valign="top"><em>Attori</em> </td>
+
+<td valign="top">Controllo </td>
+
+</tr>
+
+<tr><td valign="top"><em>Precondizioni</em> </td>
+
+<td valign="top">L'albero (binario) di ingresso non è vuoto.  </td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenario principale</em> </td>
+
+<td valign="top">Il valutatore vista l'albero agendo come segue:
+<ul>
+<li>nel caso il nodo sia un operando ne legge il valore; </li>
+
+<li>nel caso il nodo sia un operatore binario,
+<em>applica</em> all'operatore gli operandi ottenuti
+<em>valutando</em> i suoi sottoalberi di destra e di sinistra. </li>
+
+</ul>
+ 
+Al termine del processo restituisce il valore dell'espressione
+costituito da un numero reale oppure restituisce un segnale di errore
+nel caso di operazioni semanticamente scorrette (ad esempio
+una divisione per <tt>0</tt>).
+</td>
+
+</tr>
+
+<tr><td valign="top"><em>Scenari alternativi</em> </td>
+
+<td valign="top">True</td>
+</tr>
+
+<tr><td valign="top"><em>Postcondizioni</em> </td>
+
+<td valign="top">True </td>
+
+</tr>
+
+</table>
+
+</div>
+<p>
+Dagli scenari si deduce che il committente propende per una <em>analisi
+top-down</em> di una frase e l'analista del prbolema dovrà
+considerare con attenzione il modo con cui
+la frase viene progressivamente analizzata.
+</p>
+
+</div>
+
+
+
+
+ 
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/modelloDominioExp.html">Espressioni: modellazione del dominio</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/pianoCollaudoExp.html">Espressioni: piano di collaudo</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/lab/exp/sintassiAstrattaExp.html">Espressioni: sintassi astratta</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/esempioModelBased.html">Esempio di sviluppo model based</a></div>
+</div>
+</div>
+
+</body>
+</html>
