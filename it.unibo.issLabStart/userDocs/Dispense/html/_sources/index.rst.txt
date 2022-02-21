@@ -10,21 +10,8 @@ iss22
    :maxdepth: 5 
    
    Introduzione
-   Indicazioni
-   Architetture
-   RadarSystem 
-   RadarSystemAnalisi
-   RadarSystemProdottiAnalisi
-   RadarSystemProgetto
-   RadarSystemSupporti
-   Enablers
-   ContestiContenitori
-   RadarSystemTcp
-   OltreTcp
-   RadarSystemWebgui
-   WebSockets
-   ApproccioTopDown
-   Riferimenti 
+   CostruireSoftware
+  
 
 
 

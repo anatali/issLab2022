@@ -13,7 +13,6 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Costruire software" href="CostruireSoftware.html" />
@@ -35,12 +34,11 @@
           <div class="body" role="main">
             
   <section id="introduzione">
-<span id="scrum"></span><h1>Introduzione<a class="headerlink" href="#introduzione" title="Permalink to this headline">¶</a></h1>
-<a class="reference internal image-reference" href="_images/fig0-2022.png"><img alt="_images/fig0-2022.png" class="align-center" src="_images/fig0-2022.png" style="width: 90%;" /></a>
+<h1>Introduzione<a class="headerlink" href="#introduzione" title="Permalink to this headline">¶</a></h1>
+<a class="reference internal image-reference" href="_images/fig0-2022.png"><img alt="_images/fig0-2022.png" class="align-center" src="_images/fig0-2022.png" style="width: 100%;" /></a>
 <section id="contenuti-del-corso">
 <h2>Contenuti del corso<a class="headerlink" href="#contenuti-del-corso" title="Permalink to this headline">¶</a></h2>
-<p>Riportiamo qui quanto si legge nel Sito Web del corso :
-<a class="reference external" href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2021/468003">https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2021/468003</a>.</p>
+<p>Riportiamo qui quanto si legge nel <cite>Sito Web del corso</cite> :</p>
 <p>Al termine del corso lo studente:</p>
 <ul class="simple">
 <li><p>è in grado di impostare <span class="blue">processi di sviluppo cooperativo</span> del software basati su approcci agili
@@ -48,10 +46,10 @@
 <li><p>è’ in grado di progettare e sviluppare sistemi software e relativi piani di testing in modo <span class="blue">incrementale
 ed evolutivo</span>, partendo dal problema e dal dominio applicativo piuttosto che dalla tecnologia realizzativa,
 attraverso la definizione di modelli eseguibili dell’<span class="blue">analisi dei requisiti e dell’analisi del problema</span>;</p></li>
-<li><p>è in grado di blue:<cite>valutare in modo critico</cite> le continua evoluzione delle tecnologie informatiche,
+<li><p>è in grado di <span class="blue">valutare in modo critico</span> le continua evoluzione delle tecnologie informatiche,
 sia a livello computazionale, sia livello di sviluppo-software, acquisendo <span class="blue">conoscenze teorico-operative</span>
 su linguaggi, metododologie e strumenti quali <em>Kotlin, Gradle, SCRUM, SpringBoot, Devops, Docker</em>;</p></li>
-<li><p>è in grado di comprendere il ruolo dei diversi blue:<cite>stili di architetture software</cite>
+<li><p>è in grado di comprendere il ruolo dei diversi <span class="blue">stili di architetture software</span>
 (layers, client-server, pipeline, microkernel, service-based, event-driven, space-based, microservices)
 e di come <span class="blue">scegliere lo stile architetturale più opportuno</span> per i diversi sotto-sistemi individuati;</p></li>
 <li><p>è in grado di affrontare l’analisi, il progetto e la costruzione di applicazioni distribuite ed eterogenee
@@ -61,7 +59,7 @@ con particolare riferimento a <span class="blue">modelli computazionali a scambi
 modelli logici di alto livello e implementazioni basate su protocolli diversi (TCP, UDP, HTTP, CoAP, MQTT);</p></li>
 <li><p>è in grado di comprendere come sia possibile progettare e costruire ambienti di sviluppo custom capaci
 di <span class="blue">generazione automatica di codice</span> (Software Factories in ‘ecosistemi’ come Eclipse/IntelliJ),
-basandosi su Model Driven Software Development (MDSD) e sull’uso di Domain Specific Languages (DSL);</p></li>
+basandosi su <em>Model Driven Software Development</em> (MDSD) e sull’uso di Domain Specific Languages (DSL);</p></li>
 <li><p>è in grado di sviluppare applicazioni <span class="blue">capaci di combinare</span> aspetti di alto livello (in particolare di AI)
 con aspetti di basso livello relativi a dispositivi di Internet of Things (IOT), utilizzando sia ambienti
 virtuali sia dispositivi reali costruibili utilizzando elaboratori a basso costo quali RaspberryPi e Arduino;</p></li>
@@ -74,18 +72,22 @@ senza modificare il software che esprime la ‘business logic’ del problema.</
 <p>Pe raggiungere questi obiettivi, il corso 2021-2022 si articolerà in tre fasi:</p>
 <section id="fase1">
 <h3>FASE1<a class="headerlink" href="#fase1" title="Permalink to this headline">¶</a></h3>
-<p><span class="remark">Dalla OOP alla costruzione di sistemi software distribuiti eterogenei a scambio di messggi.</span></p>
+<p><span class="remark">Dalla OOP ai sistemi software distribuiti eterogenei a scambio di messggi.</span></p>
 <ul class="simple">
-<li><p>Sviluppo di un sistema (<a class="reference internal" href="RadarSystem.html"><span class="doc">RadarSystem</span></a>) basato su un PC e su un RaspberryPi uando TCP e seguendo un
-processo di sviluppo agile ed evolutivo (ispirato a SCRUM) di tipo <span class="blue">bottom-up</span>.</p></li>
+<li><p>Sviluppo di un sistema basato su un PC e su un RaspberryPi uando TCP e seguendo un
+processo di sviluppo agile ed evolutivo (ispirato a <a class="reference external" href="https://it.wikipedia.org/wiki/Scrum_(informatica)">SCRUM</a>) di tipo <span class="blue">bottom-up</span>.</p></li>
 <li><p>Primi approfondimenti sulla fase di analisi dei requisiti e sulla analisi del problema.
-Il ruolo della architettura logica (come artefatto della analisi) per l’analisi dei rischi e per la pianificazione dei lavori.</p></li>
+Il ruolo della <em>architettura logica</em> (come artefatto della analisi) per l’analisi dei rischi e per la pianificazione dei lavori.</p></li>
 <li><p>Il ruolo del Testing e della pianificazione di test automatizzabili (con JUnit).</p></li>
 <li><p>Refactoring del sistema a fronte dell’uso di altri protocolli: MQTT e CoAP.</p></li>
 <li><p>Come rendere il software applicativo indipendente dal protocollo.</p></li>
 <li><p>Come dotare l’applicazione di una WebGui usando SpringBoot.</p></li>
 <li><p>Costruzione di un primo prototipo e suo deployment.</p></li>
 </ul>
+<p>Questa fase verrà svolta alternando considerazioni teorico-metodologiche alla costruzione effettiva
+di prodotti software, articolato in diversi <a class="reference external" href="https://www.humanwareonline.com/project-management/center/pianificare-sprint-scrum/">SPRINT</a>,
+con  <strong>autovalutazione del lavoro svolto</strong>, nel quadro delle <a class="reference external" href="https://www.agileway.it/sprint-review-meeting/">Sprint review</a>.</p>
+<p><span class="remark">Tutto il software sviluppato nelle tre fasi sarà utile per l’applicazione finale</span></p>
 </section>
 <section id="fase2">
 <h3>FASE2<a class="headerlink" href="#fase2" title="Permalink to this headline">¶</a></h3>
@@ -93,9 +95,9 @@ Il ruolo della architettura logica (come artefatto della analisi) per l’analis
 <ul class="simple">
 <li><p>Il modello di programmazione a scambio di messaggi portato a livello di componenti.</p></li>
 <li><p>Introduzione al linguaggio Kotlin.</p></li>
-<li><p>Dalle coroutine agli atttori</p></li>
-<li><p>Da attori message-driven ad attori message-based che operano come automi a stati finiti</p></li>
-<li><p>Definizione di una infrastruttura per attori capaci di formare sistemi software distribuiti ed eterogeni.</p></li>
+<li><p>Dalle coroutine Kotlin agli atttori Kotlin.</p></li>
+<li><p>Da attori message-driven ad attori message-based che operano come automi a stati finiti.</p></li>
+<li><p>Definizione di una infrastruttura per attori come supporto alla costruzione di software distribuiti ed eterogeni.</p></li>
 </ul>
 </section>
 <section id="fase3">
@@ -103,30 +105,32 @@ Il ruolo della architettura logica (come artefatto della analisi) per l’analis
 <p><span class="remark">Da bottom-up a top-down: il ruolo dei modelli.</span></p>
 <ul class="simple">
 <li><p>Definizione di una linguaggio/metamodello custom (Qakctor) per la costruzione di sistemi basati su attori</p></li>
-<li><p>Applicazione di quanto sviluppato per lo sviluppo incrementale di una applicazione finale IOT che utilizza
-dispositivi robotici virtuali e/o  <a class="reference external" href="_static/devsDdr.html">robot reali</a>, costruiti estendendo il sistema della FASE1.</p></li>
 <li><p>Il vantaggio dell’uso di modelli eseguibili nelle fasi di analisi dei requisiti e del problema e come premessa
 per l’abbattimento dei costi (e degli imprevisti) di produzione.</p></li>
+<li><dl class="simple">
+<dt>Applicazione di quanto sviluppato per lo sviluppo incrementale di una <strong>applicazione finale IOT</strong> che utilizza</dt><dd><p><a class="reference external" href="_static/devsDdr.html">robot reali</a>, costruiti estendendo il sistema della FASE1.</p>
+</dd>
+</dl>
+</li>
 </ul>
 <a class="reference internal image-reference" href="_images/mbotIot.png"><img alt="_images/mbotIot.png" class="align-center" src="_images/mbotIot.png" style="width: 70%;" /></a>
 </section>
 </section>
-<section id="propedeuticita">
-<h2>Propedeuticità<a class="headerlink" href="#propedeuticita" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="./NatMolBook/bookEntry.html">Dispense Ingegneria del software</a></p>
-</section>
-<section id="link-utili">
-<h2>Link utili<a class="headerlink" href="#link-utili" title="Permalink to this headline">¶</a></h2>
+<section id="materiale-didattico">
+<h2>Materiale didattico<a class="headerlink" href="#materiale-didattico" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2021/468003">SitoWebIssUnibo</a>: <a class="reference external" href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2021/468003">https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2021/468003</a></p></li>
-<li><p>GITHUB del corso <a class="reference external" href="https://github.com/anatali/issLab2022">GitHubIss2022</a>:  <a class="reference external" href="https://github.com/anatali/issLab2022">https://github.com/anatali/issLab2022</a></p></li>
-<li><p>Template templateToFill.html</p></li>
+<li><p>Sito Web del corso: <a class="reference external" href="https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2021/468003">https://www.unibo.it/it/didattica/insegnamenti/insegnamento/2021/468003</a></p></li>
+<li><p>GITHUB del corso:  <a class="reference external" href="https://github.com/anatali/issLab2022">https://github.com/anatali/issLab2022</a></p></li>
+<li><p>Documento  <a class="reference external" href="_static/templateToFill.html">template2022</a>: costituisce un punto di riferimento  ‘process agnostic’,
+cioè non indica il processo di sviluppo che adottiamo per costruirlo.</p></li>
+<li><p>Alcuni <a class="reference external" href="_static/devsDdr.html">Libri</a> importanti/utili</p></li>
 <li><p>Video tema finale studenti (Panopto) <a class="reference external" href="https://unibo.cloud.panopto.eu/Panopto/Pages/Sessions/List.aspx#folderID=%222f957969-7f72-4609-a690-aca900aeba02%22">VideoStudenti</a></p></li>
-<li><p>books.html</p></li>
 </ul>
 </section>
-<section id="tools-su-pc">
-<h2>Tools su PC<a class="headerlink" href="#tools-su-pc" title="Permalink to this headline">¶</a></h2>
+<section id="primi-passi-operativi">
+<h2>Primi passi operativi<a class="headerlink" href="#primi-passi-operativi" title="Permalink to this headline">¶</a></h2>
+<section id="su-pc">
+<h3>Su PC<a class="headerlink" href="#su-pc" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Installare GIT</p></li>
 <li><p>Clonare <a class="reference external" href="https://github.com/anatali/issLab2022">https://github.com/anatali/issLab2022</a> in una directory vuota e.g. C:/…/iss2022</p></li>
@@ -137,125 +141,127 @@ per l’abbattimento dei costi (e degli imprevisti) di produzione.</p></li>
 <li><p>Installare Node.js</p></li>
 </ol>
 </section>
-<section id="materiale-di-laboratorio">
-<h2>Materiale di laboratorio<a class="headerlink" href="#materiale-di-laboratorio" title="Permalink to this headline">¶</a></h2>
+<section id="su-raspberrypi">
+<h3>Su RaspberryPi<a class="headerlink" href="#su-raspberrypi" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li><p>RaspberryPi 3 Model B+</p></li>
-<li><p>devsDdr.html</p></li>
+<li><p>Acquisire RaspberryPi 3 Model B+, SONAR Led</p></li>
 </ol>
 </section>
-<section id="il-motto">
-<h2>Il motto<a class="headerlink" href="#il-motto" title="Permalink to this headline">¶</a></h2>
-<p><span class="remark">Non c’è codice senza progetto.</span></p>
-<p><span class="remark">Non c’è progetto senza analisi del problema.</span></p>
-<p><span class="remark">Non c’è problema senza requisiti.</span></p>
 </section>
-<section id="il-template">
-<h2>Il template<a class="headerlink" href="#il-template" title="Permalink to this headline">¶</a></h2>
-<p>Il documento <code class="docutils literal notranslate"><span class="pre">template2021.html</span></code> costituisce un punto di riferimento ma è
-‘process agnostic’, cioè non indica il processo di sviluppo che adottiamo
-per costruirlo.</p>
-</section>
-<section id="l-analisi-dei-requisiti">
-<h2>L’analisi dei requisiti<a class="headerlink" href="#l-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h2>
-<p>L’analisi dei requisiti mira a:</p>
-<p><span class="remark">definire/chiarire COSA il committente intende.</span></p>
-<p>Occorre fare una analisi del testo che precisi in modo non ambiguo
-il significato dei termini usati e le informazioni non esplicitamente espresse.
-La costruzione di un <em>dizionario</em>  in linguaggio naturale è utile ma non risolutiva,
-in quanto esprime informazione ancora affetta da ambiguità se non da incoeranza e inconsistenza.</p>
-<p>Dunque, le informazioni date in linguaggio naturale servono solo in una fase preliminare
-dei lavori.
-Occorre esprimere le informazioni in modo ‘formale’, cioè in modo
-<strong>comprensible alla macchina</strong>.</p>
-<p>A tal fine sono utili i linguaggi che permettono di definire <span class="red">modelli</span>
-capaci di catturare gli aspetti essenziali, lasciando sullo sfondo dettagli
-anche importanti, ma non rilevanti nelle prime fasi.</p>
-<p>Gli <em>Usecases</em> possono essere utili come linea-guida per definire una o più <cite>TestUnits</cite> funzionali.
-Le specifiche degli <em>Usecases</em> espresse in linguaggio naturali possono essere inserite
-come commenti in tali <cite>TestUnits</cite>.</p>
-<p>Le <span class="blue">domande</span> da porre al committente mirano a chiarire:</p>
-<ul class="simple">
-<li><p>la natura delle entità, cioè se dal punto di vista software,
-una entità è (modellabile come un)
-oggetto (POJO), un servizio, un processo, un attore</p></li>
-<li><p>se le varie entità devono essere distribuite su diversi nodi computazionali</p></li>
-<li><p>i vincoli tecnologici, cioè se il committente propone già qualche specifica tecnologia
-o qualche specifico supporto per una data entità</p></li>
-<li><p>le interazioni (a procedure-call, a messaggi, sincrone, asincrone) tra le diverse entità</p></li>
+<section id="valutazione-finale">
+<h2>Valutazione finale<a class="headerlink" href="#valutazione-finale" title="Permalink to this headline">¶</a></h2>
+<p>Dal <cite>Sito Web del corso</cite>  leggiamo:</p>
+<ul>
+<li><p>Le attività di laboratorio sono intrinsecamente connesse in modo continuo a una autovalutazione
+del lavoro svolto da parte di ogni singolo studente.</p></li>
+<li><p>Al termine del corso, viene proposto un tema di progetto come naturale punto di sintesi delle
+attività svolte, da affrontare in due fasi.</p>
+<p>La prima fase inizia con la pubblicazione di un testo di requisiti per la costruzione di un prototipo
+La costruzione del prototipo mira a verificare il raggiungimento di adeguate abilità teorico/pratiche
+e può essere effettuata in modo individuale o in un gruppo di non più di tre studenti.</p>
+<p>Al termine di questa fase seguirà una una discussione individuale orale sul lavoro svolto,
+volta a valutare il livello di conoscenza, consapevolezza e di autonomia analitico/progettuale
+del singolo studente.</p>
+<p>In questa fase lo studente è invitato a porre in luce gli aspetti salienti del lavoro svolto
+e le scelte effettuate alla luce delle nozioni teorico/pratiche apprese durante il corso.</p>
+</li>
 </ul>
-<p>Al termine della analisi dei requisiti dovrebbe essere definito
-un modello del sistema che mette in lune i macro-componenti
-(entità) e le loro interazioni, cioè
-una prima <span class="red">architetture logica</span> del sistema.</p>
-</section>
-<section id="l-analisi-del-problema">
-<h2>L’analisi del problema<a class="headerlink" href="#l-analisi-del-problema" title="Permalink to this headline">¶</a></h2>
-<p>L’analisi del problema mira a:</p>
-<p><span class="remark">definire/chiarire le problematiche implicate dai requisiti.</span></p>
-<p><span class="remark">fornire informazioni utili sui costi/tempi/risorse necessari.</span></p>
-<p>L’analisi del problema <span class="red">NON IMPLICA ancora alcuna progettazione</span>,
-ma mira a fornire un quadro delle possibili soluzioni tecnologighe
-individuando quelle più utili per il superamento delle problematiche poste dai requisiti.
-La scelta finale sarà fatta dal progettista (che potrebbe anche ampliare lo spettro
-della indagine - ricordiamo che siamo in un <span class="blue">processo iterativo a spirale</span> ).</p>
-<p>L’analisi del problema serve per capire quali sono le maggiori problematiche
-da affrontare, le tecnologie da usare e le risorse (umane e temporali) necessarie.
-Inoltre gettano le basi per impostare il primo sprint di sviluppo e quindi per
-costruire un primo ‘prototipo’ funzionante del sistema da estendere poi in modo
-incrementale con gli sprint succesivi dopo una opportuna sprint-review con
-il committente</p>
-<section id="architettura-logica">
-<h3>Architettura logica<a class="headerlink" href="#architettura-logica" title="Permalink to this headline">¶</a></h3>
-<p>Il risultato della analsi può essere sintetizzato nella definizione di una
-<span class="red">architettura logica</span> (che specializza/esetende quella scaturita dai requisiti )
-che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.)
-dei MACRO-COMPONENTI del sistema e della loro interazione,
-NON COME SOLUZIONE DI PROGETTO, ma come VINCOLI IMPLICATI dal problema.</p>
-<p><span class="remark">Il risultato della analisi del problema dovrebbe essere condiviso .</span></p>
-<p>L’analista potrebbe/dovrebbe dare uno sguardo complessivo al problema,
-cercando anche di organizzare tutte le funzionalità per importanza, e come queste
-funzionalità debbano essere  distribuite tra i vari MACRO-componenti.</p>
-</section>
-<section id="sviluppo-incrementale">
-<h3>Sviluppo incrementale<a class="headerlink" href="#sviluppo-incrementale" title="Permalink to this headline">¶</a></h3>
-<p>Un approccio INCREMENTALE (in stile SCRUM, ma non solo) è utile per
-aggredire la complessità del problema e per
-mettere in luce in primis LE COSE
-PIU’ IMPORTANTI e PIU’ CRITICHE senza perdersi in dettagli che possono distogliere
-l’attenzione per formarsi un quadro generale di riferimento.</p>
-<p>I vari SPRINT dovrebbero effettuare uno ZOOMING entro MACRO-COMPONENTI
-innescando un processo ITERATIVO di analisi, progetto , sviluppo e testing di
-quel componente o del SOTTOSISTEMA  che lo sprint vuole costruire.
-Per questo può essere opportuno impostare ogni sprint come un ‘sottoprogetto’
-con sua propria spiegazione e testing.</p>
-<p>Lo sprint <span class="math notranslate nohighlight">\(n+1\)</span> dovrebbe partire dai
-risultati dello sprint <span class="math notranslate nohighlight">\(n\)</span> e preparare un sottosistema (funzionante)
-che sarà l’input dello sprint <span class="math notranslate nohighlight">\(n+2\)</span>.</p>
-</section>
-</section>
-<section id="uso-di-modelli">
-<h2>Uso di modelli<a class="headerlink" href="#uso-di-modelli" title="Permalink to this headline">¶</a></h2>
-<p>L’uso dei modelli è utile (per non dire indispensabile) PER CONCENTRARE
-l’attenzione SUGLI ASPETTI RITENUTI SALIENTI (tenendo conto anche
-dei tempi, delle tecnologie disponibili  e dei costi):</p>
-<p>L’architettura logica espressa mediante un modello eseguibile può essere il riferimento per la impostazione di
-PIANI di testing (unit, integration, functional, acceptance) espressi in MODO
-NON discorsivo (formale), comprensibile a una macchina.</p>
-<p>Per questo noi abbiamo perseguito l’idea di modelli eseguibili, sviluppando
-una meta-modello in modo custom, visto che si trova ancora
-nulla di questo tipo in rete.</p>
-<p>Come già previsto da UML, è opportuno definire modelli come risultato delle
-fasi di analisi dei requsiti, analisi del problema e progetto.</p>
-</section>
-<section id="passi-operativi">
-<h2>Passi operativi<a class="headerlink" href="#passi-operativi" title="Permalink to this headline">¶</a></h2>
+<section id="dettagli-sul-colloquio-orale">
+<h3>Dettagli sul colloquio orale<a class="headerlink" href="#dettagli-sul-colloquio-orale" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>48 h prima del colloqio, il codice del sistema finale deve essere stato pubblicato sul sito del gruppo,
+dandone relativa informazione via mail al docente.</p></li>
+<li><p>Il giorno del colloquio, ogni gruppo deve avere effettuato gli opportuni preparativi per la/le demo,
+in modo da essere subito operativo.</p></li>
+</ul>
+<p>L’ordine di presentazione dei gruppi verrà opportunamente stabilito dal docente.</p>
 <ol class="arabic simple">
-<li><p>Costruire un repository GIT del progetto</p></li>
-<li><p>Definire un primo modello del sistema come risultato della analisi del problema (e non del progetto della soluzione)</p></li>
-<li><p>Includere nel documento di analisi gli appropriati riferimenti al modello</p></li>
-<li><p>Definire qualche testplan significativo (cioè legato ai casi di uso) basato sul modello</p></li>
+<li><p>Presentazione (collettiva di gruppo) di una demo ‘live’ del sistema fonale di durata 10-15(max) minuti.
+La demo deve mostrare la esecuzione di almeno un Test(Plan) automatizzato ritenuto significativo.
+Per applicazioni che NON usano robot reali NON sono ammessi video,
+che potrebbero essere invece utili per mostrare il funzionamento di robot reali
+o di sistemi che includono il RaspberryPi o altri dispositivi</p></li>
+<li><p>Presentazione (collettiva di gruppo) del progetto del sistema e della sua relazione
+con la fase di analisi. In questa fase è RICHIESTA la preparazione di 2-3 SLIDES
+di illustrazione delle architetture con figure e (se ritenuto utile) riferimenti al codice.
+Al termine di queste fasi il gruppo può raggiungere un punteggio massimo di 27/30.</p></li>
+<li><p>Domande (per esempi, si veda il file domande.html) rivolte dal docente a singole persone,
+riguardo al prodotto, al progetto e alla analisi del problema /requisiti.
+Al termine di questa fase una singola persona può raggiungere un punteggio massimo di 29/30.</p></li>
+<li><p>Altre domande rivolte dal docente a singole persone. Al termine di questa fase, una singola persona
+può raggiungere un punteggio di 30 e lode.</p></li>
 </ol>
+</section>
+<section id="possibili-domande-finali">
+<h3>Possibili domande finali<a class="headerlink" href="#possibili-domande-finali" title="Permalink to this headline">¶</a></h3>
+<p>Riportiamo qui un elenco di possibili domande finali durante i colloqui orali:</p>
+<ul class="simple">
+<li><p>Abbiamo appena visto il funzionamento della applicazione. Possiamo vedere il progetto?
+Quale rappresentazione (linguaggio naturale, diagrammi UML, modelli, figure, parti di codice, …)
+propone per l’esposizione del progetto?</p></li>
+<li><p>Che forma assume il deliverable di progetto e come è stato prodotto?
+Vi sono connessioni cone la fase di analisi del problema? E con la fase di analisi dei requisiti?</p></li>
+<li><p>Come ci può convincere che l’applicazione ‘copre’ tutti i requisiti dati senza doverla eseguire
+caso per caso?</p></li>
+<li><p>Può mostrare la struttura della architettura finale del sistema?
+In quale forma ritiene sia più opportuno presentare l’architettura (o in generale una architettura software)
+per poterne discutere in modo pragmaticamente utile (cioè non solo in modo vago e discorsivo)?</p></li>
+<li><p>L’architettura finale è’ stata preceduta dalla definizione di una archittura logica scaturita
+come deliverable della fase di analisi del problema?</p></li>
+<li><p>Quali sono i punti salienti che sono stati posti in luce nella fase di analisi del problema?
+E’ stato evidenziato qualche punto particolamente critico?</p></li>
+<li><p>E’ possibile, secondo lei, definire un modello eseguibile del sistema già al termine della fase di
+analisi dei requisiti? Se sì, quali vantaggi se ne potrebbero trarre?
+Se no, perchè non lo ritiene possibile?</p></li>
+<li><p>Immagino che come linguaggio di codifica si sia usato principlamente Java e/o Kotlin,
+insieme a qualche parte scritta in C, C++, Python, JavaScript, etc).
+Nella fase di analisi del problema, è stato evidenziato qualche macroscopico gap rispetto queste tecnologie? Se sì’ come si è pensato di colmare questo ‘abstracton gap’?</p></li>
+<li><p>Fino a che punto è utile introdurre diagrammmi UML e per quali scopi?
+Quali sono le motivazioni che possono indurre una software-house a definire linguaggi
+(o metamodelli) Doamin-specific?</p></li>
+<li><p>In ambiente industriale non è possibile pensare che sia possibile utilizzare il metamodello QActor.
+Ma di certo è diffuso l’uso delle librerie. Secondo lei sarebbe possibile affrontare lo sviluppo
+di applicazioni distribuite usando solo la libreria it.unibo.qakactor-2.5.jar e quelle ad essa necessarie?</p></li>
+<li><p>Ha trovato un qualche vantaggio nell’uso dei QActor attraverso un linguaggio custom (di ispirazione DSL)
+dotato di un suo proprio IDE? Ha una idea di come sia stato prodotto l’IDE per i qak in ambiente Eclipse?</p></li>
+<li><p>Le mostro l’architettura logica proposta dal gruppo xyz. Trova questa architettura logica concordante
+con la sua o è possibile evidenziare macroscopiche differenze?.
+Se nota differenze, le possiamo tollerare o no?</p></li>
+<li><p>In quale fase (analisi, progetto,…) è stata decisa la natura software dei componenti del sistema;
+quali sono le motivazioni per queste scelte, e dove sono riportate/discusse?</p></li>
+<li><p>In quale fase (analisi, progetto,…) è stata decisa la interazione tra i componenti del sistema;
+quali sono le motivazioni per queste scelte, e dove sono riportate/discusse?</p></li>
+<li><p>In quale fase dello sviluppo è stata definita una pianificazione dei lavori e una loro ripartizione
+tra i componenti del team?</p></li>
+<li><p>In quanti Sprint Scrum-like si è svolto lo sviluppo del software?</p></li>
+<li><p>Durante la fase di sviluppo, è stato necessario rivedere qualche parte della analisi del problema?
+In altre parole, sono state trovate situazioni che l’analista non aveva previsto o aveva affrontato
+in modo incompleto? Se sì, ha qualche esempio? E come si è procduto in questo caso?</p></li>
+<li><p>E’ possibilie sapere, per ciascun componente del team, di quali aspetti del sistema si è
+specificatmante occupato? Quando sono state definite e da chi queste ripartizioni dello sviluppo?</p></li>
+<li><p>In quale fase dello sviluppo sono stati impostati programmi per il testing?
+Quali tipi di test (unit, integration, functional,…) sono stati pensati e quali effettivamente realizzati?</p></li>
+<li><p>L’architettura finale del sistema mostra qualche pattern architetturale riconoscibile
+(ad es. client-server, layer, clean …) e in quale fase dello sviluppo (analisi/progetto)
+è stato deciso di introdurlo? E perchè? Queste motivazioni sono riportate/discusse in qualche documento?</p></li>
+<li><p>E’ possibile utilizzare l’applicazione avvalendosi di un Browser? Se no, per quale motivo
+si e’ esclusa questa possibilità?</p></li>
+<li><p>Come è stato affrontato il requisito xyz?</p></li>
+<li><p>Come viene rappresentato lo stato del sistema?
+E’ uno stato ‘concentrato’, cioè gestito da un solo componente o distribuito tra più componenti?
+Chi e quando ha preso una decisione in merito a questo punto?</p></li>
+<li><p>Il sistema finale utilizza solo un DDR robot virtuale. Cosa bisognerebbe fare per utilizzare un robot fisico
+e quanto tempo sarebbe necessario per il refactoring del sistema?</p></li>
+<li><p>Il sistema finale e’ stato sviluppato tenendo conto dei principi SOLID? E’ possibile vederne qualche esempio?</p></li>
+<li><p>E’ stato utilizzato il linguaggio Prolog? Se sì, per quale motivo?</p></li>
+<li><p>Sono state utilizzate annotazioni Java? Se sì, in quali parti o in quali funzionalità e per quale motivo?</p></li>
+<li><p>Per un eventuale supporto Web, quale framework è stato utilizzato? Spring o Node/Express? Quali sono le motivazioni della scelta?</p></li>
+<li><p>Il sistema finale coinvolge anche un RasperryPi?
+Se si, quale parte del sistema è stato deployed sul Rasp e in quale modo?</p></li>
+<li><p>E’ stato tentato un deplyoment della applicazione (o di parti di essa) utilizzando docker?
+E docker-compose? Se sì quali sono i criteri/motivazioni per la ripartizione di parti applicative su docker?</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -291,37 +297,20 @@ fasi di analisi dei requsiti, analisi del problema e progetto.</p>
 <li class="toctree-l3"><a class="reference internal" href="#fase3">FASE3</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#propedeuticita">Propedeuticità</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#link-utili">Link utili</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tools-su-pc">Tools su PC</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#materiale-di-laboratorio">Materiale di laboratorio</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#il-motto">Il motto</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#il-template">Il template</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#l-analisi-dei-requisiti">L’analisi dei requisiti</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#l-analisi-del-problema">L’analisi del problema</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#architettura-logica">Architettura logica</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sviluppo-incrementale">Sviluppo incrementale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#materiale-didattico">Materiale didattico</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#primi-passi-operativi">Primi passi operativi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#su-pc">Su PC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#su-raspberrypi">Su RaspberryPi</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#uso-di-modelli">Uso di modelli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#passi-operativi">Passi operativi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#valutazione-finale">Valutazione finale</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dettagli-sul-colloquio-orale">Dettagli sul colloquio orale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#possibili-domande-finali">Possibili domande finali</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Architetture.html">Architetture</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystemTcp.html">Il RadarSystem con <span class="xref std std-ref">TcpContextServer</span></a></li>
-<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="RadarSystemWebgui.html">RadarSystem WebGui</a></li>
-<li class="toctree-l1"><a class="reference internal" href="WebSockets.html">WebSockets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ApproccioTopDown.html">Un approccio top-down al processo</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Riferimenti.html">Riferimenti</a></li>
 </ul>
 
 <div class="relations">
