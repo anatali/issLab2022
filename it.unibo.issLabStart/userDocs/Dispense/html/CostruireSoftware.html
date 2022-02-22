@@ -46,7 +46,7 @@ ma il software è del tutto privo di massa.</p>
 <p>Le conseguenze di questa caratteristica sono molteplici, sia sul piano pragmatico che sul piano filosofico.
 Limitando il discorso al contesto della produzione industriale, si è diffusa la convinzione che
 la costruzione del software non richieda, per sua natura, processi di produzione tipici dell’ingegneria tradizionale.</p>
-<a class="reference internal image-reference" href="_images/ScienzaEIng.PNG"><img alt="_images/ScienzaEIng.PNG" class="align-center" src="_images/ScienzaEIng.PNG" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/ScienzaEIng.PNG"><img alt="_images/ScienzaEIng.PNG" class="align-center" src="_images/ScienzaEIng.PNG" style="width: 80%;" /></a>
 <section id="ingegneria">
 <h2>Ingegneria<a class="headerlink" href="#ingegneria" title="Permalink to this headline">¶</a></h2>
 <p>Nell’<strong>ingegneria tradizionale</strong> (meccanica, edile, etc) il costo del materiale costituisce spesso più del 50%
@@ -65,29 +65,30 @@ di costo 1 in fase di analisi potrebbe costare 1000 in fase di produzione.</p>
 <li><p>messa in opera</p></li>
 </ol>
 <p>spesso eseguiti uno dopo l’altro, in un classico <span class="blue">processo di sviluppo sequenziale o a cascata</span>.</p>
-<a class="reference internal image-reference" href="_images/WaterFall.PNG"><img alt="_images/WaterFall.PNG" class="align-center" src="_images/WaterFall.PNG" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/WaterFall.PNG"><img alt="_images/WaterFall.PNG" class="align-center" src="_images/WaterFall.PNG" style="width: 80%;" /></a>
 </section>
 <section id="programmatori-non-ingegneri">
 <h2>Programmatori = (non) ingegneri?<a class="headerlink" href="#programmatori-non-ingegneri" title="Permalink to this headline">¶</a></h2>
 <p>Nella produzione industriale del software è piuttosto comune cercare di abbattere i costi
-di progetto e di sviluppo, anche limitando le dimensioni del gruppo di lavoro,
-e aggredire il mercato prefissando una data di distribuzione del prodotto, che viene di frequente
+di progetto e di sviluppo, anche limitando le dimensioni del gruppo di lavoro.
+Spesso si cerca anche diverse aggredire il mercato prefissando una data di distribuzione del prodotto, che viene di frequente
 rilasciato non completamente finito, accollando all’utente parte dell’onere di collaudo.</p>
-<p>Sotto la spinta di stringenti vincoli di <em>time to market</em> (TTM) molte aziende adottano uno schema del tipo
+<p>Sotto la spinta di stringenti vincoli di <em>time to market</em> (<strong>TTM</strong>) molte aziende adottano uno schema del tipo
 <span class="blue">“scrivi, prova e correggi”</span>, mirando alla produzione di codice al minor “costo immediato” possibile.
 Le <span class="blue">fasi di analisi e progetto</span> anche se accuratamente svolte, non sempre sono adeguatamente documentate,
 e <em>quasi mai corralete in modo sistematico con il codice prodotto</em>.</p>
 <p>Il processo di costruzione del sofware è quindi <span class="blue">influenzato da una potente forza</span>,
-legata alla natura stessa del software: la spinta a impostare la costruzione di un prodotto in modo <strong>bottom-up</strong>,
+legata alla natura stessa del software: la spinta a impostare la costruzione  in modo <strong>bottom-up</strong>,
 a partire da una specifica tecnologia costituita da un linguaggio di programmazione,
 o da un framework applicativo o da una piattafforma operativa.</p>
 <a class="reference internal image-reference" href="_images/bottomUp.png"><img alt="_images/bottomUp.png" class="align-center" src="_images/bottomUp.png" style="width: 50%;" /></a>
-<p>La principale conseguenza negativa di questa forza è molto spesso l’assenza di una esplicita descrizione di progetto
+<p>La principale conseguenza negativa di questa forza è molto spesso la mancata valutazione di alternative tecnologiche
+in fase di analisi del problema e l’assenza di una esplicita descrizione di progetto
 che permetta di anticipare la valutazione dei rischi e le potenziali difficoltà connesse allo sviluppo.
 In molti casi adeguate fasi di analisi e di progettazione hanno luogo, anche in modo sistematico;
-ma ciò putroppo quasi sempre accade solo nella mente dei costruttori;
+ma ciò putroppo quasi sempre accade <strong>solo nella mente dei programmatori</strong>;
 nel codice finale non vi è più traccia alcuna di queste fasi, se non qualche debole segnale legato a sporadici commenti.</p>
-<p>Tuttavia, anche se il codice fosse accuratamente documentato sia in relazione all’analisi sia in relazione
+<p>Tuttavia, anche se il codice fosse accuratamente documentato, sia in relazione all’analisi, sia in relazione
 alle scelte di progetto, la <strong>riduzione del prodotto al solo codice sarebbe non accettabile</strong>,
 se non nel caso di sistemi software semplici o di software molto ben fatto.</p>
 <p>All’aumentare della complessità infatti, la <span class="blue">mente umana ha bisogno</span>,
@@ -96,8 +97,7 @@ per comprendere, di decomporre il problema in parti di ampiezza limitata,
 poiché il codice deve inevitabilmente esprimere il sistema finale nei suoi minimi dettagli,
 la maggior parte delle persone sarebbe incapace di leggerlo con profitto anche se a conoscenza
 delle regole sintattiche del linguaggio di programmazione.</p>
-<p>Per questo si parla spesso di modelli, che vengono espressi con opportuni linguaggi, spesso grafiici.</p>
-<a class="reference internal image-reference" href="_images/Modello.PNG"><img alt="_images/Modello.PNG" class="align-center" src="_images/Modello.PNG" style="width: 50%;" /></a>
+<p>Per questo si parla spesso di <strong>modelli</strong>, che vengono espressi con opportuni linguaggi, di solito in forma grafica.</p>
 </section>
 <section id="modelli">
 <h2>Modelli<a class="headerlink" href="#modelli" title="Permalink to this headline">¶</a></h2>
@@ -111,6 +111,7 @@ a specifici vincoli e che può essere utilizzato per descrivere e comprendere un
 <p>Nel contesto dei processi di costruzione del software, il termine modello va primariamente
 inteso come un insieme di concetti e proprietà volti a catturare aspetti essenziali di un sistema,
 collocandosi in un preciso spazio concettuale.</p>
+<a class="reference internal image-reference" href="_images/Modello.PNG"><img alt="_images/Modello.PNG" class="align-center" src="_images/Modello.PNG" style="width: 60%;" /></a>
 <p>Per l’ingegnere del software quindi un modello costituisce una visione semplificata di un sistema
 che rende il sistema stesso più accessibile alla comprensione e alla valutazione e facilita
 il trasferimento di informazione e la collaborazione tra persone,
@@ -127,15 +128,15 @@ operano a diversi livelli di astrazione.</p>
 l’attenzione può essere focalizzata sugli aspetti rilevanti in quella fase, utilizzando una
 forma di comunicazione comprensibile ad attori diversi.
 Per garantire coesione e interoperabilità, si cerca di individuare regole di corrispondenza
-e di trasformazione automatica tra modelli</p>
+e di trasformazione automatica tra modelli.</p>
 </section>
 <section id="la-crisi-del-software">
 <h2>La crisi del software<a class="headerlink" href="#la-crisi-del-software" title="Permalink to this headline">¶</a></h2>
 <p>Impostare un processo di produzione in assenza di descrizioni del sistema che permettano di
 <span class="blue">anticipare la valutazione dei rischi</span>
 espone il processo stesso a un potenziale fallimento;
-non meraviglia dunque che si senta spesso parlare di crisi del software.</p>
-<p>La letteratura  (si veda ad esempio`SEDisasters`_) riporta casi di fallimento di un numero
+non meraviglia dunque che si senta spesso parlare di <strong>crisi del software</strong>.</p>
+<p>La letteratura  (si veda ad esempio <a class="reference external" href="https://www.rankred.com/biggest-software-failures/">SEDisasters</a>) riporta casi di fallimento di un numero
 sorprendentemente rilevante di progetti software, evidenziando un insieme di cause principali:</p>
 <ul class="simple">
 <li><p>Cattiva specifica e gestione dei requisiti.</p></li>
@@ -161,9 +162,9 @@ nonostante il termine <em>architettura</em> sia tra i vocaboli più sovraccarich
 <p>Normalmente, si parla di <span class="blue">architettura di un sistema</span> quando ci si vuole riferire all’insieme delle
 macro-parti in cui il sistema si articola, includendo le loro responsabilità, relazioni e interconnessioni.</p>
 <p>Per molti, il termine <em>architettura</em> potrebbe però evocare l’immagine di uno schema in cui compare una rete
-di blocchi e linee di connessione; questa visione andrebbe meglio indicata col termine mappa o “topologia”.</p>
+di blocchi e linee di connessione; questa visione andrebbe meglio indicata col termine <strong>mappa</strong>.</p>
 <p>Per altri, l’<em>architettura</em> evoca l’idea di uno schema concettuale di soluzione riferito a un certo dominio applicativo,
-come ad esempio nella frase architetture web; in questo caso sarebbe più appropriato utilizzare il termine framework.</p>
+come ad esempio nella frase <em>architetture web</em>; in questo caso sarebbe più appropriato utilizzare il termine <strong>framework</strong>.</p>
 <p>L’ Open Group Architectural Framework (<a class="reference external" href="https://it.wikipedia.org/wiki/The_Open_Group_Architecture_Framework">OpenGroupArch</a>) definisce architettura:</p>
 <ul class="simple">
 <li><p>“a set of elements depicted in an architectural model and a specification of how these elements are connected
@@ -190,26 +191,29 @@ continuando a comprenderne la struttura e il funzionamento.</p></li>
 </div></blockquote>
 <p>Le prime esperienze collettive nello studio delle architetture software possono essere fatte
 risalire al workshop OOPSLA del 1981 guidato da Bruce Anderson che mirava allo sviluppo
-di un “architecture handbook”.
-A questo periodo può anche essere fatto risalire l’idea di <span class="blue">pattern</span> culminata nella pubblicazione
+di un “architecture handbook”.</p>
+<section id="design-patterns">
+<h3>Design patterns<a class="headerlink" href="#design-patterns" title="Permalink to this headline">¶</a></h3>
+<p>Agli anni 90 del secolo scorso può anche essere fatto risalire l’idea di <span class="blue">pattern</span>, culminata nella pubblicazione
 nel 1995 dell’ormai famoso testo sui <a class="reference external" href="https://it.wikipedia.org/wiki/Design_pattern">Design Pattern</a>  della così detta
 <strong>GoF</strong> (<em>Gang-of-Four</em>: <em>Erich Gamma, Richard Helm, Ralph Johnson e John Vlissides</em>).</p>
-<a class="reference internal image-reference" href="_images/DesignPatternGof.PNG"><img alt="_images/DesignPatternGof.PNG" class="align-center" src="_images/DesignPatternGof.PNG" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/DesignPatternGof.PNG"><img alt="_images/DesignPatternGof.PNG" class="align-center" src="_images/DesignPatternGof.PNG" style="width: 80%;" /></a>
 <p>Da allora si sono susseguiti molte altre conferenze e lavori.
-I riferimenti più noti sono i cinque testi POSA sulle <em>Pattern Software Architectures</em>
+I riferimenti più noti sono i cinque testi POSA sulle <em>Pattern oriented Software Architectures</em>
 e i convegni PLoP (<em>Pattern Languages of Programming</em>).</p>
-<a class="reference internal image-reference" href="_images/Posa.PNG"><img alt="_images/Posa.PNG" class="align-center" src="_images/Posa.PNG" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/Posa.PNG"><img alt="_images/Posa.PNG" class="align-center" src="_images/Posa.PNG" style="width: 80%;" /></a>
+</section>
 </section>
 <section id="dimensioni">
 <h2>Dimensioni<a class="headerlink" href="#dimensioni" title="Permalink to this headline">¶</a></h2>
 <p>Sia nella fase di analisi che in quella di progetto, la descrizione di un sistema software può avvenire
 focalizzando l’attenzione su almeno tre diversi punti di vista:</p>
+<a class="reference internal image-reference" href="_images/Dimensioni.png"><img alt="_images/Dimensioni.png" class="align-center" src="_images/Dimensioni.png" style="width: 80%;" /></a>
 <ul class="simple">
 <li><p>l’organizzazione del sistema in parti (<strong>struttura</strong>);</p></li>
-<li><p>il modo in cui le diverse parti scambiano informazione implicita o esplicita tra loro ((<strong>interazione(</strong>);</p></li>
+<li><p>il modo in cui le diverse parti scambiano informazione implicita o esplicita tra loro (<strong>interazione</strong>);</p></li>
 <li><p>il funzionamento del tutto e di ogni singola parte ((<strong>comportamento(</strong>).</p></li>
 </ul>
-<a class="reference internal image-reference" href="_images/Dimensioni.png"><img alt="_images/Dimensioni.png" class="align-center" src="_images/Dimensioni.png" style="width: 60%;" /></a>
 <p>Questi punti di vista costituiscono tre indispensabili dimensioni in cui articolare lo spazio della descrizione
 del sistema, qualunque sia il linguaggio utilizzato per esprimere questa descrizione.
 Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione
@@ -218,31 +222,31 @@ sono presenti in tutti i linguaggi di programmazione.</p>
 il progettista (se non lo stesso analista).
 Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre
 nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.</p>
-<a class="reference internal image-reference" href="_images/historyHLPL.png"><img alt="_images/historyHLPL.png" class="align-center" src="_images/historyHLPL.png" style="width: 40%;" /></a>
+<a class="reference internal image-reference" href="_images/historyHLPL.png"><img alt="_images/historyHLPL.png" class="align-center" src="_images/historyHLPL.png" style="width: 60%;" /></a>
 <p>L’avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo;
 un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva
-in ciascuna delle dimensioni citate. Tuutavia, il motivo principale della relativa (apparente)
+in ciascuna delle dimensioni citate.</p>
+<p>Tuttavia, il motivo principale della relativa (apparente)
 stagnazione nello sviluppo di nuovi linguaggi può essere ricondotto all’idea che un linguaggio
 non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente
-definire una sintassi astratta utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
-(si veda Meta Object Facility) unitamente alla semantica del linguaggio e a un framework (oo) di supporto.</p>
-<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 60%;" /></a>
+definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
+(si veda Meta Object Facility) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
+<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 80%;" /></a>
 <p>Questa idea è sviluppata oggi con riferimento ai <em>Domain Specific Languages</em>.</p>
 <section id="struttura">
 <h3>Struttura<a class="headerlink" href="#struttura" title="Permalink to this headline">¶</a></h3>
-<p>Per impostare in modo sistematico la definzione a livello strutturale di un elemento può essere conveniente,
+<p>Per impostare in modo sistematico la definzione a livello strutturale di un elemento, può essere conveniente,
 sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande quali:</p>
 <ul class="simple">
 <li><p>l’elemento è <span class="blue">atomico o composto</span>? Nel caso sia composto quali sono le parti che lo formano?</p></li>
-<li><p>l’elemento è dotato di <span class="blue">stato modificabile:</span>? In caso affermativo, quali sono le operazioni di modifica dello stato?
-(si veda la sezione sul comportamento)</p></li>
-<li><p>quali sono le <span class="blue">proprietà dell’elemento</span>, cioè quali attributi lo caratterizzano ?</p></li>
+<li><p>l’elemento è dotato di <span class="blue">stato modificabile</span>? In caso affermativo, quali sono le operazioni di modifica dello stato?</p></li>
+<li><p>quali sono le <span class="blue">proprietà dell’elemento</span>, cioè quali attributi lo caratterizzano?</p></li>
 <li><p>da quali altri elementti dipende e secondo quale <span class="blue">tipo di dipendenza</span>?</p></li>
 </ul>
-<p>Si noti che un elemento composto implica la definizione ricorsiva della struttura di ogni parte e
-la definizione di operazioni denominate selettori.
-Notiamo anche che l’individuazione di una struttura composta porta spesso alla individuazione
-di un insieme di operazioni primitive sulla base delle quali costruire ogni altra operazione
+<p>Si noti che un elemento composto implica la <em>definizione ricorsiva della struttura di ogni parte</em> e
+la definizione di operazioni denominate <strong>selettori</strong>.</p>
+<p>Notiamo anche che l’individuazione di una struttura composta porta spesso alla individuazione
+di un insieme di <strong>operazioni primitive</strong> sulla base delle quali costruire ogni altra operazione
 di manipolazione/gestione dell’elemento.</p>
 </section>
 <section id="interazione">
@@ -260,7 +264,7 @@ Nel caso di stream, il destinatario si aspetta di ricevere i dati con un ritardo
 che non supera un massimo prefissato.</p>
 <p>Una interazione <strong>isocrona</strong> riguarda solo stream; il destinatario si aspetta di ricevere i dati
 con un delay compreso tra un minimo e un massimo.</p>
-<p>Le interazioni vengono spesso suddivise secondo quattro pattern principali:</p>
+<p>Le interazioni vengono anche spesso suddivise secondo quattro pattern principali:</p>
 <ul class="simple">
 <li><p><strong>Fire and forget</strong>: il caso di invio di  messaggi.</p></li>
 <li><p><strong>Sync with server</strong>: il caso request-response.</p></li>
@@ -270,6 +274,37 @@ di ricevere la risposta. Il sender usa il poll object per verificare ed acquisir
 un metodo che verrà invocato dal supporto non appena il receiver invierà la risposta.</p></li>
 </ul>
 <p>Torneremo diffusamente su questi punti, che costituiscono il cuore del passaggio da OOP a message-passing.</p>
+<section id="terminologia-di-riferimento">
+<h4>Terminologia di riferimento<a class="headerlink" href="#terminologia-di-riferimento" title="Permalink to this headline">¶</a></h4>
+<p>Nel seguito, faremo riferimento alla seguente terminologia:</p>
+<ul class="simple">
+<li><p><strong>Messaggio</strong> (<span class="blue">message</span>): termne generico per denotare informazione da trasmettere in rete.</p></li>
+<li><p><strong>Dispaccio</strong> (<span class="blue">dispatch</span>): messaggio inviato in modo asincrono a N (N&gt;=1) specifici destinatari,
+noti alla emittente, con l’aspettativa che questi lo ricevano e lo elaborino; l’emittente non si aspetta
+alcuna informazione di ritorno.</p></li>
+<li><p><strong>Invito</strong> (<span class="blue">invitation</span>): messaggio inviato a N (N&gt;=1) destinatari, con l’aspettativa che almeno uno lo riceva
+e invii al mittente un messaggio di <em>conferma</em>.</p></li>
+<li><p><strong>Conferma</strong> (<span class="blue">ack</span>): messaggio inviato al mittente di un <em>invitation</em>.
+Il contenuto del messaggio rappresenta un riconoscimento di avvenuta ricezione.</p></li>
+<li><p><strong>Richiesta</strong> (<span class="blue">request</span>): messaggio inviato a uno specifico destinatario; il contenuto del messaggio
+rappresenta la richiesta di esecuzione di una attività, con aspettativa da parte del mittente
+che questa attività si concluda con una risposta pertinente alla richiesta.</p></li>
+<li><p><strong>Risposta</strong> (<span class="blue">reply, response</span>): messaggio inviato da un destinatario al mittente di una richiesta.
+il contenuto del messaggio rappresenta informazione pertinente alla richiesta.</p></li>
+<li><p><strong>Evento</strong> (<span class="blue">event</span>): messaggio emessa (più o meno consapevolmente) in modo asincrono da una sorgente
+senza alcuna particolare nozione di destinatario e senza alcuna aspettativa da parte dell’emittente.</p></li>
+<li><p><strong>Segnale</strong> (<span class="blue">signal</span>): messaggio inviato in modo asincrono a N (N&gt;=1) destinatari, noti o meno all’emittente,
+con l’aspettativa che venga ricevuta da qualcuno, al fine di eseguire un’azione che potrebbe portare vantaggio
+all’emittente e/o al sistema nel suo complesso.</p></li>
+</ul>
+</section>
+<section id="un-problema-applicativo">
+<h4>Un problema ‘applicativo’<a class="headerlink" href="#un-problema-applicativo" title="Permalink to this headline">¶</a></h4>
+<p>Discutere la forma di interazione in cui un componente A invia una <em>request</em> X a un componente B e questi risponde
+solo dopo avere ricevuto da A risposta a una <em>request</em> Y.</p>
+<p>Esempio: A chiede a B di inviargli la fattura di un ordine ma non gli dice a quale indirizzo, per cui B lo chiede ad A
+prima di rispondere.</p>
+</section>
 </section>
 <section id="comportamento">
 <h3>Comportamento<a class="headerlink" href="#comportamento" title="Permalink to this headline">¶</a></h3>
@@ -279,15 +314,52 @@ un metodo che verrà invocato dal supporto non appena il receiver invierà la ri
 <li><p>funzionale</p></li>
 <li><p>logico-dichiarativo</p></li>
 </ul>
-<p>Spesso si fa anche riferimento a tipi diversi di macchine astratte, iniziando dalla Macchina di Turing (TM), che individua,
-in stile imperativo, le moose elementari di un automa che permette di realizzare qualunque calcolo.</p>
+<p>Spesso si fa anche riferimento a tipi diversi di <strong>macchine astratte</strong>, iniziando dalla Macchina di Turing (TM), che individua,
+in stile imperativo, le mosse-base (<em>primitive</em>) di un automa che permette di realizzare qualunque calcolo.</p>
 <a class="reference internal image-reference" href="_images/TuringMachine.PNG"><img alt="_images/TuringMachine.PNG" class="align-center" src="_images/TuringMachine.PNG" style="width: 60%;" /></a>
 <p>Un automa equivalente che ottiene lo stesso risultato con una sorta di linguaggio assembler minimale è la
 Macchina di Minsky:</p>
 <a class="reference internal image-reference" href="_images/MinskyMachine.PNG"><img alt="_images/MinskyMachine.PNG" class="align-center" src="_images/MinskyMachine.PNG" style="width: 60%;" /></a>
-<p>Un tipo di automa meno potente, ma che avrà per noi un ruolo fondamentale è
-l’automa a stati finiti (FSM) che costituisce una parte della TM.</p>
-<p>Va sottolieata a questo punto la distanza tra le mosse elementari di base e quelle necessarie per affrontare
+<p>Un tipo di automa meno potente della TM, ma che ne costituisce una parte  e che
+avrà per noi un ruolo fondamentale è l’automa a stati finiti (<em>Finite State Machine</em> - <strong>FSM</strong>)
+il cui funzionamento può essere formalmente descritto da una 5-tuple (<code class="docutils literal notranslate"><span class="pre">States,</span> <span class="pre">Inputs,</span> <span class="pre">Outputs,</span> <span class="pre">Transitions,</span> <span class="pre">InitialState</span></code>):</p>
+<ul>
+<li><p><strong>States</strong>: insieme di possibili stati (<em>States</em>) in cui l’automa si può trovare   .</p></li>
+<li><p><strong>Inputs</strong>: insieme delle informazioni di ingresso, denotabili attraverso un <em>input alphabet</em> (Inputs); nel nostro caso
+possiamo pensare che ogni simbolo dell’alfabeto  denoti un messggio.</p></li>
+<li><p><strong>Outputs</strong>: insieme della informazioni di uscita, denotabili attraverso un <em>output alphabet</em> (Outputs);   nel nostro caso
+possiamo pensare che ogni simbolo dell’alfabeto denoti una <strong>azione</strong> che l’automa svolge )</p></li>
+<li><p><strong>InitialState</strong>: lo stato iniziale (unico) in cui l’automa si trova quando viene creato.</p></li>
+<li><p><strong>Transizione</strong>: definisce il nuovo stato e l’output dell’automa in funzione dello stato corrente e del simbolo corrente in ingresso.
+E’ spesso espressa da una coppia di funzioni:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nextState</span><span class="p">:</span>      <span class="n">States</span> <span class="n">x</span> <span class="n">Inputs</span> <span class="o">-&gt;</span> <span class="n">States</span>
+<span class="n">output</span><span class="p">:</span>         <span class="n">States</span> <span class="n">x</span> <span class="n">Inputs</span> <span class="o">-&gt;</span> <span class="n">Outputs</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>Normalmente, gli automi a stati finiti si suddividono in due grandi categorie:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Mealy_machine">MealyMachines</a>: una FSM il cui output è determinato sia dallo stato corrente sia dall’input corrente.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>: una FSM il cui output dipende unicamente dallo stato corrente (<code class="docutils literal notranslate"><span class="pre">SCUR</span></code>) in cui l’automa si trova.</p></li>
+</ul>
+<p>Nel seguito, imposteremo spesso il comportamento dei componenti software come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a> che, quando si trova in uno
+stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>:</p>
+<ol class="arabic simple">
+<li><p>esegue una sequenza (che <strong>deve terminare</strong>) di azioni</p></li>
+<li><p>al termine della sequenza di azioni controlla che vi sia almeno un input capace di attivare una delle transizioni verso
+un ulteriore stato (<code class="docutils literal notranslate"><span class="pre">SNEXT</span></code>)</p></li>
+<li><p>attiva una delle transioni possibili pasando dallo stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> allo stato <code class="docutils literal notranslate"><span class="pre">SNEXT</span></code> (che potrebbe anche coincidere
+con <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>)</p></li>
+<li><p>se non vi sono transizioni attivabili, rimane nello stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> da cui potrà sbloccarsi solo in conseguenza di un
+ulteriore input</p></li>
+</ol>
+</section>
+<section id="abstraction-gap">
+<h3>Abstraction GAP<a class="headerlink" href="#abstraction-gap" title="Permalink to this headline">¶</a></h3>
+<p>Va sottolieata, a questo punto, la distanza tra le mosse elementari di base e quelle necessarie per affrontare
 in modo adeguato un problema applicativo, una distanza cui faremo riferimento col termine <span class="blue">abstraction gap</span>.</p>
 <a class="reference internal image-reference" href="_images/TopDownBottomUp.PNG"><img alt="_images/TopDownBottomUp.PNG" class="align-center" src="_images/TopDownBottomUp.PNG" style="width: 60%;" /></a>
 </section>
@@ -326,11 +398,19 @@ in modo adeguato un problema applicativo, una distanza cui faremo riferimento co
 <li class="toctree-l2"><a class="reference internal" href="#modelli">Modelli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#la-crisi-del-software">La crisi del software</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#richiami">Richiami</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#il-ruolo-dell-architettura">Il ruolo dell’architettura</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#il-ruolo-dell-architettura">Il ruolo dell’architettura</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design-patterns">Design patterns</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#dimensioni">Dimensioni</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#struttura">Struttura</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#interazione">Interazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interazione">Interazione</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#terminologia-di-riferimento">Terminologia di riferimento</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#un-problema-applicativo">Un problema ‘applicativo’</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#comportamento">Comportamento</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstraction-gap">Abstraction GAP</a></li>
 </ul>
 </li>
 </ul>
