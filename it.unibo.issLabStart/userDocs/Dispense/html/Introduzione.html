@@ -65,7 +65,7 @@ con aspetti di basso livello relativi a dispositivi di Internet of Things (IOT),
 virtuali sia dispositivi reali costruibili utilizzando elaboratori a basso costo quali RaspberryPi e Arduino;</p></li>
 <li><p>è in grado di <span class="blue">applicare</span> i concetti, i dispositivi, e gli strumenti sviluppati in modo concreto ed operativo
 durante il corso per lo sviluppo di una <span class="blue">applicazione finale</span> che utilizza uno o più dispositivi IOT ‘situati’,
-con particolare riferimento a Differental Drive Robots (DDR) con sensori
+con particolare riferimento a <em>Differental Drive Robots</em> (DDR) con sensori
 che possono agire in modo relativamente autonomo in <span class="blue">diversi</span> ambienti virtuali o reali,
 senza modificare il software che esprime la ‘business logic’ del problema.</p></li>
 </ul>
@@ -95,7 +95,7 @@ con  <strong>autovalutazione del lavoro svolto</strong>, nel quadro delle <a cla
 <ul class="simple">
 <li><p>Il modello di programmazione a scambio di messaggi portato a livello di componenti.</p></li>
 <li><p>Introduzione al linguaggio Kotlin.</p></li>
-<li><p>Dalle coroutine Kotlin agli atttori Kotlin.</p></li>
+<li><p>Dalle coroutine Kotlin agli attori Kotlin.</p></li>
 <li><p>Da attori message-driven ad attori message-based che operano come automi a stati finiti.</p></li>
 <li><p>Definizione di una infrastruttura per attori come supporto alla costruzione di software distribuiti ed eterogeni.</p></li>
 </ul>
@@ -107,11 +107,8 @@ con  <strong>autovalutazione del lavoro svolto</strong>, nel quadro delle <a cla
 <li><p>Definizione di una linguaggio/metamodello custom (Qakctor) per la costruzione di sistemi basati su attori</p></li>
 <li><p>Il vantaggio dell’uso di modelli eseguibili nelle fasi di analisi dei requisiti e del problema e come premessa
 per l’abbattimento dei costi (e degli imprevisti) di produzione.</p></li>
-<li><dl class="simple">
-<dt>Applicazione di quanto sviluppato per lo sviluppo incrementale di una <strong>applicazione finale IOT</strong> che utilizza</dt><dd><p><a class="reference external" href="_static/devsDdr.html">robot reali</a>, costruiti estendendo il sistema della FASE1.</p>
-</dd>
-</dl>
-</li>
+<li><p>Applicazione di quanto sviluppato per lo sviluppo incrementale di una <strong>applicazione finale IOT</strong> che utilizza
+<a class="reference external" href="_static/devsDdr.html">robot reali</a>, costruiti estendendo il sistema della FASE1.</p></li>
 </ul>
 <a class="reference internal image-reference" href="_images/mbotIot.png"><img alt="_images/mbotIot.png" class="align-center" src="_images/mbotIot.png" style="width: 70%;" /></a>
 </section>
@@ -123,7 +120,7 @@ per l’abbattimento dei costi (e degli imprevisti) di produzione.</p></li>
 <li><p>GITHUB del corso:  <a class="reference external" href="https://github.com/anatali/issLab2022">https://github.com/anatali/issLab2022</a></p></li>
 <li><p>Documento  <a class="reference external" href="_static/templateToFill.html">template2022</a>: costituisce un punto di riferimento  ‘process agnostic’,
 cioè non indica il processo di sviluppo che adottiamo per costruirlo.</p></li>
-<li><p>Alcuni <a class="reference external" href="_static/devsDdr.html">Libri</a> importanti/utili</p></li>
+<li><p>Alcuni <a class="reference external" href="_static/books.html">Libri</a> importanti/utili</p></li>
 <li><p>Video tema finale studenti (Panopto) <a class="reference external" href="https://unibo.cloud.panopto.eu/Panopto/Pages/Sessions/List.aspx#folderID=%222f957969-7f72-4609-a690-aca900aeba02%22">VideoStudenti</a></p></li>
 </ul>
 </section>
@@ -144,7 +141,11 @@ cioè non indica il processo di sviluppo che adottiamo per costruirlo.</p></li>
 <section id="su-raspberrypi">
 <h3>Su RaspberryPi<a class="headerlink" href="#su-raspberrypi" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
-<li><p>Acquisire RaspberryPi 3 Model B+, SONAR Led</p></li>
+<li><p>Acquisire RaspberryPi 3 Model B+,</p></li>
+<li><p>Sarebbe bene acquisire anche HC-SR04 Distance Sensor e qualche Led che useremo nella FASE1</p></li>
+<li><p>Al termine della FASE1 faremo anche uso di una (usb) WebCam</p></li>
+<li><p>Per il software si veda <a class="reference internal" href="RaspberrySoftware.html"><span class="doc">RaspberrySoftware</span></a>  (Installazione-base 2022)</p></li>
+<li><p>Per i robot si veda  <a class="reference external" href="_static/devsDdr.html">robot reali</a></p></li>
 </ol>
 </section>
 </section>
@@ -311,6 +312,9 @@ E docker-compose? Se sì quali sono i criteri/motivazioni per la ripartizione di
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 </ul>
 
 <div class="relations">

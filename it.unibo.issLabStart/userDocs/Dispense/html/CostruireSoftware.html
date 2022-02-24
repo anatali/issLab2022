@@ -13,9 +13,10 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="RaspberrySoftware" href="RaspberrySoftware.html" />
+    <link rel="next" title="RadarSystem" href="RadarSystem.html" />
     <link rel="prev" title="Introduzione" href="Introduzione.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -47,6 +48,9 @@ ma il software è del tutto privo di massa.</p>
 Limitando il discorso al contesto della produzione industriale, si è diffusa la convinzione che
 la costruzione del software non richieda, per sua natura, processi di produzione tipici dell’ingegneria tradizionale.</p>
 <a class="reference internal image-reference" href="_images/ScienzaEIng.PNG"><img alt="_images/ScienzaEIng.PNG" class="align-center" src="_images/ScienzaEIng.PNG" style="width: 80%;" /></a>
+<p>Per meglio comprendere questa differenza e anche la profonda relazione tra scienza e ingegneria
+possiamo riflettere sul seguente problema:</p>
+<p><span class="remark">costruire un sistema software che operi come una mente unama</span></p>
 <section id="ingegneria">
 <h2>Ingegneria<a class="headerlink" href="#ingegneria" title="Permalink to this headline">¶</a></h2>
 <p>Nell’<strong>ingegneria tradizionale</strong> (meccanica, edile, etc) il costo del materiale costituisce spesso più del 50%
@@ -65,13 +69,13 @@ di costo 1 in fase di analisi potrebbe costare 1000 in fase di produzione.</p>
 <li><p>messa in opera</p></li>
 </ol>
 <p>spesso eseguiti uno dopo l’altro, in un classico <span class="blue">processo di sviluppo sequenziale o a cascata</span>.</p>
-<a class="reference internal image-reference" href="_images/WaterFall.PNG"><img alt="_images/WaterFall.PNG" class="align-center" src="_images/WaterFall.PNG" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/WaterFall.PNG" id="waterfall"><img alt="_images/WaterFall.PNG" class="align-center" id="waterfall" src="_images/WaterFall.PNG" style="width: 80%;" /></a>
 </section>
 <section id="programmatori-non-ingegneri">
 <h2>Programmatori = (non) ingegneri?<a class="headerlink" href="#programmatori-non-ingegneri" title="Permalink to this headline">¶</a></h2>
 <p>Nella produzione industriale del software è piuttosto comune cercare di abbattere i costi
 di progetto e di sviluppo, anche limitando le dimensioni del gruppo di lavoro.
-Spesso si cerca anche diverse aggredire il mercato prefissando una data di distribuzione del prodotto, che viene di frequente
+Spesso si cerca anche di aggredire il mercato prefissando una data di distribuzione del prodotto, che viene di frequente
 rilasciato non completamente finito, accollando all’utente parte dell’onere di collaudo.</p>
 <p>Sotto la spinta di stringenti vincoli di <em>time to market</em> (<strong>TTM</strong>) molte aziende adottano uno schema del tipo
 <span class="blue">“scrivi, prova e correggi”</span>, mirando alla produzione di codice al minor “costo immediato” possibile.
@@ -81,7 +85,7 @@ e <em>quasi mai corralete in modo sistematico con il codice prodotto</em>.</p>
 legata alla natura stessa del software: la spinta a impostare la costruzione  in modo <strong>bottom-up</strong>,
 a partire da una specifica tecnologia costituita da un linguaggio di programmazione,
 o da un framework applicativo o da una piattafforma operativa.</p>
-<a class="reference internal image-reference" href="_images/bottomUp.png"><img alt="_images/bottomUp.png" class="align-center" src="_images/bottomUp.png" style="width: 50%;" /></a>
+<a class="reference internal image-reference" href="_images/bottomUp.png" id="bottomup"><img alt="_images/bottomUp.png" class="align-center" id="bottomup" src="_images/bottomUp.png" style="width: 50%;" /></a>
 <p>La principale conseguenza negativa di questa forza è molto spesso la mancata valutazione di alternative tecnologiche
 in fase di analisi del problema e l’assenza di una esplicita descrizione di progetto
 che permetta di anticipare la valutazione dei rischi e le potenziali difficoltà connesse allo sviluppo.
@@ -123,7 +127,7 @@ In alcune fasi di lavoro (in particolare nella fase di analisi) il sistema è il
 un raffinamento o una variazione del modello corrisponde in questo caso ad una variazione del sistema.</p>
 <p>La produzione esplicita di modelli si rivela utile in quanto i diversi attori di un processo
 di produzione di software (committenti, analisti, progettisti, utenti, etc)
-operano a diversi livelli di astrazione.</p>
+operano a diversi livelli di astrazione e con fini diversi.</p>
 <p>Definendo opportuni modelli del sistema da realizzare, in ogni fase del processo di produzione
 l’attenzione può essere focalizzata sugli aspetti rilevanti in quella fase, utilizzando una
 forma di comunicazione comprensibile ad attori diversi.
@@ -148,7 +152,7 @@ sorprendentemente rilevante di progetti software, evidenziando un insieme di cau
 <li><p>Inadeguata capacità di valutare e gestire i rischi e di controllare la propagazione dei cambiamenti.</p></li>
 </ul>
 <p>Queste potenziali fonti di insuccesso hanno amplificato la loro influenza nel momento in cui
-l’intera disciplina ha vissuto la <span class="blue">transizione</span> da una dimensione prevalentemente <span class="blue">algorimtico-trasformazionale</span>
+l’intera disciplina ha vissuto la <span class="blue">transizione</span> da una dimensione prevalentemente <span class="blue">algoritmico-trasformazionale</span>
 a un dimensione fortemente <span class="blue">sistemistico-architetturale</span>.</p>
 </section>
 <section id="richiami">
@@ -199,7 +203,7 @@ nel 1995 dell’ormai famoso testo sui <a class="reference external" href="https
 <strong>GoF</strong> (<em>Gang-of-Four</em>: <em>Erich Gamma, Richard Helm, Ralph Johnson e John Vlissides</em>).</p>
 <a class="reference internal image-reference" href="_images/DesignPatternGof.PNG"><img alt="_images/DesignPatternGof.PNG" class="align-center" src="_images/DesignPatternGof.PNG" style="width: 80%;" /></a>
 <p>Da allora si sono susseguiti molte altre conferenze e lavori.
-I riferimenti più noti sono i cinque testi POSA sulle <em>Pattern oriented Software Architectures</em>
+I riferimenti più noti sono i cinque testi POSA (si veda in <a class="reference external" href="_static/books.html">libri</a> ) sulle <em>Pattern oriented Software Architectures</em>
 e i convegni PLoP (<em>Pattern Languages of Programming</em>).</p>
 <a class="reference internal image-reference" href="_images/Posa.PNG"><img alt="_images/Posa.PNG" class="align-center" src="_images/Posa.PNG" style="width: 80%;" /></a>
 </section>
@@ -208,34 +212,37 @@ e i convegni PLoP (<em>Pattern Languages of Programming</em>).</p>
 <h2>Dimensioni<a class="headerlink" href="#dimensioni" title="Permalink to this headline">¶</a></h2>
 <p>Sia nella fase di analisi che in quella di progetto, la descrizione di un sistema software può avvenire
 focalizzando l’attenzione su almeno tre diversi punti di vista:</p>
-<a class="reference internal image-reference" href="_images/Dimensioni.png"><img alt="_images/Dimensioni.png" class="align-center" src="_images/Dimensioni.png" style="width: 80%;" /></a>
 <ul class="simple">
 <li><p>l’organizzazione del sistema in parti (<strong>struttura</strong>);</p></li>
 <li><p>il modo in cui le diverse parti scambiano informazione implicita o esplicita tra loro (<strong>interazione</strong>);</p></li>
-<li><p>il funzionamento del tutto e di ogni singola parte ((<strong>comportamento(</strong>).</p></li>
+<li><p>il funzionamento del tutto e di ogni singola parte (<strong>comportamento</strong>).</p></li>
 </ul>
+<a class="reference internal image-reference" href="_images/Dimensioni.png"><img alt="_images/Dimensioni.png" class="align-center" src="_images/Dimensioni.png" style="width: 80%;" /></a>
 <p>Questi punti di vista costituiscono tre indispensabili dimensioni in cui articolare lo spazio della descrizione
 del sistema, qualunque sia il linguaggio utilizzato per esprimere questa descrizione.
 Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione
-sono presenti in tutti i linguaggi di programmazione.</p>
+sono presenti in tutti i <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a>.</p>
 <p>Un punto importante consiste nel capire fino a che punto i costrutti di un linguaggio debbano influenzare
 il progettista (se non lo stesso analista).
 Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre
 nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.</p>
+<p>La figura che segue mostra una visione sintetica dello sviluppo nel tempo di questa evoluzione linguistica,
+con riferimento ad alcuni dei linguaggi più noti (in <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a> si dice che oggi
+si usano più di 2500 linguaggi di programmazione).</p>
 <a class="reference internal image-reference" href="_images/historyHLPL.png"><img alt="_images/historyHLPL.png" class="align-center" src="_images/historyHLPL.png" style="width: 60%;" /></a>
 <p>L’avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo;
 un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva
 in ciascuna delle dimensioni citate.</p>
-<p>Tuttavia, il motivo principale della relativa (apparente)
-stagnazione nello sviluppo di nuovi linguaggi può essere ricondotto all’idea che un linguaggio
+<p>Tuttavia, il motivo principale di una relativa (e solo apparente)
+stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all’idea che un linguaggio
 non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente
 definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
-(si veda Meta Object Facility) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
-<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 80%;" /></a>
-<p>Questa idea è sviluppata oggi con riferimento ai <em>Domain Specific Languages</em>.</p>
+(si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a>) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
+<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 870%;" /></a>
+<p>Questa idea è sviluppata oggi con riferimento ai <a class="reference external" href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">Domain Specific Languages</a>.</p>
 <section id="struttura">
 <h3>Struttura<a class="headerlink" href="#struttura" title="Permalink to this headline">¶</a></h3>
-<p>Per impostare in modo sistematico la definzione a livello strutturale di un elemento, può essere conveniente,
+<p>Per impostare in modo sistematico la definizione a livello strutturale di un elemento, può essere conveniente,
 sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande quali:</p>
 <ul class="simple">
 <li><p>l’elemento è <span class="blue">atomico o composto</span>? Nel caso sia composto quali sono le parti che lo formano?</p></li>
@@ -301,9 +308,9 @@ all’emittente e/o al sistema nel suo complesso.</p></li>
 <section id="un-problema-applicativo">
 <h4>Un problema ‘applicativo’<a class="headerlink" href="#un-problema-applicativo" title="Permalink to this headline">¶</a></h4>
 <p>Discutere la forma di interazione in cui un componente A invia una <em>request</em> X a un componente B e questi risponde
-solo dopo avere ricevuto da A risposta a una <em>request</em> Y.</p>
+solo dopo avere ricevuto da A la risposta a una sua <em>request</em> Y.</p>
 <p>Esempio: A chiede a B di inviargli la fattura di un ordine ma non gli dice a quale indirizzo, per cui B lo chiede ad A
-prima di rispondere.</p>
+prima di rispondergli con il documento richiesto.</p>
 </section>
 </section>
 <section id="comportamento">
@@ -314,21 +321,25 @@ prima di rispondere.</p>
 <li><p>funzionale</p></li>
 <li><p>logico-dichiarativo</p></li>
 </ul>
-<p>Spesso si fa anche riferimento a tipi diversi di <strong>macchine astratte</strong>, iniziando dalla Macchina di Turing (TM), che individua,
+<p>Spesso si fa anche riferimento a tipi diversi di <strong>macchine astratte</strong>, iniziando dalla
+<a class="reference external" href="https://plato.stanford.edu/entries/turing-machine/">Turing Machine</a> (<strong>TM</strong>), che individua,
 in stile imperativo, le mosse-base (<em>primitive</em>) di un automa che permette di realizzare qualunque calcolo.</p>
 <a class="reference internal image-reference" href="_images/TuringMachine.PNG"><img alt="_images/TuringMachine.PNG" class="align-center" src="_images/TuringMachine.PNG" style="width: 60%;" /></a>
-<p>Un automa equivalente che ottiene lo stesso risultato con una sorta di linguaggio assembler minimale è la
-Macchina di Minsky:</p>
+<p>Si veda <a class="reference external" href="https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html">Raspberry Pi TM</a></p>
+<p>Un automa equivalente che ottiene lo stesso risultato con una sorta di <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_assembly">Linguaggio assembly</a> minimale è la
+<a class="reference external" href="https://en.wikipedia.org/wiki/Counter_machine">Minsky Machine</a> (nota anche come <em>Counter Machine</em>):</p>
 <a class="reference internal image-reference" href="_images/MinskyMachine.PNG"><img alt="_images/MinskyMachine.PNG" class="align-center" src="_images/MinskyMachine.PNG" style="width: 60%;" /></a>
+<section id="automi-a-stati-finiti">
+<h4>Automi a stati finiti<a class="headerlink" href="#automi-a-stati-finiti" title="Permalink to this headline">¶</a></h4>
 <p>Un tipo di automa meno potente della TM, ma che ne costituisce una parte  e che
-avrà per noi un ruolo fondamentale è l’automa a stati finiti (<em>Finite State Machine</em> - <strong>FSM</strong>)
+avrà per noi un ruolo fondamentale è l’<a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a> (<em>Finite State Machine</em> - <strong>FSM</strong>)
 il cui funzionamento può essere formalmente descritto da una 5-tuple (<code class="docutils literal notranslate"><span class="pre">States,</span> <span class="pre">Inputs,</span> <span class="pre">Outputs,</span> <span class="pre">Transitions,</span> <span class="pre">InitialState</span></code>):</p>
 <ul>
-<li><p><strong>States</strong>: insieme di possibili stati (<em>States</em>) in cui l’automa si può trovare   .</p></li>
-<li><p><strong>Inputs</strong>: insieme delle informazioni di ingresso, denotabili attraverso un <em>input alphabet</em> (Inputs); nel nostro caso
+<li><p><strong>States</strong>: insieme di possibili stati in cui l’automa si può trovare.</p></li>
+<li><p><strong>Inputs</strong>: insieme delle informazioni di ingresso, denotabili attraverso un <em>input alphabet</em>; nel nostro caso
 possiamo pensare che ogni simbolo dell’alfabeto  denoti un messggio.</p></li>
-<li><p><strong>Outputs</strong>: insieme della informazioni di uscita, denotabili attraverso un <em>output alphabet</em> (Outputs);   nel nostro caso
-possiamo pensare che ogni simbolo dell’alfabeto denoti una <strong>azione</strong> che l’automa svolge )</p></li>
+<li><p><strong>Outputs</strong>: insieme della informazioni di uscita, denotabili attraverso un <em>output alphabet</em>;   nel nostro caso
+possiamo pensare che ogni simbolo dell’alfabeto denoti una <strong>azione</strong>.</p></li>
 <li><p><strong>InitialState</strong>: lo stato iniziale (unico) in cui l’automa si trova quando viene creato.</p></li>
 <li><p><strong>Transizione</strong>: definisce il nuovo stato e l’output dell’automa in funzione dello stato corrente e del simbolo corrente in ingresso.
 E’ spesso espressa da una coppia di funzioni:</p>
@@ -348,20 +359,201 @@ E’ spesso espressa da una coppia di funzioni:</p>
 <p>Nel seguito, imposteremo spesso il comportamento dei componenti software come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a> che, quando si trova in uno
 stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>:</p>
 <ol class="arabic simple">
-<li><p>esegue una sequenza (che <strong>deve terminare</strong>) di azioni</p></li>
-<li><p>al termine della sequenza di azioni controlla che vi sia almeno un input capace di attivare una delle transizioni verso
-un ulteriore stato (<code class="docutils literal notranslate"><span class="pre">SNEXT</span></code>)</p></li>
-<li><p>attiva una delle transioni possibili pasando dallo stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> allo stato <code class="docutils literal notranslate"><span class="pre">SNEXT</span></code> (che potrebbe anche coincidere
-con <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>)</p></li>
+<li><p>esegue una sequenza (che <strong>deve terminare</strong>) di azioni;</p></li>
+<li><p>al termine della sequenza di azioni controlla che vi sia almeno un input (messaggio)
+capace di attivare una delle transizioni verso un ulteriore stato (<code class="docutils literal notranslate"><span class="pre">SNEXT</span></code>);</p></li>
+<li><p>attiva una delle transizioni possibili pasando dallo stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> allo stato <code class="docutils literal notranslate"><span class="pre">SNEXT</span></code> (che potrebbe anche coincidere
+con <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>);</p></li>
 <li><p>se non vi sono transizioni attivabili, rimane nello stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> da cui potrà sbloccarsi solo in conseguenza di un
-ulteriore input</p></li>
+ulteriore input.</p></li>
 </ol>
+</section>
 </section>
 <section id="abstraction-gap">
 <h3>Abstraction GAP<a class="headerlink" href="#abstraction-gap" title="Permalink to this headline">¶</a></h3>
 <p>Va sottolieata, a questo punto, la distanza tra le mosse elementari di base e quelle necessarie per affrontare
 in modo adeguato un problema applicativo, una distanza cui faremo riferimento col termine <span class="blue">abstraction gap</span>.</p>
 <a class="reference internal image-reference" href="_images/TopDownBottomUp.PNG"><img alt="_images/TopDownBottomUp.PNG" class="align-center" src="_images/TopDownBottomUp.PNG" style="width: 60%;" /></a>
+</section>
+</section>
+<section id="indicazioni-sul-processo-di-produzione">
+<h2>Indicazioni sul processo di produzione<a class="headerlink" href="#indicazioni-sul-processo-di-produzione" title="Permalink to this headline">¶</a></h2>
+<p>Il riferimento ormai universalemente accettato è quello di un processo di sviluppo agile,
+che pone al centro il concetto di <span class="blue">modello del dominio</span> applicativo.</p>
+<a class="reference internal image-reference" href="_images/agileEMDE.PNG"><img alt="_images/agileEMDE.PNG" class="align-center" src="_images/agileEMDE.PNG" style="width: 70%;" /></a>
+<p>Come già osservato i processi  <a class="reference internal" href="#waterfall">waterfall</a> dell’ingegneria tradizionale, lasciano il posto a processi
+di tipo iterativo e incrementale.</p>
+<a class="reference internal image-reference" href="_images/Spiral.PNG"><img alt="_images/Spiral.PNG" class="align-center" src="_images/Spiral.PNG" style="width: 60%;" /></a>
+<p>Esistono molti validi motivi per impostare il processo di produzione in modo <span class="blue">TopDown</span>
+(si veda <a class="reference internal" href="#la-crisi-del-software"><span class="std std-ref">La crisi del software</span></a>), partendo dal problema e dalla sua
+analisi, in modo che le tecnologie più opportune per risolverlo siano un risultato di questa analisi
+e non un assunto a-priori.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Design first</p></td>
+<td><p>TopDown process</p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/topDown.png" src="_images/topDown.png" />
+</td>
+<td><img alt="_images/TopDownHowWhat.png" src="_images/TopDownHowWhat.png" />
+</td>
+</tr>
+</tbody>
+</table>
+<p>Sappiamo però che, in molti casi, si segue un approccio <a class="reference internal" href="#bottomup">bottomUp</a> e quindi porremo molta attenzione nel capire le
+strategie migliori per invertire il processo e le motivazioni per fare questa inversione.</p>
+<p>Supponendo che le nostre attività di laboratorio siano non troppo dissimili a quanto avviene concretamente nel
+mondo del lavoro, faremo riferimento a <a class="reference external" href="https://scrumguides.org/">SCRUM</a> che oggi costitusice un diffuso framework per lo sviluppo e il
+mantenimento di prodotti complessi (non solo software).</p>
+<section id="id1">
+<h3>SCRUM<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/AgileDevelop.PNG"><img alt="_images/AgileDevelop.PNG" class="align-center" src="_images/AgileDevelop.PNG" style="width: 90%;" /></a>
+<p>Un approccio INCREMENTALE (in stile SCRUM, ma non solo) è utile per
+aggredire la complessità del problema e per
+mettere in luce in primis LE COSE
+PIU’ IMPORTANTI e PIU’ CRITICHE senza perdersi in dettagli che possono distogliere
+l’attenzione per formare un quadro generale di riferimento.</p>
+<p>I vari SPRINT dovrebbero effettuare uno ZOOMING entro MACRO-COMPONENTI
+innescando un processo ITERATIVO di analisi, progetto , sviluppo e testing di
+quel componente o del SOTTOSISTEMA  che lo SPRINT vuole costruire.</p>
+<p>Per questo sarà opportuno impostare ogni SPRINT come un ‘sottoprogetto’
+con sua propria spiegazione e testing.
+Lo sprint <span class="math notranslate nohighlight">\(n+1\)</span> dovrebbe partire dai
+risultati dello sprint <span class="math notranslate nohighlight">\(n\)</span> e preparare un sottosistema (funzionante)
+che sarà l’input dello sprint <span class="math notranslate nohighlight">\(n+2\)</span>.</p>
+<p>Di particolare rilevanza saranno le fasi di <a class="reference external" href="https://www.agileway.it/sprint-review-meeting/">Sprint review</a> i cui meeting saranno un nuovo modo di concepire le ore di
+ricevimento-studenti.</p>
+</section>
+<section id="il-motto">
+<h3>Il motto<a class="headerlink" href="#il-motto" title="Permalink to this headline">¶</a></h3>
+<p>Per focalizzare l’attenzione sulla nostra metodologia di costruzione, cercheremo di tenere fede al seguente motto:</p>
+<a class="reference internal image-reference" href="_images/Motto.PNG"><img alt="_images/Motto.PNG" class="align-center" src="_images/Motto.PNG" style="width: 50%;" /></a>
+</section>
+<section id="il-template">
+<h3>Il template<a class="headerlink" href="#il-template" title="Permalink to this headline">¶</a></h3>
+<p>Il documento <a class="reference external" href="_static/templateToFill.html">template2022</a> costituisce lo strumento che useremo per rendere esplcite le conoscenze, le decisioni
+e i modelli introdotte nelle fasi di analisi e di progetto.</p>
+<p>Questo documento intende costituire un punto di riferimento
+‘process agnostic’, cioè non ancorato ad alcun specifico processo di sviluppo adottato per costruirlo.</p>
+<p>Cercheremo quindi anche di capire il ruolo delle documentazione e le metodologie più adeguate per realizzarla
+in modo utile, costruttivo e sistematicamente correlato allo stato corrente del codice.</p>
+<p>Anticipiamo qui alcuni aspetti che svilupperemo in modo più approfondito lungo tutto il corso.</p>
+<section id="l-analisi-dei-requisiti">
+<h4>L’analisi dei requisiti<a class="headerlink" href="#l-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h4>
+<p>L’analisi dei requisiti mira a:</p>
+<p><span class="remark">definire/chiarire COSA il committente intende.</span></p>
+<p>Occorre fare una analisi del testo che precisi in modo non ambiguo
+il significato dei termini usati e le informazioni non esplicitamente espresse.
+La costruzione di un <span class="blue">dizionario</span>  in linguaggio naturale è utile ma non risolutiva,
+in quanto esprime informazione ancora affetta da ambiguità se non da incoeranza e inconsistenza.</p>
+<p>Dunque, le informazioni date in linguaggio naturale servono solo in una fase preliminare
+dei lavori.
+Occorre esprimere le informazioni in modo ‘formale’, cioè in modo
+<strong>comprensible alla macchina</strong>.</p>
+<p>A tal fine sono utili i linguaggi che permettono di definire <a class="reference internal" href="#modelli"><span class="std std-ref">Modelli</span></a>
+capaci di catturare gli aspetti essenziali, lasciando sullo sfondo dettagli
+anche importanti, ma non rilevanti nelle prime fasi.</p>
+<p>Gli <a class="reference external" href="https://it.wikipedia.org/wiki/Use_Case_Diagram">Use Cases Diagrams</a> utilizzati in <a class="reference external" href="https://it.wikipedia.org/wiki/Unified_Modeling_Language">UML</a> e le più recenti <a class="reference external" href="https://en.wikipedia.org/wiki/User_story">User Stories</a> possono essere utili
+come linea-guida per definire una o più <span class="blue">TestUnits</span> funzionali.
+Le specifiche degli <em>Use Cases</em> espresse in linguaggio naturali possono essere inserite
+come commenti in tali <em>TestUnits</em>.</p>
+<p>Le <span class="blue">domande</span> da porre al committente mirano a <strong>chiarire</strong>:</p>
+<ul class="simple">
+<li><p>la natura delle entità, cioè se dal punto di vista software,
+una entità è (modellabile come un) oggetto (POJO), un servizio, un processo, un attore, etc.</p></li>
+<li><p>se le varie entità devono essere distribuite su diversi nodi computazionali</p></li>
+<li><p>i vincoli tecnologici, cioè se il committente propone già qualche specifica tecnologia
+o qualche specifico supporto per una data entità</p></li>
+<li><p>le interazioni (a procedure-call, a messaggi, sincrone, asincrone) tra le diverse entità</p></li>
+</ul>
+<p>Al termine della analisi dei requisiti dovrebbe essere definito
+un modello del sistema che mette in luce i macro-componenti
+e le loro interazioni, cioè una prima <span class="blue">architetture logica</span> del sistema.</p>
+</section>
+<section id="l-analisi-del-problema">
+<h4>L’analisi del problema<a class="headerlink" href="#l-analisi-del-problema" title="Permalink to this headline">¶</a></h4>
+<p>L’analisi del problema mira a:</p>
+<p><span class="remark">definire/chiarire le problematiche implicate dai requisiti.</span></p>
+<p><span class="remark">fornire informazioni utili sui costi/tempi/risorse necessari.</span></p>
+<p>L’analisi del problema <span class="blue">NON IMPLICA ancora alcuna progettazione</span>,
+ma mira a fornire un <strong>quadro delle possibili soluzioni tecnologighe</strong>
+individuando quelle più utili per il superamento delle problematiche poste dai requisiti.
+La scelta finale sarà fatta dal progettista (che potrebbe anche ampliare lo spettro
+della indagine - ricordiamo che siamo in un <span class="blue">processo iterativo a spirale</span> ).</p>
+<p>L’analisi del problema serve per capire quali sono le maggiori problematiche
+da affrontare, le tecnologie da usare e le risorse (umane e temporali) necessarie.
+Inoltre gettano le basi per impostare il primo sprint di sviluppo e quindi per
+costruire un primo ‘prototipo’ funzionante del sistema da estendere poi in modo
+incrementale con gli sprint succesivi dopo una opportuna sprint-review con
+il committente</p>
+<section id="l-architettura-logica">
+<h5>L’architettura logica<a class="headerlink" href="#l-architettura-logica" title="Permalink to this headline">¶</a></h5>
+<p>Il risultato della analsi può essere sintetizzato nella definizione di una
+<span class="red">architettura logica</span> (che specializza/esetende quella scaturita dai requisiti )
+che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.)
+dei MACRO-COMPONENTI del sistema e della loro interazione,
+NON COME SOLUZIONE DI PROGETTO, ma come VINCOLI IMPLICATI dal problema.</p>
+<p><span class="remark">Il risultato della analisi del problema dovrebbe essere (del tutto) condiviso</span></p>
+<p>L’analista potrebbe/dovrebbe dare uno sguardo complessivo al problema,
+cercando anche di organizzare tutte le funzionalità per importanza, e come queste
+funzionalità debbano essere  distribuite tra i vari MACRO-componenti.</p>
+</section>
+</section>
+</section>
+<section id="uso-di-modelli">
+<h3>Uso di modelli<a class="headerlink" href="#uso-di-modelli" title="Permalink to this headline">¶</a></h3>
+<p>L’uso dei modelli è utile (per non dire indispensabile) PER CONCENTRARE
+l’attenzione SUGLI ASPETTI RITENUTI SALIENTI (tenendo conto anche
+dei tempi, delle tecnologie disponibili  e dei costi).</p>
+<p>Come già previsto da <a class="reference external" href="https://it.wikipedia.org/wiki/Unified_Modeling_Language">UML</a>, è opportuno definire modelli come risultato delle
+fasi di analisi dei requisiti (<em>Use Case Diagrams</em>), analisi del problema
+e progetto (<em>class diagrams, sequence diagrams</em>, <em>activity diagrams</em>, <em>statechart diagram</em> )
+e anche per la distribuzione del prodotto (<em>deployment diagrams</em>).</p>
+<p>L’architettura logica espressa mediante un modello può essere il riferimento per la impostazione di
+PIANI di testing (unit, integration, functional, acceptance) espressi in MODO
+NON discorsivo (formale), comprensibile a una macchina.</p>
+<p>Noi seguiremo questa idea con lo sviluppo (si veda <a class="reference internal" href="Introduzione.html#fase2"><span class="std std-ref">FASE2</span></a>) di
+un meta-modello custom che permette la definizione di modelli eseguibili di sistemi distributi.</p>
+</section>
+<section id="dal-testing-a-devops">
+<h3>Dal testing a DevOps<a class="headerlink" href="#dal-testing-a-devops" title="Permalink to this headline">¶</a></h3>
+<p>La fase di testing del software è  attività imprescindibile per garantirne la qualità ed è anche
+indispensabile per garantire all’utente una <em>user experience</em> soddisfacente.</p>
+<p>In <a class="reference external" href="https://www.ibm.com/it-it/topics/software-testing">Software testing</a>  leggiamo che:</p>
+<ul class="simple">
+<li><p>Esistono molti tipi diversi di test del software, ciascuno con obiettivi e strategie specifici.</p></li>
+<li><p>Negli anni ‘90 c’è stata una transizione dai test a un processo più completo denominato
+<span class="blue">controllo di qualità</span>, che copre l’intero ciclo di sviluppo del software e riguarda
+i processi di pianificazione, progettazione, creazione ed esecuzione di casi di test.</p></li>
+<li><p>I test del software sono stati tradizionalmente separati dal resto dello sviluppo, ma
+molti team di sviluppo  usano ora una metodologia nota come <span class="blue">test continuo</span>.</p></li>
+</ul>
+<p>Il <em>test continuo</em> è parte dell’approccio <a class="reference external" href="https://it.wikipedia.org/wiki/DevOps">DevOps</a>, in cui sviluppo e operazioni collaborano
+per l’intero ciclo di vita del prodotto. L’obiettivo è quello di accelerare la fornitura del software,
+bilanciando al tempo stesso i costi, la qualità e i rischi.</p>
+<p>Noi porremo particolare attenzione al fatto che la definizione di test (autmatizzabili) può essere vista come
+la formalizzazione delle <a class="reference external" href="https://en.wikipedia.org/wiki/User_story">User Stories</a> e che l’uso dei modelli (esguibili) può permettere
+di anticipare questa formalizzazione fin dalle fasi di analisi.</p>
+</section>
+<section id="passi-operativi-a-regime">
+<h3>Passi operativi ‘a regime’<a class="headerlink" href="#passi-operativi-a-regime" title="Permalink to this headline">¶</a></h3>
+<p>Anticipiamo qui le azioni principali che svolgeremo nella <a class="reference internal" href="Introduzione.html#fase3"><span class="std std-ref">FASE3</span></a>, dopo avere sperimentato
+nella <a class="reference internal" href="Introduzione.html#fase1"><span class="std std-ref">FASE1</span></a> il modo di procedere oggi più diffuso
+ed esserci costruiti un nostro ambiente di sviluppo custom nella <a class="reference internal" href="Introduzione.html#fase2"><span class="std std-ref">FASE2</span></a>:</p>
+<ol class="arabic simple">
+<li><p>Costruire un repository GIT del progetto.</p></li>
+<li><p>Definire un primo modello del sistema come risultato della analisi del problema
+(e non del progetto della soluzione).</p></li>
+<li><p>Includere nel documento di analisi gli appropriati riferimenti al modello.</p></li>
+<li><p>Utilizzare il modello per definire  <strong>Piani di Testing</strong> significativi in relazione alle <a class="reference external" href="https://en.wikipedia.org/wiki/User_story">User Stories</a></p></li>
+<li><p>Realizzare il progetto</p></li>
+<li><p>Impostare la codifica</p></li>
+<li><p>Impostare il deployment e la manutenzione (in prospettiva <a class="reference external" href="https://it.wikipedia.org/wiki/DevOps">DevOps</a>)</p></li>
+</ol>
 </section>
 </section>
 </section>
@@ -409,12 +601,33 @@ in modo adeguato un problema applicativo, una distanza cui faremo riferimento co
 <li class="toctree-l4"><a class="reference internal" href="#un-problema-applicativo">Un problema ‘applicativo’</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#comportamento">Comportamento</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comportamento">Comportamento</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#automi-a-stati-finiti">Automi a stati finiti</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#abstraction-gap">Abstraction GAP</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#indicazioni-sul-processo-di-produzione">Indicazioni sul processo di produzione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">SCRUM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#il-motto">Il motto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#il-template">Il template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#l-analisi-dei-requisiti">L’analisi dei requisiti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#l-analisi-del-problema">L’analisi del problema</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#l-architettura-logica">L’architettura logica</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#uso-di-modelli">Uso di modelli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dal-testing-a-devops">Dal testing a DevOps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#passi-operativi-a-regime">Passi operativi ‘a regime’</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 </ul>
 
@@ -423,7 +636,7 @@ in modo adeguato un problema applicativo, una distanza cui faremo riferimento co
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="Introduzione.html" title="previous chapter">Introduzione</a></li>
-      <li>Next: <a href="RaspberrySoftware.html" title="next chapter">RaspberrySoftware</a></li>
+      <li>Next: <a href="RadarSystem.html" title="next chapter">RadarSystem</a></li>
   </ul></li>
 </ul>
 </div>

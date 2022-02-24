@@ -17,7 +17,7 @@
 .. _Dispense Ingegneria del software : ./NatMolBook/bookEntry.html  
 
 .. _robot reali: _static/devsDdr.html
-.. _libri: _static/devsDdr.html
+.. _libri: _static/books.html
 .. _template2022 : _static/templateToFill.html
 
 .. _SCRUM : https://it.wikipedia.org/wiki/Scrum_(informatica)
@@ -71,7 +71,7 @@ Al termine del corso lo studente:
   virtuali sia dispositivi reali costruibili utilizzando elaboratori a basso costo quali RaspberryPi e Arduino;
 - è in grado di :blue:`applicare` i concetti, i dispositivi, e gli strumenti sviluppati in modo concreto ed operativo 
   durante il corso per lo sviluppo di una :blue:`applicazione finale` che utilizza uno o più dispositivi IOT 'situati', 
-  con particolare riferimento a Differental Drive Robots (DDR) con sensori 
+  con particolare riferimento a *Differental Drive Robots* (DDR) con sensori 
   che possono agire in modo relativamente autonomo in :blue:`diversi` ambienti virtuali o reali, 
   senza modificare il software che esprime la 'business logic' del problema.
 
@@ -108,7 +108,7 @@ FASE2
 
 - Il modello di programmazione a scambio di messaggi portato a livello di componenti.
 - Introduzione al linguaggio Kotlin.
-- Dalle coroutine Kotlin agli atttori Kotlin.
+- Dalle coroutine Kotlin agli attori Kotlin.
 - Da attori message-driven ad attori message-based che operano come automi a stati finiti.
 - Definizione di una infrastruttura per attori come supporto alla costruzione di software distribuiti ed eterogeni.
    
@@ -123,7 +123,7 @@ FASE3
 - Il vantaggio dell'uso di modelli eseguibili nelle fasi di analisi dei requisiti e del problema e come premessa
   per l'abbattimento dei costi (e degli imprevisti) di produzione.
 - Applicazione di quanto sviluppato per lo sviluppo incrementale di una **applicazione finale IOT** che utilizza 
-   `robot reali`_, costruiti estendendo il sistema della FASE1. 
+  `robot reali`_, costruiti estendendo il sistema della FASE1. 
 
 
 
@@ -165,9 +165,11 @@ Su PC
 Su RaspberryPi
 +++++++++++++++++++++++++++++++++++
 
-#. Acquisire RaspberryPi 3 Model B+, SONAR Led
- 
-
+#. Acquisire RaspberryPi 3 Model B+, 
+#. Sarebbe bene acquisire anche HC-SR04 Distance Sensor e qualche Led che useremo nella FASE1
+#. Al termine della FASE1 faremo anche uso di una (usb) WebCam
+#. Per il software si veda :doc:`RaspberrySoftware`  (Installazione-base 2022)
+#. Per i robot si veda  `robot reali`_
 
 -------------------------------------------
 Valutazione finale

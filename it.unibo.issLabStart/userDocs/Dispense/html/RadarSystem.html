@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>RadarSystem &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Analisi del problema" href="RadarSystemAnalisi.html" />
+    <link rel="prev" title="Costruire software" href="CostruireSoftware.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="radarsystem">
+<h1>RadarSystem<a class="headerlink" href="#radarsystem" title="Permalink to this headline">¶</a></h1>
+<p>Tetendo conto di quanto detto in <a class="reference internal" href="Introduzione.html"><span class="doc">Introduzione</span></a> ,
+impostiamo un processo di produzione del software partendo da un insieme di requisiti.</p>
+<section id="requisiti">
+<span id="requirements"></span><h2>Requisiti<a class="headerlink" href="#requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Si desidera costruire un’applicazione software capace di:</p>
+<ul class="simple">
+<li><p>(requisito <span class="blue">radarGui</span>) mostrare le distanze rilevate da un sensore <code class="docutils literal notranslate"><span class="pre">HC-SR04</span></code> connesso a un RaspberryPi
+su un display (<code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>) a forma di radar connesso a un PC</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/radarDisplay.png"><img alt="_images/radarDisplay.png" class="align-center" src="_images/radarDisplay.png" style="width: 20%;" /></a>
+<ul class="simple">
+<li><p>(requisito <span class="blue">ledAlarm</span>) accendere un LED se la distanza rilevata è inferiore a un valore limite prefissato
+denominato <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code>.</p></li>
+</ul>
+</section>
+<section id="analisi-dei-requisiti">
+<h2>Analisi dei Requisiti<a class="headerlink" href="#analisi-dei-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Iniziamo anallizzando il testo, cercando di chiarire con il committente il signifcato dei termini in esso presenti.
+Questa comunicazione a livello umano è fondamentale per formulare requisiti che siano:</p>
+<ul class="simple">
+<li><p>Chiari, Corretti, Completi, Concisi</p></li>
+<li><p>Non ambigui, consistenti</p></li>
+<li><p>Tracciabili, Realizzabili, Collaudabili</p></li>
+</ul>
+<section id="tracciabilita">
+<h3>Tracciabilità<a class="headerlink" href="#tracciabilita" title="Permalink to this headline">¶</a></h3>
+<p>Poichè il testo dei requisiti fornisce già un nome per ciascun requisito, si ha già un solido punto
+di partenza per la <span class="blue">forward traceability</span>.</p>
+</section>
+<section id="user-stories">
+<h3>User stories<a class="headerlink" href="#user-stories" title="Permalink to this headline">¶</a></h3>
+<p>Una user-story che esprime il funzionamento atteso del sistema, catturando tutti i requisiti può essere
+così espressa:</p>
+<blockquote class="epigraph">
+<div><p><span class="blue">User-story US1</span>: come utente mi aspetto che il Led si accenda se pongo un ostacolo a distanza <code class="docutils literal notranslate"><span class="pre">d&lt;DILIMT</span></code>
+dal Sonar e che il Led si spenga non appena porto l’ostacolo ad una  distanza <code class="docutils literal notranslate"><span class="pre">d&gt;DILIMT</span></code>.
+In ogni caso posso vedere illuminarsi un punto sul <code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code> a distanza <code class="docutils literal notranslate"><span class="pre">d</span></code>
+dal centro lungo   una  retta che forma un angolo <span class="math notranslate nohighlight">\(\theta\)</span>
+rispetto all’asse orizzontale del display.</p>
+</div></blockquote>
+</section>
+<section id="piano-di-testing-funzionale">
+<h3>Piano di testing (funzionale)<a class="headerlink" href="#piano-di-testing-funzionale" title="Permalink to this headline">¶</a></h3>
+<p>La user-story precedente suggerisce anche un possibile test funzionale per la verifica del
+comportamento del software da sviluppare.</p>
+<p>Tuttavia questo modo di procedere non è automatizzabile, in quanto richiede
+la presenza di un operatore umano. Nel seguito cercheremo di organizzare le cose in modo
+da permettere <span class="blue">Test automatizzati</span>.</p>
+</section>
+<section id="glossario">
+<h3>Glossario<a class="headerlink" href="#glossario" title="Permalink to this headline">¶</a></h3>
+<p>La redazione di un glossario è utile per pervenire alla definizione di <em>Costumer requirements</em>
+(<span class="blue">C-requirements</span>) chiari e possibilmente non ambigui.
+Il nostro glossario, la cui redazione lasciamo al lettore, dovrà includere i termini
+<em>Sensore, Led, RadarDisplay</em> che corrispondono ad altrettanti <span class="blue">componenti</span> del sistema.</p>
+<p>In questa sede però, la nostra attenzione si rivolge alla possibilità/necessità di esprimere
+i requisiti ponendoci dal punto di vista dell’elaboratore, che (fortunatamente?!) non comprende
+il linguaggio naturale.</p>
+<p>Dal punto di vista della ‘macchina’, l’unico modo per relazionarsi con un ente menzionato nel glossario
+è avere del software che lo rappresenta.</p>
+<p>Poniamo dunque al committente anche domande da questo punto di vista, e altre domande volte
+a chiarire bene la natura del sistema da realizzare.</p>
+</section>
+<section id="domande-al-committente">
+<h3>Domande al committente<a class="headerlink" href="#domande-al-committente" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Il committente fornisce software relativo al Led ?</p></td>
+<td><p>Si, <code class="docutils literal notranslate"><span class="pre">led25GpioTurnOn.sh</span></code> e <code class="docutils literal notranslate"><span class="pre">led25GpioTurnOff.sh</span></code> (progetto <em>it.unibo.rasp2021</em>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Il committente fornisce software per il Sonar ?</p></td>
+<td><p>Si, <code class="docutils literal notranslate"><span class="pre">SonarAlone.c</span></code> (progetto <em>it.unibo.rasp2021</em>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Il committente fornisce qualche libreria per la costruzione del RadarDisplay ?</p></td>
+<td><p>Si, viene reso disponibile (progetto <em>it.unibo.java.radar</em>)  il supporto  <code class="docutils literal notranslate"><span class="pre">radarPojo.jar</span></code>
+che fornisce un singleton JAVA <code class="docutils literal notranslate"><span class="pre">radarSupport</span></code> capace di creare una GUI in ‘stile radar’
+e di visualizzare su di essa un valore di distanza intero fornito come <code class="docutils literal notranslate"><span class="pre">String</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">radarSupport</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">RadarControl</span> <span class="n">rc</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setUpRadarGui</span><span class="p">(</span> <span class="p">){</span>
+  <span class="n">rc</span><span class="o">=</span><span class="p">...</span>
+<span class="p">}</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">d</span><span class="p">,</span>
+      <span class="n">String</span> <span class="n">dir</span><span class="p">){</span><span class="n">rc</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">dir</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>Il LED può/deve essere connesso allo stesso RaspberryPi del sonar?</p></td>
+<td><p>Al momento si. In futuro però il LED potrebbe essere connesso a un diverso nodo di elaborazione.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Il valore <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code> deve essere cablato nel sistema o è bene sia
+definibile in modo configurabile dall’utente finale?</p></td>
+<td><p>L’utente finale deve essere in grado di specificare in un ‘file di configurazione’
+il valore di questa distanza.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Dai requisiti possiamo asserire che:</p>
+<ul class="simple">
+<li><p>si tratta di realizzare il software per un <strong>sistema distribuito</strong> costituito da due nodi di elaborazione:
+un RaspberryPi e un PC convenzionale;</p></li>
+<li><p>i due nodi di elaborazione devono potersi  <cite>scambiare informazione via rete</cite>, usando supporti WIFI;</p></li>
+<li><p>i due nodi di elaborazione devono essere ‘programmati’ usando <strong>tecnologie software diverse</strong>.</p></li>
+</ul>
+</section>
+<section id="in-sintesi">
+<h3>In sintesi<a class="headerlink" href="#in-sintesi" title="Permalink to this headline">¶</a></h3>
+<p><span class="remark">Si tratta di realizzare un sistema software distribuito ed eterogeneo</span></p>
+<p>Il sistema comprende un dispositivo di input (il Sonar) e due dispositivi di output (il Led e il RadarDisplay)</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RadarSystem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requisiti">Requisiti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#analisi-dei-requisiti">Analisi dei Requisiti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tracciabilita">Tracciabilità</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-stories">User stories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#piano-di-testing-funzionale">Piano di testing (funzionale)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#glossario">Glossario</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#domande-al-committente">Domande al committente</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-sintesi">In sintesi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="CostruireSoftware.html" title="previous chapter">Costruire software</a></li>
+      <li>Next: <a href="RadarSystemAnalisi.html" title="next chapter">Analisi del problema</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/RadarSystem.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
