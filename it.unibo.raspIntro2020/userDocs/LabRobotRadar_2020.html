@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 90%;
+	background-color: #fcf8c7;
+	border: 1px solid blue;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}         
+    
+  -->
+</style>
+    
+<head>
+   
+<title>LabSonar_2020</title></head>
+    
+<body>
+<div id="body">
+<h1>LabRobotRadar_2020 | A robot-radar system <font size="5"></font> </h1>
+
+The goal of this work is to build a distributed version of the system described in 
+ <a href="../../it.unibo.qakradar21/userDocs/LabRadarGui.html" target="web">
+LabRadarGui | Radar GUI as a service</a>  in which sonar data are produced by a <tt>HC-SR04</tt> device mounted on a RaspberryPi.
+<br/><br/>
+The interaction between the <em>robot-sonar</em> and the <em>radarGuiservice</em> will be based on a CoAP Resource, according to the architecture
+shown in the following figure:
+<br/><br/>
+<table style="width:98%">
+	<tbody>	
+	<tr>
+	<td style="width:60%" ><img src="./img/raspSonarCoap.png" alt="raspSonarCoap.png" width="100%"  /></td>
+	<td> 
+
+	<li><a href="../resources/javacode/Resource.java" target="code">Resource.java</a> is the CoAP Resource. 
+	<br/><br/></li>
+	<li>
+	<a href="../resources/sensors/SonarAlone.c" target="code">SonarAlone.c</a> writes <tt>HC-SR04</tt> data on the standard output.
+	<br/><br/></li>
+
+	<li><a href="../resources/javacode/SonarOnRaspCoap.java" target="code">SonarOnRaspCoap.java</a> runs on the  
+	RaspberryPi. It reads sonar-data and updates the  CoAP Resource with 'messages'  of form :
+
+<pre>
+<ks>msg(sonar,event,robot,none,sonar(V),N)</ks>
+</pre>
+</li>
+
+<li>
+<a href="../resources/javacode/ResourceObserverRadar.java" target="code">ResourceObserverRadar.java</a> is the <em>radarGuiservice</em>
+that reads 'messages' from the  CoAP Resource and updates the GUI
+<br/><br/></li>
+<li><a href="../resources/javacode/CoapSupport.java" target="code">CoapSupport.java</a> is the Utility to access the CoAP Resource</li>
+<m></m>
+</td>
+</tr>
+</tbody>
+</table>
+
+To run:
+<ol>
+<li>Activate the CoAP-observable resource <a href="../resources/javacode/Resource.java" target="code">Resource.java</a></li>
+<!--
+<li>Look at the initial content of the resource by running <a href="../src/it/unibo/coapintro/ResourceObserver.java" target="code">
+ResourceObserver.java</a></li>
+-->
+<li>Activate a radar <a href="../resources/javacode/ResourceObserverRadar.java" target="code">ResourceObserverRadar.java</a></li>
+<li>Activate  a producer of sonar data
+</li>
+</ol>
+
+<h3>Producers of sonar data</h3>
+<a href="../../it.unibo.rasp2021/kotlin/sonarSimulateWithActor.kt" target="code">sonarSimulateWithActor.kt</a>
+or <a href="../../it.unibo.rasp2021/codedqak/sonarSimulator.kt" target="code">sonarSimulator.kt</a>
+: provide a simulator
+of sonar data that might be useful during software development in absence of a RaspberryPi. <br/>
+<m>
+This class implements a process that:
+<ol>
+<li>generates a sonar value <tt>V</tt> by reading an input value from the user-console;</li>
+<li>creates an event <tt>EV</tt> as an instance of <tt>ApplMessage</tt>. For example:
+<pre>
+msg(sonar,event,sonaronpcsimulated,none,sonar(2,57),2)
+</pre>
+<li>updates the CoAP resource
+ <a href="../src/javacode/ResourceSonar.java" target="code">ResourceSonar.java</a>
+ using the operation <tt>updateTheResource(String msg)</tt> defined in
+ <a href="../src/javacode/CoapSupport.java" target="code">CoapSupport.java</a>
+ </li>
+</ol>
+</m>
+
+<a href="../resources/javacode/SonarOnRaspCoap.java" target="code">SonarOnRaspCoap.java</a>:
+must run on a <em>RaspberryPi</em>. It requires:
+<ul>
+<li>the executable version of the component <ks>SonarAlone.c</ks></li>
+<li>the  description file
+<a href="../coapConfig.txt" target="code">coapConfig.txt</a> that includes the elements of the <tt>resource-URL</tt>.
+For example:
+<pre>
+coap://192.168.1.8:5683
+robot/sonar
+</pre>
+</li>
+</ul>
+ 
+<h3>Deployment notes</h3>
+Remember that the <i>Californium framework</i> makes use of the logger library <tt>slf4j</tt> that should be included
+in the dependencies: 
+<pre>
+compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+</pre>
+
+This library 
+<ul>
+<li>Requires the presence in the directory <k>src</k> of the file <a href="../src/log4j.properties" target="code">log4j.properties</a> </li>
+<li>generates (at run-time) the file <ks>log4jInfo.log</ks></li>
+</ul>
+
+
+
+
+<h2 id="domainmodel">The Resource Model in the center</h2>
+<!--
+During problem analysis, we can state that requirement similar to <em>Introspection</em> appear in the <tt>IOT</tt> domain
+and in particular in the <em>Web Of Things</em> (<bc>WOT</bc>).<br/><br/>
+-->
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:60%">
+<img src="./img/portAdapterArch.png" alt="portAdapterArch" width="95%" />
+</td>
+<td> 
+<img src="./img/wotBook.jpg" alt="wotBook" width="40%"  /><br/>
+
+ 
+From the <tt>Guinard/Trifa WOT</tt> book, we read (pg. 225) :<br/>
+We need a method to describe what a device is and does. In other words, we need a <bc>conceptual model</bc> of
+a web Thing (a <em>WebThingModel</em>) that can describe the resources of a web Thing using a set of well-known
+concepts.
+
+ 
+</td>
+ </tr>
+ </table>
+</center>
+
+The architecture shown on the left in the figure represents the reference system architecture in these domains,
+known ad hexagoal architecture or port/adapter pattern (see for example
+<a href="https://softwarecampament.wordpress.com/portsadapters/" target="web">Ports and Adapters Pattern (Hexagonal Architecture)</a>. 
+
+
+<h3>Hexagonal architecture</h3>
+The main aim of this architecture is to decouple the application's core logic from the services it uses. 
+This allows different services to be "plugged in", and it allows the application to be run without these services.
+<br/><br/>
+The <em>connection between the inside and the outside part</em> of the system is realized via abstractions called 
+<bc>ports</bc> and their implementation counterparts called <bc>adapters</bc>.
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:15%">
+<img src="./img/portAdapter.png" alt="portAdapter" width="80%" />
+</td>
+<td> 
+ 
+<ul>
+ <li>The <em>business logic</em> of an application consists of the algorithms that are essential to its purpose. 
+They implement the <em>use cases</em> that are the heart of the application. 
+When you change them, you change the essence of the application.
+</li>
+<li>The <em>services</em> are not essential. They can be replaced without changing the purpose of the application. 
+Examples: database access and other types of storage, user interface components, 
+e-mail and other communication components, hardware devices.</li>
+<li>The business logic can be <em>tested independent of outside services</em>.</li>
+<li>
+It is <em>easy to replace services</em> by other ones that are more fit in view of changing requirements.
+</ul>
+
+ 
+</td>
+ </tr>
+ </table>
+</center>
+
+
+At the center, there is the model of the resources and the structure of system can be viewed an instance of the
+<bc>MVC</bc> pattern.
+
+<h3>The pattern MVC</h3>
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:70%">
+<img src="./img/mvc.png" alt="mvc" width="100%" />
+</td>
+<td> 
+
+
+ 
+Today, it is quite common to express the resource model in <tt>JSON</tt>.
+
+<!-- <img src="./resourceModelJson1.png" alt="resourceModelJson1" width="60%" /> -->
+
+<pre>
+{
+"env": {
+	"actuators": {
+		"leds": {
+			"led1": {
+			"name": "LED 1",
+			"value": false,
+			"gpio": 4
+			},
+			"led2": {
+			...
+			}
+		}
+	} 
+	...
+}
+</pre>
+
+ 
+</td>
+ </tr>
+ </table>
+</center>
+ 
+ <div class="req">
+<em>Introspection</em>: The system must be able to  <em>show relevant information</em> to the user  about the <em>state</em>
+of the system and of the external world. For example, the system should show the current state of robot, including its
+position (assuming that it moves into a room with a flat floor) and the value of temperature in the room.
+ </div>
+
+
+<br/><br/>
+</div>  
+
+ 
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div> 
+
+</body>
+</html>
+
+
+<!--
+A ddr robot  equipped with a <tt>HC-SR04</tt> sonar device on its front can be considered as an autonomous agent, able to produce sonar data
+that can be consumed by some other (remote) agent.
+In this section, our consumer will be a device able to show to data on a <tt>GUI</tt>, like the 'radar' made available (as a plain object) by the project
+<i>it.unibo.java.radar</i>.
+
+<center><img src="./img/robotRadar.png" alt="robotRadar" width="50%"  /></center>
+
+<h2>Handling the sonar</h2> 
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" ><a href="../src/kotlincode/sonarOnRasp.kt" target="code">sonarOnRasp.kt</a></td>
+<td><m>An object written in Kotlin that 
+<li>starts <a href="../resources/sensors/SonarAlone.c" target="code">SonarAlone.c</a></li>
+<li>reads sonar data from the standard input</li>
+<li>writes sonar data on the standard output</li>
+</m>  </td>
+</tr>
+</tbody>
+</table>
+
+
+
+<br/>
+
+<h2 id="problemrr">The interaction robot-radar</h2>
+
+The project <i>it.unibo.java.radar</i> deploys the library <tt>radarPojo.jar</tt>  that provides an object utility to create
+a radar-GUI and to show values on that GUI:
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020Lab/blob/master/it.unibo.java.radar/src/radarPojo/radarSupport.java" target="code">
+radarSupport.java</a>.
+<br/><br/>
+In a bottom-up approach, the software designer must find a way to make the radar able to receive the sonar data produced by the robot. Thus the designer
+must face two problems:
+
+<ol>
+<li>Find a way to transmit data from the robot to the radar.</li>
+<li>Build a new radar component able to receive data and to display them by using the available 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020Lab/blob/master/it.unibo.java.radar/src/radarPojo/radarSupport.java" target="code">
+radarSupport.java</a></li>
+
+</ol>
+
+The picture below (left part) shows two main integration strategies:
+
+<ol>
+<li>The use of a two-way point-to-point communication protocol (e.g. TCP/UDP/etc.). </li>
+<li>The use of a middleware, for example a MQTT broker or a CoAP resource.</li>
+</ol>
+
+The right part of the picture is a possible step towards a more high-level way of reasoning, based on a custom set
+of communication-pattern names (dispatch, request, event). The intent id to capture (or better to express) the <k>logic</k> of the
+interaction between the robot and the radar, rather than the particular low-level technology that makes such an interaction possible.
+<br/><br/>
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" ><img src="./img/robotAsDataSource.png" alt="robotAsDataSource" width="100%"  /></td>
+<td> <img src="./img/robotAsDataSourceConceptual.png" alt="robotAsDataSourceConceptual" width="100%"  /></td>
+</tr>
+</tbody>
+</table>
+<br/>
+In the following, we will base our low-level communication technology on the CoAP RESTful protocol and on the concept of (CoaP)<k>resource</k>.
+ 
+
+
+<h2>CoAP-based interaction </h2>
+
+Let us start from the basic principles and concepts of interaction among distributed agents related to the Constrained Application Protocol
+reported in 
+<a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2020Lab/blob/master/it.unibo.coapintro/userDocs/LabCoAP.html" target="lab">
+LabCoAP | Introduction to CoAP</a>.
+<br/><br/>
+Since REST is a <em>resource-oriented architecture</em>,at the center of our system,  there is now the <k>CoapResource</k>
+(<a href="../src/javacode/Resource.java" target="code">Resource.java</a>) defined as follows:
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+<pre>
+public class Resource extends CoapResource {
+...
+}
+	public static void main(String[] args) {
+		CoapServer server = new CoapServer();
+		server.add( 
+				new Resource("robot").add(
+					new Resource("sonar") )
+		);
+		server.start();
+	}
+
+</pre>
+
+</td>
+
+<td>The device has <tt>robot</tt> as root and <tt>sonar</tt> as its sensor resource:
+<img src="./img/urlExample.png" alt="urlExample" width="100%"  /><br/><br/>
+
+ 
+</td>
+<m></m>
+</tr>
+</table>
+
+ 
+
+This resource allows us to acquire sonar data in RESTful way, by using the CoAP protocol.
+For example:
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+<pre>
+CoapClient client = new CoapClient();
+String uriStr     = "coap://localhost:5683/robot/sonar";
+client.setURI( uriStr );
+CoapResponse respGet = client.get();
+String sonarData = respGet.getResponseText()
+</pre>
+
+</td>
+<td></td>
+</tr>
+</table>
+-->

@@ -1,0 +1,1388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+ 
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #ffffcc;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 700px;
+    font-size: 15px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px; 
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #C0F0E0;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+	
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+div.remark{
+	background-color: #CEF6F5 ;	
+    border: 1.5px solid #FA58F4  ;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+} 
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}     
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+	
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+    
+ 
+</style>
+    
+<head>
+   
+<title>LabRaspiIntro</title></head>
+    
+<body>
+<div id="body">
+<h1>LabRaspiIntro | Using the RaspberryPi<font size="5"></font> </h1>
+
+<h2>Overview</h2>
+
+<ol>
+<li><a href="#busterlite">Setup Buster Lite</a></li>
+	<ul>
+		<li>Download <a href="https://www.raspberrypi.org/downloads/raspbian/" tagrget="web">Raspbian Buster Lite</a></li>
+		<li><a href="#startconfig">Start Configuration</a></li>
+		<li><a href="#busterlite">About Buster Lite</a></li> 
+		<li><a href="#python">About Python</a></li> 
+		<li><a href="#testcam">Test the camera</a></li>
+		<li><a href="#java">Install Java</a></li> 
+		<li><a href="#git">Install GIT</a></li>
+		<li><a href="#i2c">Enable I2C</a></li>
+		<li><a href="#mjpg">Install mjpg-streamer</a></li>
+		<li><a href="#aiocoap">Install aiocoap</a></li>
+		<li><a href="#nodejs">Install Node.js</a></li>
+		<li><a href="#samba">Install Samba</a></li>
+		
+		
+		 
+ 	</ul>
+	
+<li><a href="#hardware">The hardware</a></li>
+<li><a href="#cabling">Connect the hardware</a>
+<ul><li><a href="#bls">ButtonLed Code - Low Level)</a></li>
+<li><a href="#sonar">Sonar HC-SR04</a></li>
+ 
+
+<li><a href="#robots">Devices for home-made DDR</a></li>
+
+</ul>
+</li>
+
+<li><a href="#blsqak">Led - Qak </a></li> 
+
+<li><a href="#deploy">Deploy QAk models on RaspberryPi</a></li>
+
+<li><a href="#docker">Docker on RaspberryPi</a></li>
+
+</ol>
+
+
+<table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:50%">
+<ol>	
+	<li>See 
+	<!-- <a href="https://www.youtube.com/watch?v=qLo-0Tmmlrc" target="web">Raspberry PI 2 B first time Setup</a> 
+	(explains PIB, PIB+, PIBv2 models)
+	and -->
+	<a href="https://www.digikey.com/en/maker/blogs/raspberry-pi-wi-fi-bluetooth-setup-how-to-configure-your-pi-4-model-b-3-model-b" target="web">
+B+ Connectivity</a>. <br/><br/>
+</li>
+	<li>Create on a SD (min 8GB) the image from file:<br/>  <ks>2020-02-13-raspbian-buster-lite</ks> <!-- <ks>2019-09-26-raspbian-buster-lite.zip</ks> --> 
+	and Insert the SD on your PC <br/><br/> </li>
+	<li>create an empty file <ks>boot/ssh</ks><br/><br/> 	
+	</li>
+	<li>Create also a file <ks>boot/wpa_supplicant.conf</ks> with content:
+<pre>ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=IT
+network={
+     ssid="... Your_ESSID "
+     psk="... Your_wifi_password"
+     key_mgmt=WPA-PSK
+}
+</pre></li>
+	<li>Insert the SD into the RaspberryPi </li>
+	<li>on your <tt>MODEM HUB</tt> look at the <bc>Raspberry IP address</bc> (optionally, connect the RaspberryPi with an Ethernet cable to the <tt>MODEM</tt>) 
+	<li>Connect via ssh (by using <a href="https://www.putty.org/" target="web">Putty</a> ) 
+	<li>When the system is running, the file is moved forn <ks>boot</ks> to <em>etc/wpa_supplicant/wpa_supplicant.conf</em></li>
+</ol>
+
+<m>
+<div class="remark">
+<ks>Under-voltage detected</ks><br/>
+The voltage drop may be caused by the USB cable used: length, cable thickness, connector quality
+</div>
+</m>
+<h3>Info sul sistema</h3>
+<pre><m>uname -a
+<kc>Linux raspberrypi 4.19.66-v7+ #1253 SMP Thu Aug 15 11:49:46 BST 2019 armv7l GNU/Linux</kc>
+cat /proc/cpuinfo | grep model
+<kc>model name : ARMv7 Processor rev 4 (v7l)"</kc>
+
+cat /etc/os-release
+<kc>VERSION="10 (buster)"</kc>
+
+iproute 	<kc>//replaces <ks>ifconfig</ks></kc>
+</m></pre>
+See also: <a href="https://www.raspberryitaly.com/raspberrypi-tutti-i-comandi-utili-a-colpo-docchio/" target="web">
+RaspberryPi: Tutti i comandi utili a colpo d’occhio</a>
+
+</td>
+<td>
+If the connection does not work ...<br/>
+see <a href="https://www.raspberrypi.org/forums/viewtopic.php?t=253702" target="web">
+Network does not come up when restarting ...</a>
+
+<pre>
+sudo route add default gw 192.168.1.1 wlan0   <kc>//if required</kc>
+</pre> 
+
+<h3>/etc/network/interfaces (to set a static IP)</h3>
+<pre>
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+iface eth0 inet static
+  address 192.168.1.23
+  netwmask 255.255.255.0
+  gateway 192.168.1.1
+  
+auto wlan0 
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+dns-nameservers 8.8.8.8
+dns-search domain-name
+
+
+<kc>restart your network connections</kc>
+sudo /etc/init.d/networking restart
+<kc>or reboot</kc>
+sudo reboot
+</pre>
+
+<h3>/usr/local/bin/checkwifi.sh (to restart wlan0)</h3>
+<pre>
+ping -c4 192.168.1.1 > /dev/null
+ 
+if [ $? != 0 ] 
+then
+  echo "No network connection, restarting wlan0"
+  /sbin/ifdown 'wlan0'
+  sleep 5
+  /sbin/ifup --force 'wlan0'
+fi
+
+------------------------------------------------------------------------------
+crontab -e
+*/5 * * * * /usr/bin/sudo -H /usr/local/bin/checkwifi.sh >> /dev/null 2>&1
+------------------------------------------------------------------------------
+sudo chmod 775 /usr/local/bin/checkwifi.sh
+</pre>
+
+</td>
+</tr>
+
+<tr>
+<td><h3>No wifi?</h3></td>
+
+<td>
+<ol>
+<li>Connect to wired option temporarily</li>
+<li>Open terminal and type: sudo raspi-config</li>
+<li>Select option 8 to update the pi</li>
+<li>Reboot</li>
+<li>You should now be able to right click and turn on wifi and remove the wired network connection</li>
+</ol>
+<pre>
+sudo ip link set wlan0 up
+</pre>
+
+</td>
+</tr>
+
+<tr>
+<td style="width:50%" >
+<h3 id="busterlite">About Buster Lite</h3> 
+<pre>
+<ks>cat /etc/os-release</ks>
+<m>
+PRETTY_NAME="Raspbian GNU/Linux 10 (buster)"
+NAME="Raspbian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=raspbian
+ID_LIKE=debian
+HOME_URL="http://www.raspbian.org/"
+SUPPORT_URL="http://www.raspbian.org/RaspbianForums"
+BUG_REPORT_URL="http://www.raspbian.org/RaspbianBugs"
+</m>
+
+<ks>python3 -V</ks>
+<m>Python 3.7.3</m>
+</pre>
+
+
+
+
+
+</td>
+<td>
+<h3 id="startconfig">Start Configuration</h3> 
+<ks>First of all ...</ks>
+<pre>
+sudo apt-get update -y
+sudo apt-get upgrade -y   	<kc>or</kc>  sudo apt full-upgrade
+</pre>
+
+<ks>Enable some device ...</ks>
+
+<pre>
+sudo raspi-config  (interfacing options)
+<div class="remark"><k>Enable Cam, I2C, UART</k></div>
+sudo reboot
+</pre>
+ 
+<ks>Install standard USB webcam</ks>
+<pre>
+sudo apt install fswebcam	 
+</pre>
+
+<ks>Install cmake</ks>
+<pre>
+sudo apt-get install cmake
+</pre>
+
+
+</td>
+</tr>
+
+<tr>
+<td style="width:50%" >
+<h3 id="python">About Python</h3>   
+On the RaspberriPi B+ pre-Buster Lite, there are pre-installed Python <tt>2.7.13</tt> and <tt>Python 3.5.3</tt>. <br/>  
+On Buster Lite, there is <ks>Python 3.7.3</ks> and we wiil use it.
+
+
+
+ 
+</td>
+<td>
+ <pre>
+sudo apt-get install python3-pip
+</pre> 
+<h4>View processes and kill</h4>   
+<pre>
+ps -fA | grep python
+sudo kill -s KILL &lt;process number>
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="testcam">Test the camera</h3> </td>
+<td><pre>
+raspistill -o image.jpg
+raspivid -o video.h264 -t 5000		<kc>//in msecs</kc>
+
+fswebcam -r 1280x720 image2.jpg		<kc>//USB camera</kc>
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="java">Install <a href="http://wiringpi.com/" target="web">wiringpi</a></h3> 
+
+<pre>
+<ks>gpio -v</ks>
+Raspberry Pi Details:
+  Type: Model B+, Revision: 02, Memory: 512MB, Maker: Sony
+  * Device tree is enabled.
+  *--> Raspberry Pi Model B Plus Rev 1.2
+  * This Raspberry Pi supports user-level GPIO access.
+
+</pre>
+<m>
+<!--
+<h4>Links (introduction to GPIO control)</h4>         
+<ul>        
+<li><a href="https://www.youtube.com/watch?v=D-cTUEKbJJA" target="web">VIDEO: Raspberry Pi GPIO with Java</a></li>
+<li>About pins: <a href="http://elinux.org/RPi_Low-level_peripherals" target="web">RPi_Low-level_peripherals</a></li>
+<li>About Raspberry Pi GPIOs control: <a href="http://elinux.org/RPi_GPIO_Code_Samples" target="web">RPi GPIO Code Samples</a></li>
+<li><a href="http://wiringpi.com/the-gpio-utility/" target="web">Command-line utility gpio  (used by Wiringpi)</a></li>
+    <li><a href="http://makezine.com/projects/tutorial-raspberry-pi-gpio-pins-and-python/" target="web">gpio-pins-and-python</a></li>
+<li><a href="http://wiringpi.com//" target="web">Wiringpi</a></li>
+<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/RaspberryPi_Setup/RaspberryPi_Setup.html" target="web">Oracle java/RaspberryPi_Setup</a>  </li>         
+<li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/RaspberryPi_GPIO/RaspberryPi_GPIO.html" target="web">Oracle java/RaspberryPi_GPIO</a>  </li>   
+<li>Java <a href="https://bitbucket.org/sbub/raspberry-pi-gpio-web-control/overview" target="web">gpio-web-control</a></li>    
+</ul>
+-->      
+</m>
+</td>
+<td><pre>sudo apt-get install wiringpi</pre>
+   
+<pre>
+<kc>//Example</kc>
+gpio unexportall
+gpio export 25 out
+gpio export 1 out
+gpio write 25 0
+gpio write 1 0
+</pre>	
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3 id="java">Install Java</h3> 
+</td>
+<td><pre> 
+sudo apt install openjdk-8-jdk openjdk-8-jre
+update-alternatives --config java
+java -version
+<kc>-------------------JAVA HOME -----------------</kc>
+Include in <ks>/etc/environment</ks>
+JRE_HOME=/usr/lib/jvm/java-8-openjdk-armhf/jre/bin/java
+                        
+</pre>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3 id="java">Notes on Pi4J</h3> 
+ <b>Using Pi4J : useful links</b> <br/>
+    <a href="http://www.austinjug.org/presentations/RaspberryPi-AustinJUG.pdf" target="code">Java8+Pi4j (pdf)</a> <br/>        
+    <a href="http://pi4j.com/"  target="code">Pi4j site</a>    
+ 
+
+</td>
+<td>For the <bc>Rasperry B+  (V1.2)</bc> the <bc>Pi4J</bc> library to use can be found in 
+<pre><k>pi4j-core.jar</k></pre> 
+This library has been built from the <em>2-12 SNAPSHOT</em> and is not available in <tt>MavenCentral</tt>.
+</td>
+</tr>
+
+
+
+<tr>
+<td >
+<h3 id="git">Install GIT</h3> </td>
+<td><pre>sudo apt-get install git
+git --version 	<kc>//git version 2.20.1</kc>
+</pre>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3 id="i2c">Enable I2C</h3> </td>
+<td><pre>
+sudo nano /boot/config.txt
+	<kc>Add the line</kc>
+	dtparam=i2c_baudrate=10000
+sudo apt-get install i2c-tools
+sudo i2cdetect -y 1
+</pre>
+</td>
+</tr>
+
+
+
+
+<tr>
+<td>
+<h3 id="mjpg">Install mjpg-streamer</h3> 
+<ul>
+<li><a href="https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording" target="web">
+Setup Guide: Raspberry Pi | MJPEG Streamer Install & Setup & FFMpeg Recording</a><br/><br/>
+</li>
+<li><a href="https://en.wikipedi0.org/wiki/Motion_JPEG" target="web">Motion JPEG</a><br/><br/>
+</li>
+
+<li><a href="https://whatismyipaddress.com/" target="web">My IP Address</a></li>
+</ul>
+</td>
+<td><pre><!-- sudo apt-get install build-essential libjpeg8-dev imagemagick libv4l-dev cmake -y -->
+sudo apt-get install cmake libjpeg8-dev
+Au Raspian Buster lite:
+sudo apt-get install build-essential libjpeg8-dev imagemagick libv4l-dev cmake -y  
+
+git clone https://github.com/jacksonliam/mjpg-streamer.git
+cd /home/pi/nat/mjpg-streamer/mjpg-streamer-experimental
+make all
+sudo make install
+
+ls   /dev/video*      <kc>//the device is on /dev/video0</kc>
+
+./start.sh 			<kc>or</kc> bash start.sh
+<ks>http://192.168.x.y:8080/stream.html</ks>   
+--------------------------------------------------------------------------
+/usr/local/bin/mjpg_streamer -i "input_uvc.so -r 1280x720 
+	-d /dev/video0 -f 30" -o "output_http.so -p 8080 
+	-w /usr/local/share/mjpg-streamer/www"
+ 	
+</pre>
+</td>
+</tr>
+
+ <tr>
+<td>
+<h3 id="aiocoap">Install <a href="https://aiocoap.readthedocs.io/en/latest/" target="web">aiocoap</a></h3> 
+<h4>Install Copper in Chrome in Windows10</h4>
+See <a href="https://github.com/mkovatsc/Copper4Cr">Copper for Chrome (Cu4Cr) CoAP user-agent</a>
+</td>
+<td><pre>
+https://aiocoap.readthedocs.io/en/latest/
+wget https://aiocoap.readthedocs.io/en/latest/aiocoap-0.3.tar.gz
+tar xvzf aiocoap-0.3.tar.gz
+cd aiocoap-0.3
+sudo ./setup.py install</pre>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3 id="nodejs">Install Node.js</h3> </td>
+<td><pre>
+sudo apt remove nodejs nodejs-legacy -y
+sudo apt remove npm -y
+sudo apt remove --purge node
+
+<kc>//updates our Debian apt package repository 
+//to include the NodeSource packages</kc>
+curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+sudo apt-get install -y nodejs  // to install Node.js 13.x and npm
+
+node -v				<kc>//v13.7.0</kc>
+npm --version		<kc>//6.13.6</kc>
+
+npm init 			<kc>//create package.json</kc>
+npm install serialport	<kc>//--save is implicit</kc>
+
+npm install express
+</pre>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<h3 id="samba">Install <a href="https://linuxconfig.org/how-to-set-up-a-samba-server-on-debian-10-buster" target="web">Samba</a></h3> </td>
+<td><pre>
+sudo apt install -y samba
+</pre>
+</td>
+</tr>
+
+<tr>
+<td>
+<h3 id="wifi">Install a Wifi HotSpot</h3> 
+
+
+<a href="HotspotWifiRaspberryPI3 .pdf" target="web">HotspotWifiRaspberryPI3</a>
+
+https://www.domsoria.com/2020/02/cose-e-come-funziona-webrtc/ <br/><br/>
+
+https://www.domsoria.com/2019/10/configurare-la-raspberry-pi-come-access-point/ <br/><br/>
+
+</td>
+<td><pre>
+sudo cp /etc/wpa_supplicant/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf.sav
+sudo cat /etc/wpa_supplicant/wpa_supplicant.conf
+sudo cp /dev/null /etc/wpa_supplicant/wpa_supplicant.conf
+
+sudo nano  /etc/wpa_supplicant/wpa_supplicant.conf
+edit in the file /etc/wpa_supplicant/wpa_supplicant.conf and add the following lines:
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+RASPAP	https://raspap.com/#quick-installer	10.3.141.1
+wget -q https://git.io/voEUQ -O /tmp/raspap && bash /tmp/raspap
+curl -sL https://install.raspap.com | bash
+
+Per un certo periodo di tempo non sappiamo perché, ma sembra che l'accesso a Internet non sia più funzionale di default dopo l'installazione. 
+Per risolvere questo problema è sufficiente fare le due cose seguenti.
+
+abilitare il trasferimento dei pacchetti IPv4. Per fare questo, modificare il file /etc/sysctl.confand uncomment (cioè rimuoverlo all'inizio) la seguente riga:
+#net.ipv4.ip_forward=1
+
+Fatto questo, modificheremo iptables per definire l'IP di uscita che verrà indicato in modo che i server sappiano a chi rispondere
+(beh, da quello che ho capito, se ho sbagliato le correzioni sono le benvenute). 
+Per fare questo, aprite il file /etc/rc.local e aggiungete la seguente riga prima della parte "exit 0":
+
+iptables -t nat -A POSTROUTING -j MASQUERADE
+
+Riavviare la Raspberry PIe tutto dovrebbe funzionare come dovrebbe!
+ 
+</pre>
+</td>
+</tr>
+
+
+ </tbody>
+</table>
+ <br/><br/>
+ 
+ 
+
+ 
+<h2 id="hardware">The hardware</h2>
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+<img src="./img/raspberry-pi-rev2-gpio-pinout.jpg" alt="RaspRev2" width="100%" />
+<h4>under voltage detected</h4>
+You need one that supplies 5v at about 2Amps or more (2.5 for a Pi3b+)
+
+<h3>Resistors</h3>
+
+The Raspberry Pi has internal <em>pull-up</em> and <em>pull-down</em> resistors that can be specified when the pin declarations are made.
+ <br/>
+ If we need some resistor:
+     
+<a href="http://www.digikey.com/en/resources/conversion-calculators/conversion-calculator-resistor-color-code-4-band">resistor color code</a>
+
+</td>
+<td>
+<pre>gpio readall
+ +-----+-----+---------+------+---+-Model B2-+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ |     |     |    3.3v |      |   |  1 || 2  |   |      | 5v      |     |     |
+ |   2 |   8 |   SDA.1 | ALT0 | 1 |  3 || 4  |   |      | 5V      |     |     |
+ |   3 |   9 |   SCL.1 | ALT0 | 1 |  5 || 6  |   |      | 0v      |     |     |
+ |   4 |   7 | GPIO. 7 |   IN | 1 |  7 || 8  | 1 | ALT0 | TxD     | 15  | 14  |
+ |     |     |      0v |      |   |  9 || 10 | 0 | OUT  | RxD     | 16  | 15  |
+ |  17 |   0 | GPIO. 0 |   IN | 0 | 11 || 12 | 0 | OUT  | GPIO. 1 | 1   | 18  |
+ |  27 |   2 | GPIO. 2 |   IN | 0 | 13 || 14 |   |      | 0v      |     |     |
+ |  22 |   3 | GPIO. 3 |   IN | 0 | 15 || 16 | 0 | IN   | GPIO. 4 | 4   | 23  |
+ |     |     |    3.3v |      |   | 17 || 18 | 0 | IN   | GPIO. 5 | 5   | 24  |
+ |  10 |  12 |    MOSI | ALT0 | 0 | 19 || 20 |   |      | 0v      |     |     |
+ |   9 |  13 |    MISO | ALT0 | 0 | 21 || 22 | 0 | IN   | GPIO. 6 | 6   | 25  |
+ |  11 |  14 |    SCLK | ALT0 | 0 | 23 || 24 | 1 | ALT0 | CE0     | 10  | 8   |
+ |     |     |      0v |      |   | 25 || 26 | 1 | ALT0 | CE1     | 11  | 7   |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ |  28 |  17 | GPIO.17 |   IN | 0 | 51 || 52 | 0 | IN   | GPIO.18 | 18  | 29  |
+ |  30 |  19 | GPIO.19 |   IN | 0 | 53 || 54 | 0 | IN   | GPIO.20 | 20  | 31  |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+-Model B2-+---+------+---------+-----+-----+
+</pre>
+</td>
+</tr>
+
+<tr>
+<td><h3 id="h3">Model B+ </h3>
+Model B+ uses the same numbering as the Model B2.0, and adds some new pins.
+<center>
+    <img src="./img/Raspberry-Pi-GPIO-Layout-Model-B-Plus.png" alt="RaspRev2" width="100%"  />
+</center>
+</td>
+<td>
+<pre>gpio readall
+ +-----+-----+---------+------+---+---Pi B+--+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ |     |     |    3.3v |      |   |  1 || 2  |   |      | 5v      |     |     |
+ |   2 |   8 |   SDA.1 | ALT0 | 1 |  3 || 4  |   |      | 5v      |     |     |
+ |   3 |   9 |   SCL.1 | ALT0 | 1 |  5 || 6  |   |      | 0v      |     |     |
+ |   4 |   7 | GPIO. 7 |   IN | 1 |  7 || 8  | 1 | ALT0 | TxD     | 15  | 14  |
+ |     |     |      0v |      |   |  9 || 10 | 1 | ALT0 | RxD     | 16  | 15  |
+ |  17 |   0 | GPIO. 0 |   IN | 0 | 11 || 12 | 0 | IN   | GPIO. 1 | 1   | 18  |
+ |  27 |   2 | GPIO. 2 |   IN | 0 | 13 || 14 |   |      | 0v      |     |     |
+ |  22 |   3 | GPIO. 3 |   IN | 0 | 15 || 16 | 0 | IN   | GPIO. 4 | 4   | 23  |
+ |     |     |    3.3v |      |   | 17 || 18 | 0 | IN   | GPIO. 5 | 5   | 24  |
+ |  10 |  12 |    MOSI |   IN | 0 | 19 || 20 |   |      | 0v      |     |     |
+ |   9 |  13 |    MISO |   IN | 0 | 21 || 22 | 0 | OUT  | GPIO. 6 | 6   | 25  |
+ |  11 |  14 |    SCLK |   IN | 0 | 23 || 24 | 1 | IN   | CE0     | 10  | 8   |
+ |     |     |      0v |      |   | 25 || 26 | 1 | IN   | CE1     | 11  | 7   |
+ |   0 |  30 |   SDA.0 |   IN | 1 | 27 || 28 | 1 | IN   | SCL.0   | 31  | 1   |
+ |   5 |  21 | GPIO.21 |   IN | 1 | 29 || 30 |   |      | 0v      |     |     |
+ |   6 |  22 | GPIO.22 |   IN | 1 | 31 || 32 | 0 | IN   | GPIO.26 | 26  | 12  |
+ |  13 |  23 | GPIO.23 |   IN | 0 | 33 || 34 |   |      | 0v      |     |     |
+ |  19 |  24 | GPIO.24 |   IN | 0 | 35 || 36 | 0 | IN   | GPIO.27 | 27  | 16  |
+ |  26 |  25 | GPIO.25 |   IN | 0 | 37 || 38 | 0 | IN   | GPIO.28 | 28  | 20  |
+ |     |     |      0v |      |   | 39 || 40 | 0 | IN   | GPIO.29 | 29  | 21  |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+---Pi B+--+---+------+---------+-----+-----+
+
+</pre>
+</td>
+</tr>
+ </tbody>
+</table>
+
+
+
+<h3 >Basic Experiments (interactive) </h3> 
+           
+<table style="width:98%">
+<tbody>	
+ 
+  <tr>
+    <th>Bash</th>
+    <th>Gpio</th>
+    <th>Python</th>
+    </tr>
+  <tr class="alt">
+    <td>
+
+      <pre>
+echo Unexporting.
+echo 25 > /sys/class/gpio/unexport #
+echo 25 > /sys/class/gpio/export #
+cd /sys/class/gpio/gpio25 #
+
+echo Setting direction to out.
+echo out > direction #
+echo Setting pin high.
+echo 1 > value #
+sleep 1 #
+echo Setting pin low
+echo 0 > value #
+sleep 1 #
+echo Setting pin high.
+echo 1 > value #
+sleep 1 #
+echo Setting pin low
+echo 0 > value #      
+      </pre>
+<a href="../resources/bls/bash/led25OnOff.sh" target="code">led25OnOff.sh</a>      
+</td>
+<td>
+      <pre>
+gpio readall #
+echo Setting direction to out
+gpio mode 6 out #
+echo Write 1
+gpio write 6 1 #
+sleep 1 #
+echo Write 0
+gpio write 6 0 #    
+      </pre>
+<a href="../resources/bls/bash/gpio/led25Gpio.sh" target="code">led25Gpio.sh</a>      
+      </td> 
+    <td>   
+ 
+        The newest version of Raspbian has the <br/>
+        <tt>RPi.GPIO</tt> library pre-installed. 
+        <pre>
+sudo python
+>>> import RPi.GPIO as GPIO
+>>> GPIO.VERSION
+>>> GPIO.setmode(GPIO.BCM) 
+>>> GPIO.setup(25,GPIO.OUT)
+>>> while True:
+>>>     GPIO.output(25,GPIO.HIGH)
+>>>     time.sleep(1)
+>>>     GPIO.output(25,GPIO.LOW)
+>>>     time.sleep(1)
+>>> quit()
+</pre> 
+ <a href="../resources/bls/python/ledPython25.py" target="code">ledPython25.py</a>
+</td>
+   </tr>
+ </table> 
+
+
+
+
+          
+	
+	
+<h2 id="cabling">Connect the hardware</h2>
+
+<table style="width:98%">
+<tbody>	
+<tr><td style="width:40%"><em>ButtonLed</em></td><td><em>Motors</em></td></tr>
+<tr>
+<td><img src="./img/butLedRasp.jpg" alt="butLedRasp" width="100%"  /></td>
+<td><img src="./img/robotConnections.png" alt="robotConnections" width="100%"/></td>
+</tr>
+</tbody>
+</table>
+
+
+ 
+ 
+
+            
+<h3 id="bls">ButtonLed Code - Low Level </h3>           
+<table style="width:98%">
+<tbody>	
+<tr>
+ 
+    <th>Bash</th>
+    <th>Gpio</th>
+    <th>Python</th>
+    </tr>
+  <tr class="alt">
+    <td>
+<a href="../resources/bls/bash/led25OnOff.sh" target="code">led25OnOff.sh</a><br/>
+<a href="../resources/bls/bash/buttonOn24Click.sh" target="code">buttonOn24Click.sh</a>  <br/>
+<a href="../resources/bls/bash/buttonLed.sh" target="code">buttonLed.sh</a>          
+</td> 
+<td>    <a href="../resources/bls/bash/gpio/led25Gpio.sh" target="code">led25Gpio.sh</a><br/>
+<a href="../resources/bls/bash/gpio/button24Gpio.sh " target="code">button24Gpio.sh</a>  
+</td> 
+<td>    <a href="../resources/bls/python/ledPython25.py" target="code">ledPython25.py</a><br/>
+        <a href="../resources/bls/python/buttonPython24.py" target="code">buttonPython24.py</a>
+<br/>
+        <a href="../resources/bls/gpio/python/buttonLedPython.py" target="code">buttonLedPython.py</a>
+ </td>
+</tr>
+ </table>          
+ 
+ 
+<h3 id="sonar">Sonar HC-SR04  <tt>UltraSonic Distance Measure Module Range Sensor</tt></h3>           
+<table style="width:98%">
+<tbody>	
+<tr>
+ 
+    <th>Low-level</th>
+    <th>Sonar support for QAk components</th>
+    <th>Qak components</th>
+    </tr>
+  <tr class="alt">
+    <td style="width:30%">
+<a href="../resources/sensors/SonarAlone.c" target="code">SonarAlone.c</a><br/>
+Writes data on the standard output.<br/> 
+<pre>g++  SonarAlone.c -l wiringPi -o  SonarAlone
+./SonarAlone</pre>
+</td> 
+<td style="width:30%"><a href="../resources/sensors/sonarHCSR04Support.kt" target="code">sonarHCSR04Support.kt</a><br/> <br/>
+Uses a given ActorBasic (<tt>owner</tt>) to emit the event <bc>sonarRobot : sonar(V)</bc>
+</td> 
+<td >  
+<h4>sonar.qak</h4>
+<a href="../src/sonar.qak" target="code">sonar.qak</a><br/> 
+Simply activates <tt>sonarHCSR04Support.kt</tt>. Works by using a <tt>MQTT</tt> broker. 
+<h4>sonarobserver.qak</h4>
+<a href="../src/sonarobserver.qak" target="code">sonarobserver.qak</a><br/> 
+Perceives the events <bc>sonarRobot</bc>
+<h4>Python observer (via MQTT)</h4>
+<a href="../resources/python/sonarobserver.qak" target="code">mqttPlotQakEvents.py</a><br/> <br/> 
+See also the <a href="https://ipython.org/ipython-doc/dev/notebook/notebook.html" target="web">IPython Notebook</a>   file 
+<a href="../resources/python/mqttPlotQakEvents.ipynb" target="code">mqttPlotQakEvents.ipynb</a><br/> 
+Perceives the events <bc>sonarRobot</bc>
+ </td>
+</tr>
+ </table>           
+
+<h3 id="robots">Devices for home-made DDR</h3> 
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:60%" >
+ 
+<img src="./img/robotSkeleton.png" alt="robotSkeleton" width="100%"/>
+</td>
+<td>
+<h4 id="usefulnotes">Home-made DDR</h4>
+<a href="./devsDdr.html" target="code">Devices for a ddr robot</a><br/><br/>
+
+
+<h4>Sensors</h4>  
+<bc>HC-SR04</bc>:
+<a href="../resources/sensors/SonarAlone.c" target="code">SonarAlone.c</a><br/>
+
+<h4>Motors</h4>  
+<a href="../resources/motors/nanoMotorDriveA.sh" target="code">nanoMotorDriveA.sh</a><br/>
+<a href="../resources/motors/nanoMotorDriveA.sh" target="code">nanoMotorDriveA.sh</a><br/>
+<a href="../resources/motors/Motors.c" target="code">Motors.c</a><br/>
+
+
+
+</td>
+</tr>
+ </tbody>
+</table>
+ 
+
+ 
+ <h2 id="blsqak">Led - Qak </h2>  
+Let us introduce a here a qak-model for a Led mounted on a RaspberryPi (the anode on <tt>GPIO25</tt>, cathod on a <tt>GND</tt>).<br/><br/>
+<table style="width:98%">
+<tbody>	
+<tr>
+ 
+    <th>Led: Model (on RaspberryPi) </th>
+    <th>Command the Led (from the PC)</th>
+    <th>Led ledobservers (on the PC)</th>
+    </tr>
+  <tr class="alt">
+    <td style="width:33%">
+<a href="../src/ledalone.qak" target="code">ledalone.qak</a><br/><br/>
+This is component that:
+<ul>
+<li>can be controlled via TCP, MQTT and CoAP<br/><br/></li>
+<li>works as a CoAP resource<br/><br/></li>
+<li>updates a physical Led by using (user-defined) <bc>bash</bc> programs<br/><br/></li>
+<li>when changes its state emits the event <bc>ledchanged : ledchanged( V )</bc> and updates the resource representation<br/><br/></li>
+<li>can be observed by CoAP clients or by other Qak components<br/><br/></li>
+<li>...</li>
+</ul>
+<!--
+<div class="remark">
+Thus, it is  'almost' (Quasi) an actor.
+</div>
+-->
+</td> 
+<td style="width:33%"> 
+<h4>Using Kotlin</h4> 
+<ul>
+<li><a href="../resources/coap/actorQakCoapClient.kt" target="code">actorQakCoapClient.kt</a>: sends commands via <tt>CoAP</tt><br/></li>
+</ul>
+
+
+<h4>Using Python</h4> 
+<ul>
+<li><a href="../resources/python/ledCmdemitter.py" target="code">ledCmdemitter.py</a>: sends commands via <tt>TCP</tt><br/></li>
+</ul>
+
+<h4>Using a GUI</h4>   
+<img src="./img/blsGuiCoap.png" alt="blsGuiCoap" width="40%"/>
+ 
+
+<ul>
+<li><a href="../resources/consolegui/consoleGuiTcp.kt" target="code">consoleGuiTcp.kt</a>: sends commands via <tt>TCP</tt><br/></li>
+<li><a href="../resources/consolegui/consoleGuiCoap.kt" target="code">consoleGuiCoap.kt</a>: sends commands via <tt>CoAP</tt><br/></li>
+<li><a href="../resources/consolegui/consoleGuiMqtt.kt" target="code">consoleGuiMqtt.kt</a>: sends commands via <tt>MQTT</tt><br/></li>
+</ul>
+
+</td> 
+<td >    
+<h4>Using Kotlin</h4> 
+<a href="../resources/coap/actorQakCoapObserver.kt" target="code">actorQakCoapObserver.kt</a>: works with <tt>CoAP</tt>
+
+<h4>A Qak component that perceives the <bc>ledchanged</bc>  event</h4> 
+<a href="../src/ledobserver.qak" target="code">ledobserver.qak</a>
+ </td>
+</tr>
+ </table>           
+	
+<h2 id="deploy">Deploy QAk models on RaspberryPi</h2> 
+
+With reference to the project <i>it.unibo.qak20.raspIntro2020</i>:
+<ol>
+<li>update the generated file <ks>build_ctxledalone.gradle</ks> by specifying the class of the main program
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:45%">
+<pre>plugins {
+    id 'java'
+    id 'eclipse'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.71'
+    <k>id 'application'</k>
+}
+...
+<k>mainClassName</k> = it.unibo.ctxledalone.MainCtxledalone<k>Kt</k>'
+
+jar {
+    println("executing jar")
+    from sourceSets.main.allSource
+    manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+}
+</pre>
+</td>
+<td>The generated file 
+<a href="../build_ctxbasicrobot.gradle" target="code">build_ctxledalone.gradle</a>
+must be properly edit by the Application designer. 
+<br/><br/>
+<!-- The main we use for this example is in 
+<a href="../src/main/kotlin/it/unibo/qak/prodCons/mainProdConsLocal.kt" target="code">mainProdConsLocal.kt</a>
+<br/><br/>-->
+<b><ks>Note that</ks></b> the main class name must be terminated with a <bc>Kt</bc>, since Kotlin code is translated in Java.
+
+</td>
+</tr>
+</tbody>	
+</table></center>
+
+</li>
+<li>execute the command
+
+<center><table style="width:98%">
+<tbody>	
+
+<tr>
+<td style="width:45%">
+<pre>gradle <ks>-b build_ctxledalone.gradle</ks> <k>distZip</k></pre>
+or
+<pre>gradle <ks>-b build_ctxledalone.gradle</ks> <k>distTar</k></pre>
+</td>
+<td>Generates the <em>distribution file</em> is the directory <bc>build/distributions</bc> 
+<!-- <center><img src="./img/buildDir.png" alt="buildDir" width="100%" ></center> -->
+
+</td>
+</tr>
+
+ 
+</tbody>	
+</table></center>
+</li>
+
+<li>Now:
+
+<center><table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:45%"> 
+<ol>
+<li>copy the distribution file on the RaspberryPi</li>
+<li>unzip the distribution file </li>
+<li>work in the directory <bc>it.unibo.raspIntro2020-1.0/bin</bc> </li>
+<li><bc>copy</bc> in this directory the files 
+
+<ul>
+<li>The description of the system: <a href="../ledalone.pl" target="code">ledalone.pl</a> </li>
+<li>The rules used by the QAk run-time: <a href="../sysRules.pl" target="code">sysRules.pl</a> </li>
+<li><a href="../Californium.properties" target="code">Californium.properties</a> </li>
+<li> ... other Application-defined required resources ... </li>
+</ul>
+ 
+</ol>
+ 
+</td>
+<td><h3>Run the system</h3>
+Execute 
+<pre>
+bash it.unibo.raspIntro2020-1.0
+</pre>
+ 
+</td>
+</tr>
+</tbody>	
+</table></center>
+</li>
+</ol>	
+
+
+<h2 id="docker">Docker on RaspberryPi</h2>
+Raspberry Pis use the <tt>ARM</tt> architecture, and as a result, won't be compatible with all containers out of the box. 
+Images will need to be built from an <bc>ARM</bc> base image. 
+<br/>
+See <a href="https://www.docker.com/blog/happy-pi-day-docker-raspberry-pi/" target="web">Happy Pi Day with Docker and Raspberry Pi</a>.
+<br/>
+ <center><table style="width:95%">
+<tr>
+ 	<td style="width:30%">Install <bc>Docker</bc></td>
+ 	<td ><pre>curl -sSL https://get.docker.com | sh
+<kc>Shorcut for	</kc>
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh	
+</pre></td>
+</tr>
+
+<tr>
+ 	<td>Add permission to run Docker Commands </td>
+ 	<td >
+<pre>sudo usermod -aG docker pi 
+	<k>reboot !!!</k>
+<k>sudo dockerd &</k> <kc>//daemon runs with default configuration</kc>
+docker version		<kc>//20.10.6</kc>
+docker info
+</pre>	</td>
+</tr>
+
+<tr>
+ 	<td>Test Docker installation </td>
+ 	<td ><pre>docker run hello-world </pre></td>
+</tr>
+
+<tr>
+ 	<td>Install proper dependencies </td>
+ 	<td ><pre>sudo apt-get install -y libffi-dev libssl-dev
+sudo apt-get install -y python3 python3-pip
+sudo apt-get remove python-configparser </pre></td>
+</tr>
+
+<tr>
+ 	<td>Install <bc>Docker Compose</bc> </td>
+ 	<td ><pre>sudo pip3 install docker-compose </pre></td>
+</tr>
+
+<tr>
+ 	<td>Check and purge</td>
+ 	<td >
+<pre>
+journalctl -u docker.service</pre>
+	<h3></h3>
+<pre>sudo apt-get update   
+sudo apt-get full-upgrade	<kc>//better full</kc>
+sudo systemctl disable dphys-swapfile	<kc>//if required</bc>
+
+sudo apt purge docker.io 		<kc>//(removes Docker)</kc>
+sudo apt autoremove 			<kc>//(remove its other dependencies)</kc>
+sudo apt install docker.io 		<kc>//(installs Docker)</kc>
+
+<kc>or</kc>
+sudo apt-get purge docker-ce</pre>
+	
+	</td>
+</tr>
+
+
+</table>
+</center> 
+
+<h2 id="deploy">Deploy (example <a href="../../it.unibo.rasp2021/src/blses1_onoff.qak" target="code">blses1_onoff.qak</a>
+in project <a href="../../it.unibo.rasp2021" target="code">it.unibo.rasp2021</a>)</h2>
+ 
+<ol>
+<li><h3>Set the main class in <a href="../../it.unibo.rasp2021/build2021.gradle" target="code"><ks>build2021.gradle</ks></a></h3>
+<pre>
+mainClassName = 'it.unibo.ctxblses1.MainCtxblses1Kt'
+
+jar {
+    println("executing jar")
+    from sourceSets.main.allSource
+    manifest {
+        attributes 'Main-Class': "$mainClassName"
+    }
+}
+</pre>
+</li>
+<li><h3>Create the distribution</h3>
+<pre>
+gradlew distTar
+</pre>
+</li>
+<li><h3>Define the <a href="../../it.unibo.rasp2021/Dockerfile" target="code"><ks>Dockerfile</ks></a></h3>
+<pre>
+FROM <k>hypriot/rpi-java</k>		##uses jessie
+EXPOSE 8075
+## ADD extracts the tar
+ADD *.tar /
+WORKDIR /it.unibo.rasp2021-1.0/bin
+COPY ./*.pl ./
+COPY ./*.sh ./
+COPY ./*.py ./
+<m><kc>Does not work ---------------
+## RUN apt-get update -y
+## RUN apt-get install -y wiringpi
+## RUN sudo apt-get install -y python
+---------------------------------- </kc></m>
+CMD ["bash", "it.unibo.rasp2021"]
+</pre> 
+</li>
+
+<li><h3>Build, modify and run the image </h3>
+<pre>
+docker build -t qakled2021 . 
+
+docker run -it --rm --name led2021 -p8075:8075/tcp -p8075:8075/udp <k>--privileged</k> qakled2021  <ks>/bin/bash</ks> <kc>//use the console</kc>
+sudo apt-get update -y
+sudo apt-get install wiringpi
+sudo docker commit 0b53c2e4320b qakled2021gpio
+
+bash it.unibo.rasp2021
+ 
+<kc>//run the image (augmented with wiringpi)</kc>
+docker run -it --rm --name led2021 -p8075:8075/tcp -p8075:8075/udp <k>--privileged</k> qakled2021gpio  <ks>/bin/bash</ks> or <ks>bash it.unibo.rasp2021</ks>
+bash led25Gpio.sh  <ks>//to test that gpio is working</ks>
+</pre>
+</li>
+ 
+<li><h3>Tag the image and register on  <a href="https://hub.docker.com/?ref=login" target="web">DockerHub</a></h3>
+<pre>
+<kc>Login in DockerHub (get the password from a private file)</kc>
+ type docker_password.txt | docker login --username natbodocker --password-stdin
+ 
+<kc>Tag the image</kc>
+docker tag qakled2021gpio natbodocker/qakled2021gpio
+
+<kc>Register the image</kc>
+docker push natbodocker/qakled2021gpio
+</pre>
+</li>
+
+<li><h3>Use <a href="../../it.unibo.rasp2021/qakled2021pio.yaml">qakled2021pio.yaml</a></h3>
+<pre>
+docker-compose -f qakled2021pio.yaml up
+</pre>
+</li>
+</ol>
+
+
+  <!--
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+ 
+
+</td>
+<td>
+</td>
+</tr>
+ </tbody>
+</table>
+-->
+ <br/><br/>
+</div>  
+
+ 
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div> 
+
+</body>
+</html>
+
+<!--
+<h2>INSTALL PYTHON</h2>
+ <br/><br/>
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:70%" > 
+ <pre>
+---------------------  INSTALL PYTHON
+DEPENDENCIES
+sudo apt-get install -y build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev 
+libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev libffi-dev 
+
+
+wget https://www.python.org/ftp/python/3.7.6/Python-3.7.6.tar.xz
+tar xf Python-3.7.6.tar.xz
+cd Python-3.7.6
+./configure --enable-optimizations
+make -j 4
+sudo make altinstall
+# It will created the binary and lib dirs with the version in /usr/local. 
+# This way you can choose which python you want at run time.
+python3.7 -V       #check the version
+
+sudo ./configure --enable-optimizations
+sudo make -j 4
+sudo make altinstall 
+# It will created the binary and lib dirs with the version in /usr/local. 
+# This way you can choose which python you want at run time.
+python3.8 -V #check the version 
+
+
+
+wget https://www.python.org/ftp/python/3.8.1/Python-3.8.1.tar.xz
+tar xf Python-3.8.1.tar.xz
+cd Python-3.8.1
+//To overcome the problem No module named '_ctypes'.
+git clone https://github.com/python/cpython.git
+
+ 
+ 
+</pre>
+<pre> 
+/home/pi/nat/cam-robot/WebIOPi-0.7.1/<ks>python/webiopi/__main__.py</ks>
+
+
+	server = Server(port=8000, configfile=configfile, scriptfile=scriptfile)
+Configuration file in <ks>python/config</ks>  (<kc>HTTP, COAP</kc> enabled) See also <kc>python\webiopi\utils\config.py</kc>
+			self.restHandler = <ks>rest.RESTHandler()</ks>   //in <kc>python\webiopi\protocols</kc>
+			<ks>http.HTTPServer</ks>(self.host, http_port, self.restHandler, context, docroot, index, auth, realm)
+			<ks>coap.COAPServer</ks>(self.host, coap_port, self.restHandler)
+	runLoop()
+	server.stop()
+
+sudo python3 __main__.py -c /etc/webiopi/config
+
+
+</pre>
+</td>
+<td>
+
+</td>
+</tr>
+
+<tr>
+<td>
+ 
+</td>
+<td></td>
+</tr>
+ </tbody>
+</table>
+ <br/><br/> 
+ -->
+ 

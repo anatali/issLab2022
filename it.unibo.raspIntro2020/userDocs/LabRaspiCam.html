@@ -1,0 +1,567 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+	width: 750px;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 90%;
+	background-color: #fcf8c7;
+	border: 1px solid blue;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}       
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}         
+    
+  -->
+</style>
+    
+<head>
+   
+<title>LabRaspiCam</title></head>
+    
+<body>
+<div id="body">
+<h1>LabRaspiCam | Using the Raspberry webCam <font size="5"></font> </h1>
+
+<h2>Start up RaspiCam</h2>
+
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+See 
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="web">
+Python intro video</a><br/><br/>
+</li>
+<li><a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera" target="web">
+Getting started with the Raspberry Pi  Camera Module</a>
+</li>
+</ul>
+
+<!-- <img src="./img/raspSonarCoap.png" alt="raspSonarCoap.png" width="100%"  /> -->
+</td>
+<td> 
+<pre>
+sudo raspi-config
+interface options
+P1 camera
+
+raspistill -o image.jpg
+
+raspivid -o video.h264 -t 5000		//in msecs
+</pre>
+</td>
+</tr>
+</tbody>
+</table> 
+
+ 
+<h2>Start up USBCam</h2>
+
+
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+See 
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=rfscVS0vtbw" target="web">
+Python intro video</a><br/><br/>
+</li>
+<li><a href="https://projects.raspberrypi.org/en/projects/getting-started-with-picamera" target="web">
+Getting started with the Raspberry Pi  Camera Module</a>
+</li>
+</ul>
+
+<!-- <img src="./img/raspSonarCoap.png" alt="raspSonarCoap.png" width="100%"  /> -->
+</td>
+<td> 
+<pre>
+sudo route add default gw 192.168.1.1 wlan0
+<!--
+sudo  apt-get  install  rpi.gpio  -y
+mkdir  cam-robot
+cd   cam-robot
+wget  http://osoyoo.com/driver/WebIOPi-0.7.1.tar.gz
+wget  http://osoyoo.com/driver/mjpg-streamer.tar.gz
+wget  http://osoyoo.com/driver/robot.tar.gz
+tar  -xzvf  robot.tar.gz
+.....................................................
+--- WebIOPI server Installation
+tar  -xzvf  WebIOPi-0.7.1.tar.gz
+cd  WebIOPi-0.7.1/
+wget   http://osoyoo.com/driver/webiopi-pi2bplus.patch
+patch    -p1   -i  webiopi-pi2bplus.patch
+--- Install WebIOPi
+sudo  ./setup.sh
+webiopi  -h             TEST
+sudo  webiopi  -d  -c  /etc/webiopi/config    RUN
+python __main.py -d -c nat/config -s nat/scriptLed17.py -l aaa.txt
+sudo apt-get –purge remove webiopi
+"Ctrl" + "C" then "Ctrl" + "Z" 				  END  WebIOPi running
+
+sudo   nano  /etc/modules
+add kine bcm2835-v4l2
+-->
+
+===================== su Raspian Buster lite ======================================
+sudo apt-get install build-essential libjpeg8-dev imagemagick libv4l-dev cmake -y
+git clone https://github.com/jacksonliam/mjpg-streamer.git 
+CD mjpg-streamer/mjpg-streamer-experimental # the Make 
+make all
+
+<!-- NO: dec 2019
+cd  mjpg-streamer/plugins/input_uvc
+sudo  nano  input_uvc.c
+"ctrl" + "W" to search V4L2_PIX_FMT_MJPEG
+int width=640, height=480, fps=5, format=V4L2_PIX_FMT_MJPEG,i
+Replace the string V4L2_PIX_FMT_MJPEG with new string V4L2_PIX_FMT_YUYV
+
+--- compile
+cd  cam-robot/mjpg-streamer
+make all
+-->
+--- test camera
+ls   /dev/video* 
+the device is on /dev/video0
+
+<!--
+sudo ./start.sh			RUN
+http://192.168.43.170:8899/
+
+.....................................................
+--- combine webiopi and  mjpg-streamer into same webpage
+tar  -xzvf  robot.tar.gz
+sudo  nano  /etc/webiopi/config
+INSERT lines:
+## myscript = /home/pi/nat/cam-robot/robot/script.py		##osoyo ONLY
+doc-root = /home/pi/nat/cam-robot/robot
+##pwm0     = PCA9685 slave:0x40		##osoyo ONLY
+
+sudo webiopi -d -c /etc/webiopi/config
+http://192.168.43.170:8000/
+.....................................................
+-->
+</pre>
+</td>
+</tr>
+</tbody>
+</table> 
+ 
+<h2>Using mjpg-streamer server</h2>
+ 
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+See 
+<ul>
+<li><a href="https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording" target="web">
+Setup Guide: Raspberry Pi | MJPEG Streamer Install & Setup & FFMpeg Recording</a><br/><br/>
+</li>
+<li><a href="https://en.wikipedi0.org/wiki/Motion_JPEG" target="web">Motion JPEG</a><br/><br/>
+</li>
+
+<li><a href="https://whatismyipaddress.com/" target="web">My IP Address</a></li>
+</ul>
+
+
+<!-- <img src="./img/raspSonarCoap.png" alt="raspSonarCoap.png" width="100%"  /> -->
+</td>
+<td> 
+See <a href="https://jacobsalmela.com/2014/05/31/raspberry-pi-webcam-using-mjpg-streamer-over-internet/" target="web">Raspberry Pi Webcam Over the Internet Using MJPG-Streamer</a>
+<pre>
+sudo route add default gw 192.168.1.1 wlan0
+
+
+# Update & Install Tools
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+sudo apt-get install cmake libjpeg8-dev
+sudo apt-get install build-essential libjpeg8-dev imagemagick libv4l-dev cmake -y  (su Raspian Buster lite)
+# Clone Repo in /tmp
+cd /tmp
+git clone https://github.com/jacksonliam/mjpg-streamer.git
+
+<ks>cd /home/pi/nat/mjpg-streamer/mjpg-streamer-experimental</ks>
+<kc># Make</kc>
+make
+sudo make install
+
+<kc># RUN</kc>
+export LD_LIBRARY_PATH=.
+./mjpg_streamer -i "input_uvc.so" -o "output_http.so -p 8090 -w /usr/local/share/mjpg-streamer/www" &
+./mjpg_streamer -i "input_uvc.so -d /dev/video1" -o "output_http.so -p 8090 -w /usr/local/share/mjpg-streamer/www" &
+
+/usr/local/bin/mjpg_streamer -i "input_uvc.so -r 1280x720 
+	-d /dev/video0 -f 30" -o "output_http.so -p 8080 
+	-w /usr/local/share/mjpg-streamer/www"
+	
+<kc># TEST</kc>
+http://192.168.1.8:8090/stream.html 
+http://192.168.1.8:8090/?action=stream
+<!--
+start.sh > /dev/null & 
+------------------------------
+jobs -l
+sudo kill -KILL xxx
+
+<kc># TEST</kc>
+/usr/local/bin/mjpg_streamer -i "input_uvc.so -d /dev/video0" -o "output_http.so"
+
+Oppure, DOPO make install:
+/usr/local/bin/mjpg_streamer 
+	-i "input_uvc.so -r 1280x720 
+	-d /dev/video0 -f 30 
+	-o "output_http.so -p 8090 
+	-w /usr/local/share/mjpg-streamer/www"
+-->
+</pre>
+</td>
+</tr>
+
+<tr>
+<td><h3>Start on boot</h3></td>
+<td><pre>
+nano /home/pi/mjpg-streamer.sh
+
+# Make Executable
+chmod +x /home/pi/mjpg-streamer.sh
+
+# Open Cron Job
+crontab -e
+
+# Add line
+@reboot /home/pi/mjpg-streamer.sh start
+</pre></td>
+</tr>
+
+</tbody>
+</table> 
+ 
+Web browsers do not provide any JavaScript API for UDP sockets for security reasons.
+<br/><br/>
+If you need an in-browser app to communicate to a device via a CoAP interface, you may need to provide an intermediary service. 
+For example, you could create a web service that is accessible via HTTP, and acts as a translator to CoAP.
+<br/><br/>
+Note that node.js does support UDP connections, and could be used to send CoAP messages. However, it is a server-side technology, 
+and cannot be used in the browser. It could be used to build such a translator service; but would not be required.
+<br/><br/>
+Also, it appears that "Chrome Apps", which are based on HTML5 and JavaScript, but are distinctly different from web pages, do have access to UDP Sockets.
+
+<br/><br/>
+<h2>Opencv</h2>
+<br/><br/>
+<table style="width:98%">
+<tbody>	
+<tr>
+<td style="width:50%" >
+<!-- <img src="./img/raspSonarCoap.png" alt="raspSonarCoap.png" width="100%"  /> -->
+ 
+</td>
+<td> 
+<pre>
+ sudo apt-get install build-essential cmake unzip pkg-config
+
+sudo apt-get install libjpeg-dev libpng-dev libtiff-dev
+
+<m></m>
+</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Notes</h2>
+Python 3.0 was released on 3 December 2008. See
+<a href="https://en.wikipedia.org/wiki/Python_(programming_language)" target="web">Python wikipedia</a>
+and
+<a href="https://en.wikipedia.org/wiki/Zen_of_Python" target="web">Zen of Python</a>
+
+
+
+<br/><br/>
+An @ symbol at the beginning of a line is used for class, function and method decorators.
+See 
+<a href="https://www.python.org/dev/peps/pep-0318/" target="web">PEP 318</a>
+and 
+<a href="https://wiki.python.org/moin/PythonDecorators" target="web">PythonDecorators</a>.
+The name 'decorator' is not consistent with its use in the GoF book.
+<h3>Motivation</h3>
+The current method of applying a <k>transformation to a function or method</k> places the actual transformation 
+after the function body. 
+<pre>
+def foo(cls):
+    pass
+foo = synchronized(lock)(foo)
+foo = classmethod(foo)				<kc>#<ks>classmethod</ks>: inbuilt function which returns a class method for given function</kc>
+</pre>
+For large functions this separates a key component of the function's behavior 
+from the definition of the rest of the function's external interface.
+The intent of the new syntax is to replace the above code with:
+<pre>
+@classmethod
+@synchronized(lock)
+def foo(cls):
+    pass
+</pre>
+
+<pre>
+@dec2
+@dec1
+def func(arg1, arg2, ...):
+    pass
+</pre>
+is equivalent to
+<pre>
+def func(arg1, arg2, ...):
+    pass
+func = dec2(dec1(func))
+</pre>
+<br/>
+A @ in the middle of a line means matrix multiplication.
+
+<h3>Example</h3>
+
+<pre>
+class Pizza(object):
+    def __init__(self):   <ks>#initialise newly created object, and receives arguments used to do that</ks>
+        self.toppings = []
+
+    def __call__(self, topping):    <ks>#implements function call operator</ks>
+        <kc># When using '@instance_of_pizza' before a function definition
+        # the function gets passed onto 'topping'.</kc>
+        self.toppings.append(topping())
+
+    def __repr__(self):
+        return str(self.toppings)
+
+pizza = Pizza()
+
+@pizza
+def cheese():
+    return 'cheese'
+@pizza
+def sauce():
+    return 'sauce'
+
+print pizza
+# ['cheese', 'sauce']
+</pre>
+The function/method/class you're defining after a decorator is just basically passed on as an argument to the 
+function/method immediately after the @ sign.
+<br/><br/>
+
+
+<h2>Adafruit CCS811 Air Quality Sensor</h2>
+https://learn.adafruit.com/adafruit-ccs811-air-quality-sensor?view=all#install-python-software-8-1
+
+<h3>pins</h3>
+<ul>
+<li>SCL - this is the I2C clock pin, connect to your microcontrollers I2C clock line. There is a 10K pullup on this pin and it is level shifted so you can use 3 - 5VDC.</li>
+<li>SDA - this is the I2C data pin, connect to your microcontrollers I2C data line. There is a 10K pullup on this pin and it is level shifted so you can use 3 - 5VDC.</li>
+<li>INT - this is the interrupt-output pin. It is 3V logic and you can use it to detect when a new reading is ready or when a reading gets too high or too low.</li>
+<li>WAKE - this is the wakeup pin for the sensor. It needs to be pulled to ground in order to communicate with the sensor. This pin is level shifted so you can use 3-5VDC logic.</li>
+<li>RST - this is the reset pin. When it is pulled to ground the sensor resets itself. This pin is level shifted so you can use 3-5VDC logic.</li>
+</ul>
+
+
+
+
+
+
+<pre>
+Enable up I2C interface (sudo raspi-config)
+sudo nano /boot/config.txt
+	Add the line
+	dtparam=i2c_baudrate=10000
+	
+Wiring Up Sensor	
+
+sudo apt-get install i2c-tools
+sudo i2cdetect -y 1		//It should show up under it's default address (0x5A)
+
+
+GIT
+----------------------------------------------------------------------
+sudo apt-get install gettext
+wget https://www.kernel.org/pub/software/scm/git/git-2.3.0.tar.xz
+tar -xvf git-2.3.0.tar.xz
+cd git-2.3.0/
+./configure --prefix=/usr --with-gitconfig=/etc/gitconfig
+make
+sudo make install   //FAILS
+---------------------------------------------------------------------
+sudo apt-get install git
+git --version 	//git version 2.20.1
+
+=====================================================================
+git clone https://github.com/adafruit/Adafruit_Python_GPIO.git
+cd Adafruit_Python_GPIO
+sudo python3 setup.py install
+
+
+TEST TVOC
+git clone https://github.com/adafruit/Adafruit_CCS811_python.git
+cd Adafruit_CCS811_python/examples
+sudo python3 CCS811_example.py
+ 
+</pre>
+
+
+<h2>USB cam</h2>
+
+<pre>
+sudo apt install fswebcam
+
+fswebcam -r 1280x720 image2.jpg
+
+</pre>
+</div>  
+
+ 
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI  
+</div> 
+
+</body>
+</html>
+
+
+ 
