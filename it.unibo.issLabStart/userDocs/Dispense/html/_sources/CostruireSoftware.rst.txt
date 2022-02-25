@@ -36,7 +36,7 @@
 Costruire software
 ======================================
 
-Il software puo essere definito come:
+Il software può essere definito come:
 
 - l'insieme di *frasi espresse in un qualche linguaggio formale* al fine di istruire un elaboratore 
   o una rete di elaboratori, 
@@ -102,10 +102,10 @@ Sotto la spinta di stringenti vincoli di *time to market* (**TTM**) molte aziend
 Le :blue:`fasi di analisi e progetto` anche se accuratamente svolte, non sempre sono adeguatamente documentate, 
 e *quasi mai corralete in modo sistematico con il codice prodotto*.
 
-Il processo di costruzione del sofware è quindi :blue:`influenzato da una potente forza`, 
+Il processo di costruzione del software è quindi :blue:`influenzato da una potente forza`, 
 legata alla natura stessa del software: la spinta a impostare la costruzione  in modo **bottom-up**, 
 a partire da una specifica tecnologia costituita da un linguaggio di programmazione, 
-o da un framework applicativo o da una piattafforma operativa.
+o da un framework applicativo o da una piattaforma operativa.
 
 .. _bottomUp:
 
@@ -117,7 +117,7 @@ La principale conseguenza negativa di questa forza è molto spesso la mancata va
 in fase di analisi del problema e l'assenza di una esplicita descrizione di progetto 
 che permetta di anticipare la valutazione dei rischi e le potenziali difficoltà connesse allo sviluppo. 
 In molti casi adeguate fasi di analisi e di progettazione hanno luogo, anche in modo sistematico; 
-ma ciò putroppo quasi sempre accade **solo nella mente dei programmatori**; 
+ma ciò purtroppo quasi sempre accade **solo nella mente dei programmatori**; 
 nel codice finale non vi è più traccia alcuna di queste fasi, se non qualche debole segnale legato a sporadici commenti.
 
 Tuttavia, anche se il codice fosse accuratamente documentato, sia in relazione all'analisi, sia in relazione 
@@ -328,7 +328,7 @@ in ciascuna delle dimensioni citate.
 
 Tuttavia, il motivo principale di una relativa (e solo apparente) 
 stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all'idea che un linguaggio 
-non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente 
+non deve essere necessariamente accompagnato da una sintassi concreta ma può essere sufficiente 
 definire una **sintassi astratta** utilizzando un :blue:`meta-linguaggio` come ad esempio ``MOF``
 (si veda `Meta Object Facility`_) unitamente alla semantica del linguaggio e a un framework di supporto.
 
@@ -352,7 +352,7 @@ sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcu
 - l'elemento è :blue:`atomico o composto`? Nel caso sia composto quali sono le parti che lo formano?
 - l'elemento è dotato di :blue:`stato modificabile`? In caso affermativo, quali sono le operazioni di modifica dello stato? 
 - quali sono le :blue:`proprietà dell'elemento`, cioè quali attributi lo caratterizzano?
-- da quali altri elementti dipende e secondo quale :blue:`tipo di dipendenza`?
+- da quali altri elementi dipende e secondo quale :blue:`tipo di dipendenza`?
 
 Si noti che un elemento composto implica la *definizione ricorsiva della struttura di ogni parte* e 
 la definizione di operazioni denominate **selettori**.
@@ -376,7 +376,7 @@ ad uno specifico destinatario. Il ricevente attende solo quando il buffer è vuo
 Nel caso di stream, non vi sono vincoli di tempo per la ricezione.
 
 In una interazione **sincrona**, la comunicazione avviene senza l'uso di alcun buffer. 
-L'emittente e il desinatario scambiano informazione unificando concettualmente le proprie attività. 
+L'emittente e il destinatario scambiano informazione unificando concettualmente le proprie attività. 
 Nel caso di stream, il destinatario si aspetta di ricevere i dati con un ritardo (delay) 
 che non supera un massimo prefissato.
 
@@ -405,7 +405,7 @@ Terminologia di riferimento
 Nel seguito, faremo riferimento alla seguente terminologia:
 
 
-- **Messaggio** (:blue:`message`): termne generico per denotare informazione da trasmettere in rete.
+- **Messaggio** (:blue:`message`): termine generico per denotare informazione da trasmettere in rete.
 - **Dispaccio** (:blue:`dispatch`): messaggio inviato in modo asincrono a N (N>=1) specifici destinatari, 
   noti alla emittente, con l'aspettativa che questi lo ricevano e lo elaborino; l'emittente non si aspetta 
   alcuna informazione di ritorno.  
@@ -417,7 +417,7 @@ Nel seguito, faremo riferimento alla seguente terminologia:
   rappresenta la richiesta di esecuzione di una attività, con aspettativa da parte del mittente 
   che questa attività si concluda con una risposta pertinente alla richiesta.
 - **Risposta** (:blue:`reply, response`): messaggio inviato da un destinatario al mittente di una richiesta.
-  il contenuto del messaggio rappresenta informazione pertinente alla richiesta.
+  Il contenuto del messaggio rappresenta informazione pertinente alla richiesta.
 - **Evento** (:blue:`event`): messaggio emessa (più o meno consapevolmente) in modo asincrono da una sorgente 
   senza alcuna particolare nozione di destinatario e senza alcuna aspettativa da parte dell'emittente.
 - **Segnale** (:blue:`signal`): messaggio inviato in modo asincrono a N (N>=1) destinatari, noti o meno all'emittente, 
@@ -473,7 +473,7 @@ il cui funzionamento può essere formalmente descritto da una 5-tuple (``States,
 
 - **States**: insieme di possibili stati in cui l'automa si può trovare.
 - **Inputs**: insieme delle informazioni di ingresso, denotabili attraverso un *input alphabet*; nel nostro caso 
-  possiamo pensare che ogni simbolo dell'alfabeto  denoti un messggio.
+  possiamo pensare che ogni simbolo dell'alfabeto  denoti un messaggio.
 - **Outputs**: insieme della informazioni di uscita, denotabili attraverso un *output alphabet*;   nel nostro caso 
   possiamo pensare che ogni simbolo dell'alfabeto denoti una **azione**.
 - **InitialState**: lo stato iniziale (unico) in cui l'automa si trova quando viene creato.
@@ -497,7 +497,7 @@ stato ``SCUR``:
 #. esegue una sequenza (che **deve terminare**) di azioni;
 #. al termine della sequenza di azioni controlla che vi sia almeno un input (messaggio) 
    capace di attivare una delle transizioni verso un ulteriore stato (``SNEXT``);
-#. attiva una delle transizioni possibili pasando dallo stato ``SCUR`` allo stato ``SNEXT`` (che potrebbe anche coincidere
+#. attiva una delle transizioni possibili passando dallo stato ``SCUR`` allo stato ``SNEXT`` (che potrebbe anche coincidere
    con ``SCUR``);
 #. se non vi sono transizioni attivabili, rimane nello stato ``SCUR`` da cui potrà sbloccarsi solo in conseguenza di un 
    ulteriore input.
@@ -508,7 +508,7 @@ Abstraction GAP
 ++++++++++++++++++++++++++++++++++++++++++++++
 
 
-Va sottolieata, a questo punto, la distanza tra le mosse elementari di base e quelle necessarie per affrontare
+Va sottolineata, a questo punto, la distanza tra le mosse elementari di base e quelle necessarie per affrontare
 in modo adeguato un problema applicativo, una distanza cui faremo riferimento col termine :blue:`abstraction gap`.
 
 .. image:: ./_static/img/Intro/TopDownBottomUp.PNG
@@ -521,7 +521,7 @@ in modo adeguato un problema applicativo, una distanza cui faremo riferimento co
 Indicazioni sul processo di produzione
 -----------------------------------------------
 
-Il riferimento ormai universalemente accettato è quello di un processo di sviluppo agile,
+Il riferimento ormai universalmente accettato è quello di un processo di sviluppo agile,
 che pone al centro il concetto di :blue:`modello del dominio` applicativo.
 
 .. image:: ./_static/img/Intro/agileEMDE.PNG
@@ -555,7 +555,7 @@ Sappiamo però che, in molti casi, si segue un approccio `bottomUp`_ e quindi po
 strategie migliori per invertire il processo e le motivazioni per fare questa inversione. 
 
 Supponendo che le nostre attività di laboratorio siano non troppo dissimili a quanto avviene concretamente nel
-mondo del lavoro, faremo riferimento a `SCRUM`_ che oggi costitusice un diffuso framework per lo sviluppo e il 
+mondo del lavoro, faremo riferimento a `SCRUM`_ che oggi costituisce un diffuso framework per lo sviluppo e il 
 mantenimento di prodotti complessi (non solo software).
 
 
@@ -607,7 +607,7 @@ Per focalizzare l'attenzione sulla nostra metodologia di costruzione, cercheremo
 Il template
 +++++++++++++++++++++++
 
-Il documento `template2022`_ costituisce lo strumento che useremo per rendere esplcite le conoscenze, le decisioni 
+Il documento `template2022`_ costituisce lo strumento che useremo per rendere esplicite le conoscenze, le decisioni 
 e i modelli introdotte nelle fasi di analisi e di progetto.
 
 Questo documento intende costituire un punto di riferimento 
@@ -629,7 +629,7 @@ L'analisi dei requisiti mira a:
 Occorre fare una analisi del testo che precisi in modo non ambiguo
 il significato dei termini usati e le informazioni non esplicitamente espresse.
 La costruzione di un :blue:`dizionario`  in linguaggio naturale è utile ma non risolutiva, 
-in quanto esprime informazione ancora affetta da ambiguità se non da incoeranza e inconsistenza.
+in quanto esprime informazione ancora affetta da ambiguità se non da incoerenza e inconsistenza.
 
 Dunque, le informazioni date in linguaggio naturale servono solo in una fase preliminare
 dei lavori. 
@@ -683,7 +683,7 @@ L'analisi del problema serve per capire quali sono le maggiori problematiche
 da affrontare, le tecnologie da usare e le risorse (umane e temporali) necessarie.  
 Inoltre gettano le basi per impostare il primo sprint di sviluppo e quindi per 
 costruire un primo 'prototipo' funzionante del sistema da estendere poi in modo 
-incrementale con gli sprint succesivi dopo una opportuna sprint-review con 
+incrementale con gli sprint successivi dopo una opportuna sprint-review con 
 il committente
 
 
@@ -692,8 +692,8 @@ il committente
 L'architettura logica
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-Il risultato della analsi può essere sintetizzato nella definizione di una 
-:red:`architettura logica` (che specializza/esetende quella scaturita dai requisiti )
+Il risultato della analisi può essere sintetizzato nella definizione di una 
+:red:`architettura logica` (che specializza/estende quella scaturita dai requisiti )
 che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.) 
 dei MACRO-COMPONENTI del sistema e della loro interazione, 
 NON COME SOLUZIONE DI PROGETTO, ma come VINCOLI IMPLICATI dal problema.
@@ -725,7 +725,7 @@ PIANI di testing (unit, integration, functional, acceptance) espressi in MODO
 NON discorsivo (formale), comprensibile a una macchina. 
 
 Noi seguiremo questa idea con lo sviluppo (si veda :ref:`FASE2`) di
-un meta-modello custom che permette la definizione di modelli eseguibili di sistemi distributi.
+un meta-modello custom che permette la definizione di modelli eseguibili di sistemi distribuiti.
 
 
 ++++++++++++++++++++++++++++++++
@@ -748,8 +748,8 @@ Il *test continuo* è parte dell'approccio `DevOps`_, in cui sviluppo e operazio
 per l'intero ciclo di vita del prodotto. L'obiettivo è quello di accelerare la fornitura del software, 
 bilanciando al tempo stesso i costi, la qualità e i rischi.   
 
-Noi porremo particolare attenzione al fatto che la definizione di test (autmatizzabili) può essere vista come
-la formalizzazione delle `User Stories`_ e che l'uso dei modelli (esguibili) può permettere 
+Noi porremo particolare attenzione al fatto che la definizione di test (automatizzabili) può essere vista come
+la formalizzazione delle `User Stories`_ e che l'uso dei modelli (eseguibili) può permettere 
 di anticipare questa formalizzazione fin dalle fasi di analisi.
 
 
