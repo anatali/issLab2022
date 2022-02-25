@@ -42,12 +42,12 @@ impostiamo un processo di produzione del software partendo da un insieme di requ
 <span id="requirements"></span><h2>Requisiti<a class="headerlink" href="#requisiti" title="Permalink to this headline">¶</a></h2>
 <p>Si desidera costruire un’applicazione software capace di:</p>
 <ul class="simple" id="radargui">
-<li><p>(requisito <span class="blue">radarGui</span>) mostrare le distanze rilevate da un sensore <code class="docutils literal notranslate"><span class="pre">HC-SR04</span></code> connesso a un RaspberryPi
-su un display (<code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>) a forma di radar connesso a un PC</p></li>
+<li><p>(requisito <span class="blue">radarGui</span>) mostrare le distanze rilevate da un sensore Sonar``HC-SR04`` connesso a un RaspberryPi
+su un display (<code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>) a forma di radar connesso a un PC.</p></li>
 </ul>
 <a class="reference internal image-reference" href="_images/radarDisplay.png"><img alt="_images/radarDisplay.png" class="align-center" src="_images/radarDisplay.png" style="width: 20%;" /></a>
 <ul class="simple" id="ledalarm">
-<li><p>(requisito <span class="blue">ledAlarm</span>) accendere un LED se la distanza rilevata è inferiore a un valore limite prefissato
+<li><p>(requisito <span class="blue">ledAlarm</span>) accendere un Led se la distanza rilevata dal Sonar è inferiore a un valore limite prefissato
 denominato <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code>.</p></li>
 </ul>
 </section>
@@ -156,7 +156,7 @@ un RaspberryPi e un PC convenzionale;</p></li>
 <h4>Se non fosse distribuito …<a class="headerlink" href="#se-non-fosse-distribuito" title="Permalink to this headline">¶</a></h4>
 <p>Osserviamo che, in assenza del requisito <a class="reference internal" href="#radargui">radarGui</a>, si potrebbe pensare di soddisfare il requisito <a class="reference internal" href="#ledalarm">ledAlarm</a>
 introducendo una semplice modifica nel condice di <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/c/SonarAlone.c">SonarAlone.c</a> .</p>
-<p>Trattandosi di un programma C, la modifica potrebbe consistere nella introduzione di una funzione come la seguente:</p>
+<p>Trattandosi di un programma <code class="docutils literal notranslate"><span class="pre">C</span></code>, la modifica potrebbe consistere nella introduzione di una funzione come la seguente:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">updateTheLed</span><span class="p">(</span> <span class="kt">int</span> <span class="n">cm</span> <span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span><span class="p">(</span> <span class="n">cm</span> <span class="o">&lt;</span> <span class="n">DLIMIT</span> <span class="p">)</span> <span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
   <span class="k">else</span> <span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
@@ -164,6 +164,12 @@ introducendo una semplice modifica nel condice di <a class="reference external" 
 </pre></div>
 </div>
 <p>Questa funzione andrebbe invocata ad ogni iterazione del ciclo principale nel <code class="docutils literal notranslate"><span class="pre">main</span></code>, come ad esempio in: <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/c/LedSonar.c">LedSonar.c</a>.</p>
+<p>Il punto critico di questa impostazione è che la parte strutturale del sistema risulta ‘annegata’ nel programma che
+esprime il funzionamento. In particolare, i requisiti parlano di Led e Sonar,
+ma a questi dispositivi non corrisponde alcun codice specifico, gestibile in modo separato dal codice che
+realizza la logica applicativa.</p>
+<p>Tutto funziona, ma le dimensioni architetturali relative alla <strong>struttura</strong> del sistema in termini di componenti e
+alla loro <strong>interazione</strong> <span class="blue">non sono esplicitamente espresse</span>.</p>
 </section>
 </section>
 </section>
