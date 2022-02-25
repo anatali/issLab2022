@@ -549,7 +549,7 @@ e non un assunto a-priori.
   * - Design first 
     - TopDown process
   * - .. image:: ./_static/img/Intro/topDown.png 
-    - .. image:: ./_static/img/Intro/TopDownHowWhat.png
+    - .. image:: ./_static/img/Intro/TopDownHowWhat.PNG
 
 Sappiamo però che, in molti casi, si segue un approccio `bottomUp`_ e quindi porremo molta attenzione nel capire le
 strategie migliori per invertire il processo e le motivazioni per fare questa inversione. 
