@@ -36,17 +36,17 @@
             
   <section id="radarsystem">
 <h1>RadarSystem<a class="headerlink" href="#radarsystem" title="Permalink to this headline">¶</a></h1>
-<p>Tetendo conto di quanto detto in <a class="reference internal" href="Introduzione.html"><span class="doc">Introduzione</span></a> ,
+<p>Tetendo conto di quanto detto in <em>Indicazioni-sul-processo-di-produzione</em> (<a class="reference internal" href="CostruireSoftware.html"><span class="doc">Costruire software</span></a>),
 impostiamo un processo di produzione del software partendo da un insieme di requisiti.</p>
 <section id="requisiti">
 <span id="requirements"></span><h2>Requisiti<a class="headerlink" href="#requisiti" title="Permalink to this headline">¶</a></h2>
 <p>Si desidera costruire un’applicazione software capace di:</p>
-<ul class="simple">
+<ul class="simple" id="radargui">
 <li><p>(requisito <span class="blue">radarGui</span>) mostrare le distanze rilevate da un sensore <code class="docutils literal notranslate"><span class="pre">HC-SR04</span></code> connesso a un RaspberryPi
 su un display (<code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>) a forma di radar connesso a un PC</p></li>
 </ul>
 <a class="reference internal image-reference" href="_images/radarDisplay.png"><img alt="_images/radarDisplay.png" class="align-center" src="_images/radarDisplay.png" style="width: 20%;" /></a>
-<ul class="simple">
+<ul class="simple" id="ledalarm">
 <li><p>(requisito <span class="blue">ledAlarm</span>) accendere un LED se la distanza rilevata è inferiore a un valore limite prefissato
 denominato <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code>.</p></li>
 </ul>
@@ -108,14 +108,14 @@ a chiarire bene la natura del sistema da realizzare.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Il committente fornisce software relativo al Led ?</p></td>
-<td><p>Si, <code class="docutils literal notranslate"><span class="pre">led25GpioTurnOn.sh</span></code> e <code class="docutils literal notranslate"><span class="pre">led25GpioTurnOff.sh</span></code> (progetto <em>it.unibo.rasp2021</em>)</p></td>
+<td><p>Si, <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/bash/led25GpioTurnOn.sh">led25GpioTurnOn.sh</a> e <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/bash/led25GpioTurnOff.sh">led25GpioTurnOff.sh</a> (progetto <em>it.unibo.rasp2022</em>)</p></td>
 </tr>
 <tr class="row-even"><td><p>Il committente fornisce software per il Sonar ?</p></td>
-<td><p>Si, <code class="docutils literal notranslate"><span class="pre">SonarAlone.c</span></code> (progetto <em>it.unibo.rasp2021</em>)</p></td>
+<td><p>Si, <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/c/SonarAlone.c">SonarAlone.c</a> (progetto <em>it.unibo.rasp2022</em>)</p></td>
 </tr>
 <tr class="row-odd"><td><p>Il committente fornisce qualche libreria per la costruzione del RadarDisplay ?</p></td>
-<td><p>Si, viene reso disponibile (progetto <em>it.unibo.java.radar</em>)  il supporto  <code class="docutils literal notranslate"><span class="pre">radarPojo.jar</span></code>
-che fornisce un singleton JAVA <code class="docutils literal notranslate"><span class="pre">radarSupport</span></code> capace di creare una GUI in ‘stile radar’
+<td><p>Si, viene reso disponibile (progetto <em>it.unibo.java.radar</em>)  il supporto  <a class="reference external" href="_static/code/radarPojo.jar">radarPojo.jar</a>,
+che fornisce un <strong>singleton JAVA</strong> <code class="docutils literal notranslate"><span class="pre">radarSupport</span></code> capace di creare una GUI in ‘stile radar’
 e di visualizzare su di essa un valore di distanza intero fornito come <code class="docutils literal notranslate"><span class="pre">String</span></code>:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">radarSupport</span> <span class="p">{</span>
 <span class="kd">private</span> <span class="kd">static</span> <span class="n">RadarControl</span> <span class="n">rc</span><span class="p">;</span>
@@ -152,6 +152,19 @@ un RaspberryPi e un PC convenzionale;</p></li>
 <h3>In sintesi<a class="headerlink" href="#in-sintesi" title="Permalink to this headline">¶</a></h3>
 <p><span class="remark">Si tratta di realizzare un sistema software distribuito ed eterogeneo</span></p>
 <p>Il sistema comprende un dispositivo di input (il Sonar) e due dispositivi di output (il Led e il RadarDisplay)</p>
+<section id="se-non-fosse-distribuito">
+<h4>Se non fosse distribuito …<a class="headerlink" href="#se-non-fosse-distribuito" title="Permalink to this headline">¶</a></h4>
+<p>Osserviamo che, in assenza del requisito <a class="reference internal" href="#radargui">radarGui</a>, si potrebbe pensare di soddisfare il requisito <a class="reference internal" href="#ledalarm">ledAlarm</a>
+introducendo una semplice modifica nel condice di <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/c/SonarAlone.c">SonarAlone.c</a> .</p>
+<p>Trattandosi di un programma C, la modifica potrebbe consistere nella introduzione di una funzione come la seguente:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">updateTheLed</span><span class="p">(</span> <span class="kt">int</span> <span class="n">cm</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">cm</span> <span class="o">&lt;</span> <span class="n">DLIMIT</span> <span class="p">)</span> <span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+  <span class="k">else</span> <span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Questa funzione andrebbe invocata ad ogni iterazione del ciclo principale nel <code class="docutils literal notranslate"><span class="pre">main</span></code>, come ad esempio in: <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/c/LedSonar.c">LedSonar.c</a>.</p>
+</section>
 </section>
 </section>
 </section>
@@ -191,13 +204,17 @@ un RaspberryPi e un PC convenzionale;</p></li>
 <li class="toctree-l3"><a class="reference internal" href="#piano-di-testing-funzionale">Piano di testing (funzionale)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#glossario">Glossario</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#domande-al-committente">Domande al committente</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#in-sintesi">In sintesi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#in-sintesi">In sintesi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#se-non-fosse-distribuito">Se non fosse distribuito …</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
 
 <div class="relations">
