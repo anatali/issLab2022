@@ -12,7 +12,7 @@ GPIO.setup(TRIG,GPIO.OUT)
 GPIO.setup(ECHO,GPIO.IN)
 
 GPIO.output(TRIG, False)   #TRIG parte LOW
-print ('Waiting a few seconds for the sensor to settle')
+#print ('Waiting a few seconds for the sensor to settle')
 time.sleep(2)
 
 while True:
@@ -34,4 +34,7 @@ while True:
    #print ('Distance:',distance,'cm')
    print ( distance )
    sys.stdout.flush()   #Importante!
+   time.sleep(0.25)
+
+
 #GPIO.cleanup()
