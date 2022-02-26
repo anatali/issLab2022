@@ -48,7 +48,7 @@ A questo punto inserisci la scheda SD sul Raspberry, alimentalo
 con ``5VDC 700mA`` e poi 
 (Si veda anche `Raspberry Pi Wi-Fi & Bluetooth Setup <https://www.digikey.com/en/maker/blogs/raspberry-pi-wi-fi-bluetooth-setup-how-to-configure-your-pi-4-model-b-3-model-b>`_):
 
-#. Leggi (opzionalmente collega il Rasperry con un cavo Ethernet) l'indirizzo IP del Raspberry sul Modem-HUB di casa.
+#. Leggi (opzionalmente collega il Raspberry con un cavo Ethernet) l'indirizzo IP del Raspberry sul Modem-HUB di casa.
 
 #. Connetti il Raspberry via ``ssh`` usando ``Putty``.
 
@@ -213,7 +213,7 @@ Shellinabox
 `Shellinabox <https://github.com/shellinabox/shellinabox>`_ 
 utilizza la tecnologia ``AJAX`` per fornire l'aspetto di una shell nativa tramite un browser web. 
 Il demone  ``shellinaboxd`` implementa un server web che ascolta sulla porta specificata 
-(il defualt è ``4200``). 
+(il default è ``4200``). 
 Il server web pubblica uno o più servizi che verranno visualizzati in un  emulatore ``VT100`` 
 implementato come applicazione web ``AJAX``. 
 
@@ -267,7 +267,7 @@ invece di essere installati globalmente (cioè come parte di un Python a livello
 .. From https://www.mynetbrick.com/index.php/varie/30-python-virtualenv
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Installezione di virtualenv
+Installazione di virtualenv
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Fase 1: aggiungiamo un opzione di configurazione al file hidden denominato `.bashrc` aggiungendo il comando
@@ -291,7 +291,7 @@ In coppia con ``virtualenv``, è consigliabile l'installazione del modulo ``virt
 che contiene una sere di utilities per facilitare la gestione degli ambienti virtuali.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Installezione di virtualenvwrapper
+Installazione di virtualenvwrapper
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 .. code::
@@ -328,7 +328,7 @@ Ricarichiamo le risorse del profilo:
 Creazione di un virtual environment
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Posizionamoci in una drectory di lavoro e
+Posizioniamoci in una directory di lavoro e
 creiamo un ambiente per Python 3 denominato **myenv**.
 
 .. code::   
@@ -344,7 +344,7 @@ Per uscire dal virtualenv:
 
     ``deactivate``.
 
-Per visualizzare gli ambienti virtuali creati, occoorre avere installato `virtualenvwrapper``:
+Per visualizzare gli ambienti virtuali creati, occorre avere installato `virtualenvwrapper``:
 
 .. code::  
 
@@ -481,7 +481,7 @@ ngrok
 #. Acquisire authtoken (xxx)
 #. ngrok authtoken xxx (salvato in /home/pi/.ngrok2/ngrok.yml)
 #. ngrok http 8081
-#. usare il forqarding proposto (http://1eaa-95-249-218-184.ngrok.io)
+#. usare il forwarding proposto (http://1eaa-95-249-218-184.ngrok.io)
 
 ----------------------------------
 wiringpi on Bullseye
