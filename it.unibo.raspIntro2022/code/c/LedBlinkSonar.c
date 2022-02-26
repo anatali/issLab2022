@@ -64,7 +64,7 @@ int getCM() {
 	return distance;
 }
 
-//TODO: attivare un processo
+//TODO: attivare un processo: vedi blinkTheLedInThread
 void blinkTheLed( int cm ) {
   if( cm < DLIMIT ){
 	  for (int i=1; i<=5; i++){
@@ -76,18 +76,19 @@ void blinkTheLed( int cm ) {
   }
 }
 
-void *blink(void * arg){
-  int result=1; 
-  //printf ("Thread %s \n", (char*)arg );
+void *blink(void *arg){
+  int result = 1;
+  int dt = (int)arg;
+  printf ("Thread %d \n", dt );
   while ( doblink )
   {
     digitalWrite (LED, HIGH) ;  // On
-    delay (500 ) ;              // mS
+    delay (dt ) ;              // mS
     digitalWrite (LED, LOW) ;   // Off
-    delay (500 ) ;
+    delay (dt ) ;
   } 
+  printf ("Thread EXIT   \n"  );
   return NULL;
-  //printf ("Thread EXIT   \n"  );
   //pthread_exit ((void*)result);
 } 
 
@@ -95,31 +96,35 @@ void *blink(void * arg){
 
 void blinkTheLedInThread( int cm ){
 	pthread_t th1;
-	int retcode;
-	void *risultato;
-	
+	int dt = 250;
+	int ret;
+	void *retval;
+	//printf("blinkTheLedInThread cm= %d ", cm);
 	if( cm > DLIMIT ){  
  		digitalWrite(LED, LOW);
- 		doblink = 0;
- 
  // int pthread_join (pthread_t tid, void **status);
  // altrimenti rimangono allocate le aree di memoria assegnate al thread
- 
-  		//retcode = pthread_join(th1,  &risultato);
-  		//printf("retcode = %d ", retcode);
-  		/*
-        if (risultato == PTHREAD_CANCELED)
-            printf("The thread was canceled - ");
-        else
-            printf("Returned value %d - ", (int)risultato);
-		//if (retcode != 0) printf ("join fallito   " );
- 		//else printf("terminato il thread "); 
- 		*/
+ 		if( doblink == 1 ){
+ 			doblink = 0;
+ 			//delay ( 1000 ) ;  
+	  		ret = pthread_join(th1,  &retval);
+	  		printf("ret = %d \n", ret);
+	  		//if (ret != 0) printf ("join fallito  \n " ); 
+	        if (retval == PTHREAD_CANCELED)
+	            printf("The thread was canceled - ");
+	        else
+	            printf("End of thread. Returned value= %d \n", (int*)retval);
+ 	 		 
+ 		}
 	}else{ 
 		if( doblink == 0 ){
 	 		doblink=1;
 // int pthread_create (pthread_t *tid, const p_thread_attr*attr, (void *(*func)(void *), void *arg);
-	 		pthread_create(&th1, NULL, blink, NULL);
+	 	 int rc = pthread_create(&th1, NULL, blink, (void *)dt );
+         if (rc) {
+            printf("ERORR; return code from pthread_create() is %d\n", rc);
+            exit(EXIT_FAILURE);
+        }
  		}
    	}
 }
@@ -131,11 +136,13 @@ int main(void) {
 	while(1) {
  		cm = getCM();
  		
- 		//blinkTheLed( cm );
- 		blinkTheLedInThread( cm );
- 
- 		cout <<  cm   << endl ;  //flush after ending a new line
-		delay(30);
+ 		//blinkTheLed( cm ); //blocca il flusso
+ 		//cm potrebbe essere > 3000
+ 		if( cm < 100 ){
+ 			blinkTheLedInThread( cm );
+ 			cout <<  cm   << endl ;  //flush after ending a new line
+			delay(30);
+		}
 	}
  	return 0;
 }
