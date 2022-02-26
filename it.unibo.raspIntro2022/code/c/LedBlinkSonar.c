@@ -24,7 +24,7 @@ using namespace std;
 
 /*
 g++  LedBlinkSonar.c -l wiringPi -lpthread -o  LedBlinkSonar
-gcc -D_REENTRANT -o LedBlinkSonar LedBlinkSonar.c –lpthread
+ 
 */
 
 //Dato globale
@@ -76,9 +76,9 @@ void blinkTheLed( int cm ) {
   }
 }
 
-void * blink(void * arg){
+void *blink(void * arg){
   int result=1; 
-  printf ("Thread %s \n", (char*)arg );
+  //printf ("Thread %s \n", (char*)arg );
   while ( doblink )
   {
     digitalWrite (LED, HIGH) ;  // On
@@ -86,25 +86,39 @@ void * blink(void * arg){
     digitalWrite (LED, LOW) ;   // Off
     delay (500 ) ;
   } 
-  printf ("Thread EXIT   \n"  );
-  pthread_exit ((void*)result);
+  return NULL;
+  //printf ("Thread EXIT   \n"  );
+  //pthread_exit ((void*)result);
 } 
+
+// standard Posix
 
 void blinkTheLedInThread( int cm ){
 	pthread_t th1;
-	int retcode, risultato;
+	int retcode;
+	void *risultato;
 	
 	if( cm > DLIMIT ){  
  		digitalWrite(LED, LOW);
  		doblink = 0;
- /*
-  		retcode = pthread_join(th1, (void *) &risultato);
-		if (retcode != 0) printf ("join fallito   " );
- 		else printf("terminato il thread "); 
- */
+ 
+ // int pthread_join (pthread_t tid, void **status);
+ // altrimenti rimangono allocate le aree di memoria assegnate al thread
+ 
+  		//retcode = pthread_join(th1,  &risultato);
+  		//printf("retcode = %d ", retcode);
+  		/*
+        if (risultato == PTHREAD_CANCELED)
+            printf("The thread was canceled - ");
+        else
+            printf("Returned value %d - ", (int)risultato);
+		//if (retcode != 0) printf ("join fallito   " );
+ 		//else printf("terminato il thread "); 
+ 		*/
 	}else{ 
 		if( doblink == 0 ){
 	 		doblink=1;
+// int pthread_create (pthread_t *tid, const p_thread_attr*attr, (void *(*func)(void *), void *arg);
 	 		pthread_create(&th1, NULL, blink, NULL);
  		}
    	}
