@@ -34,4 +34,7 @@ while True:
    #print ('Distance:',distance,'cm')
    print ( distance )
    sys.stdout.flush()   #Importante!
+   time.sleep(0.25)
+
+
 #GPIO.cleanup()
