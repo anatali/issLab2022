@@ -5,7 +5,8 @@
 .. role:: remark
  
 .. _RpiImager: https://www.raspberrypi.com/software/
-.. _Bullseye:  ://www.raspberrypi.com/news/raspberry-pi-os-debian-bullseye/
+.. _Bullseye:  http://www.raspberrypi.com/news/raspberry-pi-os-debian-bullseye/
+.. _wiringpi:  http://wiringpi.com/
 
 ======================================
 RaspberrySoftware
@@ -28,7 +29,7 @@ Azioni Preliminari
 .. https://github.com/anatali/issLab2021/blob/master/it.unibo.issLabStart/
 
  
-#. Crea scheda SD (usando `RpiImager`_) con ``2020-02-13-raspbian-buster-lite``
+#. Crea scheda *SecureDigital* (SD) (usando `RpiImager`_) con ``2020-02-13-raspbian-buster-lite``
    o con il più recente `Bullseye`_.
 #. Con la scheda inserita in un PC, crea un file vuoto ``boot/ssh``.
 #. Crea un file ``boot/wpa_supplicant.conf`` con il seguente contenuto
@@ -55,6 +56,26 @@ con ``5VDC 700mA`` e poi
 
 Quando il sistema si attiva i file in boot è trasferito in
  ``etc/wpa_supplicant/wpa_supplicant.conf``
+
++++++++++++++++++++++++++++++++++++++++
+Se non abbiamo WIFI
++++++++++++++++++++++++++++++++++++++++
+
+Inseriamo la SD nel PC, apriamo con un editor il file ``boot/cmdline.txt`` e scriviamo in fondo alla 
+linea di comando:
+
+.. code::
+
+    ip=192.168.137.2
+
+Salviamo e reiseriamo la SD nel RasperryPi e in Windows ``Network and Sharing Center``
+di *Control Panel/Network and Internet/* vediamo:
+
+.. image:: ./_static/img/rasp/Windows10Ethernet.PNG 
+   :align: center
+   :width: 60%
+
+Accendiamo il Raspberry, che dovrebbe essere accessibile all'indirizzo ``192.168.137.2``.
 
 
 ------------------------------
@@ -483,13 +504,18 @@ ngrok
 #. ngrok http 8081
 #. usare il forqarding proposto (http://1eaa-95-249-218-184.ngrok.io)
 
+ 
+
 ----------------------------------
 wiringpi on Bullseye
 ----------------------------------
 
+.. http://wiringpi.com/wiringpi-updated-to-2-52-for-the-raspberry-pi-4b/
+
+Su Bullseye `wiringPi`_ è deprecated. Possiamo però  ricaricarlo come segue:
+
 .. code::
 
-    http://wiringpi.com/wiringpi-updated-to-2-52-for-the-raspberry-pi-4b/
     cd /tmp
     wget https://project-downloads.drogon.net/wiringpi-latest.deb
     sudo dpkg -i wiringpi-latest.deb

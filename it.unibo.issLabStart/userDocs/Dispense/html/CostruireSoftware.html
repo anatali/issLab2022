@@ -238,23 +238,28 @@ stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all’idea
 non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente
 definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
 (si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a>) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
-<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 870%;" /></a>
+<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 80%;" /></a>
 <p>Questa idea è sviluppata oggi con riferimento ai <a class="reference external" href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">Domain Specific Languages</a>.</p>
 <section id="struttura">
 <h3>Struttura<a class="headerlink" href="#struttura" title="Permalink to this headline">¶</a></h3>
-<p>Per impostare in modo sistematico la definizione a livello strutturale di un elemento, può essere conveniente,
+<p>Dal punto di vista strutturale, le <em>funzioni</em> (o le <em>procedure</em>) e gli <em>oggetti</em> costituiscono componenti fondamentali,
+largamente in uso  nei programmi non distribuiti, anche di piccole dimensioni.
+Nel seguito,  cercheremo di rappresentare ciascuno di essi con una forma grafica convenzionale, come quella che segue:</p>
+<a class="reference internal image-reference" href="_images/legendBasicComponents.PNG"><img alt="_images/legendBasicComponents.PNG" class="align-center" src="_images/legendBasicComponents.PNG" style="width: 25%;" /></a>
+<p>Nel contesto di un sistema software distribuito, questi componenti si trovano all’interno di altri componenti, che possiamo
+qui indicare genericamente come  <span class="blue">macro-componenti</span>. Anche per questi, è opportuno introdurre una forma grafica convenzionale,
+come, ad esempio, quella riportata nella figura che segue:</p>
+<a class="reference internal image-reference" href="_images/legendComponets.PNG"><img alt="_images/legendComponets.PNG" class="align-center" src="_images/legendComponets.PNG" style="width: 25%;" /></a>
+<p>Per impostare in modo sistematico la definizione a livello strutturale di un componente, può essere conveniente,
 sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande quali:</p>
 <ul class="simple">
-<li><p>l’elemento è <span class="blue">atomico o composto</span>? Nel caso sia composto quali sono le parti che lo formano?</p></li>
-<li><p>l’elemento è dotato di <span class="blue">stato modificabile</span>? In caso affermativo, quali sono le operazioni di modifica dello stato?</p></li>
+<li><p>il componente è <span class="blue">atomico o composto</span>? Nel caso sia composto quali sono le parti che lo formano?</p></li>
+<li><p>il componente è dotato di <span class="blue">stato modificabile</span>? In caso affermativo, quali sono le operazioni di modifica dello stato?</p></li>
 <li><p>quali sono le <span class="blue">proprietà dell’elemento</span>, cioè quali attributi lo caratterizzano?</p></li>
-<li><p>da quali altri elementti dipende e secondo quale <span class="blue">tipo di dipendenza</span>?</p></li>
+<li><p>da quali altri componenti dipende e secondo quale <span class="blue">tipo di dipendenza</span>?</p></li>
 </ul>
-<p>Si noti che un elemento composto implica la <em>definizione ricorsiva della struttura di ogni parte</em> e
+<p>Si noti che un componente non atomico implica la <em>definizione ricorsiva della struttura di ogni parte</em> e
 la definizione di operazioni denominate <strong>selettori</strong>.</p>
-<p>Notiamo anche che l’individuazione di una struttura composta porta spesso alla individuazione
-di un insieme di <strong>operazioni primitive</strong> sulla base delle quali costruire ogni altra operazione
-di manipolazione/gestione dell’elemento.</p>
 </section>
 <section id="interazione">
 <h3>Interazione<a class="headerlink" href="#interazione" title="Permalink to this headline">¶</a></h3>
@@ -304,6 +309,7 @@ senza alcuna particolare nozione di destinatario e senza alcuna aspettativa da p
 con l’aspettativa che venga ricevuta da qualcuno, al fine di eseguire un’azione che potrebbe portare vantaggio
 all’emittente e/o al sistema nel suo complesso.</p></li>
 </ul>
+<a class="reference internal image-reference" href="_images/legendMessages.PNG"><img alt="_images/legendMessages.PNG" class="align-center" src="_images/legendMessages.PNG" style="width: 25%;" /></a>
 </section>
 <section id="un-problema-applicativo">
 <h4>Un problema ‘applicativo’<a class="headerlink" href="#un-problema-applicativo" title="Permalink to this headline">¶</a></h4>
@@ -321,7 +327,12 @@ prima di rispondergli con il documento richiesto.</p>
 <li><p>funzionale</p></li>
 <li><p>logico-dichiarativo</p></li>
 </ul>
-<p>Spesso si fa anche riferimento a tipi diversi di <strong>macchine astratte</strong>, iniziando dalla
+<p>Il funzionamento di un componente comporta spesso l’individuazione
+di un insieme di <strong>operazioni primitive</strong>, sulla base delle quali costruire ogni altra operazione
+di manipolazione/gestione del componente.  Si pensi per esempio al caso di un <em>oggetto lista</em>, le cui primitive
+sono il costruttore cons, i selettori head, tail e il predicato empty. Un volta data la lista vuota (l’oggetto emptyList)
+ogni lista può essere costruita e manipolata attraverso l’uso di queste primitive.</p>
+<p>Spesso si qualifica il comportamento di un componente facendo riferimento a tipi diversi di <strong>macchine astratte</strong>, iniziando dalla
 <a class="reference external" href="https://plato.stanford.edu/entries/turing-machine/">Turing Machine</a> (<strong>TM</strong>), che individua,
 in stile imperativo, le mosse-base (<em>primitive</em>) di un automa che permette di realizzare qualunque calcolo.</p>
 <a class="reference internal image-reference" href="_images/TuringMachine.PNG"><img alt="_images/TuringMachine.PNG" class="align-center" src="_images/TuringMachine.PNG" style="width: 60%;" /></a>
@@ -329,10 +340,13 @@ in stile imperativo, le mosse-base (<em>primitive</em>) di un automa che permett
 <p>Un automa equivalente che ottiene lo stesso risultato con una sorta di <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_assembly">Linguaggio assembly</a> minimale è la
 <a class="reference external" href="https://en.wikipedia.org/wiki/Counter_machine">Minsky Machine</a> (nota anche come <em>Counter Machine</em>):</p>
 <a class="reference internal image-reference" href="_images/MinskyMachine.PNG"><img alt="_images/MinskyMachine.PNG" class="align-center" src="_images/MinskyMachine.PNG" style="width: 60%;" /></a>
+<p>Un tipo meno potente di macchina astratta rispetto alla <strong>TM</strong> è il <a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_pila">pushdown automaton</a> (<strong>PDA</strong>) che però è l’automa
+di riferimento per il riconoscimento delle frasi di un inguaggio con <em>sintassi context-free</em>, di tipo 2 nella
+<a class="reference external" href="https://it.wikiversity.org/wiki/Classificazione_delle_grammatiche">gerarchia di Chomsky</a> .</p>
 <section id="automi-a-stati-finiti">
 <h4>Automi a stati finiti<a class="headerlink" href="#automi-a-stati-finiti" title="Permalink to this headline">¶</a></h4>
-<p>Un tipo di automa meno potente della TM, ma che ne costituisce una parte  e che
-avrà per noi un ruolo fondamentale è l’<a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a> (<em>Finite State Machine</em> - <strong>FSM</strong>)
+<p>Un ulteriore tipo di automa meno potente della TM, ma su cui si fonda sia la TM sia il PDA
+è l’<a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a> (<em>Finite State Machine</em> - <strong>FSM</strong>)
 il cui funzionamento può essere formalmente descritto da una 5-tuple (<code class="docutils literal notranslate"><span class="pre">States,</span> <span class="pre">Inputs,</span> <span class="pre">Outputs,</span> <span class="pre">Transitions,</span> <span class="pre">InitialState</span></code>):</p>
 <ul>
 <li><p><strong>States</strong>: insieme di possibili stati in cui l’automa si può trovare.</p></li>
@@ -356,8 +370,9 @@ E’ spesso espressa da una coppia di funzioni:</p>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Mealy_machine">MealyMachines</a>: una FSM il cui output è determinato sia dallo stato corrente sia dall’input corrente.</p></li>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>: una FSM il cui output dipende unicamente dallo stato corrente (<code class="docutils literal notranslate"><span class="pre">SCUR</span></code>) in cui l’automa si trova.</p></li>
 </ul>
-<p>Nel seguito, imposteremo spesso il comportamento dei componenti software come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a> che, quando si trova in uno
-stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>:</p>
+<p>Componenti <strong>FSM</strong> di tipo  <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a> avranno per noi un ruolo fondamentale; il loro funzionamento può
+essere schematizzato come segue.
+Quando l’automa si trova nello stato corrente <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>:</p>
 <ol class="arabic simple">
 <li><p>esegue una sequenza (che <strong>deve terminare</strong>) di azioni;</p></li>
 <li><p>al termine della sequenza di azioni controlla che vi sia almeno un input (messaggio)
@@ -365,7 +380,7 @@ capace di attivare una delle transizioni verso un ulteriore stato (<code class="
 <li><p>attiva una delle transizioni possibili pasando dallo stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> allo stato <code class="docutils literal notranslate"><span class="pre">SNEXT</span></code> (che potrebbe anche coincidere
 con <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>);</p></li>
 <li><p>se non vi sono transizioni attivabili, rimane nello stato <code class="docutils literal notranslate"><span class="pre">SCUR</span></code> da cui potrà sbloccarsi solo in conseguenza di un
-ulteriore input.</p></li>
+ulteriore messaggio di input.</p></li>
 </ol>
 </section>
 </section>
@@ -629,6 +644,7 @@ ed esserci costruiti un nostro ambiente di sviluppo custom nella <a class="refer
 <li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
 
 <div class="relations">

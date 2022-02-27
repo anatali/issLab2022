@@ -16,6 +16,7 @@
 .. _FSM : https://en.wikipedia.org/wiki/Finite-state_machine
 .. _MealyMachines : https://en.wikipedia.org/wiki/Mealy_machine
 .. _MooreMAchines : https://en.wikipedia.org/wiki/Moore_machine
+.. _gerarchia di Chomsky : https://it.wikiversity.org/wiki/Classificazione_delle_grammatiche
 .. _libri: _static/books.html
 .. _Linguaggi di programmazione: https://it.wikipedia.org/wiki/Linguaggio_di_programmazione
 .. _Meta Object Facility: https://it.wikipedia.org/wiki/Meta-Object_Facility
@@ -24,6 +25,7 @@
 .. _Minsky Machine : https://en.wikipedia.org/wiki/Counter_machine
 .. _Turing Machine : https://plato.stanford.edu/entries/turing-machine/
 .. _Automa a stati finiti : https://it.wikipedia.org/wiki/Automa_a_stati_finiti
+.. _pushdown automaton : https://it.wikipedia.org/wiki/Automa_a_pila
 .. _Raspberry Pi TM : https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/turing-machine/one.html
 .. _UML : https://it.wikipedia.org/wiki/Unified_Modeling_Language
 .. _Use Cases Diagrams : https://it.wikipedia.org/wiki/Use_Case_Diagram
@@ -334,7 +336,7 @@ definire una **sintassi astratta** utilizzando un :blue:`meta-linguaggio` come a
 
 .. image:: ./_static/img/Intro/mofUml.PNG 
    :align: center
-   :width: 870%
+   :width: 80%
 
 
 
@@ -346,25 +348,40 @@ Questa idea è sviluppata oggi con riferimento ai `Domain Specific Languages`_.
 Struttura
 ++++++++++++++++++++++++++++++++++++++++++++++
 
-Per impostare in modo sistematico la definizione a livello strutturale di un elemento, può essere conveniente, 
+Dal punto di vista strutturale, le *funzioni* (o le *procedure*) e gli *oggetti* costituiscono componenti fondamentali,
+largamente in uso  nei programmi non distribuiti, anche di piccole dimensioni. 
+Nel seguito,  cercheremo di rappresentare ciascuno di essi con una forma grafica convenzionale, come quella che segue:
+
+.. image:: ./_static/img/Architectures/legendBasicComponents.PNG 
+   :align: center
+   :width: 25%
+
+Nel contesto di un sistema software distribuito, questi componenti si trovano all'interno di altri componenti, che possiamo 
+qui indicare genericamente come  :blue:`macro-componenti`. Anche per questi, è opportuno introdurre una forma grafica convenzionale,
+come, ad esempio, quella riportata nella figura che segue:
+
+.. image:: ./_static/img/Architectures/legendComponets.PNG 
+   :align: center
+   :width: 25%
+
+Per impostare in modo sistematico la definizione a livello strutturale di un componente, può essere conveniente, 
 sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande quali:
 
-- l'elemento è :blue:`atomico o composto`? Nel caso sia composto quali sono le parti che lo formano?
-- l'elemento è dotato di :blue:`stato modificabile`? In caso affermativo, quali sono le operazioni di modifica dello stato? 
+- il componente è :blue:`atomico o composto`? Nel caso sia composto quali sono le parti che lo formano?
+- il componente è dotato di :blue:`stato modificabile`? In caso affermativo, quali sono le operazioni di modifica dello stato? 
 - quali sono le :blue:`proprietà dell'elemento`, cioè quali attributi lo caratterizzano?
-- da quali altri elementti dipende e secondo quale :blue:`tipo di dipendenza`?
+- da quali altri componenti dipende e secondo quale :blue:`tipo di dipendenza`?
 
-Si noti che un elemento composto implica la *definizione ricorsiva della struttura di ogni parte* e 
+Si noti che un componente non atomico implica la *definizione ricorsiva della struttura di ogni parte* e 
 la definizione di operazioni denominate **selettori**.
 
-Notiamo anche che l'individuazione di una struttura composta porta spesso alla individuazione 
-di un insieme di **operazioni primitive** sulla base delle quali costruire ogni altra operazione 
-di manipolazione/gestione dell'elemento.  
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++
 Interazione
 ++++++++++++++++++++++++++++++++++++++++++++++
+
+
 
 Le interazioni possono essere sincrone o asincrone e riguardare informazioni o stream di dati. 
 In questo secondo caso esse possono essere anche isocrone.
@@ -397,7 +414,6 @@ Le interazioni vengono anche spesso suddivise secondo quattro pattern principali
 Torneremo diffusamente su questi punti, che costituiscono il cuore del passaggio da OOP a message-passing.
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Terminologia di riferimento
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -424,6 +440,12 @@ Nel seguito, faremo riferimento alla seguente terminologia:
   con l'aspettativa che venga ricevuta da qualcuno, al fine di eseguire un'azione che potrebbe portare vantaggio 
   all'emittente e/o al sistema nel suo complesso.
 
+
+.. image:: ./_static/img/Architectures/legendMessages.PNG 
+   :align: center
+   :width: 25%
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Un problema 'applicativo'
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -444,8 +466,15 @@ Per esprimere il comportamento di un componente software, si distinguono classic
 - imperativo
 - funzionale
 - logico-dichiarativo
-  
-Spesso si fa anche riferimento a tipi diversi di **macchine astratte**, iniziando dalla 
+
+Il funzionamento di un componente comporta spesso l'individuazione 
+di un insieme di **operazioni primitive**, sulla base delle quali costruire ogni altra operazione 
+di manipolazione/gestione del componente.  Si pensi per esempio al caso di un *oggetto lista*, le cui primitive 
+sono il costruttore cons, i selettori head, tail e il predicato empty. Un volta data la lista vuota (l'oggetto emptyList)
+ogni lista può essere costruita e manipolata attraverso l'uso di queste primitive.
+
+
+Spesso si qualifica il comportamento di un componente facendo riferimento a tipi diversi di **macchine astratte**, iniziando dalla 
 `Turing Machine`_ (**TM**), che individua,
 in stile imperativo, le mosse-base (*primitive*) di un automa che permette di realizzare qualunque calcolo. 
 
@@ -462,13 +491,18 @@ Un automa equivalente che ottiene lo stesso risultato con una sorta di `Linguagg
    :align: center
    :width: 60%
 
+Un tipo meno potente di macchina astratta rispetto alla **TM** è il `pushdown automaton`_ (**PDA**) che però è l'automa 
+di riferimento per il riconoscimento delle frasi di un inguaggio con *sintassi context-free*, di tipo 2 nella 
+`gerarchia di Chomsky`_ . 
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Automi a stati finiti
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Un tipo di automa meno potente della TM, ma che ne costituisce una parte  e che 
-avrà per noi un ruolo fondamentale è l'`Automa a stati finiti`_ (*Finite State Machine* - **FSM**)
+Un ulteriore tipo di automa meno potente della TM, ma su cui si fonda sia la TM sia il PDA 
+è l'`Automa a stati finiti`_ (*Finite State Machine* - **FSM**)
 il cui funzionamento può essere formalmente descritto da una 5-tuple (``States, Inputs, Outputs, Transitions, InitialState``):
 
 - **States**: insieme di possibili stati in cui l'automa si può trovare.
@@ -490,9 +524,9 @@ Normalmente, gli automi a stati finiti si suddividono in due grandi categorie:
 - `MealyMachines`_: una FSM il cui output è determinato sia dallo stato corrente sia dall'input corrente.
 - `MooreMachines`_: una FSM il cui output dipende unicamente dallo stato corrente (``SCUR``) in cui l'automa si trova.
 
-
-Nel seguito, imposteremo spesso il comportamento dei componenti software come `MooreMachines`_ che, quando si trova in uno
-stato ``SCUR``:
+Componenti **FSM** di tipo  `MooreMachines`_ avranno per noi un ruolo fondamentale; il loro funzionamento può 
+essere schematizzato come segue. 
+Quando l'automa si trova nello stato corrente ``SCUR``:
 
 #. esegue una sequenza (che **deve terminare**) di azioni;
 #. al termine della sequenza di azioni controlla che vi sia almeno un input (messaggio) 
@@ -500,7 +534,7 @@ stato ``SCUR``:
 #. attiva una delle transizioni possibili pasando dallo stato ``SCUR`` allo stato ``SNEXT`` (che potrebbe anche coincidere
    con ``SCUR``);
 #. se non vi sono transizioni attivabili, rimane nello stato ``SCUR`` da cui potrà sbloccarsi solo in conseguenza di un 
-   ulteriore input.
+   ulteriore messaggio di input.
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++
