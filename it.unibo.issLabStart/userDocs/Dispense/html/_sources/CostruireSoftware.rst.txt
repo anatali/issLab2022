@@ -1,7 +1,7 @@
 .. role:: red
 .. role:: blue  
 .. role:: remark   
-
+.. role:: worktodo
 
 .. _SEDisasters : https://www.rankred.com/biggest-software-failures/
 .. _OpenGroupArch : https://it.wikipedia.org/wiki/The_Open_Group_Architecture_Framework
@@ -20,6 +20,7 @@
 .. _libri: _static/books.html
 .. _Linguaggi di programmazione: https://it.wikipedia.org/wiki/Linguaggio_di_programmazione
 .. _Meta Object Facility: https://it.wikipedia.org/wiki/Meta-Object_Facility
+.. _Ecore : https://wiki.eclipse.org/Ecore
 .. _Domain Specific Languages: https://www.jetbrains.com/mps/concepts/domain-specific-languages/
 .. _Linguaggio assembly : https://it.wikipedia.org/wiki/Linguaggio_assembly
 .. _Minsky Machine : https://en.wikipedia.org/wiki/Counter_machine
@@ -107,6 +108,10 @@ Sotto la spinta di stringenti vincoli di *time to market* (**TTM**) molte aziend
 :blue:`"scrivi, prova e correggi"`, mirando alla produzione di codice al minor "costo immediato" possibile. 
 Le :blue:`fasi di analisi e progetto` anche se accuratamente svolte, non sempre sono adeguatamente documentate, 
 e *quasi mai corralete in modo sistematico con il codice prodotto*.
+
+++++++++++++++++++++++++++++++++++++++++++
+Sviluppo bottomUp
+++++++++++++++++++++++++++++++++++++++++++
 
 Il processo di costruzione del sofware è quindi :blue:`influenzato da una potente forza`, 
 legata alla natura stessa del software: la spinta a impostare la costruzione  in modo **bottom-up**, 
@@ -311,40 +316,7 @@ focalizzando l'attenzione su almeno tre diversi punti di vista:
 
 Questi punti di vista costituiscono tre indispensabili dimensioni in cui articolare lo spazio della descrizione 
 del sistema, qualunque sia il linguaggio utilizzato per esprimere questa descrizione.
-Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione 
-sono presenti in tutti i `Linguaggi di programmazione`_.
 
-Un punto importante consiste nel capire fino a che punto i costrutti di un linguaggio debbano influenzare 
-il progettista (se non lo stesso analista). 
-Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre 
-nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.
-
-La figura che segue mostra una visione sintetica dello sviluppo nel tempo di questa evoluzione linguistica,
-con riferimento ad alcuni dei linguaggi più noti (in `Linguaggi di programmazione`_ si dice che oggi
-si usano più di 2500 linguaggi di programmazione).
-
-.. image:: ./_static/img/Intro/historyHLPL.png 
-   :align: center
-   :width: 60%
-
-
-L'avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo; 
-un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva 
-in ciascuna delle dimensioni citate. 
-
-Tuttavia, il motivo principale di una relativa (e solo apparente) 
-stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all'idea che un linguaggio 
-non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente 
-definire una **sintassi astratta** utilizzando un :blue:`meta-linguaggio` come ad esempio ``MOF``
-(si veda `Meta Object Facility`_) unitamente alla semantica del linguaggio e a un framework di supporto.
-
-.. image:: ./_static/img/Intro/mofUml.PNG 
-   :align: center
-   :width: 80%
-
-
-
-Questa idea è sviluppata oggi con riferimento ai `Domain Specific Languages`_.
 
 
 
@@ -354,30 +326,33 @@ Struttura
 
 Dal punto di vista strutturale, le *funzioni* (o le *procedure*) e gli *oggetti* costituiscono componenti fondamentali,
 largamente in uso  nei programmi non distribuiti, anche di piccole dimensioni. 
-Nel seguito,  cercheremo di rappresentare ciascuno di essi con una forma grafica convenzionale, come quella che segue:
+Nel seguito,  cercheremo di rappresentare ciascuno di essi con una forma grafica convenzionale, come ad esempio:
 
 .. image:: ./_static/img/Architectures/legendBasicComponents.PNG 
    :align: center
    :width: 25%
 
-Nel contesto di un sistema software distribuito, questi componenti si trovano all'interno di altri componenti, che possiamo 
-qui indicare genericamente come  :blue:`macro-componenti`. Anche per questi, è opportuno introdurre una forma grafica convenzionale,
-come, ad esempio, quella riportata nella figura che segue:
+Nel contesto di un sistema software distribuito, componenti-base come le funzioni si trovano all'interno di altri 
+componenti, che possiamo qui indicare genericamente come  :blue:`macro-componenti`.
+Anche per questi, è opportuno introdurre una forma grafica convenzionale, come, ad esempio:
 
 .. image:: ./_static/img/Architectures/legendComponets.PNG 
    :align: center
    :width: 25%
 
-Per impostare in modo sistematico la definizione a livello strutturale di un componente, può essere conveniente, 
-sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande quali:
+Per impostare in modo sistematico la definizione a livello strutturale di un sistema è conveniente, 
+sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande relative alla natura
+dei suoi componenti, quali ad esempio:
 
+- il componente è :blue:`attivo` (dotato di un proprio flusso di controllo)? Se il componente non ha
+  flusso di controllo autonomo, noi diremo che è un :blue:`oggetto`.
 - il componente è :blue:`atomico o composto`? Nel caso sia composto quali sono le parti che lo formano?
 - il componente è dotato di :blue:`stato modificabile`? In caso affermativo, quali sono le operazioni di modifica dello stato? 
-- quali sono le :blue:`proprietà dell'elemento`, cioè quali attributi lo caratterizzano?
+- quali :blue:`proprietà (attributi)` caratterizzano il componente?
 - da quali altri componenti dipende e secondo quale :blue:`tipo di dipendenza`?
 
 Si noti che un componente non atomico implica la *definizione ricorsiva della struttura di ogni parte* e 
-la definizione di operazioni denominate **selettori**.
+la definizione di operazioni denominate **selettori** che forniscono (riferimenti a) i componenti costituenti.
 
 
 
@@ -385,10 +360,11 @@ la definizione di operazioni denominate **selettori**.
 Interazione
 ++++++++++++++++++++++++++++++++++++++++++++++
 
+Le interazioni tra **oggetti** avvengono tramite :blue:`procedure-call`, cioè a trasferimento di controllo.
 
-
-Le interazioni possono essere sincrone o asincrone e riguardare informazioni o stream di dati. 
-In questo secondo caso esse possono essere anche isocrone.
+Le interazioni tra **componenti attivi** possono avvenire trameite :blue:`oggetti condivisi`, allocati su memoria comune,
+oppure tramite :blue:`messaggi` che riguardano *informazioni* o *stream di dati* e che possono essere scambiati
+in forma sincrona, asincrona o isocrona.
 
 In una interazione **asincrona**, la comunicazione è "bufferizzata" senza alcuna 
 limitazione sulle dimensioni del buffer. 
@@ -404,9 +380,7 @@ che non supera un massimo prefissato.
 Una interazione **isocrona** riguarda solo stream; il destinatario si aspetta di ricevere i dati 
 con un delay compreso tra un minimo e un massimo.
 
-
-
-Le interazioni vengono anche spesso suddivise secondo quattro pattern principali:
+Le interazioni a messaggi vengono anche spesso suddivise secondo quattro pattern principali:
 
 - **Fire and forget**: il caso di invio di  messaggi.
 - **Sync with server**: il caso request-response.
@@ -425,7 +399,8 @@ Terminologia di riferimento
 Nel seguito, faremo riferimento alla seguente terminologia:
 
 
-- **Messaggio** (:blue:`message`): termne generico per denotare informazione da trasmettere in rete.
+- **Messaggio** (:blue:`message`): termine generico per denotare informazione scambiata mediante
+  l'uso di un opportuno supporto di comunicazione.
 - **Dispaccio** (:blue:`dispatch`): messaggio inviato in modo asincrono a N (N>=1) specifici destinatari, 
   noti alla emittente, con l'aspettativa che questi lo ricevano e lo elaborino; l'emittente non si aspetta 
   alcuna informazione di ritorno.  
@@ -438,27 +413,31 @@ Nel seguito, faremo riferimento alla seguente terminologia:
   che questa attività si concluda con una risposta pertinente alla richiesta.
 - **Risposta** (:blue:`reply, response`): messaggio inviato da un destinatario al mittente di una richiesta.
   il contenuto del messaggio rappresenta informazione pertinente alla richiesta.
-- **Evento** (:blue:`event`): messaggio emessa (più o meno consapevolmente) in modo asincrono da una sorgente 
+- **Evento** (:blue:`event`): messaggio emesso (più o meno consapevolmente) in modo asincrono da una sorgente 
   senza alcuna particolare nozione di destinatario e senza alcuna aspettativa da parte dell'emittente.
-- **Segnale** (:blue:`signal`): messaggio inviato in modo asincrono a N (N>=1) destinatari, noti o meno all'emittente, 
-  con l'aspettativa che venga ricevuta da qualcuno, al fine di eseguire un'azione che potrebbe portare vantaggio 
-  all'emittente e/o al sistema nel suo complesso.
+- **Segnale** (:blue:`signal`): messaggio emesso in modo consapevole e asincrono a N (N>=1) destinatari, 
+  noti o meno all'emittente, 
+  con l'aspettativa che venga ricevuto da qualcuno, al fine di eseguire un'azione che potrebbe portare vantaggio 
+  all'emittente, al ricevente e/o al sistema nel suo complesso.
 
+Per denotare in forma grafica questi diversi tipi di messaggi, faremo riferimento a simboli come quelli della figura che segue:
 
 .. image:: ./_static/img/Architectures/legendMessages.PNG 
    :align: center
    :width: 25%
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Un problema 'applicativo'
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Discutere la forma di interazione in cui un componente A invia una *request* X a un componente B e questi risponde
-solo dopo avere ricevuto da A la risposta a una sua *request* Y.
+:worktodo:`WORKTODO: Request after a request`
 
-Esempio: A chiede a B di inviargli la fattura di un ordine ma non gli dice a quale indirizzo, per cui B lo chiede ad A
-prima di rispondergli con il documento richiesto.
+- Discutere la forma di interazione in cui un componente A invia una *request* X a un componente B e questi risponde
+  solo dopo avere ricevuto da A la risposta a una sua *request* Y.
+
+  Esempio: A chiede a B di inviargli la fattura di un ordine ma non gli dice a quale indirizzo, per cui B lo chiede ad A
+  prima di rispondergli con il documento richiesto.
+
 
 
 ++++++++++++++++++++++++++++++++++++++++++++++
@@ -473,8 +452,10 @@ Per esprimere il comportamento di un componente software, si distinguono classic
 
 Il funzionamento di un componente comporta spesso l'individuazione 
 di un insieme di **operazioni primitive**, sulla base delle quali costruire ogni altra operazione 
-di manipolazione/gestione del componente.  Si pensi per esempio al caso di un *oggetto lista*, le cui primitive 
-sono il costruttore cons, i selettori head, tail e il predicato empty. Un volta data la lista vuota (l'oggetto emptyList)
+di manipolazione/gestione del componente.  
+
+Si pensi per esempio al caso di un *oggetto lista*, le cui primitive 
+sono il costruttore ``cons``, i selettori ``head, tail`` e il predicato ``empty``. Un volta data la lista vuota (l'oggetto ``emptyList``)
 ogni lista può essere costruita e manipolata attraverso l'uso di queste primitive.
 
 
@@ -528,8 +509,7 @@ Normalmente, gli automi a stati finiti si suddividono in due grandi categorie:
 - `MealyMachines`_: una FSM il cui output è determinato sia dallo stato corrente sia dall'input corrente.
 - `MooreMachines`_: una FSM il cui output dipende unicamente dallo stato corrente (``SCUR``) in cui l'automa si trova.
 
-Componenti **FSM** di tipo  `MooreMachines`_ avranno per noi un ruolo fondamentale; il loro funzionamento può 
-essere schematizzato come segue. 
+**FSM** di tipo  `MooreMachines`_ avranno per noi un ruolo fondamentale.
 Quando l'automa si trova nello stato corrente ``SCUR``:
 
 #. esegue una sequenza (che **deve terminare**) di azioni;
@@ -541,18 +521,80 @@ Quando l'automa si trova nello stato corrente ``SCUR``:
    ulteriore messaggio di input.
 
 
+
 ++++++++++++++++++++++++++++++++++++++++++++++
-Abstraction GAP
+Linguaggi 
 ++++++++++++++++++++++++++++++++++++++++++++++
 
+Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione 
+sono presenti in tutti i `Linguaggi di programmazione`_.
 
-Va sottolieata, a questo punto, la distanza tra le mosse elementari di base e quelle necessarie per affrontare
+Un punto importante consiste nel capire fino a che punto i costrutti di un linguaggio debbano influenzare 
+il progettista (se non lo stesso analista). 
+Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre 
+nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.
+
+La figura che segue mostra una visione sintetica dello sviluppo nel tempo di questa evoluzione linguistica,
+con riferimento ad alcuni dei linguaggi più noti (in `Linguaggi di programmazione`_ si dice che oggi
+si usano più di 2500 linguaggi di programmazione).
+
+.. image:: ./_static/img/Intro/historyHLPL.png 
+   :align: center
+   :width: 60%
+
+
+L'avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo; 
+un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva 
+in ciascuna delle dimensioni citate. 
+
+Tuttavia, il motivo principale di una relativa (e solo apparente) 
+stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all'idea che un linguaggio 
+non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente 
+definire una **sintassi astratta** utilizzando un :blue:`meta-linguaggio` come ad esempio ``MOF``
+(si veda `Meta Object Facility`_) unitamente alla semantica del linguaggio e a un framework di supporto.
+
+.. image:: ./_static/img/Intro/mofUml.PNG 
+   :align: center
+   :width: 80%
+
+Questa idea è sviluppata oggi con riferimento ai `Domain Specific Languages`_.
+
+Nella :ref:`FASE2` utilizzeremo la `Meta Object Facility`_ di UML2 nella versione incorporata in Eclipse
+(denominata `Ecore`_)  per definire un linguaggio che permette di esprimere sistemi software come
+oggetti attivi (**attori**) che interagiscono tra loro a scambio di messaggi si comportano come `MooreMachines`_.
+
+
+.. _abstractiongap:
+
+++++++++++++++++++++++++++++++++++++++++++++++
+Abstraction GAP e topDown
+++++++++++++++++++++++++++++++++++++++++++++++
+
+Va sottolieata, a questo punto, la distanza tra le mosse di base fornite da un automa o da un linguaggio di 
+programmazione (general-purpose) e quelle necessarie per affrontare
 in modo adeguato un problema applicativo, una distanza cui faremo riferimento col termine :blue:`abstraction gap`.
 
 .. image:: ./_static/img/Intro/TopDownBottomUp.PNG
    :align: center
    :width: 60%
 
+L'abstraction gap tra un problema dato e le tecnologie esistenti deve essere valutato durante
+`L'analisi del problema`_ .
+
+Se il gap risulta elevato, nasce un valido motivo per impostare il processo di produzione in modo :blue:`TopDown`
+(si veda :ref:`La crisi del software`), partendo proprio dalla analisi del problema 
+cercando di trovare le strategie migliori per colmare il gap, anche scegliendo
+le tecnologie disponibili più opportune che non sono più un assunto a-priori.
+
+
+ .. image:: ./_static/img/Intro/topDown.png 
+   :align: center
+   :width: 40%
+
+
+
+Sappiamo però che, in molti casi, si segue un approccio `bottomUp`_ e quindi porremo molta attenzione nel capire le
+strategie migliori per invertire il processo e le motivazioni per fare questa inversione. 
 
 
 -----------------------------------------------
@@ -575,22 +617,6 @@ di tipo iterativo e incrementale.
    :width: 60%
 
 
-Esistono molti validi motivi per impostare il processo di produzione in modo :blue:`TopDown`
-(si veda :ref:`La crisi del software`), partendo dal problema e dalla sua
-analisi, in modo che le tecnologie più opportune per risolverlo siano un risultato di questa analisi
-e non un assunto a-priori.
-
-.. list-table:: 
-  :widths: 35,65
-  :width: 100%
-
-  * - Design first 
-    - TopDown process
-  * - .. image:: ./_static/img/Intro/topDown.png 
-    - .. image:: ./_static/img/Intro/TopDownHowWhat.png
-
-Sappiamo però che, in molti casi, si segue un approccio `bottomUp`_ e quindi porremo molta attenzione nel capire le
-strategie migliori per invertire il processo e le motivazioni per fare questa inversione. 
 
 Supponendo che le nostre attività di laboratorio siano non troppo dissimili a quanto avviene concretamente nel
 mondo del lavoro, faremo riferimento a `SCRUM`_ che oggi costitusice un diffuso framework per lo sviluppo e il 
@@ -633,13 +659,17 @@ Il motto
 
 Per focalizzare l'attenzione sulla nostra metodologia di costruzione, cercheremo di tenere fede al seguente motto:
 
+.. list-table:: 
+  :widths: 35,65
+  :width: 100%
+
+  * - Design first 
+    - TopDown process
+  * - .. image:: ./_static/img/Intro/Motto.png 
+    - .. image:: ./_static/img/Intro/TopDownHowWhat.png
 
 
-.. image:: ./_static/img/Intro/Motto.PNG 
-   :align: center
-   :width: 50%
 
- 
 
 +++++++++++++++++++++++
 Il template
@@ -730,14 +760,16 @@ il committente
 L'architettura logica
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-Il risultato della analsi può essere sintetizzato nella definizione di una 
-:red:`architettura logica` (che specializza/esetende quella scaturita dai requisiti )
+Il risultato della analisi può essere sintetizzato nella definizione di una 
+:blue:`architettura logica` (che specializza/esetende quella scaturita dai requisiti )
 che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.) 
 dei MACRO-COMPONENTI del sistema e della loro interazione, 
 NON COME SOLUZIONE DI PROGETTO, ma come VINCOLI IMPLICATI dal problema.
 
 :remark:`Il risultato della analisi del problema dovrebbe essere (del tutto) condiviso`
  
+Da questa architettura dovrebbe anche scaturire la valutazione dell':ref:`abstraction gap<abstractiongap>` rispetto alle 
+tecnologie disponibili (librerie, frameworks, piattaforme, etc.)
 
 L'analista potrebbe/dovrebbe dare uno sguardo complessivo al problema,
 cercando anche di organizzare tutte le funzionalità per importanza, e come queste
@@ -777,43 +809,33 @@ i metodi di esecuzione, i criteri di accettazione e prevede diverse tipologie di
 
 - **Unit test** (Test di unità o di modulo)
   Ha l’obiettivo di individuare gli errori nel singolo modulo software. 
-  Si verifica che il software esegua correttamente le operazioni. 
-  Viene effettuato dal programmatore che ha sviluppato il modulo e documentato riportando i requisiti funzionali 
-  da soddisfare. 
-  (peso sul piano di testing 15%)
-
+ 
 - **Integration Test** (Test di integrazione)
   Ha l’obiettivo di individuare gli errori nel software quando tutti i moduli che compongono un sottosistema 
   o l’intero sistema vengono fatti lavorare assieme. 
-  Viene effettuato congiuntamente dal gruppo dei programmatori che hanno sviluppato i vari moduli. 
-  (peso sul piano di testing 20%)
 
 - **System Test** (Test di sistema)
   Ha l’obiettivo di garantire che il prodotto software nel suo complesso soddisfi completamente 
-  i requisiti iniziali, è un collaudo interno. 
-  (peso sul piano di testing 45%)
+  i requisiti iniziali. E' un collaudo interno. 
 
 - **User Acceptance Test** (Test di accettazione)
   Ha l’obiettivo di valutare la rispondenza dell’applicazione software rispetto ai requisiti 
   espressi inizialmente nel contratto e di ottenere l’accettazione formale del cliente di quanto realizzato. 
   Il test viene effettuato dal cliente nel suo ambiente di test, e da un gruppo di utenti. 
-  (peso sul piano di testing 20%)
 
 - **Alpha test e Beta test**
-  Un alpha test è un test preliminare di un’applicazione software anche non ancora completa, 
+  Un :blue:`alpha test` è un test preliminare di un’applicazione software anche non ancora completa, 
   eseguito da alcuni potenziali utenti rappresentati da un team. 
-  Un beta test ha l’obiettivo di far valutare al cliente, prima del roll-out ufficiale del sistema, 
-  la reale funzionalità, completezza ed operatività dell’applicazione. 
-  I dettagli sulla raccolta dati da parte dell’utente di questa parte verranno aggiornati 
-  su questo documento appena la versione stabile dell’app verrà completata, in modo da rendere la raccolta dei dati più
-  adatta alle funzionalità finali e dettagli per completare e rendere pi`u funzionale il frontend.
 
+  Un :blue:`beta test` ha l’obiettivo di far valutare al cliente, prima della distribuzione ufficiale del sistema, 
+  la reale funzionalità, completezza ed operatività dell’applicazione. 
+  
 - **Regression Test** (test di non regressione)
-  Ha l’obiettivo di verificare a valle di una manutenzione correttiva, dopo che il bug è stato individuato e corretto 
+  Ha l’obiettivo di verificare a valle di una manutenzione, dopo che un bug è stato individuato e corretto 
   e sono stati eseguiti esattamente gli stessi test che erano stati effettuati quando era stato individuato il problema.
 
 - **Stress test** (test di carico)
-  Lo stress test fa parte dei test di sistema e ha l’obiettivo di determinare il punto di rottura di un sistema software, 
+  Ha l’obiettivo di determinare il punto di rottura di un sistema software, 
   oltre il quale si verificano instabilità del sistema, perdita dei dati o interruzione del servizio.
 
 
@@ -835,7 +857,6 @@ indispensabile per garantire all’utente una *user experience* soddisfacente.
 
 In `Software testing IBM`_  leggiamo che:
 
-- Esistono molti tipi diversi di test del software, ciascuno con obiettivi e strategie specifici.
 - Negli anni '90 c'è stata una transizione dai test a un processo più completo denominato 
   :blue:`controllo di qualità`, che copre l'intero ciclo di sviluppo del software e riguarda 
   i processi di pianificazione, progettazione, creazione ed esecuzione di casi di test. 
@@ -850,8 +871,8 @@ Noi porremo particolare attenzione al fatto che la definizione di test (autmatiz
 la **formalizzazione** delle `User Stories`_  e che l'uso dei modelli (esguibili) può permettere 
 di anticipare questa formalizzazione fin dalle fasi di analisi.
 
-Nella fase di analisi, l'obiettivo non è quello di eseguire dei test, ma quello di concepire il modo migliore 
-per definire i test in modo che possano individuare in modo automatico le falle del software (rispetto ai requisiti).
+Nella fase di analisi, l'obiettivo non è quello di eseguire dei test, ma quello di trovare il modo migliore 
+per definire i test in modo che possano individuare in modo automatico le falle del software rispetto ai requisiti.
 
 L'obiettivo di definire un TestPlan automatizzabile introduce di fatto un **nuovo requisito**: 
 :blue:`rendere  l'applicazione osservabile`, o meglio:

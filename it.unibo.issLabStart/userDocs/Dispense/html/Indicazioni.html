@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Indicazioni &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RadarSystem" href="RadarSystem.html" />
+    <link rel="prev" title="Costruire software" href="Introduzione.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="indicazioni">
+<h1>Indicazioni<a class="headerlink" href="#indicazioni" title="Permalink to this headline">¶</a></h1>
+<section id="il-motto">
+<h2>Il motto<a class="headerlink" href="#il-motto" title="Permalink to this headline">¶</a></h2>
+<p><span class="remark">Non c’è codice senza progetto.</span></p>
+<p><span class="remark">Non c’è progetto senza analisi del problema.</span></p>
+<p><span class="remark">Non c’è problema senza requisiti.</span></p>
+</section>
+<section id="il-template">
+<h2>Il template<a class="headerlink" href="#il-template" title="Permalink to this headline">¶</a></h2>
+<p>Il documento <code class="docutils literal notranslate"><span class="pre">template2021.html</span></code> costituisce un punto di riferimento ma è
+‘process agnostic’, cioè non indica il processo di sviluppo che adottiamo
+per costruirlo.</p>
+</section>
+<section id="l-analisi-dei-requisiti">
+<h2>L’analisi dei requisiti<a class="headerlink" href="#l-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>L’analisi dei requisiti mira a:</p>
+<p><span class="remark">definire/chiarire COSA il committente intende.</span></p>
+<p>Occorre fare una analisi del testo che precisi in modo non ambiguo
+il significato dei termini usati e le informazioni non esplicitamente espresse.
+La costruzione di un <em>dizionario</em>  in linguaggio naturale è utile ma non risolutiva,
+in quanto esprime informazione ancora affetta da ambiguità se non da incoeranza e inconsistenza.</p>
+<p>Dunque, le informazioni date in linguaggio naturale servono solo in una fase preliminare
+dei lavori.
+Occorre esprimere le informazioni in modo ‘formale’, cioè in modo
+<strong>comprensible alla macchina</strong>.</p>
+<p>A tal fine sono utili i linguaggi che permettono di definire <span class="red">modelli</span>
+capaci di catturare gli aspetti essenziali, lasciando sullo sfondo dettagli
+anche importanti, ma non rilevanti nelle prime fasi.</p>
+<p>Gli <em>Usecases</em> possono essere utili come linea-guida per definire una o più <cite>TestUnits</cite> funzionali.
+Le specifiche degli <em>Usecases</em> espresse in linguaggio naturali possono essere inserite
+come commenti in tali <cite>TestUnits</cite>.</p>
+<p>Le <span class="blue">domande</span> da porre al committente mirano a chiarire:</p>
+<ul class="simple">
+<li><p>la natura delle entità, cioè se dal punto di vista software,
+una entità è (modellabile come un)
+oggetto (POJO), un servizio, un processo, un attore</p></li>
+<li><p>se le varie entità devono essere distribuite su diversi nodi computazionali</p></li>
+<li><p>i vincoli tecnologici, cioè se il committente propone già qualche specifica tecnologia
+o qualche specifico supporto per una data entità</p></li>
+<li><p>le interazioni (a procedure-call, a messaggi, sincrone, asincrone) tra le diverse entità</p></li>
+</ul>
+<p>Al termine della analisi dei requisiti dovrebbe essere definito
+un modello del sistema che mette in lune i macro-componenti
+(entità) e le loro interazioni, cioè
+una prima <span class="red">architetture logica</span> del sistema.</p>
+</section>
+<section id="l-analisi-del-problema">
+<h2>L’analisi del problema<a class="headerlink" href="#l-analisi-del-problema" title="Permalink to this headline">¶</a></h2>
+<p>L’analisi del problema mira a:</p>
+<p><span class="remark">definire/chiarire le problematiche implicate dai requisiti.</span></p>
+<p><span class="remark">fornire informazioni utili sui costi/tempi/risorse necessari.</span></p>
+<p>L’analisi del problema <span class="red">NON IMPLICA ancora alcuna progettazione</span>,
+ma mira a fornire un quadro delle possibili soluzioni tecnologighe
+individuando quelle più utili per il superamento delle problematiche poste dai requisiti.
+La scelta finale sarà fatta dal progettista (che potrebbe anche ampliare lo spettro
+della indagine - ricordiamo che siamo in un <span class="blue">processo iterativo a spirale</span> ).</p>
+<p>L’analisi del problema serve per capire quali sono le maggiori problematiche
+da affrontare, le tecnologie da usare e le risorse (umane e temporali) necessarie.
+Inoltre gettano le basi per impostare il primo sprint di sviluppo e quindi per
+costruire un primo ‘prototipo’ funzionante del sistema da estendere poi in modo
+incrementale con gli sprint succesivi dopo una opportuna sprint-review con
+il committente</p>
+<section id="architettura-logica">
+<h3>Architettura logica<a class="headerlink" href="#architettura-logica" title="Permalink to this headline">¶</a></h3>
+<p>Il risultato della analsi può essere sintetizzato nella definizione di una
+<span class="red">architettura logica</span> (che specializza/esetende quella scaturita dai requisiti )
+che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.)
+dei MACRO-COMPONENTI del sistema e della loro interazione,
+NON COME SOLUZIONE DI PROGETTO, ma come VINCOLI IMPLICATI dal problema.</p>
+<p><span class="remark">Il risultato della analisi del problema dovrebbe essere condiviso .</span></p>
+<p>L’analista potrebbe/dovrebbe dare uno sguardo complessivo al problema,
+cercando anche di organizzare tutte le funzionalità per importanza, e come queste
+funzionalità debbano essere  distribuite tra i vari MACRO-componenti.</p>
+</section>
+<section id="sviluppo-incrementale">
+<h3>Sviluppo incrementale<a class="headerlink" href="#sviluppo-incrementale" title="Permalink to this headline">¶</a></h3>
+<p>Un approccio INCREMENTALE (in stile SCRUM, ma non solo) è utile per
+aggredire la complessità del problema e per
+mettere in luce in primis LE COSE
+PIU’ IMPORTANTI e PIU’ CRITICHE senza perdersi in dettagli che possono distogliere
+l’attenzione per formarsi un quadro generale di riferimento.</p>
+<p>I vari SPRINT dovrebbero effettuare uno ZOOMING entro MACRO-COMPONENTI
+innescando un processo ITERATIVO di analisi, progetto , sviluppo e testing di
+quel componente o del SOTTOSISTEMA  che lo sprint vuole costruire.
+Per questo può essere opportuno impostare ogni sprint come un ‘sottoprogetto’
+con sua propria spiegazione e testing.</p>
+<p>Lo sprint <span class="math notranslate nohighlight">\(n+1\)</span> dovrebbe partire dai
+risultati dello sprint <span class="math notranslate nohighlight">\(n\)</span> e preparare un sottosistema (funzionante)
+che sarà l’input dello sprint <span class="math notranslate nohighlight">\(n+2\)</span>.</p>
+</section>
+</section>
+<section id="uso-di-modelli">
+<h2>Uso di modelli<a class="headerlink" href="#uso-di-modelli" title="Permalink to this headline">¶</a></h2>
+<p>L’uso dei modelli è utile (per non dire indispensabile) PER CONCENTRARE
+l’attenzione SUGLI ASPETTI RITENUTI SALIENTI (tenendo conto anche
+dei tempi, delle tecnologie disponibili  e dei costi):</p>
+<p>L’architettura logica espressa mediante un modello eseguibile può essere il riferimento per la impostazione di
+PIANI di testing (unit, integration, functional, acceptance) espressi in MODO
+NON discorsivo (formale), comprensibile a una macchina.</p>
+<p>Per questo noi abbiamo perseguito l’idea di modelli eseguibili, sviluppando
+una meta-modello in modo custom, visto che si trova ancora
+nulla di questo tipo in rete.</p>
+<p>Come già previsto da UML, è opportuno definire modelli come risultato delle
+fasi di analisi dei requsiti, analisi del problema e progetto.</p>
+</section>
+<section id="passi-operativi">
+<h2>Passi operativi<a class="headerlink" href="#passi-operativi" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Costruire un repository GIT del progetto</p></li>
+<li><p>Definire un primo modello del sistema come risultato della analisi del problema (e non del progetto della soluzione)</p></li>
+<li><p>Includere nel documento di analisi gli appropriati riferimenti al modello</p></li>
+<li><p>Definire qualche testplan significativo (cioè legato ai casi di uso) basato sul modello</p></li>
+</ol>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Costruire software</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Indicazioni</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#il-motto">Il motto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#il-template">Il template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#l-analisi-dei-requisiti">L’analisi dei requisiti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#l-analisi-del-problema">L’analisi del problema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#architettura-logica">Architettura logica</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sviluppo-incrementale">Sviluppo incrementale</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#uso-di-modelli">Uso di modelli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#passi-operativi">Passi operativi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemTcp.html">Il RadarSystem con TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersoUnFramework.html">Verso un framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemWebgui.html">RadarSystem WebGui</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebSockets.html">WebSockets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ApproccioTopDown.html">Un approccio top-down al processo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Riferimenti.html">Riferimenti</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Introduzione.html" title="previous chapter">Costruire software</a></li>
+      <li>Next: <a href="RadarSystem.html" title="next chapter">RadarSystem</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Indicazioni.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

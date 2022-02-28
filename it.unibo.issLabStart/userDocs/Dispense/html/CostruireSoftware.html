@@ -81,6 +81,8 @@ rilasciato non completamente finito, accollando all’utente parte dell’onere 
 <span class="blue">“scrivi, prova e correggi”</span>, mirando alla produzione di codice al minor “costo immediato” possibile.
 Le <span class="blue">fasi di analisi e progetto</span> anche se accuratamente svolte, non sempre sono adeguatamente documentate,
 e <em>quasi mai corralete in modo sistematico con il codice prodotto</em>.</p>
+<section id="sviluppo-bottomup">
+<h3>Sviluppo bottomUp<a class="headerlink" href="#sviluppo-bottomup" title="Permalink to this headline">¶</a></h3>
 <p>Il processo di costruzione del sofware è quindi <span class="blue">influenzato da una potente forza</span>,
 legata alla natura stessa del software: la spinta a impostare la costruzione  in modo <strong>bottom-up</strong>,
 a partire da una specifica tecnologia costituita da un linguaggio di programmazione,
@@ -102,6 +104,7 @@ poiché il codice deve inevitabilmente esprimere il sistema finale nei suoi mini
 la maggior parte delle persone sarebbe incapace di leggerlo con profitto anche se a conoscenza
 delle regole sintattiche del linguaggio di programmazione.</p>
 <p>Per questo si parla spesso di <strong>modelli</strong>, che vengono espressi con opportuni linguaggi, di solito in forma grafica.</p>
+</section>
 </section>
 <section id="modelli">
 <h2>Modelli<a class="headerlink" href="#modelli" title="Permalink to this headline">¶</a></h2>
@@ -219,52 +222,37 @@ focalizzando l’attenzione su almeno tre diversi punti di vista:</p>
 </ul>
 <a class="reference internal image-reference" href="_images/Dimensioni.png"><img alt="_images/Dimensioni.png" class="align-center" src="_images/Dimensioni.png" style="width: 80%;" /></a>
 <p>Questi punti di vista costituiscono tre indispensabili dimensioni in cui articolare lo spazio della descrizione
-del sistema, qualunque sia il linguaggio utilizzato per esprimere questa descrizione.
-Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione
-sono presenti in tutti i <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a>.</p>
-<p>Un punto importante consiste nel capire fino a che punto i costrutti di un linguaggio debbano influenzare
-il progettista (se non lo stesso analista).
-Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre
-nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.</p>
-<p>La figura che segue mostra una visione sintetica dello sviluppo nel tempo di questa evoluzione linguistica,
-con riferimento ad alcuni dei linguaggi più noti (in <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a> si dice che oggi
-si usano più di 2500 linguaggi di programmazione).</p>
-<a class="reference internal image-reference" href="_images/historyHLPL.png"><img alt="_images/historyHLPL.png" class="align-center" src="_images/historyHLPL.png" style="width: 60%;" /></a>
-<p>L’avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo;
-un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva
-in ciascuna delle dimensioni citate.</p>
-<p>Tuttavia, il motivo principale di una relativa (e solo apparente)
-stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all’idea che un linguaggio
-non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente
-definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
-(si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a>) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
-<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 80%;" /></a>
-<p>Questa idea è sviluppata oggi con riferimento ai <a class="reference external" href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">Domain Specific Languages</a>.</p>
+del sistema, qualunque sia il linguaggio utilizzato per esprimere questa descrizione.</p>
 <section id="struttura">
 <h3>Struttura<a class="headerlink" href="#struttura" title="Permalink to this headline">¶</a></h3>
 <p>Dal punto di vista strutturale, le <em>funzioni</em> (o le <em>procedure</em>) e gli <em>oggetti</em> costituiscono componenti fondamentali,
 largamente in uso  nei programmi non distribuiti, anche di piccole dimensioni.
-Nel seguito,  cercheremo di rappresentare ciascuno di essi con una forma grafica convenzionale, come quella che segue:</p>
+Nel seguito,  cercheremo di rappresentare ciascuno di essi con una forma grafica convenzionale, come ad esempio:</p>
 <a class="reference internal image-reference" href="_images/legendBasicComponents.PNG"><img alt="_images/legendBasicComponents.PNG" class="align-center" src="_images/legendBasicComponents.PNG" style="width: 25%;" /></a>
-<p>Nel contesto di un sistema software distribuito, questi componenti si trovano all’interno di altri componenti, che possiamo
-qui indicare genericamente come  <span class="blue">macro-componenti</span>. Anche per questi, è opportuno introdurre una forma grafica convenzionale,
-come, ad esempio, quella riportata nella figura che segue:</p>
+<p>Nel contesto di un sistema software distribuito, componenti-base come le funzioni si trovano all’interno di altri
+componenti, che possiamo qui indicare genericamente come  <span class="blue">macro-componenti</span>.
+Anche per questi, è opportuno introdurre una forma grafica convenzionale, come, ad esempio:</p>
 <a class="reference internal image-reference" href="_images/legendComponets.PNG"><img alt="_images/legendComponets.PNG" class="align-center" src="_images/legendComponets.PNG" style="width: 25%;" /></a>
-<p>Per impostare in modo sistematico la definizione a livello strutturale di un componente, può essere conveniente,
-sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande quali:</p>
+<p>Per impostare in modo sistematico la definizione a livello strutturale di un sistema è conveniente,
+sia in fase di analisi sia in fase di progetto, cercare di dare risposta ad alcune domande relative alla natura
+dei suoi componenti, quali ad esempio:</p>
 <ul class="simple">
+<li><p>il componente è <span class="blue">attivo</span> (dotato di un proprio flusso di controllo)? Se il componente non ha
+flusso di controllo autonomo, noi diremo che è un <span class="blue">oggetto</span>.</p></li>
 <li><p>il componente è <span class="blue">atomico o composto</span>? Nel caso sia composto quali sono le parti che lo formano?</p></li>
 <li><p>il componente è dotato di <span class="blue">stato modificabile</span>? In caso affermativo, quali sono le operazioni di modifica dello stato?</p></li>
-<li><p>quali sono le <span class="blue">proprietà dell’elemento</span>, cioè quali attributi lo caratterizzano?</p></li>
+<li><p>quali <span class="blue">proprietà (attributi)</span> caratterizzano il componente?</p></li>
 <li><p>da quali altri componenti dipende e secondo quale <span class="blue">tipo di dipendenza</span>?</p></li>
 </ul>
 <p>Si noti che un componente non atomico implica la <em>definizione ricorsiva della struttura di ogni parte</em> e
-la definizione di operazioni denominate <strong>selettori</strong>.</p>
+la definizione di operazioni denominate <strong>selettori</strong> che forniscono (riferimenti a) i componenti costituenti.</p>
 </section>
 <section id="interazione">
 <h3>Interazione<a class="headerlink" href="#interazione" title="Permalink to this headline">¶</a></h3>
-<p>Le interazioni possono essere sincrone o asincrone e riguardare informazioni o stream di dati.
-In questo secondo caso esse possono essere anche isocrone.</p>
+<p>Le interazioni tra <strong>oggetti</strong> avvengono tramite <span class="blue">procedure-call</span>, cioè a trasferimento di controllo.</p>
+<p>Le interazioni tra <strong>componenti attivi</strong> possono avvenire trameite <span class="blue">oggetti condivisi</span>, allocati su memoria comune,
+oppure tramite <span class="blue">messaggi</span> che riguardano <em>informazioni</em> o <em>stream di dati</em> e che possono essere scambiati
+in forma sincrona, asincrona o isocrona.</p>
 <p>In una interazione <strong>asincrona</strong>, la comunicazione è “bufferizzata” senza alcuna
 limitazione sulle dimensioni del buffer.
 L’emittente non deve attendere alcuna informazione di ritorno anche quando invia informazione
@@ -276,7 +264,7 @@ Nel caso di stream, il destinatario si aspetta di ricevere i dati con un ritardo
 che non supera un massimo prefissato.</p>
 <p>Una interazione <strong>isocrona</strong> riguarda solo stream; il destinatario si aspetta di ricevere i dati
 con un delay compreso tra un minimo e un massimo.</p>
-<p>Le interazioni vengono anche spesso suddivise secondo quattro pattern principali:</p>
+<p>Le interazioni a messaggi vengono anche spesso suddivise secondo quattro pattern principali:</p>
 <ul class="simple">
 <li><p><strong>Fire and forget</strong>: il caso di invio di  messaggi.</p></li>
 <li><p><strong>Sync with server</strong>: il caso request-response.</p></li>
@@ -290,7 +278,8 @@ un metodo che verrà invocato dal supporto non appena il receiver invierà la ri
 <h4>Terminologia di riferimento<a class="headerlink" href="#terminologia-di-riferimento" title="Permalink to this headline">¶</a></h4>
 <p>Nel seguito, faremo riferimento alla seguente terminologia:</p>
 <ul class="simple">
-<li><p><strong>Messaggio</strong> (<span class="blue">message</span>): termne generico per denotare informazione da trasmettere in rete.</p></li>
+<li><p><strong>Messaggio</strong> (<span class="blue">message</span>): termine generico per denotare informazione scambiata mediante
+l’uso di un opportuno supporto di comunicazione.</p></li>
 <li><p><strong>Dispaccio</strong> (<span class="blue">dispatch</span>): messaggio inviato in modo asincrono a N (N&gt;=1) specifici destinatari,
 noti alla emittente, con l’aspettativa che questi lo ricevano e lo elaborino; l’emittente non si aspetta
 alcuna informazione di ritorno.</p></li>
@@ -303,20 +292,26 @@ rappresenta la richiesta di esecuzione di una attività, con aspettativa da part
 che questa attività si concluda con una risposta pertinente alla richiesta.</p></li>
 <li><p><strong>Risposta</strong> (<span class="blue">reply, response</span>): messaggio inviato da un destinatario al mittente di una richiesta.
 il contenuto del messaggio rappresenta informazione pertinente alla richiesta.</p></li>
-<li><p><strong>Evento</strong> (<span class="blue">event</span>): messaggio emessa (più o meno consapevolmente) in modo asincrono da una sorgente
+<li><p><strong>Evento</strong> (<span class="blue">event</span>): messaggio emesso (più o meno consapevolmente) in modo asincrono da una sorgente
 senza alcuna particolare nozione di destinatario e senza alcuna aspettativa da parte dell’emittente.</p></li>
-<li><p><strong>Segnale</strong> (<span class="blue">signal</span>): messaggio inviato in modo asincrono a N (N&gt;=1) destinatari, noti o meno all’emittente,
-con l’aspettativa che venga ricevuta da qualcuno, al fine di eseguire un’azione che potrebbe portare vantaggio
-all’emittente e/o al sistema nel suo complesso.</p></li>
+<li><p><strong>Segnale</strong> (<span class="blue">signal</span>): messaggio emesso in modo consapevole e asincrono a N (N&gt;=1) destinatari,
+noti o meno all’emittente,
+con l’aspettativa che venga ricevuto da qualcuno, al fine di eseguire un’azione che potrebbe portare vantaggio
+all’emittente, al ricevente e/o al sistema nel suo complesso.</p></li>
 </ul>
+<p>Per denotare in forma grafica questi diversi tipi di messaggi, faremo riferimento a simboli come quelli della figura che segue:</p>
 <a class="reference internal image-reference" href="_images/legendMessages.PNG"><img alt="_images/legendMessages.PNG" class="align-center" src="_images/legendMessages.PNG" style="width: 25%;" /></a>
 </section>
 <section id="un-problema-applicativo">
 <h4>Un problema ‘applicativo’<a class="headerlink" href="#un-problema-applicativo" title="Permalink to this headline">¶</a></h4>
-<p>Discutere la forma di interazione in cui un componente A invia una <em>request</em> X a un componente B e questi risponde
+<p><span class="worktodo">WORKTODO: Request after a request</span></p>
+<ul>
+<li><p>Discutere la forma di interazione in cui un componente A invia una <em>request</em> X a un componente B e questi risponde
 solo dopo avere ricevuto da A la risposta a una sua <em>request</em> Y.</p>
 <p>Esempio: A chiede a B di inviargli la fattura di un ordine ma non gli dice a quale indirizzo, per cui B lo chiede ad A
 prima di rispondergli con il documento richiesto.</p>
+</li>
+</ul>
 </section>
 </section>
 <section id="comportamento">
@@ -329,8 +324,9 @@ prima di rispondergli con il documento richiesto.</p>
 </ul>
 <p>Il funzionamento di un componente comporta spesso l’individuazione
 di un insieme di <strong>operazioni primitive</strong>, sulla base delle quali costruire ogni altra operazione
-di manipolazione/gestione del componente.  Si pensi per esempio al caso di un <em>oggetto lista</em>, le cui primitive
-sono il costruttore cons, i selettori head, tail e il predicato empty. Un volta data la lista vuota (l’oggetto emptyList)
+di manipolazione/gestione del componente.</p>
+<p>Si pensi per esempio al caso di un <em>oggetto lista</em>, le cui primitive
+sono il costruttore <code class="docutils literal notranslate"><span class="pre">cons</span></code>, i selettori <code class="docutils literal notranslate"><span class="pre">head,</span> <span class="pre">tail</span></code> e il predicato <code class="docutils literal notranslate"><span class="pre">empty</span></code>. Un volta data la lista vuota (l’oggetto <code class="docutils literal notranslate"><span class="pre">emptyList</span></code>)
 ogni lista può essere costruita e manipolata attraverso l’uso di queste primitive.</p>
 <p>Spesso si qualifica il comportamento di un componente facendo riferimento a tipi diversi di <strong>macchine astratte</strong>, iniziando dalla
 <a class="reference external" href="https://plato.stanford.edu/entries/turing-machine/">Turing Machine</a> (<strong>TM</strong>), che individua,
@@ -370,8 +366,7 @@ E’ spesso espressa da una coppia di funzioni:</p>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Mealy_machine">MealyMachines</a>: una FSM il cui output è determinato sia dallo stato corrente sia dall’input corrente.</p></li>
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>: una FSM il cui output dipende unicamente dallo stato corrente (<code class="docutils literal notranslate"><span class="pre">SCUR</span></code>) in cui l’automa si trova.</p></li>
 </ul>
-<p>Componenti <strong>FSM</strong> di tipo  <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a> avranno per noi un ruolo fondamentale; il loro funzionamento può
-essere schematizzato come segue.
+<p><strong>FSM</strong> di tipo  <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a> avranno per noi un ruolo fondamentale.
 Quando l’automa si trova nello stato corrente <code class="docutils literal notranslate"><span class="pre">SCUR</span></code>:</p>
 <ol class="arabic simple">
 <li><p>esegue una sequenza (che <strong>deve terminare</strong>) di azioni;</p></li>
@@ -384,11 +379,49 @@ ulteriore messaggio di input.</p></li>
 </ol>
 </section>
 </section>
-<section id="abstraction-gap">
-<h3>Abstraction GAP<a class="headerlink" href="#abstraction-gap" title="Permalink to this headline">¶</a></h3>
-<p>Va sottolieata, a questo punto, la distanza tra le mosse elementari di base e quelle necessarie per affrontare
+<section id="linguaggi">
+<h3>Linguaggi<a class="headerlink" href="#linguaggi" title="Permalink to this headline">¶</a></h3>
+<p>Costrutti per esprimere strutture (di dati e di controllo), forme di comportamento e meccanismi di interazione
+sono presenti in tutti i <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a>.</p>
+<p>Un punto importante consiste nel capire fino a che punto i costrutti di un linguaggio debbano influenzare
+il progettista (se non lo stesso analista).
+Fino alla fine degli anni 90 il linguaggio di programmazione è stato il veicolo principale per introdurre
+nuovi concetti sia sul piano computazionale sia sul sul piano della organizzazione del software.</p>
+<p>La figura che segue mostra una visione sintetica dello sviluppo nel tempo di questa evoluzione linguistica,
+con riferimento ad alcuni dei linguaggi più noti (in <a class="reference external" href="https://it.wikipedia.org/wiki/Linguaggio_di_programmazione">Linguaggi di programmazione</a> si dice che oggi
+si usano più di 2500 linguaggi di programmazione).</p>
+<a class="reference internal image-reference" href="_images/historyHLPL.png"><img alt="_images/historyHLPL.png" class="align-center" src="_images/historyHLPL.png" style="width: 60%;" /></a>
+<p>L’avvento della programmazione ad oggetti sembra avere segnato il culmine di questo processo;
+un motivo può certo essere il raggiungimento di una sufficiente maturità nella capacità espressiva
+in ciascuna delle dimensioni citate.</p>
+<p>Tuttavia, il motivo principale di una relativa (e solo apparente)
+stagnazione nello sviluppo di nuovi linguaggi, può essere ricondotto all’idea che un linguaggio
+non deve essere necessariamente accompagnato da una sintassi concreta ma può essere suffciente
+definire una <strong>sintassi astratta</strong> utilizzando un <span class="blue">meta-linguaggio</span> come ad esempio <code class="docutils literal notranslate"><span class="pre">MOF</span></code>
+(si veda <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a>) unitamente alla semantica del linguaggio e a un framework di supporto.</p>
+<a class="reference internal image-reference" href="_images/mofUml.PNG"><img alt="_images/mofUml.PNG" class="align-center" src="_images/mofUml.PNG" style="width: 80%;" /></a>
+<p>Questa idea è sviluppata oggi con riferimento ai <a class="reference external" href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">Domain Specific Languages</a>.</p>
+<p>Nella <a class="reference internal" href="Introduzione.html#fase2"><span class="std std-ref">FASE2</span></a> utilizzeremo la <a class="reference external" href="https://it.wikipedia.org/wiki/Meta-Object_Facility">Meta Object Facility</a> di UML2 nella versione incorporata in Eclipse
+(denominata <a class="reference external" href="https://wiki.eclipse.org/Ecore">Ecore</a>)  per definire un linguaggio che permette di esprimere sistemi software come
+oggetti attivi (<strong>attori</strong>) che interagiscono tra loro a scambio di messaggi si comportano come <a class="reference external" href="https://en.wikipedia.org/wiki/Moore_machine">MooreMachines</a>.</p>
+</section>
+<section id="abstraction-gap-e-topdown">
+<span id="abstractiongap"></span><h3>Abstraction GAP e topDown<a class="headerlink" href="#abstraction-gap-e-topdown" title="Permalink to this headline">¶</a></h3>
+<p>Va sottolieata, a questo punto, la distanza tra le mosse di base fornite da un automa o da un linguaggio di
+programmazione (general-purpose) e quelle necessarie per affrontare
 in modo adeguato un problema applicativo, una distanza cui faremo riferimento col termine <span class="blue">abstraction gap</span>.</p>
 <a class="reference internal image-reference" href="_images/TopDownBottomUp.PNG"><img alt="_images/TopDownBottomUp.PNG" class="align-center" src="_images/TopDownBottomUp.PNG" style="width: 60%;" /></a>
+<p>L’abstraction gap tra un problema dato e le tecnologie esistenti deve essere valutato durante
+<a class="reference internal" href="#l-analisi-del-problema">L’analisi del problema</a> .</p>
+<p>Se il gap risulta elevato, nasce un valido motivo per impostare il processo di produzione in modo <span class="blue">TopDown</span>
+(si veda <a class="reference internal" href="#la-crisi-del-software"><span class="std std-ref">La crisi del software</span></a>), partendo proprio dalla analisi del problema
+cercando di trovare le strategie migliori per colmare il gap, anche scegliendo
+le tecnologie disponibili più opportune che non sono più un assunto a-priori.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/topDown.png"><img alt="_images/topDown.png" class="align-center" src="_images/topDown.png" style="width: 40%;" /></a>
+</div></blockquote>
+<p>Sappiamo però che, in molti casi, si segue un approccio <a class="reference internal" href="#bottomup">bottomUp</a> e quindi porremo molta attenzione nel capire le
+strategie migliori per invertire il processo e le motivazioni per fare questa inversione.</p>
 </section>
 </section>
 <section id="indicazioni-sul-processo-di-produzione">
@@ -399,28 +432,6 @@ che pone al centro il concetto di <span class="blue">modello del dominio</span> 
 <p>Come già osservato i processi  <a class="reference internal" href="#waterfall">waterfall</a> dell’ingegneria tradizionale, lasciano il posto a processi
 di tipo iterativo e incrementale.</p>
 <a class="reference internal image-reference" href="_images/Spiral.PNG"><img alt="_images/Spiral.PNG" class="align-center" src="_images/Spiral.PNG" style="width: 60%;" /></a>
-<p>Esistono molti validi motivi per impostare il processo di produzione in modo <span class="blue">TopDown</span>
-(si veda <a class="reference internal" href="#la-crisi-del-software"><span class="std std-ref">La crisi del software</span></a>), partendo dal problema e dalla sua
-analisi, in modo che le tecnologie più opportune per risolverlo siano un risultato di questa analisi
-e non un assunto a-priori.</p>
-<table class="colwidths-given docutils align-default" style="width: 100%">
-<colgroup>
-<col style="width: 35%" />
-<col style="width: 65%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Design first</p></td>
-<td><p>TopDown process</p></td>
-</tr>
-<tr class="row-even"><td><img alt="_images/topDown.png" src="_images/topDown.png" />
-</td>
-<td><img alt="_images/TopDownHowWhat.png" src="_images/TopDownHowWhat.png" />
-</td>
-</tr>
-</tbody>
-</table>
-<p>Sappiamo però che, in molti casi, si segue un approccio <a class="reference internal" href="#bottomup">bottomUp</a> e quindi porremo molta attenzione nel capire le
-strategie migliori per invertire il processo e le motivazioni per fare questa inversione.</p>
 <p>Supponendo che le nostre attività di laboratorio siano non troppo dissimili a quanto avviene concretamente nel
 mondo del lavoro, faremo riferimento a <a class="reference external" href="https://scrumguides.org/">SCRUM</a> che oggi costitusice un diffuso framework per lo sviluppo e il
 mantenimento di prodotti complessi (non solo software).</p>
@@ -446,7 +457,22 @@ ricevimento-studenti.</p>
 <section id="il-motto">
 <h3>Il motto<a class="headerlink" href="#il-motto" title="Permalink to this headline">¶</a></h3>
 <p>Per focalizzare l’attenzione sulla nostra metodologia di costruzione, cercheremo di tenere fede al seguente motto:</p>
-<a class="reference internal image-reference" href="_images/Motto.PNG"><img alt="_images/Motto.PNG" class="align-center" src="_images/Motto.PNG" style="width: 50%;" /></a>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Design first</p></td>
+<td><p>TopDown process</p></td>
+</tr>
+<tr class="row-even"><td><img alt="_images/Motto.png" src="_images/Motto.png" />
+</td>
+<td><img alt="_images/TopDownHowWhat.png" src="_images/TopDownHowWhat.png" />
+</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="il-template">
 <h3>Il template<a class="headerlink" href="#il-template" title="Permalink to this headline">¶</a></h3>
@@ -507,12 +533,14 @@ incrementale con gli sprint succesivi dopo una opportuna sprint-review con
 il committente</p>
 <section id="l-architettura-logica">
 <h5>L’architettura logica<a class="headerlink" href="#l-architettura-logica" title="Permalink to this headline">¶</a></h5>
-<p>Il risultato della analsi può essere sintetizzato nella definizione di una
-<span class="red">architettura logica</span> (che specializza/esetende quella scaturita dai requisiti )
+<p>Il risultato della analisi può essere sintetizzato nella definizione di una
+<span class="blue">architettura logica</span> (che specializza/esetende quella scaturita dai requisiti )
 che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.)
 dei MACRO-COMPONENTI del sistema e della loro interazione,
 NON COME SOLUZIONE DI PROGETTO, ma come VINCOLI IMPLICATI dal problema.</p>
 <p><span class="remark">Il risultato della analisi del problema dovrebbe essere (del tutto) condiviso</span></p>
+<p>Da questa architettura dovrebbe anche scaturire la valutazione dell’<a class="reference internal" href="#abstractiongap"><span class="std std-ref">abstraction gap</span></a> rispetto alle
+tecnologie disponibili (librerie, frameworks, piattaforme, etc.)</p>
 <p>L’analista potrebbe/dovrebbe dare uno sguardo complessivo al problema,
 cercando anche di organizzare tutte le funzionalità per importanza, e come queste
 funzionalità debbano essere  distribuite tra i vari MACRO-componenti.</p>
@@ -540,40 +568,30 @@ un meta-modello custom che permette la definizione di modelli eseguibili di sist
 con il minimo numero di casi di prova.
 Un  piano di testing  ha di solito lo scopo di stabilire la gerarchia con cui i test vanno eseguiti,
 i metodi di esecuzione, i criteri di accettazione e prevede diverse tipologie di test, tra cui:</p>
-<ul class="simple">
+<ul>
 <li><p><strong>Unit test</strong> (Test di unità o di modulo)
-Ha l’obiettivo di individuare gli errori nel singolo modulo software.
-Si verifica che il software esegua correttamente le operazioni.
-Viene effettuato dal programmatore che ha sviluppato il modulo e documentato riportando i requisiti funzionali
-da soddisfare.
-(peso sul piano di testing 15%)</p></li>
+Ha l’obiettivo di individuare gli errori nel singolo modulo software.</p></li>
 <li><p><strong>Integration Test</strong> (Test di integrazione)
 Ha l’obiettivo di individuare gli errori nel software quando tutti i moduli che compongono un sottosistema
-o l’intero sistema vengono fatti lavorare assieme.
-Viene effettuato congiuntamente dal gruppo dei programmatori che hanno sviluppato i vari moduli.
-(peso sul piano di testing 20%)</p></li>
+o l’intero sistema vengono fatti lavorare assieme.</p></li>
 <li><p><strong>System Test</strong> (Test di sistema)
 Ha l’obiettivo di garantire che il prodotto software nel suo complesso soddisfi completamente
-i requisiti iniziali, è un collaudo interno.
-(peso sul piano di testing 45%)</p></li>
+i requisiti iniziali. E’ un collaudo interno.</p></li>
 <li><p><strong>User Acceptance Test</strong> (Test di accettazione)
 Ha l’obiettivo di valutare la rispondenza dell’applicazione software rispetto ai requisiti
 espressi inizialmente nel contratto e di ottenere l’accettazione formale del cliente di quanto realizzato.
-Il test viene effettuato dal cliente nel suo ambiente di test, e da un gruppo di utenti.
-(peso sul piano di testing 20%)</p></li>
+Il test viene effettuato dal cliente nel suo ambiente di test, e da un gruppo di utenti.</p></li>
 <li><p><strong>Alpha test e Beta test</strong>
-Un alpha test è un test preliminare di un’applicazione software anche non ancora completa,
-eseguito da alcuni potenziali utenti rappresentati da un team.
-Un beta test ha l’obiettivo di far valutare al cliente, prima del roll-out ufficiale del sistema,
-la reale funzionalità, completezza ed operatività dell’applicazione.
-I dettagli sulla raccolta dati da parte dell’utente di questa parte verranno aggiornati
-su questo documento appena la versione stabile dell’app verrà completata, in modo da rendere la raccolta dei dati più
-adatta alle funzionalità finali e dettagli per completare e rendere pi`u funzionale il frontend.</p></li>
+Un <span class="blue">alpha test</span> è un test preliminare di un’applicazione software anche non ancora completa,
+eseguito da alcuni potenziali utenti rappresentati da un team.</p>
+<p>Un <span class="blue">beta test</span> ha l’obiettivo di far valutare al cliente, prima della distribuzione ufficiale del sistema,
+la reale funzionalità, completezza ed operatività dell’applicazione.</p>
+</li>
 <li><p><strong>Regression Test</strong> (test di non regressione)
-Ha l’obiettivo di verificare a valle di una manutenzione correttiva, dopo che il bug è stato individuato e corretto
+Ha l’obiettivo di verificare a valle di una manutenzione, dopo che un bug è stato individuato e corretto
 e sono stati eseguiti esattamente gli stessi test che erano stati effettuati quando era stato individuato il problema.</p></li>
 <li><p><strong>Stress test</strong> (test di carico)
-Lo stress test fa parte dei test di sistema e ha l’obiettivo di determinare il punto di rottura di un sistema software,
+Ha l’obiettivo di determinare il punto di rottura di un sistema software,
 oltre il quale si verificano instabilità del sistema, perdita dei dati o interruzione del servizio.</p></li>
 </ul>
 <p>Sul problema del testing si trova moltissimo materiale in rete. Riportiamo qui alcuni riferimenti utili sul ‘piano pragmatico’:</p>
@@ -590,7 +608,6 @@ oltre il quale si verificano instabilità del sistema, perdita dei dati o interr
 indispensabile per garantire all’utente una <em>user experience</em> soddisfacente.</p>
 <p>In <a class="reference external" href="https://www.ibm.com/it-it/topics/software-testing">Software testing IBM</a>  leggiamo che:</p>
 <ul class="simple">
-<li><p>Esistono molti tipi diversi di test del software, ciascuno con obiettivi e strategie specifici.</p></li>
 <li><p>Negli anni ‘90 c’è stata una transizione dai test a un processo più completo denominato
 <span class="blue">controllo di qualità</span>, che copre l’intero ciclo di sviluppo del software e riguarda
 i processi di pianificazione, progettazione, creazione ed esecuzione di casi di test.</p></li>
@@ -603,8 +620,8 @@ bilanciando al tempo stesso i costi, la qualità e i rischi.</p>
 <p>Noi porremo particolare attenzione al fatto che la definizione di test (autmatizzabili) può essere vista come
 la <strong>formalizzazione</strong> delle <a class="reference external" href="https://en.wikipedia.org/wiki/User_story">User Stories</a>  e che l’uso dei modelli (esguibili) può permettere
 di anticipare questa formalizzazione fin dalle fasi di analisi.</p>
-<p>Nella fase di analisi, l’obiettivo non è quello di eseguire dei test, ma quello di concepire il modo migliore
-per definire i test in modo che possano individuare in modo automatico le falle del software (rispetto ai requisiti).</p>
+<p>Nella fase di analisi, l’obiettivo non è quello di eseguire dei test, ma quello di trovare il modo migliore
+per definire i test in modo che possano individuare in modo automatico le falle del software rispetto ai requisiti.</p>
 <p>L’obiettivo di definire un TestPlan automatizzabile introduce di fatto un <strong>nuovo requisito</strong>:
 <span class="blue">rendere  l’applicazione osservabile</span>, o meglio:</p>
 <p><span class="remark">renderne verificabili, da parte di una macchina, gli effetti dell’applicazione</span>.</p>
@@ -656,7 +673,10 @@ ed esserci costruiti un nostro ambiente di sviluppo custom nella <a class="refer
 <li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Costruire software</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#ingegneria">Ingegneria</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#programmatori-non-ingegneri">Programmatori = (non) ingegneri?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#programmatori-non-ingegneri">Programmatori = (non) ingegneri?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sviluppo-bottomup">Sviluppo bottomUp</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#modelli">Modelli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#la-crisi-del-software">La crisi del software</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#richiami">Richiami</a></li>
@@ -675,7 +695,8 @@ ed esserci costruiti un nostro ambiente di sviluppo custom nella <a class="refer
 <li class="toctree-l4"><a class="reference internal" href="#automi-a-stati-finiti">Automi a stati finiti</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#abstraction-gap">Abstraction GAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linguaggi">Linguaggi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstraction-gap-e-topdown">Abstraction GAP e topDown</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#indicazioni-sul-processo-di-produzione">Indicazioni sul processo di produzione</a><ul>
