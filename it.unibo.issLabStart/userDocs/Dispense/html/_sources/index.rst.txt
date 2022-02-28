@@ -1,4 +1,4 @@
-.. iss22 documentation master file, created by
+.. iss22working documentation master file, created by
    sphinx-quickstart on Wed Nov  3 11:11:44 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -11,6 +11,7 @@ iss22
    
    Introduzione
    CostruireSoftware
+   WorkspaceSetup
    RadarSystem
    RadarSystemAnalisi
    RaspberrySoftware

@@ -30,7 +30,11 @@
 .. _UML : https://it.wikipedia.org/wiki/Unified_Modeling_Language
 .. _Use Cases Diagrams : https://it.wikipedia.org/wiki/Use_Case_Diagram
 .. _User Stories : https://en.wikipedia.org/wiki/User_story
-.. _Software testing : https://www.ibm.com/it-it/topics/software-testing
+.. _Software testing : https://en.wikipedia.org/wiki/Software_testing 
+.. _Software testing IBM : https://www.ibm.com/it-it/topics/software-testing
+.. _Software testing quotes : https://softwaretestingfundamentals.com/software-testing-quotes/
+.. _Automated-Testing-Plan FAQ : http://sqa.fyicenter.com/FAQ/Automated-Testing-Plan/
+.. _Junit FAQ : http://sqa.fyicenter.com/FAQ/JUnit/What_Is_JUnit_.html
 .. _DevOps : https://it.wikipedia.org/wiki/DevOps
 .. _template2022 : _static/templateToFill.html
  
@@ -755,21 +759,81 @@ e progetto (*class diagrams, sequence diagrams*, *activity diagrams*, *statechar
 e anche per la distribuzione del prodotto (*deployment diagrams*).
 
 L'architettura logica espressa mediante un modello può essere il riferimento per la impostazione di
-PIANI di testing (unit, integration, functional, acceptance) espressi in MODO
+PIANI di testing espressi in MODO
 NON discorsivo (formale), comprensibile a una macchina. 
 
 Noi seguiremo questa idea con lo sviluppo (si veda :ref:`FASE2`) di
 un meta-modello custom che permette la definizione di modelli eseguibili di sistemi distributi.
+
++++++++++++++++++++++++++
+Il testing
++++++++++++++++++++++++++
+
+L’obiettivo della fase di testing è quello di trovare il maggior numero di situazioni che conducono ad errori 
+con il minimo numero di casi di prova. 
+Un  piano di testing  ha di solito lo scopo di stabilire la gerarchia con cui i test vanno eseguiti, 
+i metodi di esecuzione, i criteri di accettazione e prevede diverse tipologie di test, tra cui:
+
+
+- **Unit test** (Test di unità o di modulo)
+  Ha l’obiettivo di individuare gli errori nel singolo modulo software. 
+  Si verifica che il software esegua correttamente le operazioni. 
+  Viene effettuato dal programmatore che ha sviluppato il modulo e documentato riportando i requisiti funzionali 
+  da soddisfare. 
+  (peso sul piano di testing 15%)
+
+- **Integration Test** (Test di integrazione)
+  Ha l’obiettivo di individuare gli errori nel software quando tutti i moduli che compongono un sottosistema 
+  o l’intero sistema vengono fatti lavorare assieme. 
+  Viene effettuato congiuntamente dal gruppo dei programmatori che hanno sviluppato i vari moduli. 
+  (peso sul piano di testing 20%)
+
+- **System Test** (Test di sistema)
+  Ha l’obiettivo di garantire che il prodotto software nel suo complesso soddisfi completamente 
+  i requisiti iniziali, è un collaudo interno. 
+  (peso sul piano di testing 45%)
+
+- **User Acceptance Test** (Test di accettazione)
+  Ha l’obiettivo di valutare la rispondenza dell’applicazione software rispetto ai requisiti 
+  espressi inizialmente nel contratto e di ottenere l’accettazione formale del cliente di quanto realizzato. 
+  Il test viene effettuato dal cliente nel suo ambiente di test, e da un gruppo di utenti. 
+  (peso sul piano di testing 20%)
+
+- **Alpha test e Beta test**
+  Un alpha test è un test preliminare di un’applicazione software anche non ancora completa, 
+  eseguito da alcuni potenziali utenti rappresentati da un team. 
+  Un beta test ha l’obiettivo di far valutare al cliente, prima del roll-out ufficiale del sistema, 
+  la reale funzionalità, completezza ed operatività dell’applicazione. 
+  I dettagli sulla raccolta dati da parte dell’utente di questa parte verranno aggiornati 
+  su questo documento appena la versione stabile dell’app verrà completata, in modo da rendere la raccolta dei dati più
+  adatta alle funzionalità finali e dettagli per completare e rendere pi`u funzionale il frontend.
+
+- **Regression Test** (test di non regressione)
+  Ha l’obiettivo di verificare a valle di una manutenzione correttiva, dopo che il bug è stato individuato e corretto 
+  e sono stati eseguiti esattamente gli stessi test che erano stati effettuati quando era stato individuato il problema.
+
+- **Stress test** (test di carico)
+  Lo stress test fa parte dei test di sistema e ha l’obiettivo di determinare il punto di rottura di un sistema software, 
+  oltre il quale si verificano instabilità del sistema, perdita dei dati o interruzione del servizio.
+
+
+Sul problema del testing si trova moltissimo materiale in rete. Riportiamo qui alcuni riferimenti utili sul 'piano pragmatico':
+
+- `Software testing`_ (wikipedia)
+- `Software testing quotes`_
+- `Automated-Testing-Plan FAQ`_
+- `JUnit FAQ`_
 
 
 ++++++++++++++++++++++++++++++++
 Dal testing a DevOps
 ++++++++++++++++++++++++++++++++
 
+
 La fase di testing del software è  attività imprescindibile per garantirne la qualità ed è anche 
 indispensabile per garantire all’utente una *user experience* soddisfacente. 
 
-In `Software testing`_  leggiamo che:
+In `Software testing IBM`_  leggiamo che:
 
 - Esistono molti tipi diversi di test del software, ciascuno con obiettivi e strategie specifici.
 - Negli anni '90 c'è stata una transizione dai test a un processo più completo denominato 
@@ -783,9 +847,16 @@ per l'intero ciclo di vita del prodotto. L'obiettivo è quello di accelerare la 
 bilanciando al tempo stesso i costi, la qualità e i rischi.   
 
 Noi porremo particolare attenzione al fatto che la definizione di test (autmatizzabili) può essere vista come
-la formalizzazione delle `User Stories`_ e che l'uso dei modelli (esguibili) può permettere 
+la **formalizzazione** delle `User Stories`_  e che l'uso dei modelli (esguibili) può permettere 
 di anticipare questa formalizzazione fin dalle fasi di analisi.
 
+Nella fase di analisi, l'obiettivo non è quello di eseguire dei test, ma quello di concepire il modo migliore 
+per definire i test in modo che possano individuare in modo automatico le falle del software (rispetto ai requisiti).
+
+L'obiettivo di definire un TestPlan automatizzabile introduce di fatto un **nuovo requisito**: 
+:blue:`rendere  l'applicazione osservabile`, o meglio:
+
+:remark:`renderne verificabili, da parte di una macchina, gli effetti dell'applicazione`.
 
 
 +++++++++++++++++++++++++++++

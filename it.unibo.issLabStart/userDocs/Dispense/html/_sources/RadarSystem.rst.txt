@@ -27,6 +27,8 @@
 
 .. _pipe : https://it.wikipedia.org/wiki/Pipe_(informatica)
 
+.. _template2022 : _static/templateToFill.html
+
 ======================================
 RadarSystem
 ======================================
@@ -209,4 +211,10 @@ rappresentata come segue:
 .. image:: ./_static/img/Architectures/pipe.png 
    :align: center
    :width: 40%
- 
+
+------------------------------------------
+Impostazione del workspace
+------------------------------------------
+
+Prima di procedere con lo sviluppo del software, è opportuno creare un appropriato ambiente di lavoro.
+A tal fine si veda :doc:`WorkspaceSetup`.
