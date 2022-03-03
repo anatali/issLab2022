@@ -221,8 +221,6 @@ Verso l'applicazione
 
    .. code::
 
-      it.unibo.radarSystem22.interfaces
-      it.unibo.radarSystem22.domain
       it.unibo.radarSystem22.main
 
 #. Inserisco nel package ``it.unibo.radarSystem22.main`` una classe di prova:

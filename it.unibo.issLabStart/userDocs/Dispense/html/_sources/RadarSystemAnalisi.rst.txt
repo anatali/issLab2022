@@ -2,6 +2,8 @@
 .. role:: blue 
 .. role:: remark
 
+.. _Principio di singola responsabilità: https://it.wikipedia.org/wiki/Principio_di_singola_responsabilit%C3%A0
+
 ===========================================
 Analisi del problema
 ===========================================
@@ -106,12 +108,15 @@ in questo modo nessuno dei due componenti avrebbe alcun riferimento staticamente
   
 Una 'variante' del pattern observer è costituita dalla possibilità che un dispositivo di input
 possa 'pubblicare' i propri dati su una risorsa esterna osservabile. 
-Torneremo su questa variante più avanti (si veda :ref:`sonarOsservabile`).
+Torneremo su questa variante più avanti (si veda :ref:`comunicazione mediata<comunicazione mediata>`).
 
 Notiamo che software disponibile per il Sonar opera come produttore di dati, ma non offre operazioni
 per la registrazione di osservatori; al momento, un componente interessato ai dati del Sonar deve fare in modo 
 che il proprio dispositivo di input
 sia il dispositivo di output del Sonar e poi utilizzare una operazione come la ``read()``.
+
+
+.. _comunicazione mediata:
 
 ---------------------------------------------
 Un approccio BottomUp
@@ -129,7 +134,7 @@ Focalizzando l'attenzione sul requisito :blue:`RadarGui` e quindi sulla interazi
    :width: 100%
 
    *  - :blue:`Comunicazione diretta`
-        
+       
         Le 'nuvolette' in figura rappresentano gli strati di software che permettono ai dati generati dal Sonar 
         di eseere ricevuti dal ``RadarDisplay``.
 
@@ -140,7 +145,7 @@ Focalizzando l'attenzione sul requisito :blue:`RadarGui` e quindi sulla interazi
         Richiede la presenza di un :blue:`componente mediatore (broker)`, di solito realizzato da terze parti 
         come servizio disponibile in rete. Un generatore di dati (come il Sonar) pubblica informazione  
         su una :blue:`topic` del broker; tale informazione
-        che potrebbe essere ricevuta ('osservata') da uno o più ricevitori (come il RadarDisplay) che si iscrivono 
+        che potrebbe essere ricevuta ('osservata') da uno o più ricevitori (come il ``RadarDisplay``) che si iscrivono 
         a quella *topic*.  
 
       -   .. image:: ./_static/img/Radar/srrIntegrate2.png
@@ -152,7 +157,7 @@ Focalizzando l'attenzione sul requisito :blue:`RadarGui` e quindi sulla interazi
 Chi realizza la logica applicativa?
 +++++++++++++++++++++++++++++++++++++++++
 
-Seguendo il :blue:`principio di singola responsabilità` (e un pò di buon senso) la realizzazione degli use-cases 
+Seguendo il `Principio di singola responsabilità`_ (e un pò di buon senso) la realizzazione degli use-cases 
 applicativi non deve essere attribuita al software di gestione dei dispositivi di I/O.
 
 Dunque, la nostra analisi ci induce a sostenere
@@ -221,7 +226,7 @@ La classe ``ProtocolType`` enumera i protocolli cui potremo fare riferimento in 
 
 .. code:: java
 
-  public enum ProtocolType {  tcp, udp, coap, mqtt, http, bluetoth  }
+  public enum ProtocolType {  tcp, udp, coap, mqtt, http, bluetooth  }
 
 Attualmente, dovremmo avere conoscenze su come usare protocolli quali TCP/UDP e HTTP
 ma siamo forse meno esperti nell'uso di supporti per altri.
@@ -234,7 +239,7 @@ principale tra le parti.
 Considerazioni architetturali
 ------------------------------------------------
 Per approfondire l'analisi delle problematiche che si pongono quando si voglia 
-far comunicare due componenti software con TCP, non ci interessano tanto i dettagli tecnici di come opera 
+far comunicare due componenti software con TCP, in questa sede non ci interessano tanto i dettagli tecnici di come opera 
 il protocollo, quanto le ripercussioni sulla architettura del sistema.
 
 A questo riguardo possiamo dire che nel sistema dovremo avere componenti capaci
@@ -264,8 +269,8 @@ Conviene dunque introdurre una terminologia per le interazioni a scambio di mess
 
 - :blue:`fire-and-forget`: il messaggio (che chiamiamo anche :blue:`dispatch`) è inviato con l'aspettativa che sia ricevuto 
   ed elaborato, ma senza alcuna attesa di informazione di ritorno da parte del server;
-- :blue:`request-ack`: il messaggio è inviato con l'aspettativa di ricevere indicazione dell'avvenuta ricezione 
-  (un acknowledgement) da parte del server;
+- :blue:`request-ack`: il messaggio (che chiamiamo anche :blue:`invitation`) è inviato con l'aspettativa di ricevere indicazione 
+  dell'avvenuta ricezione (un *acknowledgement*) da parte del server;
 - :blue:`request-response`: il messaggio è inviato con l'aspettativa di ricevere una risposta, di livello
   applicativo e pertinente al messaggio, da parte del server.
 

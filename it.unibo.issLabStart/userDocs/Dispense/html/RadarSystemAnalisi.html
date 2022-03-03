@@ -15,8 +15,8 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="RaspberrySoftware" href="RaspberrySoftware.html" />
-    <link rel="prev" title="Costruire software" href="CostruireSoftware.html" />
+    <link rel="next" title="Prodotti della analisi" href="RadarSystemProdottiAnalisi.html" />
+    <link rel="prev" title="RadarSystem" href="RadarSystem.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -125,14 +125,14 @@ può essere fatta dall’<em>observer</em> stesso o, preferibilmente, da un <spa
 in questo modo nessuno dei due componenti avrebbe alcun riferimento staticamente definito all’altro.</p>
 <p>Una ‘variante’ del pattern observer è costituita dalla possibilità che un dispositivo di input
 possa ‘pubblicare’ i propri dati su una risorsa esterna osservabile.
-Torneremo su questa variante più avanti (si veda <span class="xref std std-ref">sonarOsservabile</span>).</p>
+Torneremo su questa variante più avanti (si veda <a class="reference internal" href="#comunicazione-mediata"><span class="std std-ref">comunicazione mediata</span></a>).</p>
 <p>Notiamo che software disponibile per il Sonar opera come produttore di dati, ma non offre operazioni
 per la registrazione di osservatori; al momento, un componente interessato ai dati del Sonar deve fare in modo
 che il proprio dispositivo di input
 sia il dispositivo di output del Sonar e poi utilizzare una operazione come la <code class="docutils literal notranslate"><span class="pre">read()</span></code>.</p>
 </section>
 <section id="un-approccio-bottomup">
-<h2>Un approccio BottomUp<a class="headerlink" href="#un-approccio-bottomup" title="Permalink to this headline">¶</a></h2>
+<span id="comunicazione-mediata"></span><h2>Un approccio BottomUp<a class="headerlink" href="#un-approccio-bottomup" title="Permalink to this headline">¶</a></h2>
 <p>Per costruire il sistema partendo dai dispositivi, occorre capire come l’informazione fornita
 dal dispositivo di input Sonar possa essere elaborata in modo da fluire nel modo voluto
 ai dispositivi di output.</p>
@@ -155,7 +155,7 @@ di eseere ricevuti dal <code class="docutils literal notranslate"><span class="p
 <p>Richiede la presenza di un <span class="blue">componente mediatore (broker)</span>, di solito realizzato da terze parti
 come servizio disponibile in rete. Un generatore di dati (come il Sonar) pubblica informazione
 su una <span class="blue">topic</span> del broker; tale informazione
-che potrebbe essere ricevuta (‘osservata’) da uno o più ricevitori (come il RadarDisplay) che si iscrivono
+che potrebbe essere ricevuta (‘osservata’) da uno o più ricevitori (come il <code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>) che si iscrivono
 a quella <em>topic</em>.</p>
 </td>
 <td><a class="reference internal image-reference" href="_images/srrIntegrate2.png"><img alt="_images/srrIntegrate2.png" src="_images/srrIntegrate2.png" style="width: 100%;" /></a>
@@ -165,7 +165,7 @@ a quella <em>topic</em>.</p>
 </table>
 <section id="chi-realizza-la-logica-applicativa">
 <h3>Chi realizza la logica applicativa?<a class="headerlink" href="#chi-realizza-la-logica-applicativa" title="Permalink to this headline">¶</a></h3>
-<p>Seguendo il <span class="blue">principio di singola responsabilità</span> (e un pò di buon senso) la realizzazione degli use-cases
+<p>Seguendo il <a class="reference external" href="https://it.wikipedia.org/wiki/Principio_di_singola_responsabilit%C3%A0">Principio di singola responsabilità</a> (e un pò di buon senso) la realizzazione degli use-cases
 applicativi non deve essere attribuita al software di gestione dei dispositivi di I/O.</p>
 <p>Dunque, la nostra analisi ci induce a sostenere
 l’opportunità di introdurre un nuovo componente (che possiamo denominare <code class="docutils literal notranslate"><span class="pre">Controller</span></code>), che abbia la
@@ -222,7 +222,7 @@ di questo tipo di protocollo è <code class="docutils literal notranslate"><span
 <section id="tipi-di-protocollo">
 <span id="protocoltype"></span><h4>Tipi di protocollo<a class="headerlink" href="#tipi-di-protocollo" title="Permalink to this headline">¶</a></h4>
 <p>La classe <code class="docutils literal notranslate"><span class="pre">ProtocolType</span></code> enumera i protocolli cui potremo fare riferimento in seguito.</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">ProtocolType</span> <span class="p">{</span>  <span class="n">tcp</span><span class="p">,</span> <span class="n">udp</span><span class="p">,</span> <span class="n">coap</span><span class="p">,</span> <span class="n">mqtt</span><span class="p">,</span> <span class="n">http</span><span class="p">,</span> <span class="n">bluetoth</span>  <span class="p">}</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">enum</span> <span class="n">ProtocolType</span> <span class="p">{</span>  <span class="n">tcp</span><span class="p">,</span> <span class="n">udp</span><span class="p">,</span> <span class="n">coap</span><span class="p">,</span> <span class="n">mqtt</span><span class="p">,</span> <span class="n">http</span><span class="p">,</span> <span class="n">bluetooth</span>  <span class="p">}</span>
 </pre></div>
 </div>
 <p>Attualmente, dovremmo avere conoscenze su come usare protocolli quali TCP/UDP e HTTP
@@ -236,7 +236,7 @@ principale tra le parti.</p>
 <section id="considerazioni-architetturali">
 <h2>Considerazioni architetturali<a class="headerlink" href="#considerazioni-architetturali" title="Permalink to this headline">¶</a></h2>
 <p>Per approfondire l’analisi delle problematiche che si pongono quando si voglia
-far comunicare due componenti software con TCP, non ci interessano tanto i dettagli tecnici di come opera
+far comunicare due componenti software con TCP, in questa sede non ci interessano tanto i dettagli tecnici di come opera
 il protocollo, quanto le ripercussioni sulla architettura del sistema.</p>
 <p>A questo riguardo possiamo dire che nel sistema dovremo avere componenti capaci
 di operare come un <cite>client-TCP</cite> e componenti capaci di operare come un <cite>server-TCP</cite>.</p>
@@ -264,8 +264,8 @@ Conviene dunque introdurre una terminologia per le interazioni a scambio di mess
 <ul class="simple">
 <li><p><span class="blue">fire-and-forget</span>: il messaggio (che chiamiamo anche <span class="blue">dispatch</span>) è inviato con l’aspettativa che sia ricevuto
 ed elaborato, ma senza alcuna attesa di informazione di ritorno da parte del server;</p></li>
-<li><p><span class="blue">request-ack</span>: il messaggio è inviato con l’aspettativa di ricevere indicazione dell’avvenuta ricezione
-(un acknowledgement) da parte del server;</p></li>
+<li><p><span class="blue">request-ack</span>: il messaggio (che chiamiamo anche <span class="blue">invitation</span>) è inviato con l’aspettativa di ricevere indicazione
+dell’avvenuta ricezione (un <em>acknowledgement</em>) da parte del server;</p></li>
 <li><p><span class="blue">request-response</span>: il messaggio è inviato con l’aspettativa di ricevere una risposta, di livello
 applicativo e pertinente al messaggio, da parte del server.</p></li>
 </ul>
@@ -340,6 +340,8 @@ pensare alla costruzione di componenti software che possano ridurre il costo del
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Analisi del problema</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#premessa-importante">Premessa importante</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dispositivi-di-input-e-di-output">Dispositivi di input e di output</a></li>
@@ -359,15 +361,17 @@ pensare alla costruzione di componenti software che possano ridurre il costo del
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="CostruireSoftware.html" title="previous chapter">Costruire software</a></li>
-      <li>Next: <a href="RaspberrySoftware.html" title="next chapter">RaspberrySoftware</a></li>
+      <li>Previous: <a href="RadarSystem.html" title="previous chapter">RadarSystem</a></li>
+      <li>Next: <a href="RadarSystemProdottiAnalisi.html" title="next chapter">Prodotti della analisi</a></li>
   </ul></li>
 </ul>
 </div>

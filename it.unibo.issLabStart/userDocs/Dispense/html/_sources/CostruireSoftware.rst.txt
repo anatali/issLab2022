@@ -692,7 +692,7 @@ L'analisi dei requisiti
 
 L'analisi dei requisiti mira a:
 
-:remark:`definire/chiarire COSA il committente intende.`
+:remark:`definire/chiarire COSA (WHAT) il committente richiede e intende.`
 
 Occorre fare una analisi del testo che precisi in modo non ambiguo
 il significato dei termini usati e le informazioni non esplicitamente espresse.
@@ -726,9 +726,6 @@ Le :blue:`domande` da porre al committente mirano a **chiarire**:
 
 - le interazioni (a procedure-call, a messaggi, sincrone, asincrone) tra le diverse entità 
 
-Al termine della analisi dei requisiti dovrebbe essere definito 
-un modello del sistema che mette in luce i macro-componenti 
-e le loro interazioni, cioè una prima :blue:`architetture logica` del sistema.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -754,15 +751,18 @@ costruire un primo 'prototipo' funzionante del sistema da estendere poi in modo
 incrementale con gli sprint succesivi dopo una opportuna sprint-review con 
 il committente
 
+Al termine della analisi dei requisiti e del problema dovrebbe essere definito 
+un modello del sistema che mette in luce i macro-componenti 
+e le loro interazioni, cioè una prima :blue:`architettura logica` del sistema.
 
 
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 L'architettura logica
-&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Il risultato della analisi può essere sintetizzato nella definizione di una 
-:blue:`architettura logica` (che specializza/esetende quella scaturita dai requisiti )
-che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.) 
+:blue:`architettura logica` che definisce la NATURA (oggetti, processi, servizi, attori, database, etc.) 
 dei MACRO-COMPONENTI del sistema e della loro interazione, 
 NON COME SOLUZIONE DI PROGETTO, ma come VINCOLI IMPLICATI dal problema.
 
@@ -776,10 +776,9 @@ cercando anche di organizzare tutte le funzionalità per importanza, e come ques
 funzionalità debbano essere  distribuite tra i vari MACRO-componenti.
 
 
-
-+++++++++++++++++++++++++
-Uso di modelli
-+++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progettazione e sviluppo come processo evolutivo
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 L'uso dei modelli è utile (per non dire indispensabile) PER CONCENTRARE
 l'attenzione SUGLI ASPETTI RITENUTI SALIENTI (tenendo conto anche
@@ -787,15 +786,22 @@ dei tempi, delle tecnologie disponibili  e dei costi).
 
 Come già previsto da `UML`_, è opportuno definire modelli come risultato delle 
 fasi di analisi dei requisiti (*Use Case Diagrams*), analisi del problema 
-e progetto (*class diagrams, sequence diagrams*, *activity diagrams*, *statechart diagram* ) 
+e del progetto (*class diagrams, sequence diagrams*, *activity diagrams*, *statechart diagram* ) 
 e anche per la distribuzione del prodotto (*deployment diagrams*).
 
-L'architettura logica espressa mediante un modello può essere il riferimento per la impostazione di
-PIANI di testing espressi in MODO
-NON discorsivo (formale), comprensibile a una macchina. 
+L'architettura logica espressa mediante un modello esguibile del sistema da realizzare,
+condiviso tra tutti (customer, responsabili aziendali, sviluppatori), è un importante e solido punto di partenza
+per la progettazione della soluzione, cioè per il passaggio da WHAT a HOW.
+Questo passaggio può essere visto e svolto come un :blue:`processo evolutivo` di trasformazione/specializzazione di questa
+architettura di base. 
+
+Il modello della architettura logica può essere anche il riferimento per la impostazione di
+PIANI di testing espressi in MODO NON discorsivo (formale), comprensibile a una macchina. 
 
 Noi seguiremo questa idea con lo sviluppo (si veda :ref:`FASE2`) di
 un meta-modello custom che permette la definizione di modelli eseguibili di sistemi distributi.
+
+
 
 +++++++++++++++++++++++++
 Il testing

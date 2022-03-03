@@ -1,7 +1,7 @@
 # File: sonar.py
 import RPi.GPIO as GPIO
 import time
-import sys
+ 
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -32,8 +32,7 @@ while True:
    distance = pulse_duration * 17165   #distance = vt/2
    distance = round(distance, 1)
    #print ('Distance:',distance,'cm')
-   print ( distance )
-   sys.stdout.flush()   #Importante!
+   print ( distance, flush=True )
    time.sleep(0.25)
 
 

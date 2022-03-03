@@ -1,7 +1,7 @@
 .. role:: red 
 .. role:: blue 
 .. role:: remark
- 
+.. role:: worktodo 
 
 .. ``  https://bashtage.github.io/sphinx-material/rst-cheatsheet/rst-cheatsheet.html
 
@@ -161,7 +161,10 @@ Domande al committente
     - Al momento si. In futuro però il LED potrebbe essere connesso a un diverso nodo di elaborazione.
   * - Il valore ``DLIMIT`` deve essere cablato nel sistema o è bene sia 
       definibile in modo configurabile dall'utente finale?
-    - L'utente finale deve essere in grado di specificare in un 'file di configurazione' 
+    - 
+      .. _configDLIMIT:
+
+      L'utente finale deve essere in grado di specificare in un 'file di configurazione' 
       il valore di questa distanza.
  
 Dai requisiti possiamo asserire che:
@@ -179,12 +182,21 @@ In sintesi
 
 Il sistema comprende un dispositivo di input (il Sonar) e due dispositivi di output (il Led e il RadarDisplay)
 
+Al momento ci fermiamo qui, ma in futuro cerchremo di formalizzare meglio il risultato della nostra analisi,
+definendo, se possibile, un modello del sistema da costruire, in cui sono evidenti i componenti e le loro relazioni
+(si veda :ref:`L'architettura logica`).
+
+Prima di procedere alla analisi del problema, proviamo però a vedere cosa potrebbe accadere se cercassimo
+di individuare subito una qualche soluzione, passando al HOW senza approfondire il WHAT (si ricordi :ref:`SCRUM`) e 
+senza impostare  :ref:`Progettazione e sviluppo come processo evolutivo`.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Se non fosse distribuito ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Osserviamo che, in assenza del requisito `radarGui`_, si potrebbe pensare di soddisfare il requisito `ledAlarm`_
-introducendo una semplice modifica nel condice di `SonarAlone.c`_ .
+introducendo una semplice modifica nel codice di `SonarAlone.c`_ .
 
 Trattandosi di un programma ``C``, la modifica potrebbe consistere nella introduzione di una funzione come la seguente:
 
@@ -211,6 +223,10 @@ rappresentata come segue:
 .. image:: ./_static/img/Architectures/pipe.png 
    :align: center
    :width: 40%
+
+Ma anche questa si presta a critiche ...
+
+:worktodo:`WORKTODO: Anche la pipe "non va bene" perchè ...`
 
 ------------------------------------------
 Impostazione del workspace

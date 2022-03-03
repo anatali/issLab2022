@@ -135,8 +135,9 @@ e di visualizzare su di essa un valore di distanza intero fornito come <code cla
 </tr>
 <tr class="row-odd"><td><p>Il valore <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code> deve essere cablato nel sistema o è bene sia
 definibile in modo configurabile dall’utente finale?</p></td>
-<td><p>L’utente finale deve essere in grado di specificare in un ‘file di configurazione’
-il valore di questa distanza.</p></td>
+<td><p id="configdlimit">L’utente finale deve essere in grado di specificare in un ‘file di configurazione’
+il valore di questa distanza.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -152,10 +153,16 @@ un RaspberryPi e un PC convenzionale;</p></li>
 <h3>In sintesi<a class="headerlink" href="#in-sintesi" title="Permalink to this headline">¶</a></h3>
 <p><span class="remark">Si tratta di realizzare un sistema software distribuito ed eterogeneo</span></p>
 <p>Il sistema comprende un dispositivo di input (il Sonar) e due dispositivi di output (il Led e il RadarDisplay)</p>
+<p>Al momento ci fermiamo qui, ma in futuro cerchremo di formalizzare meglio il risultato della nostra analisi,
+definendo, se possibile, un modello del sistema da costruire, in cui sono evidenti i componenti e le loro relazioni
+(si veda <a class="reference internal" href="CostruireSoftware.html#l-architettura-logica"><span class="std std-ref">L’architettura logica</span></a>).</p>
+<p>Prima di procedere alla analisi del problema, proviamo però a vedere cosa potrebbe accadere se cercassimo
+di individuare subito una qualche soluzione, passando al HOW senza approfondire il WHAT (si ricordi <a class="reference internal" href="CostruireSoftware.html#id1"><span class="std std-ref">SCRUM</span></a>) e
+senza impostare  <a class="reference internal" href="CostruireSoftware.html#progettazione-e-sviluppo-come-processo-evolutivo"><span class="std std-ref">Progettazione e sviluppo come processo evolutivo</span></a>.</p>
 <section id="se-non-fosse-distribuito">
 <h4>Se non fosse distribuito …<a class="headerlink" href="#se-non-fosse-distribuito" title="Permalink to this headline">¶</a></h4>
 <p>Osserviamo che, in assenza del requisito <a class="reference internal" href="#radargui">radarGui</a>, si potrebbe pensare di soddisfare il requisito <a class="reference internal" href="#ledalarm">ledAlarm</a>
-introducendo una semplice modifica nel condice di <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/c/SonarAlone.c">SonarAlone.c</a> .</p>
+introducendo una semplice modifica nel codice di <a class="reference external" href="../../../../../issLab2022/it.unibo.raspIntro2022/code/c/SonarAlone.c">SonarAlone.c</a> .</p>
 <p>Trattandosi di un programma <code class="docutils literal notranslate"><span class="pre">C</span></code>, la modifica potrebbe consistere nella introduzione di una funzione come la seguente:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">updateTheLed</span><span class="p">(</span> <span class="kt">int</span> <span class="n">cm</span> <span class="p">)</span> <span class="p">{</span>
   <span class="k">if</span><span class="p">(</span> <span class="n">cm</span> <span class="o">&lt;</span> <span class="n">DLIMIT</span> <span class="p">)</span> <span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
@@ -173,6 +180,8 @@ alla loro <strong>interazione</strong> <span class="blue">non sono esplicitament
 <p>Più strutturata da punto di vista architetturale è la <a class="reference internal" href="RaspBasicCode.html#soluzione-in-python"><span class="std std-ref">Soluzione in Python</span></a> basata su <a class="reference external" href="https://it.wikipedia.org/wiki/Pipe_(informatica)">pipe</a> che potrebbe essere
 rappresentata come segue:</p>
 <a class="reference internal image-reference" href="_images/pipe.png"><img alt="_images/pipe.png" class="align-center" src="_images/pipe.png" style="width: 40%;" /></a>
+<p>Ma anche questa si presta a critiche …</p>
+<p><span class="worktodo">WORKTODO: Anche la pipe “non va bene” perchè …</span></p>
 </section>
 </section>
 </section>
@@ -229,6 +238,7 @@ A tal fine si veda <a class="reference internal" href="WorkspaceSetup.html"><spa
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
