@@ -245,15 +245,16 @@ Riportiamo qui un elenco di possibili domande finali durante i colloqui orali:
   Se no, perchè non lo ritiene possibile?
 - Immagino che come linguaggio di codifica si sia usato principlamente Java e/o Kotlin, 
   insieme a qualche parte scritta in C, C++, Python, JavaScript, etc). 
-  Nella fase di analisi del problema, è stato evidenziato qualche macroscopico gap rispetto queste tecnologie? Se sì' come si è pensato di colmare questo 'abstracton gap'?
+  Nella fase di analisi del problema, è stato evidenziato qualche macroscopico gap rispetto queste tecnologie? 
+  Se sì' come si è pensato di colmare questo 'abstraction gap'?
 - Fino a che punto è utile introdurre diagrammmi UML e per quali scopi? 
   Quali sono le motivazioni che possono indurre una software-house a definire linguaggi 
-  (o metamodelli) Doamin-specific?
+  (o metamodelli) Domain-specific?
 - In ambiente industriale non è possibile pensare che sia possibile utilizzare il metamodello QActor. 
   Ma di certo è diffuso l'uso delle librerie. Secondo lei sarebbe possibile affrontare lo sviluppo 
   di applicazioni distribuite usando solo la libreria it.unibo.qakactor-2.5.jar e quelle ad essa necessarie?
 - Ha trovato un qualche vantaggio nell'uso dei QActor attraverso un linguaggio custom (di ispirazione DSL) 
-  dotato di un suo proprio IDE? Ha una idea di come sia stato prodotto l'IDE per i qak in ambiente Eclipse?
+  dotato di un suo proprio IDE? Ha una idea di come sia stato prodotto l'IDE per i QActor in ambiente Eclipse?
 - Le mostro l'architettura logica proposta dal gruppo xyz. Trova questa architettura logica concordante 
   con la sua o è possibile evidenziare macroscopiche differenze?. 
   Se nota differenze, le possiamo tollerare o no?
@@ -268,9 +269,9 @@ Riportiamo qui un elenco di possibili domande finali durante i colloqui orali:
   In altre parole, sono state trovate situazioni che l'analista non aveva previsto o aveva affrontato 
   in modo incompleto? Se sì, ha qualche esempio? E come si è procduto in questo caso?
 - E' possibilie sapere, per ciascun componente del team, di quali aspetti del sistema si è 
-  specificatmante occupato? Quando sono state definite e da chi queste ripartizioni dello sviluppo?
+  specificatamente occupato? Quando sono state definite e da chi queste ripartizioni dello sviluppo?
 - In quale fase dello sviluppo sono stati impostati programmi per il testing? 
-  Quali tipi di test (unit, integration, functional,...) sono stati pensati e quali effettivamente realizzati?
+  Quali tipi di test (unit, integration, ...) sono stati pensati e quali effettivamente realizzati?
 - L'architettura finale del sistema mostra qualche pattern architetturale riconoscibile 
   (ad es. client-server, layer, clean ...) e in quale fase dello sviluppo (analisi/progetto) 
   è stato deciso di introdurlo? E perchè? Queste motivazioni sono riportate/discusse in qualche documento?
