@@ -59,8 +59,8 @@ E' molto probabile che la maggior marte delle persone sia propensa a seguire (al
 approccio bottom-up, essendo l'approccio top-down meno legato a enti subito concretamente usabili come 
 'building blocks'. 
 
-Osserviamo però che il compito della analisi del problema non è quello di trovare una soluzione, 
-ma quello di porre in luce le problematiche in gioco (il :blue:`cosa` si deve fare) e capire con quali risorse 
+Osserviamo però che il compito de :ref:`L'analisi del problema` *non è quello di definire una soluzione*, 
+ma quello di **porre in luce le problematiche in gioco** (il :blue:`cosa` si deve fare) e capire con quali risorse 
 (tempo, persone, denaro, etc. )  queste problematiche debbano/possano essere affrontate e risolte.
 Sarà compito dei progettisti quello di trovare il modo (il :blue:`come`) pervenire ad una soluzione 'ottimale'
 date le premesse dell'analisi e le risorse a disposizione.

@@ -25,7 +25,7 @@ Importanti prodotti, al termine della fase di analisi dei requisiti e del proble
 Architettura logica come modello di riferimento
 ------------------------------------------------------------
 
-L'architettura logica di un sistema costituisce un :blue:`modello del sistema` ispirato dai requisiti funzionali 
+:ref:`L'architettura logica` di un sistema costituisce un :blue:`modello del sistema` ispirato dai requisiti funzionali 
 e dalle forze in gioco nel dominio applicativo o nella specifica applicazione e mira ad identificare 
 i macro-sottosistemi in cui il **problema stesso** suggerisce di articolare il sistema risolvente. 
 
