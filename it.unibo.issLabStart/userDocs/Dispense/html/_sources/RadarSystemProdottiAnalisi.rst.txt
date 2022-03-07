@@ -249,6 +249,50 @@ implementare i componenti in modo che possano scambiare informazione via rete.
 - Il **Singleton** evita di creare più di una istanza di una classe e può risultare utile per creare supporti 
   alla comunicazione.
 
+.. _Interaction2021:
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+L'interfaccia ``Interaction2021``
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Astraendo dallo specifico protocollo, osserviamo che tutti i principali protocolli punto-a-punto 
+sono in grado di stabilire una :blue:`connessione` stabile sulla quale inviare e ricevere messaggi.
+
+Questo concetto può essere realizzato da un oggetto che rende disponibile opportuni metodi, come quelli definiti
+nella seguente interfaccia:
+
+.. _conn2021: 
+
+.. code:: Java
+
+  interface Interaction2021  {	 
+    public void forward(  String msg ) throws Exception;
+    public String request(  String msg ) throws Exception;
+    public String receiveMsg(  )  throws Exception;
+    public void reply(  String msg ) throws Exception;
+    public void close( )  throws Exception;
+  }
+
+Il metodo ``forward`` è un metodo di trasmissione :blue:`'fire-and-forget'`, mentre il metodo ``request`` denota 
+l'invio di informazione cui deve corrispondere una *ack* o una *response* da parte del server.
+Concettualmente, un server che invia una *response/ack* sulla connessione con un client effettua una operazione
+di ``reply`` che assimiliamo alla *forward* di un messaggio con appropriato contenuto informativo. 
+
+L'informazione scambiata è rappresenta da una ``String`` che è un tipo di dato presente in tutti
+i linguaggi di programmazione.
+Non viene introdotto un tipo  diverso (ad esempio ``Message``) perchè non si vuole stabilire 
+il vincolo che gli end-points della connessione siano componenti codificati nello medesimo linguaggio di programmazione
+
+La ``String`` restituita dal metodo ``receiveMsg`` può rappresentare una risposta a un messaggio
+inviato in precedenza con ``forward``.
+
+Ovviamente la definizione di questa interfaccia potrà essere estesa e modificata in futuro, 
+a partire dalla fase di progettazione, ma rappresenta una forte indicazione dell'analista di 
+pensare alla costruzione di componenti software che possano ridurre il costo delle applicazioni future.
+
+
+
 .. _concettodienabler:  
 
 +++++++++++++++++++++++++++++++++++++++
@@ -281,7 +325,7 @@ Tuttavia, come analisti, riteniamo sia opportuno  limitare il traffico di rete,
 evitando di inviare i dati del sonar anche quando non
 sono richiesti dal sever.  Per cui, una architettura migliore è porre sul PC, ad uso
 del ``Controller``, due  *proxy tipo-client*, uno per il Led e uno per il Sonar, che interagiranno cone due
-*enabler tipo-server* complementari posti sul RaspberryPi, inviando su :ref:`Interaction2021`:
+*enabler tipo-server* complementari posti sul RaspberryPi, inviando su  `Interaction2021`_:
 
 - messaggi interpretabili come :blue:`comandi` (ad esempio ``activate``, ``turnOff``)
 - messaggi interpretabili cone :blue:`richieste` (ad esempio ``getDistance``, ``getState``)

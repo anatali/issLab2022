@@ -217,6 +217,35 @@ di una o più classi.</p></li>
 <li><p>Il <strong>Singleton</strong> evita di creare più di una istanza di una classe e può risultare utile per creare supporti
 alla comunicazione.</p></li>
 </ul>
+<section id="l-interfaccia-interaction2021">
+<span id="interaction2021"></span><h3>L’interfaccia <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code><a class="headerlink" href="#l-interfaccia-interaction2021" title="Permalink to this headline">¶</a></h3>
+<p>Astraendo dallo specifico protocollo, osserviamo che tutti i principali protocolli punto-a-punto
+sono in grado di stabilire una <span class="blue">connessione</span> stabile sulla quale inviare e ricevere messaggi.</p>
+<p>Questo concetto può essere realizzato da un oggetto che rende disponibile opportuni metodi, come quelli definiti
+nella seguente interfaccia:</p>
+<div class="highlight-Java notranslate" id="conn2021"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">(</span>  <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">(</span> <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">forward</span></code> è un metodo di trasmissione <span class="blue">‘fire-and-forget’</span>, mentre il metodo <code class="docutils literal notranslate"><span class="pre">request</span></code> denota
+l’invio di informazione cui deve corrispondere una <em>ack</em> o una <em>response</em> da parte del server.
+Concettualmente, un server che invia una <em>response/ack</em> sulla connessione con un client effettua una operazione
+di <code class="docutils literal notranslate"><span class="pre">reply</span></code> che assimiliamo alla <em>forward</em> di un messaggio con appropriato contenuto informativo.</p>
+<p>L’informazione scambiata è rappresenta da una <code class="docutils literal notranslate"><span class="pre">String</span></code> che è un tipo di dato presente in tutti
+i linguaggi di programmazione.
+Non viene introdotto un tipo  diverso (ad esempio <code class="docutils literal notranslate"><span class="pre">Message</span></code>) perchè non si vuole stabilire
+il vincolo che gli end-points della connessione siano componenti codificati nello medesimo linguaggio di programmazione</p>
+<p>La <code class="docutils literal notranslate"><span class="pre">String</span></code> restituita dal metodo <code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code> può rappresentare una risposta a un messaggio
+inviato in precedenza con <code class="docutils literal notranslate"><span class="pre">forward</span></code>.</p>
+<p>Ovviamente la definizione di questa interfaccia potrà essere estesa e modificata in futuro,
+a partire dalla fase di progettazione, ma rappresenta una forte indicazione dell’analista di
+pensare alla costruzione di componenti software che possano ridurre il costo delle applicazioni future.</p>
+</section>
 <section id="il-concetto-di-oggetto-enabler">
 <span id="concettodienabler"></span><h3>Il concetto di ‘oggetto enabler’<a class="headerlink" href="#il-concetto-di-oggetto-enabler" title="Permalink to this headline">¶</a></h3>
 <p>Traendo ispirazione dal  <a class="reference external" href="https://it.wikipedia.org/wiki/Decorator">pattern-decorator</a>, possiamo evidenziare, come analisti, la necessità
@@ -238,7 +267,7 @@ con interfaccia <code class="docutils literal notranslate"><span class="pre">ILe
 evitando di inviare i dati del sonar anche quando non
 sono richiesti dal sever.  Per cui, una architettura migliore è porre sul PC, ad uso
 del <code class="docutils literal notranslate"><span class="pre">Controller</span></code>, due  <em>proxy tipo-client</em>, uno per il Led e uno per il Sonar, che interagiranno cone due
-<em>enabler tipo-server</em> complementari posti sul RaspberryPi, inviando su <a class="reference internal" href="RadarSystemAnalisi.html#interaction2021"><span class="std std-ref">L’interfaccia Interaction2021</span></a>:</p>
+<em>enabler tipo-server</em> complementari posti sul RaspberryPi, inviando su  <a class="reference internal" href="#interaction2021">Interaction2021</a>:</p>
 <ul class="simple">
 <li><p>messaggi interpretabili come <span class="blue">comandi</span> (ad esempio <code class="docutils literal notranslate"><span class="pre">activate</span></code>, <code class="docutils literal notranslate"><span class="pre">turnOff</span></code>)</p></li>
 <li><p>messaggi interpretabili cone <span class="blue">richieste</span> (ad esempio <code class="docutils literal notranslate"><span class="pre">getDistance</span></code>, <code class="docutils literal notranslate"><span class="pre">getState</span></code>)</p></li>
@@ -319,6 +348,7 @@ a livello aziendale.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#dagli-oggetti-alla-distribuzione-i-design-patterns">Dagli oggetti alla distribuzione: i design patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#l-interfaccia-interaction2021">L’interfaccia <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#il-concetto-di-oggetto-enabler">Il concetto di ‘oggetto enabler’</a></li>
 </ul>
 </li>

@@ -275,40 +275,18 @@ In questo secono caso si parla di <span class="blue">comunicazione asincrona</sp
 <p>In ogni caso, la possibilità che il server possa inviare messaggi al client, imnplica che</p>
 <p><span class="remark">un client deve essere anche capace di agire come ricevitore di messaggi.</span></p>
 </section>
-<section id="l-interfaccia-interaction2021">
-<span id="interaction2021"></span><h3>L’interfaccia <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code><a class="headerlink" href="#l-interfaccia-interaction2021" title="Permalink to this headline">¶</a></h3>
+<section id="un-primo-abstraction-gap">
+<h3>Un primo abstraction gap<a class="headerlink" href="#un-primo-abstraction-gap" title="Permalink to this headline">¶</a></h3>
 <p>La necessità di  inviare e ricevere messaggi via rete segnala un <span class="blue">gap</span>  tra il livello tecnologico
 dei componenti software resi disponibili dal committente e le necessità del problema.</p>
-<p>Coma analisti, osserviamo che un <em>gap</em> relativo alle comunicazioni di rete <strong>si può presentare in modo sistematico
-in tutte le applicazioni distribuite</strong>. Sarebbe dunque opportuno cercare di colmare questo <em>gap</em> in modo non episodico,
+<p>Coma analisti, osserviamo che un <em>gap</em> relativo alle comunicazioni di rete può essere superato avvalendosi
+di librerie (oggi disponibili in tutti i linguaggi più diffusi )
+che permettono l’uso di protocolli quali TCP, UDP, HTTP, etc.</p>
+<p>Osserviamo anche che questo gap <strong>si può presentare in modo sistematico
+in tutte le applicazioni distribuite</strong> e
+Sarebbe dunque opportuno cercare di colmarlo in modo non episodico,
 introducendo <span class="blue">componenti riusabili</span> che possano ‘sopravvivere’ all’applicazione che stiamo costruendo
 per poter essere impiegati in futuro in altre applicazioni distribuite.</p>
-<p>Astraendo dallo specifico protocollo, osserviamo che tutti i principali protocolli punto-a-punto
-sono in grado di stabilire una <span class="blue">connessione</span> stabile sulla quale inviare e ricevere messaggi.</p>
-<p>Questo concetto può essere realizzato da un oggetto che rende disponibile opportuni metodi, come quelli definiti
-nella seguente interfaccia:</p>
-<div class="highlight-Java notranslate" id="conn2021"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="p">{</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">(</span>  <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">(</span> <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Il metodo <code class="docutils literal notranslate"><span class="pre">forward</span></code> è un metodo di trasmissione <span class="blue">‘fire-and-forget’</span>, mentre il metodo <code class="docutils literal notranslate"><span class="pre">request</span></code> denota
-l’invio di informazione cui deve corrispondere una <em>ack</em> o una <em>response</em> da parte del server.
-Concettualmente, un server che invia una <em>response/ack</em> sulla connessione con un client effettua una operazione
-di <code class="docutils literal notranslate"><span class="pre">reply</span></code> che assimiliamo alla <em>forward</em> di un messaggio con appropriato contenuto informativo.</p>
-<p>L’informazione scambiata è rappresenta da una <code class="docutils literal notranslate"><span class="pre">String</span></code> che è un tipo di dato presente in tutti
-i linguaggi di programmazione.
-Non viene introdotto un tipo  diverso (ad esempio <code class="docutils literal notranslate"><span class="pre">Message</span></code>) perchè non si vuole stabilire
-il vincolo che gli end-points della connessione siano componenti codificati nello medesimo linguaggio di programmazione</p>
-<p>La <code class="docutils literal notranslate"><span class="pre">String</span></code> restituita dal metodo <code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code> può rappresentare una risposta a un messaggio
-inviato in precedenza con <code class="docutils literal notranslate"><span class="pre">forward</span></code>.</p>
-<p>Ovviamente la definizione di questa interfaccia potrà essere estesa e modificata in futuro,
-a partire dalla fase di progettazione, ma rappresenta una forte indicazione dell’analista di
-pensare alla costruzione di componenti software che possano ridurre il costo delle applicazioni future.</p>
 </section>
 </section>
 </section>
@@ -356,7 +334,7 @@ pensare alla costruzione di componenti software che possano ridurre il costo del
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#considerazioni-architetturali">Considerazioni architetturali</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#tipi-di-interazione">Tipi di interazione</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#l-interfaccia-interaction2021">L’interfaccia <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#un-primo-abstraction-gap">Un primo abstraction gap</a></li>
 </ul>
 </li>
 </ul>

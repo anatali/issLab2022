@@ -6,7 +6,7 @@
 
 .. _Domain Driven Design : https://it.wikipedia.org/wiki/Domain-driven_design
 .. _gradle: https://gradle.org/ 
-.. _GradleIntro: ../../../../../GradleIntro/userdocs/Gradle.intro.html
+.. _GradleIntro: ../../../../GradleIntro/userdocs/Gradle.intro.html
 .. _IntelliJ: https://www.jetbrains.com/idea/
 .. _template2022: _static/templateToFill.html
 .. _Eclipse IDE for Java and DSL Developers: https://www.eclipse.org/downloads/packages/release/juno/sr2/eclipse-ide-java-and-dsl-developers

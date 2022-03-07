@@ -282,54 +282,25 @@ In ogni caso, la possibilità che il server possa inviare messaggi al client, im
 
 :remark:`un client deve essere anche capace di agire come ricevitore di messaggi.`
 
-.. _Interaction2021:
+ 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-L'interfaccia ``Interaction2021``
+Un primo abstraction gap
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 La necessità di  inviare e ricevere messaggi via rete segnala un :blue:`gap`  tra il livello tecnologico 
 dei componenti software resi disponibili dal committente e le necessità del problema.
 
-Coma analisti, osserviamo che un *gap* relativo alle comunicazioni di rete **si può presentare in modo sistematico
-in tutte le applicazioni distribuite**. Sarebbe dunque opportuno cercare di colmare questo *gap* in modo non episodico,
+Coma analisti, osserviamo che un *gap* relativo alle comunicazioni di rete può essere superato avvalendosi 
+di librerie (oggi disponibili in tutti i linguaggi più diffusi )
+che permettono l'uso di protocolli quali TCP, UDP, HTTP, etc.
+
+Osserviamo anche che questo gap **si può presentare in modo sistematico
+in tutte le applicazioni distribuite** e 
+Sarebbe dunque opportuno cercare di colmarlo in modo non episodico,
 introducendo :blue:`componenti riusabili` che possano 'sopravvivere' all'applicazione che stiamo costruendo
 per poter essere impiegati in futuro in altre applicazioni distribuite.
 
-Astraendo dallo specifico protocollo, osserviamo che tutti i principali protocolli punto-a-punto 
-sono in grado di stabilire una :blue:`connessione` stabile sulla quale inviare e ricevere messaggi.
-
-Questo concetto può essere realizzato da un oggetto che rende disponibile opportuni metodi, come quelli definiti
-nella seguente interfaccia:
-
-.. _conn2021: 
-
-.. code:: Java
-
-  interface Interaction2021  {	 
-    public void forward(  String msg ) throws Exception;
-    public String request(  String msg ) throws Exception;
-    public String receiveMsg(  )  throws Exception;
-    public void reply(  String msg ) throws Exception;
-    public void close( )  throws Exception;
-  }
-
-Il metodo ``forward`` è un metodo di trasmissione :blue:`'fire-and-forget'`, mentre il metodo ``request`` denota 
-l'invio di informazione cui deve corrispondere una *ack* o una *response* da parte del server.
-Concettualmente, un server che invia una *response/ack* sulla connessione con un client effettua una operazione
-di ``reply`` che assimiliamo alla *forward* di un messaggio con appropriato contenuto informativo. 
-
-L'informazione scambiata è rappresenta da una ``String`` che è un tipo di dato presente in tutti
-i linguaggi di programmazione.
-Non viene introdotto un tipo  diverso (ad esempio ``Message``) perchè non si vuole stabilire 
-il vincolo che gli end-points della connessione siano componenti codificati nello medesimo linguaggio di programmazione
-
-La ``String`` restituita dal metodo ``receiveMsg`` può rappresentare una risposta a un messaggio
-inviato in precedenza con ``forward``.
-
-Ovviamente la definizione di questa interfaccia potrà essere estesa e modificata in futuro, 
-a partire dalla fase di progettazione, ma rappresenta una forte indicazione dell'analista di 
-pensare alla costruzione di componenti software che possano ridurre il costo delle applicazioni future.
 
 
 .. .. include:: RadarSystemProdottiAnalisi.rst
