@@ -86,9 +86,19 @@ Ispirandoci agli schemi port-adapter_ e clean-architecture_:
 
 :remark:`il modello del dominio sarà al centro della architettura del sistema`
 
-:remark:`il software relativo dominio sarà scritto in un package dedicato (xxx.domain)`
+:remark:`il software relativo dominio sarà scritto in un progetto dedicato`
+
+.. code::  
+
+    it.unibo.radarSystem22.domain
 
 
+:remark:`il software dell'applicazione sarà scritto in un progetto dedicato`
+
+.. code::  
+
+    it.unibo.radarSystem22
+    
 .. _ILed:
 
 .. _IRadarDisplay:
@@ -212,7 +222,7 @@ può acquisire i dati del Sonar in  modi diversi:
   #. agendo come un componente *observer* di un Sonar *observable*;
   #. agendo com un *subscriber* su una *topic* di un broker su cui il Sonar pubblica i suoi dati.
 
-Poichè abbiamo in precedenza escluso forme di interazione *publish-subscribe*, ci concentrimao al momento
+Poichè abbiamo in precedenza escluso forme di interazione *publish-subscribe*, ci concentriamo al momento
 sui casi 2.1 e 2.2. 
 
 Questo modello sembra portare intrinsecamente in sè l'idea di una classica applicazione   

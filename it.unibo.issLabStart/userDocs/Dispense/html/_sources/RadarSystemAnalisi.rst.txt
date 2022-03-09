@@ -4,6 +4,8 @@
 
 .. _Principio di singola responsabilità: https://it.wikipedia.org/wiki/Principio_di_singola_responsabilit%C3%A0
 
+.. _DigitalTwin : https://en.wikipedia.org/wiki/Digital_twin
+
 ===========================================
 Analisi del problema
 ===========================================
@@ -33,6 +35,7 @@ situazione elencando *ciò che abbiamo e disposizione* e le :blue:`problematiche
 La necessità di integrare i componenti disponibili *fa sorgere altre problematiche*:
 
    #. è opportuno incapsulare i componenti disponibli entro altri componenti capaci di interagire via rete?
+      Una fonte di ispirazione in questo senso è il concetto di `DigitalTwin`_;
    #. dove è più opportuno inserire la 'businenss logic'? In un oggetto che estende il sonar o il ``radarSupport``?
       Oppure è meglio introdurre un terzo componente?
    #. quale forma di interazione è più opportuna? diretta/mediata, sincrona/asincrona?.

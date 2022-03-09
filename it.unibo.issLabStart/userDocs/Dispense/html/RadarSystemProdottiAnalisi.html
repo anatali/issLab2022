@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="RaspberrySoftware" href="RaspberrySoftware.html" />
+    <link rel="next" title="Progettazione e sviluppo" href="RadarSystemProgetto.html" />
     <link rel="prev" title="Analisi del problema" href="RadarSystemAnalisi.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -87,7 +87,14 @@ sull’uso del componente.</p>
 il Sonar e il RadarDisplay</em> costuiscono il nostro attuale <span class="blue">modello del dominio</span>.
 Ispirandoci agli schemi <a class="reference external" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">port-adapter</a> e <a class="reference external" href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">clean-architecture</a>:</p>
 <p><span class="remark">il modello del dominio sarà al centro della architettura del sistema</span></p>
-<p><span class="remark">il software relativo dominio sarà scritto in un package dedicato (xxx.domain)</span></p>
+<p><span class="remark">il software relativo dominio sarà scritto in un progetto dedicato</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">it</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">radarSystem22</span><span class="o">.</span><span class="n">domain</span>
+</pre></div>
+</div>
+<p><span class="remark">il software dell’applicazione sarà scritto in un progetto dedicato</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">it</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">radarSystem22</span>
+</pre></div>
+</div>
 </section>
 <section id="le-interfacce-iled-e-iradardisplay">
 <span id="iradardisplay"></span><span id="iled"></span><h4>Le interfacce ILed e IRadarDisplay<a class="headerlink" href="#le-interfacce-iled-e-iradardisplay" title="Permalink to this headline">¶</a></h4>
@@ -190,7 +197,7 @@ può acquisire i dati del Sonar in  modi diversi:</p>
 <li><p>agendo com un <em>subscriber</em> su una <em>topic</em> di un broker su cui il Sonar pubblica i suoi dati.</p></li>
 </ol>
 </div></blockquote>
-<p>Poichè abbiamo in precedenza escluso forme di interazione <em>publish-subscribe</em>, ci concentrimao al momento
+<p>Poichè abbiamo in precedenza escluso forme di interazione <em>publish-subscribe</em>, ci concentriamo al momento
 sui casi 2.1 e 2.2.</p>
 <p>Questo modello sembra portare intrinsecamente in sè l’idea di una classica applicazione
 ad oggetti che deve essere eseguita su un singolo elaboratore (o una singola Java virtual machine).
@@ -355,6 +362,7 @@ a livello aziendale.</p>
 <li class="toctree-l2"><a class="reference internal" href="#piano-di-lavoro">Piano di lavoro</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
@@ -364,7 +372,7 @@ a livello aziendale.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="RadarSystemAnalisi.html" title="previous chapter">Analisi del problema</a></li>
-      <li>Next: <a href="RaspberrySoftware.html" title="next chapter">RaspberrySoftware</a></li>
+      <li>Next: <a href="RadarSystemProgetto.html" title="next chapter">Progettazione e sviluppo</a></li>
   </ul></li>
 </ul>
 </div>

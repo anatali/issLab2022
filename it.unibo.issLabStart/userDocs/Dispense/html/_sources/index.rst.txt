@@ -15,6 +15,7 @@ iss22
    RadarSystem
    RadarSystemAnalisi
    RadarSystemProdottiAnalisi
+   RadarSystemProgetto
    RaspberrySoftware
    RaspBasicCode
 
