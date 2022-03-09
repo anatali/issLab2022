@@ -10,15 +10,27 @@ plugins {
     id 'application'
 	id 'jacoco'
 }
+
+version '1.0'
+sourceCompatibility = 1.8
+
 repositories {
     jcenter()
     flatDir { dirs '../unibolibs' }
+    flatDir { dirs './libs' }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
+//JSON
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20160810'
 
+
+//CUSTOM RadarSystem
+	compile name: 'it.unibo.radarSystem22.domain-1.0'
+	
 //CUSTOM unibo
     compile name: '2p301'
     compile name: 'uniboInterfaces'

@@ -1,4 +1,4 @@
-package it.unibo.radarSystem22.radarpojoUsage.main;
+package it.unibo.radarSystem22.radarpojousage.main;
 
 import radarPojo.radarSupport;
 
