@@ -1,4 +1,4 @@
-package it.unibo.radarSystem22.domain;
+package it.unibo.radarSystem22.domain.models;
 
 import it.unibo.radarSystem22.domain.concrete.LedConcrete;
 import it.unibo.radarSystem22.domain.interfaces.*;

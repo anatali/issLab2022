@@ -22,9 +22,14 @@ private Controller controller;
 		return "RadarSystemSprint1Main";
 	}
 
-	public void setup( String configFile )  {
-		if( configFile != null ) DomainSystemConfig.setTheConfiguration(configFile);
-		else {
+	public void setup( String domainConfig, String systemConfig  )  {
+		if( domainConfig != null ) {
+			DomainSystemConfig.setTheConfiguration(domainConfig);
+		}
+		if( systemConfig != null ) {
+			RadarSystemConfig.setTheConfiguration(systemConfig);
+		}
+		if( domainConfig == null && systemConfig == null) {
   			DomainSystemConfig.testing      	= false;			
 			DomainSystemConfig.sonarDelay       = 200;
 			//Su PC
@@ -42,12 +47,11 @@ private Controller controller;
 	
  	
 	@Override
-	public void doJob(String configFileName) {
-		setup(configFileName);
+	public void doJob( String domainConfig, String systemConfig ) {
+		setup(domainConfig, systemConfig);
 		configure();
 		//start
 	    ActionFunction endFun = (n) -> { 
-	    	BasicUtils.aboutThreads("Controller endFun | ");
 	    	System.out.println(n); 
 	    	terminate(); 
 	    };
@@ -67,7 +71,7 @@ private Controller controller;
   
 	public void terminate() {
 		//Utils.delay(1000);  //For the testing ...
-		BasicUtils.aboutThreads("Before termination | ");
+		BasicUtils.aboutThreads("Before deactivation | ");
 		sonar.deactivate();
 		System.exit(0);
 	}
@@ -79,8 +83,10 @@ private Controller controller;
  	public Controller getController() { return controller; }
 	
 	public static void main( String[] args) throws Exception {
-		BasicUtils.aboutThreads("At INIT | ");
-		new RadarSystemSprint1Main().doJob(null);
+		BasicUtils.aboutThreads("At INIT with NO CONFIG files| ");
+		new RadarSystemSprint1Main().doJob(null,null);
+//		BasicUtils.aboutThreads("At INIT with  CONFIG files| ");
+//		new RadarSystemSprint1Main().doJob("DomainSystemConfig.json","RadarSystemConfig.json");
 		
  	}
 

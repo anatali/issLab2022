@@ -21,10 +21,9 @@
 
 "simulation"       : "true",
 "sonarDistanceMax" : "150",
-"sonarDelay"       : "100",
-"DLIMIT"           : "50",
+"sonarDelay"       : "200",
+"DLIMIT"           : "70",
 "ledGui"           : "false",
-"RadarGuiRemote"   : "true",
 "tracing"          : "false",
 "testing"          : "false"
 

@@ -1,7 +1,7 @@
 package it.unibo.radarSystem22.domain.mock;
 
-import it.unibo.radarSystem22.domain.LedModel;
 import it.unibo.radarSystem22.domain.interfaces.ILed;
+import it.unibo.radarSystem22.domain.models.LedModel;
 import it.unibo.radarSystem22.domain.utils.ColorsOut;
 
 public class LedMock extends LedModel implements ILed{

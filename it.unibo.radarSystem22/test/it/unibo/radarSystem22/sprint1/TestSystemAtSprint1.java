@@ -18,7 +18,7 @@ private RadarSystemSprint1Main sys;
 		System.out.println("setUp");
 		try {
 			sys = new RadarSystemSprint1Main();
-			sys.setup( null );
+			sys.setup( null,null );
 			sys.configure();
 			DomainSystemConfig.testing    		= true;   
 			DomainSystemConfig.tracing    		= true; 

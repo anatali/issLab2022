@@ -2,8 +2,8 @@ package it.unibo.radarSystem22.domain.concrete;
 
 import java.io.IOException;
 
-import it.unibo.radarSystem22.domain.LedModel;
 import it.unibo.radarSystem22.domain.interfaces.ILed;
+import it.unibo.radarSystem22.domain.models.LedModel;
 
 public class LedConcrete extends LedModel implements ILed{
 private Runtime rt  = Runtime.getRuntime();

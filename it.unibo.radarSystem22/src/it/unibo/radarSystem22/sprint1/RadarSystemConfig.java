@@ -32,7 +32,7 @@ public class RadarSystemConfig {
 	 		
    	        tracing          = object.getBoolean("tracing");
 	        testing          = object.getBoolean("testing");
-	        
+	        RadarGuiRemote   = object.getBoolean("RadarGuiRemote");
  	        
 		} catch (FileNotFoundException e) {
  			ColorsOut.outerr("setTheConfiguration ERROR " + e.getMessage() );
