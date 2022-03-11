@@ -250,7 +250,14 @@ che include l'idea di implementare:
 	<li><a href="Dispense/html/RadarSystemProdottiAnalisi.html#il-concetto-di-oggetto-enabler" target="web">enabler di comunicazione</a></li>
 	<li><a href="Dispense/html/RadarSystemProdottiAnalisi.html#l-interfaccia-interaction2021" target="web">oggetti standard per la comunicazione</a></li>
 	</ul>
- 
+<b>Sprint1</b>: progettazione e sviluppo dei componenti del dominio.
+<ul>
+<li>Il <tt>LedMock</tt> e una sua TestUnit.  </li>
+<li>Il <tt>LedModel</tt> come classe astratta che viene specializzata da <tt>LedMok</tt> e <tt>LedConcrete</tt>.</li> 
+<li><tt>DeviceFactory</tt> e file di configurazione <tt>DomainSystemConfig.json</tt>.</li>
+
+<li>Discussione su come impostare un <tt>SonarMock</tt> che implementa l'interfaccia <tt>ISonar</tt>.</li>
+</ul>
 </td>
 </tr>
 
@@ -261,12 +268,21 @@ che include l'idea di implementare:
     
 <tr><td><m>15/03/2022 (9-12)</m></td><td>Lab2</td> 
 <td>
+Completamento dello <b>Sprint1</b>:
+<ul>
+<li>Il <tt>SonarMock</tt> come specializzazione di una classe astratta <tt>SonarModel</tt> e una sua TestUnit. </li>
+<li>Il <tt>SonarConcrete</tt> come componente che riusa il core-code <tt>Sonar.c</tt>.</li>
+<li>Un primo prototipo: il <tt>RadarSystem</tt> con dispositivi simulati in ambiente locale e una suo (integration)Test.</li> 
+<li>Deployment e sperimentazione <tt>RadarSystem</tt> con dispositivi simulati sul RaspberryPi.</li>
+<li>Sperimentazione del <tt>RadarSystem</tt> con dispositivi concreti sul RaspberryPi.</li>
+</ul>
 
 </td>
 </tr>
 
 <tr><td><m>17/03/2022 (12-14)</m></td><td>Lab2</td> 
 <td> 
+Impostazione di un progetto  <tt>it.unibo.comm2022</tt> per la costruzione di un supporto alle comunicazioni basato su <tt>TCP</tt>.
  
 </td>
 </tr>

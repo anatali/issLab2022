@@ -4,11 +4,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.*;
 
 import it.unibo.radarSystem22.domain.interfaces.ILed;
+import it.unibo.radarSystem22.domain.mock.LedMock;
 import it.unibo.radarSystem22.domain.utils.BasicUtils;
 import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
  
-
-
 public class TestLed {
  
 	@Before

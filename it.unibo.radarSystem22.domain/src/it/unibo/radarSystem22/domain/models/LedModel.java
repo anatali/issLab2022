@@ -9,7 +9,7 @@ import it.unibo.radarSystem22.domain.utils.ColorsOut;
 import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 
 public abstract class LedModel implements ILed{
-	private boolean state = false;	
+	private boolean state = false;	 
 	
 	public static ILed create() {
 		ILed led ; 
