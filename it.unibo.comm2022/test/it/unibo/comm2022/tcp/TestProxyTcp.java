@@ -33,7 +33,7 @@ public static final int testPort = 8112;
 	public void useProxy() {
 		ProxyAsClient pxy = new ProxyAsClient("pxy", "localhost", ""+testPort, ProtocolType.tcp);
 		//pxy.sendCommandOnConnection("hello");
-		String req = "arequest";
+		String req    = "arequest";
 		String answer = pxy.sendRequestOnConnection( req );
 		ColorsOut.out(answer, ColorsOut.MAGENTA);
 		assertTrue( answer.equals("answerTo_"+ req));

@@ -4,7 +4,6 @@ package it.unibo.comm2022.proxy;
 import it.unibo.comm2022.ProtocolType;
 import it.unibo.comm2022.interfaces.Interaction2021;
 import it.unibo.comm2022.utils.ColorsOut;
-import it.unibo.comm2022.utils.CommUtils;
 import it.unibo.comm2022.tcp.TcpClientSupport;
  
 public class ProxyAsClient {
@@ -63,6 +62,7 @@ protected ProtocolType protocol ;
 			ColorsOut.outerr( name+"  | sendCommandOnConnection ERROR=" + e.getMessage()  );
 		}
 	}
+	
 	public String sendRequestOnConnection( String request )  {
  		ColorsOut.out( name+"  | sendRequestOnConnection request=" + request + " conn=" + conn );
 		try {
