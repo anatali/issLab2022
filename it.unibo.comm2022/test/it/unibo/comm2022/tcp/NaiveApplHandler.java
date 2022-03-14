@@ -1,7 +1,6 @@
 package it.unibo.comm2022.tcp;
 
 import it.unibo.comm2022.ApplMsgHandler;
-import it.unibo.comm2022.interfaces.IApplMessage;
 import it.unibo.comm2022.interfaces.Interaction2021;
 
 public class NaiveApplHandler extends ApplMsgHandler {
@@ -10,8 +9,6 @@ public class NaiveApplHandler extends ApplMsgHandler {
 		super(name);
 	}
  
-	@Override
-	public void elaborate( IApplMessage message, Interaction2021 conn ) {}
 
 	@Override
 	public void elaborate(String message, Interaction2021 conn) {

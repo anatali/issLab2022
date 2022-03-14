@@ -1,11 +1,6 @@
 package it.unibo.comm2022.utils;
-
- 
 import it.unibo.comm2022.ProtocolType;
-import it.unibo.comm2022.interfaces.IApplMessage;
- 
 
- 
 
 public class CommUtils {
  	
