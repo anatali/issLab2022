@@ -16,7 +16,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="RaspberrySoftware" href="RaspberrySoftware.html" />
+    <link rel="next" title="Supporti per comunicazioni" href="RadarSystemSupporti.html" />
     <link rel="prev" title="Prodotti della analisi" href="RadarSystemProdottiAnalisi.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -48,7 +48,7 @@
 la prevista <span class="blue">Srint Review</span> farà il punto della situazione con il committente e getterà le basi per
 il passo successivo, che potrà coincidere o meno con quello pianificato nell’analisi.</p>
 <p>Impostiamo il progetto Java organizzato come in figura:</p>
-<a class="reference internal image-reference" href="_images/DomainProject.PNG"><img alt="_images/domainProject.PNG" class="align-center" src="_images/domainProject.PNG" style="width: 70%;" /></a>
+<a class="reference internal image-reference" href="_images/domainProject.PNG"><img alt="_images/domainProject.PNG" class="align-center" src="_images/domainProject.PNG" style="width: 70%;" /></a>
 <section id="sprint1-componenti-per-i-dispositivi-di-i-o">
 <h2>SPRINT1: Componenti per i dispositivi di I/O<a class="headerlink" href="#sprint1-componenti-per-i-dispositivi-di-i-o" title="Permalink to this headline">¶</a></h2>
 <p>Il primo <span class="blue">SPRINT</span> del nostro sviluppo bottom-up consiste nel realizzare componenti-base
@@ -513,7 +513,8 @@ nella fase di analisi (<a class="reference internal" href="RadarSystemProdottiAn
 <span class="kd">private</span> <span class="n">ActionFunction</span> <span class="n">endFun</span><span class="p">;</span>
 
 <span class="c1">//Factory method</span>
-<span class="kd">public</span> <span class="kd">static</span> <span class="n">Controller</span> <span class="nf">create</span><span class="p">(</span><span class="n">ILed</span> <span class="n">led</span><span class="p">,</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">,</span><span class="n">IRadarDisplay</span> <span class="n">radar</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">Controller</span> <span class="nf">create</span><span class="p">(</span>
+      <span class="n">ILed</span> <span class="n">led</span><span class="p">,</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">,</span><span class="n">IRadarDisplay</span> <span class="n">radar</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="k">new</span> <span class="n">Controller</span><span class="p">(</span> <span class="n">led</span><span class="p">,</span>  <span class="n">sonar</span><span class="p">,</span> <span class="n">radar</span> <span class="p">);</span>
 <span class="p">}</span>
 
@@ -608,7 +609,7 @@ limitando a priori il numero di iterazioni.</p>
 </section>
 </section>
 <section id="il-sistema-in-locale">
-<span id="radarsystemmainlocal"></span><h2>Il sistema in locale<a class="headerlink" href="#il-sistema-in-locale" title="Permalink to this headline">¶</a></h2>
+<span id="radarsystemsprint1main"></span><h2>Il sistema in locale<a class="headerlink" href="#il-sistema-in-locale" title="Permalink to this headline">¶</a></h2>
 <p>La prima, semplice versione del sistema da eseguire e testare lavora su un singolo computer
 (PC o Raspberry) con dispositivi simulati o (nel caso di Raspberry) reali.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemSprint1Main</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
@@ -618,30 +619,33 @@ limitando a priori il numero di iterazioni.</p>
 <span class="kd">private</span> <span class="n">Controller</span> <span class="n">controller</span><span class="p">;</span>
 
 <span class="nd">@Override</span>
-<span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">()</span> <span class="p">{</span>     <span class="k">return</span> <span class="s">&quot;RadarSystemSprint1Main&quot;</span><span class="p">;</span>  <span class="p">}</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">(){</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getName</span><span class="p">();</span> <span class="p">}</span>
 
 <span class="nd">@Override</span>
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span><span class="n">String</span> <span class="n">configFileName</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">setup</span><span class="p">(</span><span class="n">configFileName</span><span class="p">);</span>
   <span class="n">configure</span><span class="p">();</span>
-          <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>
-              <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-              <span class="n">terminate</span><span class="p">();</span>
-          <span class="p">};</span>
-              <span class="c1">//start</span>
-              <span class="n">controller</span><span class="p">.</span><span class="na">start</span><span class="p">(</span><span class="n">endFun</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+  <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>
+    <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="n">terminate</span><span class="p">();</span>
+  <span class="p">};</span>
+  <span class="c1">//start</span>
+  <span class="n">controller</span><span class="p">.</span><span class="na">start</span><span class="p">(</span><span class="n">endFun</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
 <span class="p">}</span>
 
-      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">terminate</span><span class="p">()</span> <span class="p">{</span>
-              <span class="n">BasicUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before deactivation | &quot;</span><span class="p">);</span>
-              <span class="n">sonar</span><span class="p">.</span><span class="na">deactivate</span><span class="p">();</span>
-              <span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-      <span class="p">}</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">terminate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">BasicUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before deactivation | &quot;</span><span class="p">);</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">deactivate</span><span class="p">();</span>
+  <span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
   <span class="p">...</span>
 <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
-  <span class="k">new</span> <span class="n">RadarSystemSprint1Main</span><span class="p">().</span><span class="na">doJob</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span> <span class="c1">//su PC</span>
-  <span class="c1">//su Rasp:</span>
-  <span class="c1">//new RadarSystemSprint1Main().doJob(&quot;DomainSystemConfig.json&quot;);</span>
+  <span class="k">new</span> <span class="n">RadarSystemSprint1Main</span><span class="p">().</span><span class="na">doJob</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="kc">null</span><span class="p">);</span> <span class="c1">//su</span>
+  <span class="cm">/*</span>
+<span class="cm">  //su Rasp:</span>
+<span class="cm">  new RadarSystemSprint1Main().doJob(</span>
+<span class="cm">         &quot;DomainSystemConfig.json&quot;,&quot;RadarSystemSprint1Main&quot;);</span>
+<span class="cm">  */</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -652,7 +656,7 @@ limitando a priori il numero di iterazioni.</p>
 in distribuito, introduciamo qui il vincolo che ciascuna
 delle versioni del sistema dovrà implementare l’interfaccia che segue.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplication</span> <span class="p">{</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span><span class="n">String</span> <span class="n">configFileName</span><span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span><span class="n">String</span> <span class="n">configFileName</span><span class="p">,</span> <span class="n">String</span> <span class="n">systemConfig</span><span class="p">);</span>
   <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
@@ -678,13 +682,14 @@ fissare i parametri di  configurazione utilizzando il file <code class="docutils
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemMainLocal</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
 
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span> <span class="n">String</span> <span class="n">configFile</span> <span class="p">)</span>  <span class="p">{</span>
-  <span class="k">if</span><span class="p">(</span> <span class="n">configFile</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">configFile</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">configFile</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">configFile</span><span class="p">);</span>
   <span class="k">else</span> <span class="p">{</span>
     <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>         <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
     <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span>      <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
   <span class="c1">//Su PC</span>
     <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span>      <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span>          <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span>          <span class="o">=</span> <span class="mi">70</span><span class="p">;</span>
     <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">ledGui</span>          <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">RadarGuiRemote</span>  <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
   <span class="c1">//Su Raspberry (nel file di configurazione)</span>
@@ -712,14 +717,15 @@ configurazione.</p>
                      <span class="kc">null</span> <span class="p">:</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createRadarGui</span><span class="p">();</span>
   <span class="n">BasicUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before Controller creation | &quot;</span><span class="p">);</span>
   <span class="c1">//Controller</span>
-    <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> <span class="n">terminate</span><span class="p">();</span> <span class="p">};</span>
-    <span class="n">controller</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">sonar</span><span class="p">,</span> <span class="n">radar</span><span class="p">,</span> <span class="n">endFun</span><span class="p">);</span>
+  <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> <span class="n">terminate</span><span class="p">();</span> <span class="p">};</span>
+  <span class="n">controller</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">sonar</span><span class="p">,</span> <span class="n">radar</span><span class="p">,</span> <span class="n">endFun</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p><span class="worktodo">WORKTODO: Analisi dei Thread</span></p>
 <ul class="simple">
-<li><p>Avvalersi della utility per osservare i thread al lavoro nelle varie fasi di attività del sistema.</p></li>
+<li><p>Avvalersi della utility <code class="docutils literal notranslate"><span class="pre">BasicUtils.aboutThreads</span></code> per osservare i thread al lavoro
+nelle varie fasi di attività del sistema.</p></li>
 </ul>
 </section>
 <section id="utilita-per-il-testing">
@@ -747,11 +753,10 @@ da poterne referenziare le proprietà durante il testing automatizzato:</p>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;setUp&quot;</span><span class="p">);</span>
     <span class="k">try</span> <span class="p">{</span>
-      <span class="n">sys</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RadarSystemMainLocal</span><span class="p">();</span>
-      <span class="n">sys</span><span class="p">.</span><span class="na">setup</span><span class="p">(</span> <span class="kc">null</span> <span class="p">);</span>  <span class="c1">//non usiamo il file di configurazione</span>
+      <span class="n">sys</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RadarSystemSprint1Main</span><span class="p">();</span>
+      <span class="n">sys</span><span class="p">.</span><span class="na">setup</span><span class="p">(</span> <span class="kc">null</span><span class="p">,</span><span class="kc">null</span> <span class="p">);</span>  <span class="c1">//non usiamo il file di configurazione</span>
       <span class="n">sys</span><span class="p">.</span><span class="na">configure</span><span class="p">();</span>
-      <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>              <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-      <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">tracing</span>              <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>   <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">fail</span><span class="p">(</span><span class="s">&quot;setup ERROR &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">()</span> <span class="p">);</span>
     <span class="p">}</span>
@@ -786,15 +791,13 @@ il Sonar produca un valore <code class="docutils literal notranslate"><span clas
 </pre></div>
 </div>
 </section>
-<section id="il-sistema-su-raspberrypi">
-<span id="radarsystemmainlocalonrasp"></span><h2>Il sistema su RaspberryPi<a class="headerlink" href="#il-sistema-su-raspberrypi" title="Permalink to this headline">¶</a></h2>
-<p><span class="worktodo">WORKTODO: Esecuzione su RaspberryPi</span></p>
-<ul class="simple">
-<li><p>Fare deployment ed eseguire l’applicazione <a class="reference internal" href="#radarsystemmainlocal"><span class="std std-ref">Il sistema in locale</span></a> su RaspberryPi seguendo quanto riportato qui di seguito.</p></li>
-</ul>
+<section id="sprint1-deployment-su-raspberrypi">
+<h2>SPRINT1: Deployment su RaspberryPi<a class="headerlink" href="#sprint1-deployment-su-raspberrypi" title="Permalink to this headline">¶</a></h2>
+<p>Per fare il deployment del sistema su RaspberryPi ed eseguire l’applicazione <a class="reference internal" href="#radarsystemsprint1main"><span class="std std-ref">Il sistema in locale</span></a>
+dobbiamo eseguire quanto riportato qui di seguito:</p>
 <ol class="arabic">
 <li><p>Impostazione del main file in <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mainClassName</span> <span class="o">=</span> <span class="s1">&#39;it.unibo.radarSystem22-0.1.xxx&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mainClassName</span> <span class="o">=</span> <span class="s1">&#39;it.unibo.radarSystem22.sprint1.RadarSystemSprint1Main&#39;</span>
 </pre></div>
 </div>
 </li>
@@ -806,7 +809,8 @@ il Sonar produca un valore <code class="docutils literal notranslate"><span clas
 <li><p>Trasferimento del file <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22-0.1.zip</span></code> su RaspberryPi e unzipping</p></li>
 <li><p>Posizionamento nella directory di lavoro:  <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22-0.1/bin</span></code></p></li>
 <li><p>Copia nella directory di lavoro del codice richiesto per l’uso dei dispositivi concreti</p></li>
-<li><p>Impostazione dei parametri di configurazione nel file <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.json</span></code> nella directory di lavoro</p></li>
+<li><p>Impostazione dei parametri di configurazione nel file <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.json</span></code> e <code class="docutils literal notranslate"><span class="pre">RadarSystemConfig.json</span></code></p></li>
+<li><p>nella directory di lavoro</p></li>
 <li><p>Esecuzione di <code class="docutils literal notranslate"><span class="pre">./it.unibo.radarSystem22-0.1</span></code></p></li>
 </ol>
 </section>
@@ -816,8 +820,11 @@ il Sonar produca un valore <code class="docutils literal notranslate"><span clas
 componente che riceve i dati dal Sonar non appena vengono prodotti.</p>
 <p><span class="worktodo">WORKTODO: Sonar osservabile</span></p>
 <ul class="simple">
-<li><p>Definire un componente <code class="docutils literal notranslate"><span class="pre">SonarObservable</span></code> secondo quanto prospettato in <a class="reference internal" href="RadarSystemAnalisi.html#patternobserver"><span class="std std-ref">Il pattern observer</span></a> e il relativo (piano di) test.</p></li>
+<li><p>Definire un componente <code class="docutils literal notranslate"><span class="pre">SonarObservable</span></code> secondo quanto prospettato in <a class="reference internal" href="RadarSystemAnalisi.html#patternobserver"><span class="std std-ref">Il pattern observer</span></a>
+e definire il relativo (piano di) test.</p></li>
 </ul>
+</section>
+</section>
 
 
           </div>
@@ -897,22 +904,11 @@ componente che riceve i dati dal Sonar non appena vengono prodotti.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#testing-su-pc">Testing (su PC)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#il-sistema-su-raspberrypi">Il sistema su RaspberryPi</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#un-sistema-piu-reattivo">Un sistema più reattivo</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#il-sonar-osservabile">Il Sonar osservabile</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#la-distanza-come-risorsa-osservabile">La distanza come risorsa osservabile</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sonarmodelobservable">SonarModelObservable</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sonarmockobservable">SonarMockObservable</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sonarconcreteobservable">SonarConcreteObservable</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#aggiornamento-di-devicefactory">Aggiornamento di DeviceFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#testing-del-sonar-osservabile">Testing del Sonar osservabile</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#il-led-osservabile">Il Led osservabile?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sprint1-deployment-su-raspberrypi">SPRINT1: Deployment su RaspberryPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#un-sistema-piu-reattivo">Un sistema più reattivo</a></li>
 </ul>
 </li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
@@ -922,7 +918,7 @@ componente che riceve i dati dal Sonar non appena vengono prodotti.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="RadarSystemProdottiAnalisi.html" title="previous chapter">Prodotti della analisi</a></li>
-      <li>Next: <a href="RaspberrySoftware.html" title="next chapter">RaspberrySoftware</a></li>
+      <li>Next: <a href="RadarSystemSupporti.html" title="next chapter">Supporti per comunicazioni</a></li>
   </ul></li>
 </ul>
 </div>
