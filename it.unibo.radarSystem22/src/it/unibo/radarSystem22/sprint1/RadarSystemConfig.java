@@ -12,6 +12,7 @@ import it.unibo.radarSystem22.domain.utils.ColorsOut;
 public class RadarSystemConfig {
  	public static boolean tracing         = false;	
 	public static boolean testing         = false;			
+	public static int DLIMIT              =  15;     
 	
 	public static boolean  RadarGuiRemote = false;
 	
@@ -33,6 +34,7 @@ public class RadarSystemConfig {
    	        tracing          = object.getBoolean("tracing");
 	        testing          = object.getBoolean("testing");
 	        RadarGuiRemote   = object.getBoolean("RadarGuiRemote");
+	        DLIMIT           = object.getInt("DLIMIT");	
  	        
 		} catch (FileNotFoundException e) {
  			ColorsOut.outerr("setTheConfiguration ERROR " + e.getMessage() );
