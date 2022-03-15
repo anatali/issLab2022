@@ -34,13 +34,13 @@ private Controller controller;
 			DomainSystemConfig.sonarDelay       = 200;
 			//Su PC
 			DomainSystemConfig.simulation   	= true;
-			DomainSystemConfig.DLIMIT      		= 70;  
 			DomainSystemConfig.ledGui           = true;
+			RadarSystemConfig.DLIMIT      		= 70;  
 			RadarSystemConfig.RadarGuiRemote    = false; //se true non attiva radarGui 
 			//Su Raspberry (nei file di configurazione)
 //			DomainSystemConfig.simulation   	= false;
-//			DomainSystemConfig.DLIMIT      		= 12;  
 //			DomainSystemConfig.ledGui           = false;
+//			RadarSystemConfig.DLIMIT      		= 12;  
 //			RadarSystemConfig.RadarGuiRemote    = true;
 		}
  	}
@@ -85,12 +85,13 @@ private Controller controller;
 	public static void main( String[] args) throws Exception {
 //		BasicUtils.aboutThreads("At INIT with NO CONFIG files| ");
 //		new RadarSystemSprint1Main().doJob(null,null);
-	     
+		
+ 	     
 	    //Per Rasp:
 	    BasicUtils.aboutThreads("At INIT with CONFIG files| ");
 	    new RadarSystemSprint1Main().doJob(
 	           "DomainSystemConfig.json","RadarSystemConfig.json");
-	     		
+ 	     		
 		
  	}
 
