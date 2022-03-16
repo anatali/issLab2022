@@ -488,7 +488,7 @@ Il file  :ref:`DomainSystemConfig.json<DomainSystemConfig>` si arricchisce di sp
 Il SonarConcrete
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-Il componente che realizza la gestione di un Sonar concreto, conesso a un RaspberryPi,
+Il componente che realizza la gestione di un Sonar concreto, connesso a un RaspberryPi,
 si può avvalere del programma ``SonarAlone.c`` fornito dal committente.
 
 
@@ -643,7 +643,8 @@ nella fase di analisi (:ref:`controllerLogic`) , attivando un Thread che realizz
   private ActionFunction endFun;
 
   //Factory method
-  public static Controller create(ILed led, ISonar sonar,IRadarDisplay radar) {
+  public static Controller create(
+        ILed led, ISonar sonar,IRadarDisplay radar) {
     return new Controller( led,  sonar, radar );
   }
 	
@@ -657,7 +658,7 @@ nella fase di analisi (:ref:`controllerLogic`) , attivando un Thread che realizz
   public void start( ActionFunction endFun, int limit  ) {
     this.endFun = endFun;
     sonar.activate( limit );
-    activate( );
+    activate( limit );
   }
 
 Il Controller riceve in ingresso i (riferimenti ai) componenti del sistema e può essere attivato 
@@ -703,14 +704,14 @@ Il metodo ``start`` attiva il Sonar e lancia un Thread interno di lavoro.
             sonar.activate();
             //while( sonarActive() ) {
             if( sonar.isActive() ) {
-              for( int i=1; i<=limit; i++) { //meglio per il testing ...
+              for( int i=1; i<=limit; i++) { //meglio per il testing
                 IDistance d = sonar.getDistance();  
-                if( radar != null)  RadarGuiUsecase.doUseCase(radar,d);	 
+                if( radar != null) RadarGuiUsecase.doUseCase(radar,d);
                 LedAlarmUsecase.doUseCase( led,  d  );   
               }
             }
             sonar.deactivate();
-            endFun.run("Controller | BYE ");  //CALLBACK
+            endFun.run("Controller | BYE ");//CALLBACK
           } catch (Exception e) { ...  }					
         }
       }.start();
@@ -759,17 +760,7 @@ RadarGuiUsecase
     }	 
   }
 
-
-
-
-
-.. Il sistema in locale Esecuzione su Pc e su Raspberry
- 
-
-
-
-
-.. _RadarSystemMainLocal:
+.. _RadarSystemSprint1Main:
 
 --------------------------------------
 Il sistema in locale
@@ -787,30 +778,33 @@ La prima, semplice versione del sistema da eseguire e testare lavora su un singo
   private Controller controller;
   
   @Override
-  public String getName() {	return "RadarSystemSprint1Main";  }
+  public String getName(){ return this.getClass().getName(); }
 
   @Override
-  public void doJob(String configFileName) {
-    setup(configFileName);
+  public void doJob(String domainConfig, String systemConfig) {
+    setup(domainConfig, systemConfig);
     configure();
-	    ActionFunction endFun = (n) -> { 
-	    	System.out.println(n); 
-	    	terminate(); 
-	    };
- 		//start
-		controller.start(endFun, 30);
+    ActionFunction endFun = (n) -> { 
+      System.out.println(n); 
+      terminate(); 
+    };
+    //start
+    controller.start(endFun, 30);
   }
 
-	public void terminate() {
-		BasicUtils.aboutThreads("Before deactivation | ");
-		sonar.deactivate();
-		System.exit(0);
-	}
+  public void terminate() {
+    BasicUtils.aboutThreads("Before deactivation | ");
+    sonar.deactivate();
+    System.exit(0);
+  }
     ...
   public static void main( String[] args) throws Exception {
-    new RadarSystemSprint1Main().doJob(null); //su PC
+    new RadarSystemSprint1Main().doJob(null,null); //su 
+    /*
     //su Rasp:
-    //new RadarSystemSprint1Main().doJob("DomainSystemConfig.json");
+    new RadarSystemSprint1Main().doJob(
+           "DomainSystemConfig.json","RadarSystemSprint1Main");
+    */
   }
 
 
@@ -828,12 +822,12 @@ delle versioni del sistema dovrà implementare l'interfaccia che segue.
 .. code:: java
 
   public interface IApplication {
-    public void doJob(String configFileName);
+    public void doJob(String configFileName, String systemConfig);
     public String getName();
   }
 
 Ogni versione del sistema dovrà duque fornire un nome (con cui potrà essere selezionata) e un metodo ``doJob`` 
-che riceve in ingresso il file di configurazione, per essere eseguita.  
+che riceve in ingresso il file di configurazione del dominio e il file di configurazione del sistema.  
 
 :worktodo:`WORKTODO: Programma di selezione applicazioni`
 
@@ -844,7 +838,7 @@ che riceve in ingresso il file di configurazione, per essere eseguita.
 Fase di setup
 +++++++++++++++++++++++++++++++
 
-Il metodo ``setup`` del Main applicativo fissa i parametri di  configurazione leggendo il file ``DomainSystemConfig.json``
+Il metodo ``setup`` del Main applicativo fissa i parametri di  configurazione leggendo i file di configurazione
 oppure assegnando loro un valore a livello di programma.
 Osserviamo che:
 
@@ -855,23 +849,27 @@ Osserviamo che:
 
 .. code:: java
 
-  public class RadarSystemMainLocal implements IApplication{
+  public class RadarSystemSprint1Main implements IApplication{
 
-  public void setup( String configFile )  {
-    if( configFile != null ) DomainSystemConfig.setTheConfiguration(configFile);
-    else {
-      DomainSystemConfig.testing         = false;			
-      DomainSystemConfig.sonarDelay      = 200;
-    //Su PC
-      DomainSystemConfig.simulation      = true;
-      DomainSystemConfig.DLIMIT          = 40;  
-      DomainSystemConfig.ledGui          = true;
-      DomainSystemConfig.RadarGuiRemote  = false;
-    //Su Raspberry (nel file di configurazione)
+  public void setup(String domainConfig,String systemConfig ) {
+    if( domainConfig != null ){ 
+      DomainSystemConfig.setTheConfiguration(domainConfig);
+		}if( systemConfig != null ) {
+			RadarSystemConfig.setTheConfiguration(systemConfig); 
+		}
+    if( domainConfig == null && systemConfig == null) {
+      DomainSystemConfig.testing      	= false;			
+      DomainSystemConfig.sonarDelay       = 200;
+      //Su PC
+      DomainSystemConfig.simulation   	= true;
+      DomainSystemConfig.DLIMIT      		= 70;  
+      DomainSystemConfig.ledGui           = true;
+      RadarSystemConfig.RadarGuiRemote    = false;
+    //Su Raspberry (nei files di configurazione)
       //DomainSystemConfig.simulation    = false;
       //DomainSystemConfig.DLIMIT        = 12;  
       //DomainSystemConfig.ledGui        = false;
-      //DomainSystemConfig.RadarGuiRemote = true;
+      //RadarSystemConfig.RadarGuiRemote = true;
     }
   }//setup
    ...
@@ -891,18 +889,19 @@ configurazione.
       sonar      = DeviceFactory.createSonar();
     //Dispositivi di Output
       led        = DeviceFactory.createLed();
-      radar      = DomainSystemConfig.RadarGuiRemote ? 
+      radar      = RadarSystemConfig.RadarGuiRemote ? 
                        null : DeviceFactory.createRadarGui();
     BasicUtils.aboutThreads("Before Controller creation | ");
     //Controller
-      ActionFunction endFun = (n) -> { System.out.println(n); terminate(); };
-      controller = Controller.create(led, sonar, radar, endFun);	 
+    ActionFunction endFun = (n) -> { System.out.println(n); terminate(); };
+    controller = Controller.create(led, sonar, radar );	 
   }
 
 
 :worktodo:`WORKTODO: Analisi dei Thread`
 
-- Avvalersi della utility per osservare i thread al lavoro nelle varie fasi di attività del sistema.
+- Avvalersi della utility ``BasicUtils.aboutThreads`` per osservare i thread al lavoro 
+  nelle varie fasi di attività del sistema.
 
 +++++++++++++++++++++++++++++++
 Utilità per il testing
@@ -936,11 +935,10 @@ La testUnit introduce un metodo di setup per definire i parametri di configurazi
     public void setUp() {
       System.out.println("setUp");
       try {
-        sys = new RadarSystemMainLocal();
-        sys.setup( null );  //non usiamo il file di configurazione
+        sys = new RadarSystemSprint1Main();
+        sys.setup(null,null);//non usiamo i files di config
         sys.configure();
-        DomainSystemConfig.testing    		= true;   
-        DomainSystemConfig.tracing    		= true; 
+        DomainSystemConfig.testing   = true;   
       } catch (Exception e) {
         fail("setup ERROR " + e.getMessage() );
       }
@@ -975,22 +973,22 @@ il Sonar produca un valore ``d>DLIMIT`` e un altro test per il Sonar che produce
     Utils.delay(1000) ; //give time to work ... 		
   }
 
-.. _RadarSystemMainLocalOnRasp:
+
+
  
 --------------------------------------
-Il sistema su RaspberryPi
+SPRINT1: Deployment su RaspberryPi
 --------------------------------------
 
-:worktodo:`WORKTODO: Esecuzione su RaspberryPi`
-
-- Fare deployment ed eseguire l'applicazione :ref:`RadarSystemMainLocal` su RaspberryPi seguendo quanto riportato qui di seguito.
+Per fare il deployment del sistema su RaspberryPi ed eseguire l'applicazione :ref:`RadarSystemSprint1Main`  
+dobbiamo eseguire quanto riportato qui di seguito:
 
 
 #. Impostazione del main file in ``build.gradle``
  
    .. code::  
 
-     mainClassName = 'it.unibo.radarSystem22-0.1.xxx'
+     mainClassName = 'it.unibo.radarSystem22.sprint1.RadarSystemSprint1Main'
 
 #. Creazione del file di distribuzione
  
@@ -1001,7 +999,8 @@ Il sistema su RaspberryPi
 #. Trasferimento del file ``it.unibo.radarSystem22-0.1.zip`` su RaspberryPi e unzipping 
 #. Posizionamento nella directory di lavoro:  ``it.unibo.radarSystem22-0.1/bin``
 #. Copia nella directory di lavoro del codice richiesto per l'uso dei dispositivi concreti
-#. Impostazione dei parametri di configurazione nel file ``DomainSystemConfig.json`` nella directory di lavoro
+#. Impostazione dei parametri di configurazione nel file ``DomainSystemConfig.json`` e ``RadarSystemConfig.json``
+#. nella directory di lavoro
 #. Esecuzione di ``./it.unibo.radarSystem22-0.1``
 
 
@@ -1016,319 +1015,11 @@ Un sistema più reattivo
 L'uso di un Sonar osservabile permette di eseguire la business logic del Controller all'interno di un
 componente che riceve i dati dal Sonar non appena vengono prodotti.
 
-.. Prima di affrontare il refactoring del sistema in questo senso, impostiamo l'esecuzione e il testing del sistema nella versione attuale.
+.. xxx Prima di affrontare il refactoring del sistema in questo senso, impostiamo l'esecuzione e il testing del sistema nella versione attuale.
 
 :worktodo:`WORKTODO: Sonar osservabile`
 
-- Definire un componente ``SonarObservable`` seconfo quanto prospettato in :ref:`patternObserver` e il relativo (piano di) test.
+- Definire un componente ``SonarObservable`` secondo quanto prospettato in :ref:`patternObserver` 
+  e definire il relativo (piano di) test.
 
 
-.. _sonarOsservabile: 
-
-++++++++++++++++++++++++++++++++++++
-Il Sonar osservabile
-++++++++++++++++++++++++++++++++++++
-
-La transizione ad un Sonar osservabile prospettata in :ref:`patternObserver` può essere affrontata pensando il nuovo dispositivo in due modi:
-
-- come una risorsa che modifica il proprio stato interno ad ogni passo di produzione 
-  e che invia agli observer una notifica sul nuovo stato;
-- come ad un processo che aggiorna un oggetto :blue:`DistanceMeasured` implementato come una
-  :blue:`risorsa osservabile`.
-
-Come nel caso del Sonar non osservabile, il tipo di dato 
-notificato agli observer potrebbe essere **int**, **String** o **IDistance**.
-Poichè gli observer potrebbero essere non locali e scritti in linguaggi diversi da Java, optiamo qui
-per notificare dati in forma di **String**, in modo da agevolare l'interoperabilità. 
-
-In ogni caso, volendo impostare il Sonar come un dispositivo osservabile, 
-introduciamo un nuovo contratto, che estende il precedente:
-
-.. _ISonarObservable:
-
-.. _IObserver:
-
-.. code:: java
-
-  interface ISonarObservable  extends ISonar{
-    void register( IObserver obs );		 
-    void unregister( IObserver obs );
-  }
-
-  interface IObserver extends java.util.Observer{
-    public void update( int value );
-    //From Observer:public void update(Observable o,Object news) 
-  }
-
-Nel quadro di un programma ad oggetti convenzionale, un ``ISonarObservable``  è un ``ISonar`` 
-con la capacità di registrare osservatori e di invocare, ad ogni aggiornamento del valore
-di distanza, il metodo ``update`` di tutti gli osservatori registrati.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-La distanza come risorsa osservabile
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-In questa versione, optiamo per l'idea che il Sonar-observable sia un processo che aggiorna 
-il valore  di una distanza osservabile (distanza misurata)
-che implementa l'interfaccia ``IDistanceMeasured``:
-
-.. code:: java
-
-  public interface IDistanceMeasured extends IDistance{
-    public void setVal( IDistance d );
-    public IDistance getDistance(   );
-    public void addObserver(Observer obs);   //implemented by Observable
-    public void deleteObserver(Observer obs);//implemented by Observable
-  }
-
-La casse :blue:`DistanceMeasured` che realizza il concetto di :blue:`distanza misurata osservabile` può essere definita
-come segue:
-
-.. code:: java
-
-  public class DistanceMeasured 
-        extends java.util.Observable implements IDistanceMeasured{
-  private IDistance d;
-  public DistanceMeasured() {}
-    @Override
-    public void setVal( IDistance v ) {
-      d = v;
-      setChanged(); //IMPORTANT!!
-      notifyObservers( d );		
-    }
-    @Override
-    public IDistance getDistance(   ) { return d; }	
-    @Override
-    public int getVal() { return d.getVal(); }	
-    @Override
-    public String toString() { return ""+ getVal(); }
-  }
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-SonarModelObservable
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Il ``SonarModelObservable`` viene definito cone una specializzazione del precedente 
-`SonarModel`_, che implementa i metodi di registrazione ridiregendoli alla distanza osservabile.
-
-.. code:: java
-
-  public abstract class SonarModelObservable 
-          extends SonarModel implements ISonarObservable  {
-  protected IDistanceMeasured observableDistance  ;		
-
-  //Factory method
-  public static ISonarObservable create() {
-    if( DomainSystemConfig.simulation )  return new SonarMockObservable();
-    else  return new SonarConcreteObservable();		
-  }
-  @Override
-  public IDistance getDistance(){ return observableDistance; }
-  @Override
-  public void register(IObserver obs){ observableDistance.addObserver(obs);}
-  @Override
-  public void unregister(IObserver obs){observableDistance.deleteObserver(obs);}
-  @Override
-  protected void updateDistance(int d){observableDistance.setVal(new Distance(d));}	
-  }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-SonarMockObservable
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Ora il SonarMock osservabile può essere definito ridefinendo il metodo asbstract 
-relativo alla produzione dei dati in modo analogo a quanto fatto per il Sonar:
-
-.. _SonarMockObservable:
-
-.. code:: java
-
-  public class SonarMockObservable extends SonarModelObservable{
-
-  @Override
-  protected void sonarSetUp() {
-    observableDistance = new DistanceMeasured( );
-    observableDistance.setVal(curVal);
-  } 	
-
-  @Override
-  protected void sonarProduce() {
-    if( DomainSystemConfig.testing ) {
-      updateDistance( DomainSystemConfig.testingDistance );			      
-      stopped = true;  //one shot
-    }else {
-      int v = curVal.getVal() - 1;
-      updateDistance( v );			    
-      stopped = ( v == 0 );
-      Utils.delay(DomainSystemConfig.sonarDelay); //avoid fast generation
-    }		
-  }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-SonarConcreteObservable
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Analogamente, la versione osservabile del `SonarConcrete`_ si ottiene ridefinendo (in assenza di ereditarietà
-multipla) i metodi astratti  di ``setUp`` e ``sonarProduce``. 
-
-.. _SonarConcreteObservable:
-
-.. code:: java
-
-  public class SonarConcreteObservable extends SonarModelObservable 
-  private  BufferedReader reader ;
-  private int lastSonarVal      = 0;
-  private Process p             = null;
-	 
-    @Override
-    protected void sonarSetUp() {
-   	    observableDistance = new DistanceMeasured( );
-	    observableDistance.setVal( new Distance(lastSonarVal) ); 
-    } 	
-  
-    @Override
-    public void activate() {
-        if( p == null ) {
-        try { 
-            p      = Runtime.getRuntime().exec("sudo ./SonarAlone");
-            reader = new BufferedReader(new InputStreamReader(p.getInputStream()));	
-        }catch( Exception e) {...}
- 		}
- 		super.activate();
-    }
-
-  @Override
-  protected void sonarProduce( ) {
-    try {
-      String data = reader.readLine();
-      if( data == null ) return;
-      int v = Integer.parseInt(data);
-      //Eliminiamo dati del tipo 3430 
-      if( lastSonarVal != v && v < DomainSystemConfig.sonarDistanceMax) {	        
-        lastSonarVal = v;
-        updateDistance( v );
-      }
-    }catch( Exception e) {... }		
-
-    @Override
-    public void deactivate() {
-        if( p != null ) {
-            p.destroy(); 
-            p=null;
-        }
-        super.deactivate();
-    }
-  }
- 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Aggiornamento di DeviceFactory
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-La nascita del nuovo tipo di Sonar ci induce a introdurre nuovi metodi in `DeviceFactory`_:
-
-.. code:: java
-
-  public static ISonar createSonar(boolean observable) {
-    if( observable ) return createSonarObservable();
-    else return createSonar();
-    }
-
-  public static ISonarObservable createSonarObservable() {
-    if( DomainSystemConfig.simulation)  { return new SonarMockObservable();
-    }else { return SonarConcreteObservable(); }	
-  }
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Testing del Sonar osservabile
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Il testing sul ``SonarMockObservable`` viene qui impostato nel modo che segue:
-
-- si regola il Sonar in modo che produca un valore costante definito in ``DomainSystemConfig.testingDistance``
-- si introduce (almeno) un observer che controlla che il dato osservato sia quello emesso
-
-.. code:: java
-
-  @Test 
-  public void testSingleshotSonarObservableMock() {
-    DomainSystemConfig.testing = true;
-    boolean oneShot           = true;
-    ISonarObservable sonar = DeviceFactory.createSonarObservable();
-    IObserver obs1         = new SonarObserverFortesting("obs1",oneShot) ;
-    sonar.register( obs1 );	//add then observer
-    sonar.activate();
-    int v0 = sonar.getDistance().getVal();
-    assertTrue(  v0 == DomainSystemConfig.testingDistance );
-  }
-
-L'*observer* viene impostato in modo da controllare anche dati emessi da un sonar reale
-che opera con ostacolo fisso posto davanti ad esso, alla distanza prefissata.
-
-.. _SonarObserverFortesting:
-
-.. code:: java
-
-  class SonarObserverFortesting implements IObserver{
-  private String name;
-  private boolean oneShot = false;
-  private int v0          = -1;
-  private int delta       =  1;
-  private ISonarObservable sonar;
-	
-  public SonarObserverFortesting(
-          String name,ISonarObservable sonar,boolean oneShot) {
-    this.name    = name;
-    this.oneShot = oneShot;
-  }
-  @Override  //from java.util.Observer
-  public void update(Observable source, Object data) {
-    update(data.toString() );
-  }
-  @Override //from IObserver
-  public void update(int value) {
-    if(oneShot) {
-      assertTrue( value == DomainSystemConfig.testingDistance );	
-    }else {
-      int value = Integer.parseInt(vs);
-      if( v0 == -1 ) {//set the first value observed
-        v0 = value;
-      }else {
-        int vexpectedMin = v0-delta;
-        int vexpectedMax = v0+delta;
-        assertTrue(value<=vexpectedMax && value>=vexpectedMin );
-        v0 = value;			 
-        //if( v0 == 30 && name.equals("obs1")) sonar.unregister(this);
-        }
-      }
-    }
-  }
-  }//SonarObserverFortesting
-
-Si noti che observer di questo tipo vengono di norma eseguiti all'interno del Thread dell'observable che sta operando 
-per conto di un qualche client.
-
-.. _ledOsservabile: 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Il Led osservabile?
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Essendo il Led un dispositivo di output, sembra avere poco senso l'ipotesi di rendere anche il Led osservabile.
-
-Tuttavia, la seguente domanda potrebbe essere rilevante:
-
-:remark:`può essere utile rendere osservabile il LedModel?`
-
-Notiamo infatti che il :ref:`LedMock<LedMock>` e il :ref:`LedConcrete<LedConcrete>` potrebbero essere visti non tanto come due
-specializzazioni della classe :ref:`LedModel<LedModel>`, quanto come due possibili :blue:`viste del modello`.
-
-Questa ipotesi trae ispirazione dal pattern `MVC`_ (*Model View Controller*): ogni modifica del  :ref:`LedModel<LedModel>`
-viene propagata ad uno o più observer che visualizzano la variazione di stato del Led o come dispostivo simulato 
-(:ref:`LedMock<LedMock>`) o come dispositivo concreto (:ref:`LedConcrete<LedConcrete>`).
-
-Una variante potrebbe essere anche la introduzione di un *Presenter*, come suggerito dal pattern 
-`MVP`_ (*Model View Presenter*).

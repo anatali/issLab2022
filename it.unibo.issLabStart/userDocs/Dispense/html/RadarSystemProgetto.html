@@ -386,7 +386,7 @@ della frequenza di generazione dei dati.</p></li>
 </section>
 <section id="il-sonarconcrete">
 <h5>Il SonarConcrete<a class="headerlink" href="#il-sonarconcrete" title="Permalink to this headline">¶</a></h5>
-<p>Il componente che realizza la gestione di un Sonar concreto, conesso a un RaspberryPi,
+<p>Il componente che realizza la gestione di un Sonar concreto, connesso a un RaspberryPi,
 si può avvalere del programma <code class="docutils literal notranslate"><span class="pre">SonarAlone.c</span></code> fornito dal committente.</p>
 <div class="highlight-java notranslate" id="sonarconcrete"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarConcrete</span> <span class="kd">extends</span> <span class="n">SonarModel</span> <span class="kd">implements</span> <span class="n">ISonar</span><span class="p">{</span>
 <span class="kd">private</span> <span class="n">Process</span> <span class="n">p</span> <span class="p">;</span>
@@ -528,7 +528,7 @@ nella fase di analisi (<a class="reference internal" href="RadarSystemProdottiAn
 <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="p">(</span> <span class="n">ActionFunction</span> <span class="n">endFun</span><span class="p">,</span> <span class="kt">int</span> <span class="n">limit</span>  <span class="p">)</span> <span class="p">{</span>
   <span class="k">this</span><span class="p">.</span><span class="na">endFun</span> <span class="o">=</span> <span class="n">endFun</span><span class="p">;</span>
   <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">(</span> <span class="n">limit</span> <span class="p">);</span>
-  <span class="n">activate</span><span class="p">(</span> <span class="p">);</span>
+  <span class="n">activate</span><span class="p">(</span> <span class="n">limit</span> <span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -560,14 +560,14 @@ svolta nel Thread del Controller.</p>
           <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
           <span class="c1">//while( sonarActive() ) {</span>
           <span class="k">if</span><span class="p">(</span> <span class="n">sonar</span><span class="p">.</span><span class="na">isActive</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//meglio per il testing ...</span>
+            <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//meglio per il testing</span>
               <span class="n">IDistance</span> <span class="n">d</span> <span class="o">=</span> <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">();</span>
-              <span class="k">if</span><span class="p">(</span> <span class="n">radar</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>  <span class="n">RadarGuiUsecase</span><span class="p">.</span><span class="na">doUseCase</span><span class="p">(</span><span class="n">radar</span><span class="p">,</span><span class="n">d</span><span class="p">);</span>
+              <span class="k">if</span><span class="p">(</span> <span class="n">radar</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="n">RadarGuiUsecase</span><span class="p">.</span><span class="na">doUseCase</span><span class="p">(</span><span class="n">radar</span><span class="p">,</span><span class="n">d</span><span class="p">);</span>
               <span class="n">LedAlarmUsecase</span><span class="p">.</span><span class="na">doUseCase</span><span class="p">(</span> <span class="n">led</span><span class="p">,</span>  <span class="n">d</span>  <span class="p">);</span>
             <span class="p">}</span>
           <span class="p">}</span>
           <span class="n">sonar</span><span class="p">.</span><span class="na">deactivate</span><span class="p">();</span>
-          <span class="n">endFun</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="s">&quot;Controller | BYE &quot;</span><span class="p">);</span>  <span class="c1">//CALLBACK</span>
+          <span class="n">endFun</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="s">&quot;Controller | BYE &quot;</span><span class="p">);</span><span class="c1">//CALLBACK</span>
         <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span>  <span class="p">}</span>
       <span class="p">}</span>
     <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
@@ -622,8 +622,8 @@ limitando a priori il numero di iterazioni.</p>
 <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">(){</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getName</span><span class="p">();</span> <span class="p">}</span>
 
 <span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span><span class="n">String</span> <span class="n">configFileName</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">setup</span><span class="p">(</span><span class="n">configFileName</span><span class="p">);</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span><span class="n">String</span> <span class="n">domainConfig</span><span class="p">,</span> <span class="n">String</span> <span class="n">systemConfig</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">setup</span><span class="p">(</span><span class="n">domainConfig</span><span class="p">,</span> <span class="n">systemConfig</span><span class="p">);</span>
   <span class="n">configure</span><span class="p">();</span>
   <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>
     <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
@@ -662,7 +662,7 @@ delle versioni del sistema dovrà implementare l’interfaccia che segue.</p>
 </pre></div>
 </div>
 <p>Ogni versione del sistema dovrà duque fornire un nome (con cui potrà essere selezionata) e un metodo <code class="docutils literal notranslate"><span class="pre">doJob</span></code>
-che riceve in ingresso il file di configurazione, per essere eseguita.</p>
+che riceve in ingresso il file di configurazione del dominio e il file di configurazione del sistema.</p>
 <p><span class="worktodo">WORKTODO: Programma di selezione applicazioni</span></p>
 <ul class="simple">
 <li><p>Definire un programma che offre ad un utente un elenco di nomi di applicazioni da cui l’utente può scegliere
@@ -670,7 +670,7 @@ per attivarne una.</p></li>
 </ul>
 <section id="fase-di-setup">
 <h3>Fase di setup<a class="headerlink" href="#fase-di-setup" title="Permalink to this headline">¶</a></h3>
-<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setup</span></code> del Main applicativo fissa i parametri di  configurazione leggendo il file <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.json</span></code>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setup</span></code> del Main applicativo fissa i parametri di  configurazione leggendo i file di configurazione
 oppure assegnando loro un valore a livello di programma.
 Osserviamo che:</p>
 <ul class="simple">
@@ -679,24 +679,27 @@ configurazione all’interno del codice.</p></li>
 <li><p>Quando attiviamo il sistema su Raspberry usando come  distribuzione un file <code class="docutils literal notranslate"><span class="pre">jar</span></code>, conviene
 fissare i parametri di  configurazione utilizzando il file <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.json</span></code>.</p></li>
 </ul>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemMainLocal</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemSprint1Main</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
 
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span> <span class="n">String</span> <span class="n">configFile</span> <span class="p">)</span>  <span class="p">{</span>
-  <span class="k">if</span><span class="p">(</span> <span class="n">configFile</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">configFile</span><span class="p">);</span>
-  <span class="k">else</span> <span class="p">{</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>         <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span>      <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
-  <span class="c1">//Su PC</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span>      <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span>          <span class="o">=</span> <span class="mi">70</span><span class="p">;</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">ledGui</span>          <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">RadarGuiRemote</span>  <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-  <span class="c1">//Su Raspberry (nel file di configurazione)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="n">String</span> <span class="n">domainConfig</span><span class="p">,</span><span class="n">String</span> <span class="n">systemConfig</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">domainConfig</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">){</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">domainConfig</span><span class="p">);</span>
+              <span class="p">}</span><span class="k">if</span><span class="p">(</span> <span class="n">systemConfig</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+                      <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">systemConfig</span><span class="p">);</span>
+              <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">domainConfig</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">systemConfig</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>        <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span>       <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+    <span class="c1">//Su PC</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span>     <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span>                 <span class="o">=</span> <span class="mi">70</span><span class="p">;</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">ledGui</span>           <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">RadarGuiRemote</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="c1">//Su Raspberry (nei files di configurazione)</span>
     <span class="c1">//DomainSystemConfig.simulation    = false;</span>
     <span class="c1">//DomainSystemConfig.DLIMIT        = 12;</span>
     <span class="c1">//DomainSystemConfig.ledGui        = false;</span>
-    <span class="c1">//DomainSystemConfig.RadarGuiRemote = true;</span>
+    <span class="c1">//RadarSystemConfig.RadarGuiRemote = true;</span>
   <span class="p">}</span>
 <span class="p">}</span><span class="c1">//setup</span>
  <span class="p">...</span>
@@ -713,12 +716,12 @@ configurazione.</p>
     <span class="n">sonar</span>      <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createSonar</span><span class="p">();</span>
   <span class="c1">//Dispositivi di Output</span>
     <span class="n">led</span>        <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createLed</span><span class="p">();</span>
-    <span class="n">radar</span>      <span class="o">=</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">RadarGuiRemote</span> <span class="o">?</span>
+    <span class="n">radar</span>      <span class="o">=</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">RadarGuiRemote</span> <span class="o">?</span>
                      <span class="kc">null</span> <span class="p">:</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createRadarGui</span><span class="p">();</span>
   <span class="n">BasicUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before Controller creation | &quot;</span><span class="p">);</span>
   <span class="c1">//Controller</span>
   <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> <span class="n">terminate</span><span class="p">();</span> <span class="p">};</span>
-  <span class="n">controller</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">sonar</span><span class="p">,</span> <span class="n">radar</span><span class="p">,</span> <span class="n">endFun</span><span class="p">);</span>
+  <span class="n">controller</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">sonar</span><span class="p">,</span> <span class="n">radar</span> <span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -754,7 +757,7 @@ da poterne referenziare le proprietà durante il testing automatizzato:</p>
     <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;setUp&quot;</span><span class="p">);</span>
     <span class="k">try</span> <span class="p">{</span>
       <span class="n">sys</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RadarSystemSprint1Main</span><span class="p">();</span>
-      <span class="n">sys</span><span class="p">.</span><span class="na">setup</span><span class="p">(</span> <span class="kc">null</span><span class="p">,</span><span class="kc">null</span> <span class="p">);</span>  <span class="c1">//non usiamo il file di configurazione</span>
+      <span class="n">sys</span><span class="p">.</span><span class="na">setup</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="kc">null</span><span class="p">);</span><span class="c1">//non usiamo i files di config</span>
       <span class="n">sys</span><span class="p">.</span><span class="na">configure</span><span class="p">();</span>
       <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>   <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>

@@ -6,5 +6,7 @@
 
 "hostAddr"         : "localhost",
 "raspAddr"         : "localhost",
-"serverPort"       : "8023"
+"serverPort"       : "8023",
+"ledPort"          : "8010",
+"sonarPort"        : "8015"
 }

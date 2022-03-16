@@ -67,6 +67,17 @@ delegando a classi specializzate la gestione di un messaggio ricevuto, in modo c
 ignorare completamente i dettagli relativi alla comunicazione, avendo al contempo la possibilità di invocare un metodo che invia
 informazioni (risposte) al caller (clent remoto).</p></li>
 </ul>
+<p>Finita questa parte di lavoro, realizzeremo due diverse configurazioni del RadarSystem:</p>
+<section id="radardisplay-su-pc">
+<h2>RadarDisplay su PC<a class="headerlink" href="#radardisplay-su-pc" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/RadarOnPc.PNG"><img alt="_images/RadarOnPc.PNG" class="align-center" src="_images/RadarOnPc.PNG" style="width: 80%;" /></a>
+<p>Si veda <a class="reference internal" href="#sprint2-radarsystem-distribuito"><span class="std std-ref">SPRINT2: RadarSystem distribuito</span></a></p>
+</section>
+<section id="controller-e-radardisplay-su-pc">
+<h2>Controller e RadarDisplay su PC<a class="headerlink" href="#controller-e-radardisplay-su-pc" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/ArchLogicaOOPEnablersBetter.PNG"><img alt="_images/ArchLogicaOOPEnablersBetter.PNG" class="align-center" src="_images/ArchLogicaOOPEnablersBetter.PNG" style="width: 70%;" /></a>
+<p>Si veda <a class="reference internal" href="#sprint2a">sprint2a</a></p>
+</section>
 <section id="tcpclientsupport">
 <span id="tcpsupportclient"></span><h2>TcpClientSupport<a class="headerlink" href="#tcpclientsupport" title="Permalink to this headline">¶</a></h2>
 <p>Introduciamo la classe <code class="docutils literal notranslate"><span class="pre">TcpClientSupport</span></code> con cui istanziare oggetti che stabilisccono una connessione
@@ -616,7 +627,7 @@ sul PC e sul RaspberryPi:</p>
 </ul>
 <p>Il deployment della parte di sistema che gira sul RaspberryPi può avvenire secondo gli stessi passi
 riportati in <a class="reference internal" href="RadarSystemProgetto.html#sprint1-deployment-su-raspberrypi"><span class="std std-ref">SPRINT1: Deployment su RaspberryPi</span></a>.</p>
-<p><span class="worktodo">WORKTODO: Controller sul PC</span></p>
+<p id="sprint2a"><span class="worktodo">WORKTODO: SPRINT2a - Controller sul PC</span></p>
 <ul>
 <li><p>Redifinire il sistema in modo che il Controller sia allocato sul PC, lasciando sul RaspberryPi
 solo il software relativo al Led e al Sonar.</p>
@@ -666,6 +677,8 @@ solo il software relativo al Led e al Sonar.</p>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Supporti per comunicazioni</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#radardisplay-su-pc">RadarDisplay su PC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controller-e-radardisplay-su-pc">Controller e RadarDisplay su PC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tcpclientsupport">TcpClientSupport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tcpconnection-implementa-interaction2021"><code class="docutils literal notranslate"><span class="pre">TcpConnection</span></code> implementa <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tcp-server">TCP Server</a><ul>

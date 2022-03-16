@@ -55,7 +55,7 @@ protected ProtocolType protocol ;
 	}
   	
 	public void sendCommandOnConnection( String cmd )  {
- 		//ColorsOut.out( name+"  | sendCommandOnConnection " + cmd + " conn=" + conn, ColorsOut.BLUE );
+ 		ColorsOut.out( name+"  | sendCommandOnConnection " + cmd + " conn=" + conn, ColorsOut.BLUE );
 		try {
 			conn.forward(cmd);
 		} catch (Exception e) {
@@ -64,10 +64,10 @@ protected ProtocolType protocol ;
 	}
 	
 	public String sendRequestOnConnection( String request )  {
- 		ColorsOut.out( name+"  | sendRequestOnConnection request=" + request + " conn=" + conn );
+ 		ColorsOut.out( name+"  | sendRequestOnConnection request=" + request + " conn=" + conn, ColorsOut.BLUE );
 		try {
 			String answer = conn.request(request);
-			ColorsOut.out( name+"  | sendRequestOnConnection-answer=" + answer  );
+			ColorsOut.out( name+"  | sendRequestOnConnection-answer=" + answer, ColorsOut.BLUE  );
 			return  answer  ;
 			//return CommUtils.getContent( answer );
  		

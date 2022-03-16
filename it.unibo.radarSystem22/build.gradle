@@ -11,7 +11,8 @@ plugins {
 	id 'jacoco'
 }
 
-version '1.0'
+version '0.2'
+
 sourceCompatibility = 1.8
 
 repositories {

@@ -5,9 +5,6 @@ import it.unibo.comm2022.interfaces.Interaction2021;
 import it.unibo.comm2022.utils.ColorsOut;
 import it.unibo.comm2022.utils.CommSystemConfig;
 
-/*
- * TODO: omettere la parte MqttCallback che viene realizzata da ContextMqttMsgHandler
- */
 public abstract class ApplMsgHandler  implements IApplMsgHandler {  
 protected String name;
    
@@ -41,7 +38,7 @@ protected String name;
 		ColorsOut.out(name + " | ApplMsgHandler sendAnswerToClient reply=" + reply, ColorsOut.BLUE);
 		try {
 			if( CommSystemConfig.protcolType == ProtocolType.mqtt) {
-				//MqttConnection.getSupport().reply(reply);  //TODO
+				//TODO
 			}else {
 				ColorsOut.outerr(name + " | ApplMsgHandler sendAnswerToClient not implemented for  " 
 							+ CommSystemConfig.protcolType);

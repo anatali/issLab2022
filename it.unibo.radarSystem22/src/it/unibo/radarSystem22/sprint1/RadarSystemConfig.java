@@ -3,6 +3,9 @@ package it.unibo.radarSystem22.sprint1;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -19,6 +22,9 @@ public class RadarSystemConfig {
  	public static String hostAddr         = "localhost";		
 	public static String raspAddr         = "localhost";		
 	public static int serverPort          = 8023;
+//Aggiunte dello SPRINT2a 	
+	public static int ledPort             = 8010;
+	public static int sonarPort           = 8015;
  	
 	
 	
@@ -34,7 +40,9 @@ public class RadarSystemConfig {
 			if(  fis == null ) {
  				 fis = new FileInputStream(new File(resourceName));
 			}
-	        JSONTokener tokener = new JSONTokener(fis);
+//	        JSONTokener tokener = new JSONTokener(fis);
+			Reader reader       = new InputStreamReader(fis);
+			JSONTokener tokener = new JSONTokener(reader);      
 	        JSONObject object   = new JSONObject(tokener);
 	 		
    	        tracing          = object.getBoolean("tracing");
@@ -45,6 +53,9 @@ public class RadarSystemConfig {
 	        serverPort		= object.getInt("serverPort");
  	        hostAddr 		= object.getString("hostAddr");
 	        raspAddr 		= object.getString("raspAddr");
+//Aggiunte dello SPRINT2a
+	        ledPort         = object.getInt("ledPort");
+	        sonarPort       = object.getInt("sonarPort");
 	        
 		} catch (FileNotFoundException e) {
  			ColorsOut.outerr("setTheConfiguration ERROR " + e.getMessage() );

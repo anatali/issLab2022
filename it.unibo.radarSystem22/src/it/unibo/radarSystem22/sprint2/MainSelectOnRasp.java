@@ -8,6 +8,7 @@ import it.unibo.comm2022.utils.ColorsOut;
 import it.unibo.radarSystem22.IApplication;
 import it.unibo.radarSystem22.sprint1.RadarSystemSprint1Main;
 import it.unibo.radarSystem22.sprint2.main.sysOnRasp.RadarSysSprint2ControllerOnRaspMain;
+import it.unibo.radarSystem22.sprint2a.main.devicesOnRasp.RadarSysSprint2aDevicesOnRaspMain;
 
 public class MainSelectOnRasp {
 public HashMap<String,IApplication> programs = new HashMap<String,IApplication>();
@@ -21,6 +22,7 @@ public HashMap<String,IApplication> programs = new HashMap<String,IApplication>(
 		try {
 			programs.put("1", new RadarSystemSprint1Main() );				 
 			programs.put("2", new RadarSysSprint2ControllerOnRaspMain());  	 
+			programs.put("3", new RadarSysSprint2aDevicesOnRaspMain());  	 
   			String i = "";
 			outMenu();
 			ColorsOut.outappl(">>>   ", ColorsOut.ANSI_PURPLE);
