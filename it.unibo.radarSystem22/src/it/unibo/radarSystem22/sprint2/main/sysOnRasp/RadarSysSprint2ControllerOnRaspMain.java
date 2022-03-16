@@ -34,16 +34,25 @@ public class RadarSysSprint2ControllerOnRaspMain implements IApplication{
 	}
 	
 	public void setup( String domainConfig, String systemConfig )  {
-		DomainSystemConfig.simulation  = true;
-    	DomainSystemConfig.testing     = false;			
-    	DomainSystemConfig.tracing     = false;			
-		DomainSystemConfig.sonarDelay  = 200;
-    	DomainSystemConfig.ledGui      = true;			
-    	
-		RadarSystemConfig.RadarGuiRemote    = true;		
-		RadarSystemConfig.serverPort        = 8023;		
-		RadarSystemConfig.hostAddr          = "localhost";
-    	RadarSystemConfig.DLIMIT            = 75;
+	    BasicUtils.aboutThreads("Before setup ");
+		if( domainConfig != null ) {
+			DomainSystemConfig.setTheConfiguration(domainConfig);
+		}
+		if( systemConfig != null ) {
+			RadarSystemConfig.setTheConfiguration(systemConfig);
+		}
+		if( domainConfig == null && systemConfig == null) {
+			DomainSystemConfig.simulation  = true;
+	    	DomainSystemConfig.testing     = false;			
+	    	DomainSystemConfig.tracing     = false;			
+			DomainSystemConfig.sonarDelay  = 200;
+	    	DomainSystemConfig.ledGui      = true;			
+	    	
+			RadarSystemConfig.RadarGuiRemote    = true;		
+			RadarSystemConfig.serverPort        = 8023;		
+			RadarSystemConfig.hostAddr          = "localhost";
+	    	RadarSystemConfig.DLIMIT            = 75;
+		}
 	}
 	protected void configure() {		
  	    sonar      = DeviceFactory.createSonar();

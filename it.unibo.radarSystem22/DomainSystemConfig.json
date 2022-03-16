@@ -1,22 +1,6 @@
 {
-"ControllerRemote" : "false",
-"LedRemote"        : "true", 
-"SonareRemote"     : "true",
-"protocolType"     : "mqtt",
-"pcHostAddr"       : "localhost",
-"raspHostAddr"     : "192.168.1.113",
-"radarGuiPort"     : "8014",
-"ledPort"          : "8010",
-"sonarPort"        : "8012",
+"webCam"           : "false",
 "sonarObservable"  : "false",
-"controllerPort"   : "8016",
-"serverTimeOut"    : "600000",
-"applStartdelay"   : "3000",
-"webCam"           : "true",
-"withContext"      : "false",
-"ctxServerPort"    : "8018",
-"mqttBrokerAddr"   : "tcp://localhost:1883",
-"tempBrokerAddr"   : "tcp://broker.hivemq.com",
 
 
 "simulation"       : "true",
@@ -24,7 +8,6 @@
 "sonarDelay"       : "200",
 "DLIMIT"           : "70",
 "ledGui"           : "true",
-"tracing"          : "true",
+"tracing"          : "false",
 "testing"          : "false"
-
 }

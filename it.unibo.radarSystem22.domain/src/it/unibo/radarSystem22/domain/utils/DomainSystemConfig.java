@@ -38,10 +38,7 @@ public class DomainSystemConfig {
 	        JSONObject object   = new JSONObject(tokener);
 	 		
 	        simulation          = object.getBoolean("simulation");
-	        
-	        
-	        webCam           = object.getBoolean("webCam");
-	        
+	        webCam           = object.getBoolean("webCam");	        
 	        sonarObservable  = object.getBoolean("sonarObservable");	
 	        sonarDelay       = object.getInt("sonarDelay");	
 	        sonarDistanceMax = object.getInt("sonarDistanceMax");	
