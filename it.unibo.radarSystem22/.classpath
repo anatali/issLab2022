@@ -19,7 +19,7 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Didattica2022/issLab2022/it.unibo.radarSystem22/libs/it.unibo.radarSystem22.domain-1.0.jar">
+	<classpathentry kind="lib" path="C:/Didattica2022/issLab2022/unibolibs/it.unibo.radarSystem22.domain-1.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
