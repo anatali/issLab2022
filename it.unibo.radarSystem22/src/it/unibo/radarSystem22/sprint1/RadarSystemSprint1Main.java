@@ -19,10 +19,11 @@ private Controller controller;
 
 	@Override
 	public String getName() {	 
-		return "RadarSystemSprint1Main";
+		return this.getClass().getName();
 	}
 
 	public void setup( String domainConfig, String systemConfig  )  {
+	    BasicUtils.aboutThreads("Before setup ");
 		if( domainConfig != null ) {
 			DomainSystemConfig.setTheConfiguration(domainConfig);
 		}
@@ -48,8 +49,10 @@ private Controller controller;
  	
 	@Override
 	public void doJob( String domainConfig, String systemConfig ) {
+	    BasicUtils.aboutThreads("Before doJob | ");
 		setup(domainConfig, systemConfig);
 		configure();
+		BasicUtils.waitTheUser();
 		//start
 	    ActionFunction endFun = (n) -> { 
 	    	System.out.println(n); 
@@ -59,13 +62,13 @@ private Controller controller;
 	}
 	
 	protected void configure() {
-		//Dispositivi di Input
-	    sonar      = DeviceFactory.createSonar();
 	    //Dispositivi di Output
 	    led        = DeviceFactory.createLed();
 	    radar      = RadarSystemConfig.RadarGuiRemote ? null : DeviceFactory.createRadarGui();
 		BasicUtils.aboutThreads("Before Controller creation | ");
-	    //Controller
+		//Dispositivi di Input
+	    sonar      = DeviceFactory.createSonar();
+//	    //Controller
 	    controller = Controller.create(led, sonar, radar);	 
 	}
   

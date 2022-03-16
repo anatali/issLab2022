@@ -19,6 +19,7 @@ public abstract class LedModel implements ILed{
 	}
 	
 	public static ILed createLedMock() {
+		ColorsOut.out("DeviceFactory | createLedMock ledGui="+DomainSystemConfig.ledGui, ColorsOut.GREEN);
 		if( DomainSystemConfig.ledGui ) return LedMockWithGui.createLed();
 		else return new LedMock();
 		

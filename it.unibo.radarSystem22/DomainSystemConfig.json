@@ -1,6 +1,6 @@
 {
 "ControllerRemote" : "false",
-"LedRemote"        : "true",
+"LedRemote"        : "true", 
 "SonareRemote"     : "true",
 "protocolType"     : "mqtt",
 "pcHostAddr"       : "localhost",
@@ -24,7 +24,7 @@
 "sonarDelay"       : "200",
 "DLIMIT"           : "70",
 "ledGui"           : "true",
-"tracing"          : "false",
+"tracing"          : "true",
 "testing"          : "false"
 
 }
