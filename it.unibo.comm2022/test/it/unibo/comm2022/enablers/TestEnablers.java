@@ -22,10 +22,10 @@ public class TestEnablers {
 	@Before
 	public void setup() { 		
  		//Il server
-  	 	enabler = new EnablerAsServer("sonarSrv",port,protocol, 
+  	 	enabler = new EnablerAsServer("aSrv",port,protocol, 
   	 			new NaiveApplHandler("naiveH" ) );
   		//Il client
-  	 	aproxy = new ProxyAsClient("sonarPxy", "localhost", ""+port, protocol );		
+  	 	aproxy = new ProxyAsClient("aPxy", "localhost", ""+port, protocol );		
   
 	}
 
@@ -40,7 +40,7 @@ public class TestEnablers {
 	@Test 
 	public void testEnablers() {
 		enabler.start();
-		String req = "aRequest";
+		String req    = "aRequest";
 		String answer = aproxy.sendRequestOnConnection(req);
 		ColorsOut.out(answer, ColorsOut.MAGENTA);
 		assertTrue( answer.equals("answerTo_"+ req));
