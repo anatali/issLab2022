@@ -22,7 +22,6 @@ import it.unibo.radarSystem22.sprint2.proxy.RadarGuiProxyAsClient;
 public class RadarSysSprint2ControllerOnRaspMain implements IApplication{
 	private ISonar sonar;
 	private ILed  led ;
-	private TcpServer server ;
 	private IRadarDisplay radar;
 	private Controller controller;
 
@@ -49,7 +48,7 @@ public class RadarSysSprint2ControllerOnRaspMain implements IApplication{
 	    	DomainSystemConfig.ledGui      = true;			
 	    	
 			RadarSystemConfig.RadarGuiRemote    = true;		
-			RadarSystemConfig.serverPort        = 8023;		
+			RadarSystemConfig.serverPort        = 8080;		
 			RadarSystemConfig.hostAddr          = "localhost";
 	    	RadarSystemConfig.DLIMIT            = 75;
 		}
