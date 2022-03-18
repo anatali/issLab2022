@@ -1,9 +1,7 @@
 package it.unibo.comm2022.tcp;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
 import it.unibo.comm2022.interfaces.IApplMsgHandler;
 import it.unibo.comm2022.interfaces.Interaction2021;
 import it.unibo.comm2022.utils.ColorsOut;
