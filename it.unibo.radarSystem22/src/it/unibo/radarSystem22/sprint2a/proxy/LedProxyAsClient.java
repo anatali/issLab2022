@@ -9,9 +9,9 @@ import it.unibo.radarSystem22.domain.interfaces.ILed;
  */
 public class LedProxyAsClient extends ProxyAsClient implements ILed {
 
- 	public LedProxyAsClient( String name, String host, String entry  ) {		
-		this(name, host, entry, ProtocolType.tcp);
-	}
+// 	public LedProxyAsClient( String name, String host, String entry  ) {		
+//		this(name, host, entry, ProtocolType.tcp);
+//	}
 
 	public LedProxyAsClient( String name, String host, String entry, ProtocolType protocol  ) {
 		super(name,host,entry, protocol);

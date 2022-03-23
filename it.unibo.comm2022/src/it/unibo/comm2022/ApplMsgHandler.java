@@ -10,17 +10,15 @@ protected String name;
    
  	public ApplMsgHandler( String name  ) {  
 		this.name = name;
-		//Colors.out(name + " | CREATING ... ", Colors.BLUE );
 	}
  	
  	public String getName() {
 		return name;
 	}	 
    	
- 	//Warning: le risposte sono messaggi 'unstructured'
  	public void sendMsgToClient( String message, Interaction2021 conn  ) {
- 		try {
- 			ColorsOut.out(name + " | ApplMsgHandler sendMsgToClient message=" + message + " conn=" + conn, ColorsOut.BLUE);
+		try {
+  			ColorsOut.outappl(name + " | ApplMsgHandler sendMsgToClient conn=" + conn, ColorsOut.BLUE);
 			conn.forward( message );
 		} catch (Exception e) {
  			ColorsOut.outerr(name + " | ApplMsgHandler sendMsgToClient ERROR " + e.getMessage());;
@@ -30,7 +28,12 @@ protected String name;
  	
  	@Override
  	public void sendAnswerToClient( String reply, Interaction2021 conn   ) {
-		sendMsgToClient(reply, conn);		
+		//sendMsgToClient(reply, conn);		
+ 		try {
+			conn.reply(reply);
+		} catch (Exception e) {
+			ColorsOut.outerr(name + " | ApplMsgHandler sendAnswerToClient ERROR " + e.getMessage() );
+		}
  	}
  	
  	//@Override

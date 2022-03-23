@@ -37,7 +37,4 @@ private int curDistance = 0;
 		radar.update( distance, angle );
 	}
 
-
- 
-
 }

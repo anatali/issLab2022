@@ -5,8 +5,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import it.unibo.comm2022.ProtocolType;
+import it.unibo.comm2022.common.NaiveApplHandler;
 import it.unibo.comm2022.proxy.ProxyAsClient;
-import it.unibo.comm2022.tcp.NaiveApplHandler;
 import it.unibo.comm2022.utils.ColorsOut;
  
 /*

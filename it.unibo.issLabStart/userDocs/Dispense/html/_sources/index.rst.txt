@@ -17,6 +17,9 @@ iss22
    RadarSystemProdottiAnalisi
    RadarSystemProgetto
    RadarSystemSupporti
+   Enablers
+   ContestiContenitori
+   Attori
    RaspberrySoftware
    RaspBasicCode
 

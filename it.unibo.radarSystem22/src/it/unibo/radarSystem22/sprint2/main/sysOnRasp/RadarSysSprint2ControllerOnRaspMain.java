@@ -22,6 +22,7 @@ import it.unibo.radarSystem22.sprint2.proxy.RadarGuiProxyAsClient;
 public class RadarSysSprint2ControllerOnRaspMain implements IApplication{
 	private ISonar sonar;
 	private ILed  led ;
+	private TcpServer server ;
 	private IRadarDisplay radar;
 	private Controller controller;
 
@@ -33,7 +34,7 @@ public class RadarSysSprint2ControllerOnRaspMain implements IApplication{
 	}
 	
 	public void setup( String domainConfig, String systemConfig )  {
-	    BasicUtils.aboutThreads("Before setup ");
+	    BasicUtils.aboutThreads(getName() + " | Before setup ");
 		if( domainConfig != null ) {
 			DomainSystemConfig.setTheConfiguration(domainConfig);
 		}
@@ -72,13 +73,13 @@ public class RadarSysSprint2ControllerOnRaspMain implements IApplication{
 	    	terminate(); 
 	    };
 		int d = radar.getCurDistance();
-		ColorsOut.outappl("CURRENT DISTANCE answer=" + d,ColorsOut.MAGENTA );
+		ColorsOut.outappl(getName() + " | CURRENT DISTANCE answer=" + d,ColorsOut.MAGENTA );
 		controller.start(endFun, 30);		
 	}
 	public void terminate() {
 		//Utils.delay(1000);  //For the testing ...
 		int d = radar.getCurDistance();
-		ColorsOut.outappl("CURRENT DISTANCE answer=" + d,ColorsOut.MAGENTA );		
+		ColorsOut.outappl(getName() + " |CURRENT DISTANCE answer=" + d,ColorsOut.MAGENTA );		
 		sonar.deactivate();
 		System.exit(0);
 	}	

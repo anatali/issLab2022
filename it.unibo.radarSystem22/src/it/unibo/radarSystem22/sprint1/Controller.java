@@ -41,8 +41,8 @@ private ActionFunction endFun;
 	protected void activate( int limit ) {
  		new Thread() {
 			public void run() { 
-				BasicUtils.aboutThreads("Controller activated | ");
 				try {
+					BasicUtils.aboutThreads("Controller activate | ");
   					boolean sonarActive = sonar.isActive();
 					if( sonarActive ) {
 						for( int i=1; i<=limit; i++) {
@@ -54,7 +54,7 @@ private ActionFunction endFun;
 	 						BasicUtils.delay(DomainSystemConfig.sonarDelay);  //Al ritmo della generazione ...
 	 					}
 					}				
-					//ColorsOut.outappl("Controller | BYE", ColorsOut.BLUE  );
+					//ColorsOut.outappl("Controller | BYE", ColorsOut.BLUE  );					 
 					sonar.deactivate();
 					endFun.run("Controller | BYE ");
 					//System.exit(0);

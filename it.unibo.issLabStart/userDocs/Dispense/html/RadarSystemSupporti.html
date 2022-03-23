@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="RaspberrySoftware" href="RaspberrySoftware.html" />
+    <link rel="next" title="Abilitatori di comunicazione" href="Enablers.html" />
     <link rel="prev" title="Progettazione e sviluppo" href="RadarSystemProgetto.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -177,9 +177,10 @@ dei messaggi in ingresso.</p>
   <span class="p">}</span>
   <span class="nd">@Override</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendAnswerToClient</span><span class="p">(</span><span class="n">String</span> <span class="n">reply</span><span class="p">,</span><span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">){</span>
-      <span class="n">sendMsgToClient</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="n">conn</span><span class="p">);</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="n">conn</span><span class="p">.</span><span class="na">reply</span><span class="p">(</span><span class="n">reply</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
   <span class="p">}</span>
-
   <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">,</span><span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">);</span>
  <span class="p">}</span>
 </pre></div>
@@ -246,7 +247,6 @@ e ne delega la gestione all’<a class="reference internal" href="#msgh"><span c
     <span class="c1">//Accept a connection</span>
     <span class="n">Socket</span> <span class="n">sock</span>  <span class="o">=</span> <span class="n">serversock</span><span class="p">.</span><span class="na">accept</span><span class="p">();</span>       <span class="c1">//1</span>
     <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TcpConnection</span><span class="p">(</span><span class="n">sock</span><span class="p">);</span>
-    <span class="n">applHandler</span><span class="p">.</span><span class="na">setConn</span><span class="p">(</span><span class="n">conn</span><span class="p">);</span>
     <span class="c1">//Create a message handler on the connection</span>
     <span class="k">new</span> <span class="n">TcpApplMessageHandler</span><span class="p">(</span> <span class="n">userDefHandler</span><span class="p">,</span> <span class="n">conn</span> <span class="p">);</span> <span class="c1">//2</span>
   <span class="p">}</span><span class="c1">//while</span>
@@ -482,7 +482,7 @@ protocollo specificato:</p>
 <p><span class="remark">Il ProxyAsClient così definito realizza request-response sincrone (bloccanti)</span></p>
 </section>
 <section id="testing-del-proxyasclient">
-<h3>Testing del <a class="reference internal" href="#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a><a class="headerlink" href="#testing-del-proxyasclient" title="Permalink to this headline">¶</a></h3>
+<span id="testingproxy"></span><h3>Testing del <a class="reference internal" href="#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a><a class="headerlink" href="#testing-del-proxyasclient" title="Permalink to this headline">¶</a></h3>
 <p><span class="worktodo">WORKTODO: realizzare una TestUnit per il proxy</span></p>
 <ul class="simple">
 <li><p>La TestUnit deve attivare un TCPServer con il semplice <a class="reference internal" href="#naivehandler"><span class="std std-ref">NaiveHandler</span></a>, creare un <a class="reference internal" href="#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a> a quel server,
@@ -627,7 +627,10 @@ sul PC e sul RaspberryPi:</p>
 </ul>
 <p>Il deployment della parte di sistema che gira sul RaspberryPi può avvenire secondo gli stessi passi
 riportati in <a class="reference internal" href="RadarSystemProgetto.html#sprint1-deployment-su-raspberrypi"><span class="std std-ref">SPRINT1: Deployment su RaspberryPi</span></a>.</p>
-<p id="sprint2a"><span class="worktodo">WORKTODO: SPRINT2a - Controller sul PC</span></p>
+</section>
+<section id="sprint2a">
+<h4>SPRINT2a<a class="headerlink" href="#sprint2a" title="Permalink to this headline">¶</a></h4>
+<p><span class="worktodo">WORKTODO: SPRINT2a - Controller sul PC</span></p>
 <ul>
 <li><p>Redifinire il sistema in modo che il Controller sia allocato sul PC, lasciando sul RaspberryPi
 solo il software relativo al Led e al Sonar.</p>
@@ -714,12 +717,16 @@ solo il software relativo al Led e al Sonar.</p>
 <li class="toctree-l4"><a class="reference internal" href="#proxy-per-il-radar">Proxy per il radar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#radarapplhandler">RadarApplHandler</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sprint2-deployment">SPRINT2: Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sprint2a">SPRINT2a</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
@@ -729,7 +736,7 @@ solo il software relativo al Led e al Sonar.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="RadarSystemProgetto.html" title="previous chapter">Progettazione e sviluppo</a></li>
-      <li>Next: <a href="RaspberrySoftware.html" title="next chapter">RaspberrySoftware</a></li>
+      <li>Next: <a href="Enablers.html" title="next chapter">Abilitatori di comunicazione</a></li>
   </ul></li>
 </ul>
 </div>

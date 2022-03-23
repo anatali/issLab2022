@@ -12,7 +12,6 @@ import it.unibo.radarSystem22.domain.utils.BasicUtils;
 
 public class TestSystemAtSprint1 {
 private RadarSystemSprint1Main sys;
-private int testingDistance = 0;
 
 	@Before
 	public void setUp() {
@@ -22,8 +21,8 @@ private int testingDistance = 0;
 			sys.setup( null,null );
 			sys.configure();
 			DomainSystemConfig.testing    		= true;   
-			DomainSystemConfig.tracing    		= true; 
-			RadarSystemConfig.tracing    		= true; 
+//			DomainSystemConfig.tracing    		= false; 
+//			RadarSystemConfig.tracing    		= false; 
 		} catch (Exception e) {
 			fail("setup ERROR " + e.getMessage() );
  		}
@@ -37,13 +36,13 @@ private int testingDistance = 0;
 	
 	@Test 
 	public void testFarDistance() {
-		testingDistance = RadarSystemConfig.DLIMIT +20;
+		DomainSystemConfig.testingDistance = DomainSystemConfig.DLIMIT +20;
 		testTheDistance( false );
  	}	
 	
 	@Test 
 	public void testNearDistance( ) {
-		testingDistance = RadarSystemConfig.DLIMIT - 5;
+		DomainSystemConfig.testingDistance = DomainSystemConfig.DLIMIT - 5;
 		testTheDistance( true );
 	}	
 	

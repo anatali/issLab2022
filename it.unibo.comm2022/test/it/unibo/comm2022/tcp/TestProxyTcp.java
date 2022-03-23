@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import it.unibo.comm2022.ProtocolType;
+import it.unibo.comm2022.common.NaiveApplHandler;
 import it.unibo.comm2022.proxy.ProxyAsClient;
 import it.unibo.comm2022.utils.ColorsOut;
 
@@ -19,8 +20,6 @@ public static final int testPort = 8112;
 		System.out.println(" =============== ACTIVATING SERVER  " );
 		server = new TcpServer("tcpServer",testPort, new NaiveApplHandler("naiveH") );		
 		server.activate();		
-		
-		
 	}
 	
 	@After

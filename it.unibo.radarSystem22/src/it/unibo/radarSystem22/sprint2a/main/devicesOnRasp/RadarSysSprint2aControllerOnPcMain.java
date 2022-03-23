@@ -45,14 +45,15 @@ public class RadarSysSprint2aControllerOnPcMain implements IApplication{
 		//Su PC
 		DomainSystemConfig.simulation   	= true;
 		
-		RadarSystemConfig.DLIMIT      		= 12;  
+		RadarSystemConfig.DLIMIT      		= 70;  
 		RadarSystemConfig.RadarGuiRemote    = false;		
-		RadarSystemConfig.raspAddr          = "192.168.1.9";		 	
+		RadarSystemConfig.raspAddr          = "localhost"; //"192.168.1.9";		 	
 		
 		CommSystemConfig.tracing            = false;
 	}
 	
 	public void configure(  )  {	
+ 		//ProtocolType protocol = ProtocolType.tcp;
  		ProtocolType protocol = ProtocolType.tcp;
 		
  		led    		= new LedProxyAsClient("ledPxy",     
@@ -74,11 +75,6 @@ public class RadarSysSprint2aControllerOnPcMain implements IApplication{
 	public String getName() {
 		return this.getClass().getName() ; //"RadarSystemSprint2OnPcMain";
 	}
-	//Get the system components 
-	 	public IRadarDisplay getRadarGui() { return radar; }
-	 	public ILed getLed() { return led; }
-	 	public ISonar getSonar() { return sonar; }
-	 	public Controller getController() { return controller; }
 
 	public static void main( String[] args) throws Exception {
 		BasicUtils.aboutThreads("At INIT with NO CONFIG files| ");

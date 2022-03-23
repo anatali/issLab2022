@@ -3,16 +3,16 @@ package it.unibo.comm2022.enablers;
 import it.unibo.comm2022.ProtocolType;
 import it.unibo.comm2022.interfaces.IApplMsgHandler;
 import it.unibo.comm2022.tcp.TcpServer;
+import it.unibo.comm2022.udp.giannatempo.UdpServer;
 import it.unibo.comm2022.utils.ColorsOut;
-/*
- * Attiva un server relativo al protocollo specificato (se non null)
- */
+ 
  
 public class EnablerAsServer   {  
 private static int count=1;
 protected String name;
 protected ProtocolType protocol;
 protected TcpServer serverTcp;
+protected UdpServer serverUdp;
 protected boolean isactive = false;
 
 	public EnablerAsServer( String name, int port, ProtocolType protocol, IApplMsgHandler handler )   { 
@@ -28,10 +28,15 @@ protected boolean isactive = false;
 	}
 	
  	protected void setServerSupport( int port, ProtocolType protocol, IApplMsgHandler handler   ) throws Exception{
-		if( protocol == ProtocolType.tcp || protocol == ProtocolType.udp) {
+		if( protocol == ProtocolType.tcp  ) {
 			serverTcp = new TcpServer( "EnabSrvTcp_"+count++, port,  handler );
 			ColorsOut.out(name+" |  CREATED  on port=" + port + " protocol=" + protocol + " handler="+handler);
-		}else if( protocol == ProtocolType.coap ) {
+		}
+		else if( protocol == ProtocolType.udp ) {  
+			//ColorsOut.out(name+" |  Do nothing for udp" );
+			serverUdp = new UdpServer("ledServerUdp"+count++,port,handler);
+		}
+		else if( protocol == ProtocolType.coap ) {
 			//CoapApplServer.getTheServer();	//Le risorse sono create alla configurazione del sistema
 			ColorsOut.out(name+" |  CREATED  CoapApplServer"  );
 		}
@@ -47,19 +52,22 @@ protected boolean isactive = false;
  		return isactive;
  	}
 	public void  start() {
-		if( protocol == ProtocolType.tcp || protocol == ProtocolType.udp ) {
-	 		//Colors.out(name+" |  ACTIVATE"   );
-			serverTcp.activate();
-			isactive = true;
-		} 			
+		switch( protocol ) {
+ 	   		case tcp :  { serverTcp.activate();break;}
+ 	   		case udp:   { serverUdp.activate();break;}
+ 	   		default: break;
+ 	    }
+		isactive = true;
  	}
  
  	public void stop() {
  		//Colors.out(name+" |  deactivate  "  );
-		if( protocol == ProtocolType.tcp ) {
-			serverTcp.deactivate();
-			isactive = false;
-		} 		
+		switch( protocol ) {
+	   		case tcp :  { serverTcp.deactivate();break;}
+	   		case udp:   { serverUdp.deactivate();break;}
+	   		default: break;
+	    }
+		isactive = false;
  	}
   	 
 }

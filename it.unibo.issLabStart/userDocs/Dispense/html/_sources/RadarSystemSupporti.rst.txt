@@ -214,9 +214,10 @@ dei messaggi in ingresso.
     } 
     @Override
     public void sendAnswerToClient(String reply,Interaction2021 conn){
-        sendMsgToClient(reply, conn);
-    }
-    
+      try {
+        conn.reply(reply);
+      } catch (Exception e) { ... }
+    }    
     public abstract void elaborate(String message,Interaction2021 conn);
    }
 
@@ -298,7 +299,6 @@ Il metodo ``run`` che specifica il funzionamento del server, opera come segue:
       //Accept a connection				 
       Socket sock  = serversock.accept();	//1
       Interaction2021 conn = new TcpConnection(sock);
-      applHandler.setConn(conn);
       //Create a message handler on the connection
       new TcpApplMessageHandler( userDefHandler, conn ); //2			 		
     }//while
@@ -592,6 +592,8 @@ sendRequestOnConnection
 
 :remark:`Il ProxyAsClient così definito realizza request-response sincrone (bloccanti)`
 
+.. _testingProxy:
+
 ++++++++++++++++++++++++++++++++++++++++
 Testing del :ref:`ProxyAsClient`
 ++++++++++++++++++++++++++++++++++++++++
@@ -779,7 +781,12 @@ Il deployment della parte di sistema che gira sul RaspberryPi può avvenire seco
 riportati in :ref:`SPRINT1: Deployment su RaspberryPi`.
 
 
-.. _sprint2a:
+ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+SPRINT2a 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 :worktodo:`WORKTODO: SPRINT2a - Controller sul PC`
 

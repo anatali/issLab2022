@@ -5,6 +5,7 @@ import it.unibo.comm2022.ProtocolType;
 import it.unibo.comm2022.interfaces.Interaction2021;
 import it.unibo.comm2022.utils.ColorsOut;
 import it.unibo.comm2022.tcp.TcpClientSupport;
+import it.unibo.comm2022.udp.giannatempo.UdpClientSupport;
  
 public class ProxyAsClient {
 private Interaction2021 conn; 
@@ -35,6 +36,11 @@ protected ProtocolType protocol ;
 				//conn = new TcpConnection( new Socket( host, port ) ) ; //non fa attempts
 				conn = TcpClientSupport.connect(host,  port, 10); //10 = num of attempts
 				ColorsOut.out(name + " |  setConnection "  + conn, ColorsOut.BLUE );		
+				break;
+			}
+			case udp : {
+				int port = Integer.parseInt(entry);
+ 				conn = UdpClientSupport.connect(host,  port );  
 				break;
 			}
 			case coap : {
@@ -83,7 +89,7 @@ protected ProtocolType protocol ;
 	public void close() {
 		try {
 			conn.close();
-			ColorsOut.out(name + " |  CLOSED " + conn  );
+			ColorsOut.out(name + " |  CLOSED " + conn   );
 		} catch (Exception e) {
 			ColorsOut.outerr( name+"  | sendRequestOnConnection ERROR=" + e.getMessage()  );		}
 	}

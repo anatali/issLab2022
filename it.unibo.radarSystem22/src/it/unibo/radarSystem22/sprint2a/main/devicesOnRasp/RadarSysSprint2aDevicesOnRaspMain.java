@@ -1,8 +1,10 @@
 package it.unibo.radarSystem22.sprint2a.main.devicesOnRasp;
 
  
+import it.unibo.comm2022.ProtocolType;
 import it.unibo.comm2022.interfaces.IApplMsgHandler;
 import it.unibo.comm2022.tcp.TcpServer;
+import it.unibo.comm2022.udp.giannatempo.UdpServer;
 import it.unibo.comm2022.utils.CommSystemConfig;
 import it.unibo.radarSystem22.IApplication;
 import it.unibo.radarSystem22.domain.DeviceFactory;
@@ -12,7 +14,6 @@ import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 import it.unibo.radarSystem22.sprint1.RadarSystemConfig;
 import it.unibo.radarSystem22.sprint2a.handlers.LedApplHandler;
 import it.unibo.radarSystem22.sprint2a.handlers.SonarApplHandler;
-
  
  
 /*
@@ -24,6 +25,8 @@ public class RadarSysSprint2aDevicesOnRaspMain implements IApplication{
 	private ILed  led ;
 	private TcpServer ledServer ;
 	private TcpServer sonarServer ;
+	private UdpServer ledServerUdp ;
+	private UdpServer sonarServerUdp ;
 
 	@Override
 	public void doJob(String domainConfig, String systemConfig) {
@@ -50,24 +53,37 @@ public class RadarSysSprint2aDevicesOnRaspMain implements IApplication{
 	
 			RadarSystemConfig.tracing           = false;		
 			RadarSystemConfig.RadarGuiRemote    = true;		
+			RadarSystemConfig.protcolType       = ProtocolType.tcp;		
 		}
  
 	}
 	protected void configure() {		
- 	   led        = DeviceFactory.createLed();
+	  ProtocolType protocol = RadarSystemConfig.protcolType;
+	   led        = DeviceFactory.createLed();
  	   IApplMsgHandler ledh = LedApplHandler.create("ledh", led);
- 	   ledServer     = new TcpServer("ledServer",RadarSystemConfig.ledPort,ledh );
-
+ 	   switch( protocol ) {
+ 	   	case tcp :  { ledServer     = new TcpServer("ledServer",RadarSystemConfig.ledPort,ledh );break;}
+ 	   	case udp:   { ledServerUdp  = new UdpServer("ledServerUdp",RadarSystemConfig.ledPort,ledh);break;}
+ 	   	default: break;
+ 	   }
+// 	   ledServer     = new TcpServer("ledServer",RadarSystemConfig.ledPort,ledh );
+  	  
 	   sonar      = DeviceFactory.createSonar();
  	   IApplMsgHandler sonarh = SonarApplHandler.create("sonarh", sonar);
- 	   sonarServer   = new TcpServer("sonarServer",RadarSystemConfig.sonarPort,sonarh );
-
- 	   
-	}
+// 	   sonarServer   = new TcpServer("sonarServer",RadarSystemConfig.sonarPort,sonarh );
+ 	   switch( protocol ) {
+	   	case tcp : { sonarServer   = new TcpServer("sonarServer",RadarSystemConfig.sonarPort,sonarh);break;}
+	   	case udp:  { sonarServerUdp= new UdpServer("sonarServerUdp",RadarSystemConfig.sonarPort,sonarh);break;}
+	   	default: break;
+	   }
+ 	}
 	
 	protected void execute() {		
-		ledServer.activate();
-		sonarServer.activate();
+		switch( RadarSystemConfig.protcolType ) {
+			case tcp : { ledServer.activate();    sonarServer.activate();    break;}
+			case udp : { ledServerUdp.activate(); sonarServerUdp.activate(); break;}
+			default: break;
+		}
 	}
 	
 	@Override

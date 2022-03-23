@@ -3,12 +3,10 @@ package it.unibo.radarSystem22.sprint1;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import it.unibo.comm2022.ProtocolType;
 import it.unibo.radarSystem22.domain.utils.ColorsOut;
 
 
@@ -21,12 +19,11 @@ public class RadarSystemConfig {
 //Aggiunte dello SPRINT2	
  	public static String hostAddr         = "localhost";		
 	public static String raspAddr         = "localhost";		
-	public static int serverPort          = 8023;
-//Aggiunte dello SPRINT2a 	
+	public static int serverPort          = 8080;
+//Aggiunte dello SPRINT2a e 3
 	public static int ledPort             = 8010;
 	public static int sonarPort           = 8015;
- 	
-	
+	public static ProtocolType protcolType= ProtocolType.tcp;
 	
 	public static void setTheConfiguration(  ) {
 		setTheConfiguration("../RadarSystemConfig.json");
@@ -40,9 +37,7 @@ public class RadarSystemConfig {
 			if(  fis == null ) {
  				 fis = new FileInputStream(new File(resourceName));
 			}
-//	        JSONTokener tokener = new JSONTokener(fis);
-			Reader reader       = new InputStreamReader(fis);
-			JSONTokener tokener = new JSONTokener(reader);      
+	        JSONTokener tokener = new JSONTokener(fis);
 	        JSONObject object   = new JSONObject(tokener);
 	 		
    	        tracing          = object.getBoolean("tracing");
@@ -56,6 +51,12 @@ public class RadarSystemConfig {
 //Aggiunte dello SPRINT2a
 	        ledPort         = object.getInt("ledPort");
 	        sonarPort       = object.getInt("sonarPort");
+	        
+	        switch( object.getString("protocolType") ) {
+		        case "tcp"  : protcolType = ProtocolType.tcp; break;
+		        case "coap" : protcolType = ProtocolType.coap; break;
+		        case "mqtt" : protcolType = ProtocolType.mqtt; break;
+	        }	        
 	        
 		} catch (FileNotFoundException e) {
  			ColorsOut.outerr("setTheConfiguration ERROR " + e.getMessage() );

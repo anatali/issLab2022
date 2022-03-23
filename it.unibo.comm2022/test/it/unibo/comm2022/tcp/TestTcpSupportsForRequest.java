@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import it.unibo.comm2022.common.NaiveApplHandler;
+
 
 public class TestTcpSupportsForRequest {
 private TcpServer server;

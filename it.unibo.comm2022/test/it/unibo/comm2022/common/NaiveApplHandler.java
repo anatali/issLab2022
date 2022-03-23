@@ -1,7 +1,8 @@
-package it.unibo.comm2022.tcp;
+package it.unibo.comm2022.common;
 
 import it.unibo.comm2022.ApplMsgHandler;
 import it.unibo.comm2022.interfaces.Interaction2021;
+import it.unibo.comm2022.utils.ColorsOut;
 
 public class NaiveApplHandler extends ApplMsgHandler {
 
@@ -12,8 +13,9 @@ public class NaiveApplHandler extends ApplMsgHandler {
 
 	@Override
 	public void elaborate(String message, Interaction2021 conn) {
-		System.out.println(name + " | elaborate " + message + " conn=" + conn);
-		this.sendMsgToClient("answerTo_"+message, conn);
+		ColorsOut.out(name + " | elaborate " + message + " conn=" + conn);
+		//this.sendMsgToClient("answerTo_"+message, conn);  //MODIFIED for udp 
+		sendAnswerToClient("answerTo_"+message, conn);
   	}
 
 }
