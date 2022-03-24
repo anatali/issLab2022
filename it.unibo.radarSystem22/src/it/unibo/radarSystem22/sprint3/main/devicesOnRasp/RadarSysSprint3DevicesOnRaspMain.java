@@ -53,7 +53,7 @@ public class RadarSysSprint3DevicesOnRaspMain implements IApplication{
 	
 			RadarSystemConfig.tracing           = false;		
 			RadarSystemConfig.RadarGuiRemote    = true;		
-			RadarSystemConfig.protcolType       = ProtocolType.udp;		
+			RadarSystemConfig.protcolType       = ProtocolType.tcp;		
 		}
  
 	}
