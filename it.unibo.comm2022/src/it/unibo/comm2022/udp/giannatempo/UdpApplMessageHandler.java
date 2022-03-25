@@ -25,7 +25,7 @@ public UdpApplMessageHandler(  IApplMsgHandler handler, Interaction2021 conn ) {
 			while( true ) {
 				//ColorsOut.out(name + " | waits for message  ...");
 			    String msg = conn.receiveMsg();
-			    ColorsOut.out(name + "  | UdpApplMessageHandler received:" + msg + " handler="+handler, ColorsOut.GREEN );
+			    ColorsOut.out(name + "  | UdpApplMessageHandler received:" + msg + " handler="+handler, ColorsOut.BLUE );
 			    if( msg == null ) {
 			    	conn.close();
 			    	break;

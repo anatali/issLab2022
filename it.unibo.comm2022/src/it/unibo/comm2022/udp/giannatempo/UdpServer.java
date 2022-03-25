@@ -50,12 +50,14 @@ protected boolean stopped = true;
 	            if(conn == null) {
 	            	conn = new UdpServerConnection(socket, client, connectionsMap);
 	            	connectionsMap.put(client, conn);
-	            }else {
+			 		//Create HERE a message handler on the connection !!!
+			 		new UdpApplMessageHandler( userDefHandler, conn );		 	 		
+            }else {
 	            	 ColorsOut.outappl("UdpServer | CONNECTION ALREADY SET with " + client, ColorsOut.GREEN   ); 
 	            }
 	            conn.handle(packet);		 
-		 		//Create a message handler on the connection
-		 		new UdpApplMessageHandler( userDefHandler, conn );			 		
+		 		//Create a message handler on the connection NOT HERE!!
+		 		//new UdpApplMessageHandler( userDefHandler, conn );			 		
 			}//while
 		  }catch (Exception e) {  //Scatta quando la deactive esegue: serversock.close();
 			  ColorsOut.out( "UdpServer |  probably socket closed: " + e.getMessage(), ColorsOut.GREEN);		 
