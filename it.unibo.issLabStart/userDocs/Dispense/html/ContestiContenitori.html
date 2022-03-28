@@ -35,7 +35,7 @@
             
   <section id="contesti-contenitori">
 <h1>Contesti-contenitori<a class="headerlink" href="#contesti-contenitori" title="Permalink to this headline">¶</a></h1>
-<p>Nella versione attuale, ogni <a class="reference internal" href="Enablers.html#enablerasserver"><span class="std std-ref">enable</span></a> attiva un <code class="docutils literal notranslate"><span class="pre">TCPServer</span></code> su una propria porta.</p>
+<p>Nella versione attuale, ogni <a class="reference internal" href="Enablers.html#enablerasserver"><span class="std std-ref">enabler</span></a> attiva un <code class="docutils literal notranslate"><span class="pre">TCPServer</span></code> su una propria porta.</p>
 <a class="reference internal image-reference" href="_images/EnablersLedSonar.PNG"><img alt="_images/EnablersLedSonar.PNG" class="align-center" src="_images/EnablersLedSonar.PNG" style="width: 70%;" /></a>
 <p>Una ottimizzazione delle risorse può essere ottenuta introducendo <span class="blue">un solo TCPServer</span> per ogni nodo
 computazionale.</p>
@@ -49,17 +49,31 @@ tali messaggi a ‘livello di sistema’;</p></li>
 <li><p>fungere da contenitore di componenti  capaci di gestire i messaggi a livello applicativo.</p></li>
 </ul>
 <p>D’ora in poi denomineremo col termine generico <code class="docutils literal notranslate"><span class="pre">Contesto</span></code> un componente di questo tipo, lasciando
-indeterminata la sua natura.</p>
-<p>In questa fase dello sviluppo, è tuttavia opportuno realizzare la nuova idea riusando il software sviluppato
+indeterminata la sua natura. Ogni contesto dovrà però supportare le funzionalità indicate e quindi
+soddisfare un ‘contratto’ esprimibile al solito attraverso una interfaccia</p>
+<section id="icontext">
+<h3>IContext<a class="headerlink" href="#icontext" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IContext</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span> <span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deactivate</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’assenza di metodi come <code class="docutils literal notranslate"><span class="pre">send/receive</span></code> di messaggi significa che non pensiamo al contesto
+come a un supporto per comunicare, ma piuttosto come un ‘ambiente’ che fornisce queste capacità
+(una volta attivato) ai componenti che contiene.</p>
+<p>In questa fase dello sviluppo, cercheremo di realizzare l’idea di Contesto riusando il software sviluppato
 negli SPRINT precedenti. In questa prospettiva:</p>
 <ul class="simple">
-<li><p>il contesto potrà essere implementato da una classe (denominata <a class="reference internal" href="#tcpcontextserver"><span class="std std-ref">TcpContextServer</span></a>) che specializza
-la classe  <a class="reference internal" href="RadarSystemSupporti.html#tcpserver"><span class="std std-ref">TcpServer</span></a>;</p></li>
+<li><p>il contesto potrà essere implementato da una classe che realizza un <a class="reference internal" href="Enablers.html#enablerasserver"><span class="std std-ref">enabler</span></a>
+a livello di nodo (si veda <a class="reference internal" href="#enablercontext"><span class="std std-ref">EnablerContext</span></a>) ;</p></li>
 <li><p>componenti applicativi gestori dei messaggi potrano essere definiti da classi che specializzano la classe
 <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler"><span class="std std-ref">ApplMsgHandler</span></a>  e implementano <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">L’interfaccia IApplMsgHandler</span></a>;</p></li>
 <li><p>il contesto deve reindirizzare un messaggio ad uno specifico
 componente applicativo (come <a class="reference internal" href="Enablers.html#ledapplhandler"><span class="std std-ref">LedApplHandler</span></a> e <a class="reference internal" href="Enablers.html#sonarapplhandler"><span class="std std-ref">SonarApplHandler</span></a>). Questa
-gestione  a ‘livello di sistema’ dei messaggi può essere delegato
+gestione  a ‘livello di sistema’ dei messaggi può essere delegata
 a un oggetto <a class="reference internal" href="#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a> di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>
 che funge da anche da <strong>contenitore di componenti</strong>.</p></li>
 </ul>
@@ -75,6 +89,7 @@ che ci darà  anche uno
 che svolge il ruolo di un ‘interprete di sistema’.  La sua operazione
 <code class="docutils literal notranslate"><span class="pre">elaborate(String</span> <span class="pre">message)</span></code> effettua il voluto reindirizzamento del messaggio
 a uno dei componenti applicativi memorizzati.</p>
+</section>
 <section id="struttura-dei-messaggi-applicativi">
 <span id="msgapplicativi"></span><h3>Struttura dei messaggi applicativi<a class="headerlink" href="#struttura-dei-messaggi-applicativi" title="Permalink to this headline">¶</a></h3>
 <p>Introduciamo dunque una  estensione sulla struttura dei messaggi, che ci darà d’ora in poi anche uno
@@ -120,7 +135,8 @@ i messaggi scambiati sono logicamente suddivisi in diverse categorie:</p>
 </div>
 <section id="rappresentazione-dei-messaggi">
 <h4>Rappresentazione dei messaggi<a class="headerlink" href="#rappresentazione-dei-messaggi" title="Permalink to this headline">¶</a></h4>
-<p>La rappresentazione in forma di String dei messaggi seguirà le regole della sitassi <a class="reference external" href="https://it.wikipedia.org/wiki/Prolog">Prolog</a>. In particolare:</p>
+<p>La rappresentazione in forma di String dei messaggi seguirà le regole della sitassi <a class="reference external" href="https://it.wikipedia.org/wiki/Prolog">Prolog</a>.
+In particolare:</p>
 <ul class="simple">
 <li><p>gli identificatori <code class="docutils literal notranslate"><span class="pre">MSGID,SENDER,RECEIVER</span></code> sono espressi da <strong>atomi</strong> Prolog formati da lettere minuscole;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">MSGTYPE</span></code> è un atomo prefissato (al momento) tra i seguenti: <code class="docutils literal notranslate"><span class="pre">dispatch,</span> <span class="pre">request,</span> <span class="pre">reply</span></code>;</p></li>
@@ -134,6 +150,27 @@ i messaggi scambiati sono logicamente suddivisi in diverse categorie:</p>
 <span class="n">msg</span><span class="p">(</span><span class="n">req</span><span class="p">,</span><span class="n">request</span><span class="p">,</span><span class="n">main</span><span class="p">,</span><span class="n">led</span><span class="p">,</span><span class="n">info</span><span class="p">(</span><span class="n">getState</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="iapplmessage">
+<h4>IApplMessage<a class="headerlink" href="#iapplmessage" title="Permalink to this headline">¶</a></h4>
+<p>Una appropriata interfaccia definisce i metodi per l’accesso ai diversi campi del messaggio
+e i predicati che permettono di testarne il tipo:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplMessage</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgId</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgType</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgSender</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgReceiver</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgContent</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgNum</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isDispatch</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isRequest</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isReply</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isEvent</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
 </section>
 <section id="il-problema-delle-risposte">
 <h4>Il problema delle risposte<a class="headerlink" href="#il-problema-delle-risposte" title="Permalink to this headline">¶</a></h4>
@@ -174,8 +211,7 @@ il software relativo al dominio, che ovviamente non cambia.</p>
 <section id="la-classe-applmessage">
 <span id="applmessage"></span><h3>La classe ApplMessage<a class="headerlink" href="#la-classe-applmessage" title="Permalink to this headline">¶</a></h3>
 <p>La classe <code class="docutils literal notranslate"><span class="pre">ApplMessage</span></code> fornisce metodi per la costruzione e la gestione di messaggi organizzati
-nel modo descritto. La classe si avvale del supporto del <a class="reference external" href="https://apice.unibo.it/xwiki/bin/view/Tuprolog/">tuProlog</a> per il passaggio della rapprresentazione
-in forma di String a una rappresentazione interna manipolabile da programma e viceversa.</p>
+nel modo descritto.</p>
 <blockquote>
 <div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ApplMessage</span> <span class="kd">implements</span> <span class="n">IApplMessage</span><span class="p">{</span>
   <span class="kd">protected</span> <span class="n">String</span> <span class="n">msgId</span>       <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
@@ -206,25 +242,74 @@ in forma di String a una rappresentazione interna manipolabile da programma e vi
 </pre></div>
 </div>
 </div></blockquote>
-</section>
-<section id="iapplmessage">
-<h3>IApplMessage<a class="headerlink" href="#iapplmessage" title="Permalink to this headline">¶</a></h3>
+<p>La classe si avvale del supporto del <a class="reference external" href="http://amsacta.unibo.it/5450/7/tuprolog-guide.pdf">tuProlog</a> per il passaggio della rapprresentazione
+in forma di String (<code class="docutils literal notranslate"><span class="pre">msg</span></code>) a una rappresentazione interna manipolabile da programma:</p>
 <blockquote>
-<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplMessage</span> <span class="p">{</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgId</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgType</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgSender</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgReceiver</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgContent</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">msgNum</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isDispatch</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isRequest</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isReply</span><span class="p">();</span>
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isEvent</span><span class="p">();</span>
+<div><p><code class="docutils literal notranslate"><span class="pre">Struct</span> <span class="pre">msgStruct</span> <span class="pre">=</span> <span class="pre">(Struct)</span> <span class="pre">Term.createTerm(msg);</span></code></p>
+</div></blockquote>
+<section id="il-metodo-setfields">
+<h4>Il metodo setFields<a class="headerlink" href="#il-metodo-setfields" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <strong>setFields</strong> definito nella classe trasforma il messaggio espresso come termine Prolog
+nell’insieme dei campi in forma di String.</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">private</span> <span class="kt">void</span> <span class="nf">setFields</span><span class="p">(</span> <span class="n">Struct</span> <span class="n">msgStruct</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">msgId</span> <span class="o">=</span> <span class="n">msgStruct</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span>
+    <span class="n">msgType</span> <span class="o">=</span> <span class="n">msgStruct</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span>
+    <span class="n">msgSender</span> <span class="o">=</span> <span class="n">msgStruct</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span>
+    <span class="n">msgReceiver</span>  <span class="o">=</span> <span class="n">msgStruct</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span>
+    <span class="n">msgContent</span>  <span class="o">=</span> <span class="n">msgStruct</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">4</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span>
+    <span class="n">msgNum</span>  <span class="o">=</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">msgStruct</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">5</span><span class="p">).</span><span class="na">toString</span><span class="p">());</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div></blockquote>
+</section>
+</section>
+<section id="perche-prolog">
+<h3>Perchè Prolog?<a class="headerlink" href="#perche-prolog" title="Permalink to this headline">¶</a></h3>
+<p>La scelta di rappresentare i messaggi come <em>termini Prolog</em> permette di sfruttare il meccanisimo
+della <strong>unificazione sintattica</strong> per accedere alle informazioni contenute nel messaggio.</p>
+<p>Ad esempio, consideriamo il seguente messaggio in forma di String:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">cmd,</span> <span class="pre">dispatch,</span> <span class="pre">main,</span> <span class="pre">led,</span> <span class="pre">turn(off),</span> <span class="pre">1)</span></code></p>
+</div></blockquote>
+<p id="accesso-al-payload-usando-prolog">Volendo accedere al payload del messaggio, possiamo definire il seguente codice (come
+<em>TestUnit</em>, nel file <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22_4.prolog.TestProlog</span></code>):</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestProlog</span> <span class="p">{</span>
+  <span class="kd">private</span> <span class="n">String</span> <span class="n">cmd</span><span class="p">;</span>
+  <span class="kd">private</span> <span class="n">Struct</span> <span class="n">cmdAsTerm</span><span class="p">;</span>
+
+<span class="nd">@Before</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="p">()</span> <span class="p">{</span>
+       <span class="n">cmd</span>       <span class="o">=</span> <span class="s">&quot;msg( cmd, dispatch, main, led, turn(off), 1)&quot;</span><span class="p">;</span>
+       <span class="n">cmdAsTerm</span> <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span> <span class="n">Term</span><span class="p">.</span><span class="na">createTerm</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+<span class="p">}</span>
+      <span class="nd">@Test</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test0</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Struct</span> <span class="n">payload</span>   <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span> <span class="n">cmdAsTerm</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+          <span class="n">assertEquals</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="s">&quot;turn(off)&quot;</span><span class="p">);</span>
+          <span class="n">Term</span> <span class="n">onOff</span>       <span class="o">=</span> <span class="n">payload</span><span class="p">.</span><span class="na">getArg</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+          <span class="n">assertEquals</span><span class="p">(</span> <span class="n">onOff</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="s">&quot;off&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
+<p>Ma possiamo anche usare l’unificazione attivando la <a class="reference external" href="http://amsacta.unibo.it/5450/7/tuprolog-guide.pdf">tuProlog</a>-engine:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testUnify</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Prolog</span> <span class="n">pengine</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Prolog</span><span class="p">();</span>
+  <span class="n">String</span> <span class="n">cmdTemplate</span> <span class="o">=</span> <span class="s">&quot;msg( cmd, MSGTYPE, main, led, turn(X), 1)&quot;</span><span class="p">;</span>
+  <span class="n">String</span> <span class="n">goal</span>      <span class="o">=</span> <span class="n">cmdAsTerm</span><span class="o">+</span><span class="s">&quot;=&quot;</span><span class="o">+</span><span class="n">cmdTemplate</span><span class="p">;</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">SolveInfo</span> <span class="n">sol</span> <span class="o">=</span> <span class="n">pengine</span><span class="p">.</span><span class="na">solve</span><span class="p">(</span> <span class="n">goal</span><span class="o">+</span><span class="s">&quot;.&quot;</span> <span class="p">);</span>
+    <span class="n">Term</span> <span class="n">msgType</span> <span class="o">=</span> <span class="n">sol</span><span class="p">.</span><span class="na">getVarValue</span><span class="p">(</span><span class="s">&quot;MSGTYPE&quot;</span><span class="p">);</span>
+    <span class="n">assertEquals</span><span class="p">(</span> <span class="n">msgType</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="s">&quot;dispatch&quot;</span><span class="p">);</span>
+    <span class="n">Term</span> <span class="n">data</span> <span class="o">=</span> <span class="n">sol</span><span class="p">.</span><span class="na">getVarValue</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">);</span>
+    <span class="n">assertEquals</span><span class="p">(</span> <span class="n">data</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="s">&quot;off&quot;</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Sono evidentemente possibili molte altre forme di rappresentazione interna, tra cui <a class="reference external" href="https://it.wikipedia.org/wiki/JavaScript_Object_Notation">Json</a>.</p>
 <section id="estensione-della-interfaccia-iapplmsghandler">
 <span id="iapplmsghandleresteso"></span><h4>Estensione della interfaccia <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a><a class="headerlink" href="#estensione-della-interfaccia-iapplmsghandler" title="Permalink to this headline">¶</a></h4>
 <p>Provvediamo a modificare il contratto relativo ai gestori dei messaggi di
@@ -235,9 +320,9 @@ livello applicativo che sono ora di tipo <a class="reference internal" href="#ap
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><span class="remark">messaggi standard di sistema</span></p>
+<p><span class="remark">messaggi standard di sistema come IApplMessage</span></p>
 <ul>
-<li><p>D’ora in poi il metodo <code class="docutils literal notranslate"><span class="pre">elaborate</span></code> con argomento <code class="docutils literal notranslate"><span class="pre">IApplMessage&lt;IApplMessage&gt;</span></code> diventerà il metodo di riferimento
+<li><p>D’ora in poi il metodo <code class="docutils literal notranslate"><span class="pre">elaborate</span></code> con argomento <a class="reference internal" href="#iapplmessage"><span class="std std-ref">IApplMessage</span></a> diventerà il metodo di riferimento
 per la gestione dei messaggi. In altre parole, tutte le nostre applicazioni distribuite
 invieranno messaggi della forma:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span><span class="p">(</span> <span class="n">MSGID</span><span class="p">,</span> <span class="n">MSGTYPE</span><span class="p">,</span> <span class="n">SENDER</span><span class="p">,</span> <span class="n">RECEIVER</span><span class="p">,</span> <span class="n">CONTENT</span><span class="p">,</span> <span class="n">SEQNUM</span> <span class="p">)</span>
@@ -246,13 +331,25 @@ invieranno messaggi della forma:</p>
 </li>
 </ul>
 </section>
+<section id="estensione-della-interfaccia-iapplintepreter">
+<h4>Estensione della interfaccia <a class="reference internal" href="Enablers.html#iapplintepreternoctx"><span class="std std-ref">IApplIntepreter</span></a><a class="headerlink" href="#estensione-della-interfaccia-iapplintepreter" title="Permalink to this headline">¶</a></h4>
+<p>In modo analogo, modifichiamo il contratto relativo alla interpretazione dei messaggi:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplIntepreter</span> <span class="p">{</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 <section id="modifica-della-classe-applmsghandler">
 <h4>Modifica della classe <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler"><span class="std std-ref">ApplMsgHandler</span></a><a class="headerlink" href="#modifica-della-classe-applmsghandler" title="Permalink to this headline">¶</a></h4>
 <p>Di conseguenza, introduciamo nella classe astratta <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler"><span class="std std-ref">ApplMsgHandler</span></a>
-la specifica del metodo <code class="docutils literal notranslate"><span class="pre">abstract</span>&#160; <span class="pre">elaborate(</span> <span class="pre">ApplMessage</span> <span class="pre">message,</span> <span class="pre">Interaction2021</span> <span class="pre">conn</span> <span class="pre">)</span></code>
-che dovrà essere definito dalle classi specializzate.</p>
-<section id="preparereply">
-<h5>prepareReply<a class="headerlink" href="#preparereply" title="Permalink to this headline">¶</a></h5>
+la specifica del metodo</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">abstract</span>&#160; <span class="pre">elaborate(</span> <span class="pre">ApplMessage</span> <span class="pre">message,</span> <span class="pre">Interaction2021</span> <span class="pre">conn</span> <span class="pre">)</span></code></p>
+</div></blockquote>
+<p>che dovrà essere definito dalle classi specializzate.</p>
+<section id="metodo-preparereply">
+<span id="preparereply"></span><h5>Metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code><a class="headerlink" href="#metodo-preparereply" title="Permalink to this headline">¶</a></h5>
 <p>Per associare le risposte alle richieste, viene introdotto il  metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code> che
 generare un messaggio strutturato <code class="docutils literal notranslate"><span class="pre">msg/6</span></code> tale che:</p>
 <ul class="simple">
@@ -276,47 +373,60 @@ generare un messaggio strutturato <code class="docutils literal notranslate"><sp
 </div>
 </section>
 </section>
-<section id="estensione-della-interfaccia-iapplintepreter">
-<span id="iapplintepreteresteso"></span><h4>Estensione della interfaccia <a class="reference internal" href="Enablers.html#iapplintepreternoctx"><span class="std std-ref">IApplIntepreter</span></a><a class="headerlink" href="#estensione-della-interfaccia-iapplintepreter" title="Permalink to this headline">¶</a></h4>
-<p>In modo analogo, modifichiamo il contratto relativo alla interpretazione dei messaggi:</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplIntepreter</span> <span class="p">{</span>
-   <span class="kd">public</span> <span class="n">String</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span> <span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 </section>
-</section>
-<section id="il-tcpcontextserver">
-<span id="tcpcontextserver"></span><h3>Il TcpContextServer<a class="headerlink" href="#il-tcpcontextserver" title="Permalink to this headline">¶</a></h3>
-<p>Il <code class="docutils literal notranslate"><span class="pre">TcpContextServer</span></code> è una specializzazione del <a class="reference internal" href="RadarSystemSupporti.html#tcpserver"><span class="std std-ref">TcpServer</span></a> che lega il campo <code class="docutils literal notranslate"><span class="pre">userDefHandler</span></code>
-a un gestore di messaggi (il <a class="reference internal" href="#contextmsghandler">ContextMsgHandler</a> ) che ha il compito
-di reindirizzare il messaggio ricevuto di forma <code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">MSGID,</span> <span class="pre">MSGTYPE,</span> <span class="pre">SENDER,</span> <span class="pre">RECEIVER,</span> <span class="pre">CONTENT,</span> <span class="pre">SEQNUM</span> <span class="pre">)</span></code>
-al gestore applicativo, sulla base dell’attributo  <code class="docutils literal notranslate"><span class="pre">RECEIVER</span></code>.</p>
+<section id="abilitatore-di-contesto">
+<span id="iapplintepreteresteso"></span><h3>Abilitatore di contesto<a class="headerlink" href="#abilitatore-di-contesto" title="Permalink to this headline">¶</a></h3>
+<p>Scopo primario del contesto è fornire ai componenti appicativi di un nodo la capacità
+di inviare e ricevere messaggi attraverso l’uso di un protocollo di comunicazione.</p>
+<p>Se ci limitassimo all’uso del solo TCP, potremmo introdurre una classe
+<code class="docutils literal notranslate"><span class="pre">TcpContextServer</span></code> che implementa <a class="reference internal" href="#icontext">IContext</a> come specializzazione del <a class="reference internal" href="RadarSystemSupporti.html#tcpserver"><span class="std std-ref">TcpServer</span></a>,
+legando il campo <code class="docutils literal notranslate"><span class="pre">userDefHandler</span></code> a un gestore di messaggi
+(il  <a class="reference internal" href="#contextmsghandler">ContextMsgHandler</a> ) che ha il compito
+di reindirizzare messaggi di forma <code class="docutils literal notranslate"><span class="pre">msg(MSGID,MSGTYPE,SENDER,RECEIVER,CONTENT,SEQNUM)</span></code>
+ad uno specifico gestore applicativo, sulla base dell’attributo  <code class="docutils literal notranslate"><span class="pre">RECEIVER</span></code>.</p>
 <a class="reference internal image-reference" href="_images/MessageHandlers.PNG"><img alt="_images/MessageHandlers.PNG" class="align-center" src="_images/MessageHandlers.PNG" style="width: 70%;" /></a>
-<p>Per ottenere questo scopo, il <code class="docutils literal notranslate"><span class="pre">TcpContextServer</span></code>
-definisce metodi per aggiungere al  (ed eliminare dal)  <a class="reference internal" href="#contextmsghandler">ContextMsgHandler</a>  oggetti di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>
-che realizzano la gestione di livello applicativo dei messaggi di tipo <a class="reference internal" href="#applmessage">ApplMessage</a>.</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TcpContextServer</span> <span class="kd">extends</span> <span class="n">TcpServer</span><span class="p">{</span>
-<span class="kd">private</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="n">activated</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="kd">private</span> <span class="n">ContextMsgHandler</span> <span class="n">ctxMsgHandler</span><span class="p">;</span>
-  <span class="kd">public</span> <span class="nf">TcpContextServer</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="k">new</span> <span class="n">ContextMsgHandler</span><span class="p">(</span><span class="s">&quot;ctxH&quot;</span><span class="p">));</span>
-    <span class="k">this</span><span class="p">.</span><span class="na">ctxMsgHandler</span> <span class="o">=</span> <span class="p">(</span><span class="n">ContextMsgHandler</span><span class="p">)</span> <span class="n">userDefHandler</span><span class="p">;</span>
+<p>Ma poichè nostro intento è anche quello di permettere comunicazioni basate su diversi tipi
+di protocollo, introduciamo invece una classe  <code class="docutils literal notranslate"><span class="pre">EnablerContext</span></code>.</p>
+<section id="enablercontext">
+<h4>EnablerContext<a class="headerlink" href="#enablercontext" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EnablerContext</span>  <span class="kd">implements</span> <span class="n">IContext</span> <span class="p">{</span>
+<span class="kd">protected</span> <span class="n">IContextMsgHandler</span> <span class="n">ctxMsgHandler</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">isactive</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="n">TcpServer</span> <span class="n">serverTcp</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="n">UdpServer</span> <span class="n">serverUdp</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">EnablerContext</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span><span class="p">,</span>
+  <span class="n">String</span> <span class="n">port</span><span class="p">,</span><span class="n">ProtocolType</span> <span class="n">protocol</span><span class="p">,</span><span class="n">IContextMsgHandler</span> <span class="n">handler</span><span class="p">){</span>
+    <span class="n">ctxMsgHandler</span> <span class="o">=</span> <span class="n">handler</span><span class="p">;</span>
+    <span class="p">...</span>
+    <span class="n">setServerSupport</span><span class="p">(</span> <span class="n">port</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">handler</span>  <span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">devname</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ctxMsgHandler</span><span class="p">.</span><span class="na">addComponent</span><span class="p">(</span><span class="n">devname</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">switch</span><span class="p">(</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">tcp</span> <span class="p">:</span>  <span class="p">{</span> <span class="n">serverTcp</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span><span class="k">break</span><span class="p">;}</span>
+    <span class="k">case</span> <span class="n">udp</span><span class="p">:</span>   <span class="p">{</span> <span class="n">serverUdp</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span><span class="k">break</span><span class="p">;}</span>
+    <span class="k">default</span><span class="p">:</span> <span class="k">break</span><span class="p">;</span>
   <span class="p">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">ctxMsgHandler</span><span class="p">.</span><span class="na">addComponent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">h</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="n">ctxMsgHandler</span><span class="p">.</span><span class="na">removeComponent</span><span class="p">(</span><span class="n">name</span> <span class="p">);</span>
-  <span class="p">}</span>
+  <span class="n">isactive</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<a class="reference internal image-reference" href="_images/EnablerContext.PNG"><img alt="_images/EnablerContext.PNG" class="align-center" src="_images/EnablerContext.PNG" style="width: 70%;" /></a>
+</section>
 </section>
 <section id="il-gestore-di-sistema-dei-messaggi">
 <span id="contextmsghandler"></span><h3>Il gestore di sistema dei messaggi<a class="headerlink" href="#il-gestore-di-sistema-dei-messaggi" title="Permalink to this headline">¶</a></h3>
-<p>Il gestore dei sistema dei messaggi attua il reindirizzamento (dispatching) consultando una mappa
-interna che associa un <span class="blue">identificativo univoco</span> (il nome del destinatario) a un handler.</p>
+<p>Il gestore dei sistema dei messaggi (eseguito all’interno di <a class="reference internal" href="RadarSystemSupporti.html#tcpconnection"><span class="std std-ref">TcpConnection</span></a> o equivalente)
+attua il reindirizzamento del messaggio, consultando una mappa
+interna che associa un <strong>identificativo univoco</strong> (il nome del destinatario) a un handler applicativo.</p>
 <blockquote>
 <div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContextMsgHandler</span> <span class="kd">extends</span> <span class="n">IApplMsgHandler</span><span class="p">{</span>
 <span class="kd">private</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">IApplMsgHandler</span><span class="o">&gt;</span> <span class="n">handlerMap</span> <span class="o">=</span>
@@ -347,16 +457,15 @@ interna che associa un <span class="blue">identificativo univoco</span> (il nome
 </pre></div>
 </div>
 </div></blockquote>
-<a class="reference internal image-reference" href="_images/ContextServer.PNG"><img alt="_images/ContextServer.PNG" class="align-center" src="_images/ContextServer.PNG" style="width: 70%;" /></a>
-<p>I componenti di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>:</p>
-<ul class="simple">
-<li><p><span class="remark">sono gestori di messaggi</span></p></li>
-<li><p><span class="remark">acquisiscono dal contesto la capacità di comunicazione</span></p></li>
-</ul>
 <section id="verso-gli-attori">
 <h4>Verso gli attori<a class="headerlink" href="#verso-gli-attori" title="Permalink to this headline">¶</a></h4>
-<p>I componenti di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a> potrebbero essere realizzati come
-enti attivi dotati di una coda di messaggi, denominati <strong>attori</strong>:</p>
+<p>I componenti di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>:</p>
+<ul class="simple">
+<li><p><span class="remark">sono POJO gestori di messaggi</span></p></li>
+<li><p><span class="remark">acquisiscono dal contesto la capacità di comunicazione</span></p></li>
+</ul>
+<p>I componenti applicativi che gestiscono messaggi potrebbero non essere più POJO,
+ma enti attivi, denominati <strong>attori</strong>, dotati essi stessi di una coda di messaggi in ingresso:</p>
 <a class="reference internal image-reference" href="_images/ContestiEComponenti.PNG"><img alt="_images/ContestiEComponenti.PNG" class="align-center" src="_images/ContestiEComponenti.PNG" style="width: 80%;" /></a>
 <p>La trasformazione di un componente-gestore in attore sarà introdotta nella sezione <a class="reference internal" href="Attori.html"><span class="doc">Attori</span></a>.</p>
 </section>
@@ -366,51 +475,61 @@ enti attivi dotati di una coda di messaggi, denominati <strong>attori</strong>:<
 <h2>SPRINT4: il progetto dell’ ApplicationDesigner<a class="headerlink" href="#sprint4-il-progetto-dell-applicationdesigner" title="Permalink to this headline">¶</a></h2>
 <p>Ridefinizione degli handler</p>
 <p>All’interno di ogni handler applicativo, occorre ora definire il codice del metodo <cite>elaborate</cite>
-di <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler"><span class="std std-ref">ApplMsgHandler</span></a>, quando il messaggio di input è di tipo <a class="reference internal" href="#applmessage"><span class="std std-ref">ApplMessage</span></a>.</p>
-<p>Prima di procedere in questo senso, introduciamo un metodo utile quando occorra inviare risposte.</p>
+di <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler"><span class="std std-ref">ApplMsgHandler</span></a>, quando il messaggio di input è di tipo <a class="reference internal" href="#iapplmessage"><span class="std std-ref">IApplMessage</span></a>,
+implementato dalla classe <a class="reference internal" href="#applmessage"><span class="std std-ref">ApplMessage</span></a>.</p>
 <section id="refactoring-per-il-led">
 <h3>Refactoring per il Led<a class="headerlink" href="#refactoring-per-il-led" title="Permalink to this headline">¶</a></h3>
-<section id="elaborate-di-ledapplinterpreter">
-<span id="ledapplintepreterwithctx"></span><h4>elaborate di <a class="reference internal" href="Enablers.html#ledapplintepreternoctx"><span class="std std-ref">LedApplInterpreter</span></a><a class="headerlink" href="#elaborate-di-ledapplinterpreter" title="Permalink to this headline">¶</a></h4>
+<section id="rafactor-elaborate-di-ledapplinterpreter">
+<span id="ledapplintepreterwithctx"></span><h4>rafactor elaborate di <a class="reference internal" href="Enablers.html#ledapplintepreternoctx"><span class="std std-ref">LedApplInterpreter</span></a><a class="headerlink" href="#rafactor-elaborate-di-ledapplinterpreter" title="Permalink to this headline">¶</a></h4>
+<p>L’interpretazione dei messaggi inviati al Led distingue ora tra comandi (<em>dispatch</em>) e richieste.
+I comandi vengono eseguiti senza produrre risposte, mentre, nel caso di richiesta, viene generato un messaggio
+di tipo <a class="reference internal" href="#iapplmessage"><span class="std std-ref">IApplMessage</span></a> usando il metodo <a class="reference internal" href="#preparereply"><span class="std std-ref">prepareReply</span></a>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedApplInterpreter</span> <span class="kd">implements</span> <span class="n">IApplInterpreter</span>  <span class="p">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//no answer</span>
+    <span class="k">if</span><span class="p">(</span>  <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">elabRequest</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">elabCommand</span><span class="p">(</span><span class="n">message</span><span class="p">);</span> <span class="c1">//command =&gt; no answer</span>
+    <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabCommand</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;on&quot;</span><span class="p">))</span>   <span class="n">led</span><span class="p">.</span><span class="na">turnOn</span><span class="p">();</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;off&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="n">led</span><span class="p">.</span><span class="na">turnOff</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="kd">protected</span> <span class="n">String</span> <span class="nf">elabRequest</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">answer</span>  <span class="o">=</span> <span class="s">&quot;request_unknown&quot;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;getState&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">led</span><span class="p">.</span><span class="na">getState</span><span class="p">();</span>
+    <span class="n">IApplMessage</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span> <span class="n">message</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span> <span class="c1">//msg(...)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">elaborate</span></code> di <code class="docutils literal notranslate"><span class="pre">LedApplInterpreter</span></code> viene invocato dal componente applicativo <code class="docutils literal notranslate"><span class="pre">LedApplHandler</span></code>, a sua volta
+invocato dall’oggetto di tipo <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> creato dal server relativo al protocollo usato.</p>
+</section>
+<section id="refactor-elaborate-di-ledapplhandler">
+<span id="ledapplhandlerwithctx"></span><h4>refactor elaborate di <a class="reference internal" href="Enablers.html#ledapplhandler"><span class="std std-ref">LedApplHandler</span></a><a class="headerlink" href="#refactor-elaborate-di-ledapplhandler" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedApplHandler</span> <span class="kd">extends</span> <span class="n">ApplMsgHandler</span> <span class="p">{</span>
+  <span class="kd">private</span> <span class="n">IApplInterpreter</span> <span class="n">ledInterpr</span><span class="p">;</span>
   <span class="p">...</span>
   <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">String</span> <span class="n">message</span> <span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
-
-  <span class="nd">@Override</span>
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
-    <span class="k">if</span><span class="p">(</span>  <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;getState&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="n">String</span> <span class="n">ledstate</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">led</span><span class="p">.</span><span class="na">getState</span><span class="p">();</span>
-        <span class="n">ApplMessage</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">Utils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span> <span class="n">message</span><span class="p">,</span> <span class="n">ledstate</span><span class="p">);</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span> <span class="c1">//msg(...)</span>
-      <span class="p">}</span><span class="k">else</span> <span class="k">return</span> <span class="s">&quot;request_unknown&quot;</span><span class="p">;</span>
-    <span class="p">}</span><span class="k">else</span> <span class="k">return</span> <span class="n">elaborate</span><span class="p">(</span> <span class="n">payload</span> <span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span>
+      <span class="n">sendAnswerToClient</span><span class="p">(</span> <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="n">conn</span> <span class="p">);</span>
+    <span class="k">else</span> <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="elaborate-di-ledapplhandler">
-<span id="ledapplhandlerwithctx"></span><h4>elaborate di <a class="reference internal" href="Enablers.html#ledapplhandler"><span class="std std-ref">LedApplHandler</span></a><a class="headerlink" href="#elaborate-di-ledapplhandler" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedApplHandler</span> <span class="kd">extends</span> <span class="n">ApplMsgHandler</span> <span class="p">{</span>
-<span class="p">...</span>
-<span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
-    <span class="n">sendMsgToClient</span><span class="p">(</span> <span class="n">answer</span><span class="p">,</span> <span class="n">conn</span> <span class="p">);</span>
-  <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
-    <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">()</span> <span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="ledproxyasclient">
-<h4>LedProxyAsClient<a class="headerlink" href="#ledproxyasclient" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-java notranslate" id="id1"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedProxyAsClient</span> <span class="kd">extends</span> <span class="n">ProxyAsClient</span> <span class="kd">implements</span> <span class="n">ILed</span> <span class="p">{</span>
+<section id="ledproxy">
+<h4>LedProxy<a class="headerlink" href="#ledproxy" title="Permalink to this headline">¶</a></h4>
+<p>Come al solito, il proxy traduce invocazioni di metodi in invio di messaggi.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedProxyAsClient</span> <span class="kd">extends</span> <span class="n">ProxyAsClient</span> <span class="kd">implements</span> <span class="n">ILed</span> <span class="p">{</span>
       <span class="kd">public</span> <span class="kd">static</span>  <span class="n">IApplMessage</span> <span class="n">turnOnLed</span>   <span class="p">;</span>
       <span class="kd">public</span> <span class="kd">static</span>  <span class="n">IApplMessage</span> <span class="n">turnOffLed</span>  <span class="p">;</span>
       <span class="kd">public</span> <span class="kd">static</span>  <span class="n">IApplMessage</span> <span class="n">getLedState</span> <span class="p">;</span>
@@ -425,16 +544,16 @@ di <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler">
 
   <span class="nd">@Override</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnOn</span><span class="p">()</span> <span class="p">{</span>
-           <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span>   <span class="p">)</span> <span class="p">{</span>
-      <span class="n">sendCommandOnConnection</span><span class="p">(</span><span class="n">Utils</span><span class="p">.</span><span class="na">turnOnLed</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="o">||</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">udp</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">sendCommandOnConnection</span><span class="p">(</span><span class="n">turnOnLed</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
     <span class="p">}</span>
     <span class="c1">//ALTRI PROTOCOLLI ...</span>
    <span class="p">}</span>
 
   <span class="nd">@Override</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnOff</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span>  <span class="p">){</span>
-      <span class="n">sendCommandOnConnection</span><span class="p">(</span><span class="n">Utils</span><span class="p">.</span><span class="na">turnOffLed</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="o">||</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">udp</span><span class="p">){</span>
+      <span class="n">sendCommandOnConnection</span><span class="p">(</span><span class="n">turnOffLed</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
     <span class="p">}</span>
     <span class="c1">//ALTRI PROTOCOLLI ...</span>
   <span class="p">}</span>
@@ -442,63 +561,77 @@ di <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler">
   <span class="nd">@Override</span>
   <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">getState</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">String</span> <span class="n">answer</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="p">){</span>
-      <span class="n">answer</span> <span class="o">=</span> <span class="n">sendRequestOnConnection</span><span class="p">(</span><span class="n">getLedState</span><span class="p">.</span><span class="na">toString</span><span class="p">())</span> <span class="p">;</span>
-    <span class="p">}</span>
+          <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="o">||</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">udp</span><span class="p">)</span> <span class="p">{</span>
+              <span class="n">String</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">sendRequestOnConnection</span><span class="p">(</span> <span class="n">getLedState</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+              <span class="n">answer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">reply</span><span class="p">).</span><span class="na">msgContent</span><span class="p">();</span>
+          <span class="p">}</span>
     <span class="c1">//ALTRI PROTOCOLLI ...</span>
     <span class="k">return</span> <span class="n">answer</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;true&quot;</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>I metodi <code class="docutils literal notranslate"><span class="pre">sendCommandOnConnection</span></code> e <code class="docutils literal notranslate"><span class="pre">sendRequestOnConnection</span></code> sono definiti in <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a>.</p>
+<p>I metodi <code class="docutils literal notranslate"><span class="pre">sendCommandOnConnection</span></code> e <code class="docutils literal notranslate"><span class="pre">sendRequestOnConnection</span></code> sono definiti in <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a>
+e usano al connessione <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>.</p>
 </section>
 </section>
 <section id="refactoring-per-il-sonar">
 <h3>Refactoring per il Sonar<a class="headerlink" href="#refactoring-per-il-sonar" title="Permalink to this headline">¶</a></h3>
-<section id="elaborate-di-sonarapplinterpreter">
-<span id="sonarapplintepreterwithctx"></span><h4>elaborate di <a class="reference internal" href="Enablers.html#sonarapplintepreternoctx"><span class="std std-ref">SonarApplInterpreter</span></a><a class="headerlink" href="#elaborate-di-sonarapplinterpreter" title="Permalink to this headline">¶</a></h4>
+<section id="rafactor-elaborate-di-sonarapplinterpreter">
+<span id="sonarapplintepreterwithctx"></span><h4>rafactor elaborate di <a class="reference internal" href="Enablers.html#sonarapplintepreternoctx"><span class="std std-ref">SonarApplInterpreter</span></a><a class="headerlink" href="#rafactor-elaborate-di-sonarapplinterpreter" title="Permalink to this headline">¶</a></h4>
+<p>L’interpretazione dei messaggi inviati al Led distingue ora tra comandi (<em>dispatch</em>) e richieste.
+I comandi vengono eseguiti senza produrre risposte, mentre, nel caso di richiesta, viene generato un messaggio
+di tipo <a class="reference internal" href="#iapplmessage"><span class="std std-ref">IApplMessage</span></a> usando il metodo <a class="reference internal" href="#preparereply"><span class="std std-ref">prepareReply</span></a>.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarApplInterpreter</span> <span class="kd">implements</span> <span class="n">IApplInterpreter</span><span class="p">{</span>
-<span class="p">...</span>
-<span class="nd">@Override</span>
-<span class="kd">public</span> <span class="n">String</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
-
-<span class="nd">@Override</span>
-<span class="kd">public</span> <span class="n">String</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">message</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
-  <span class="k">if</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;getDistance&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
-      <span class="n">String</span> <span class="n">vs</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">getVal</span><span class="p">();</span>
-      <span class="n">ApplMessage</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">Utils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span> <span class="n">message</span><span class="p">,</span> <span class="n">vs</span><span class="p">);</span>
-      <span class="k">return</span> <span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
-    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;isActive&quot;</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
-      <span class="n">String</span> <span class="n">sonarState</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">sonar</span><span class="p">.</span><span class="na">isActive</span><span class="p">();</span>
-      <span class="n">ApplMessage</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">Utils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span> <span class="n">message</span><span class="p">,</span> <span class="n">sonarState</span><span class="p">);</span>
-      <span class="k">return</span> <span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
-    <span class="p">}</span><span class="k">else</span> <span class="k">return</span> <span class="s">&quot;request_unknown&quot;</span><span class="p">;</span>
-  <span class="p">}</span><span class="k">else</span> <span class="k">return</span> <span class="n">elaborate</span><span class="p">(</span> <span class="n">payload</span> <span class="p">);</span>
+<span class="kd">private</span>       <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">;</span>
+  <span class="p">...</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span> <span class="c1">//no answer</span>
+      <span class="k">if</span><span class="p">(</span>  <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span>  <span class="n">answer</span> <span class="o">=</span> <span class="n">elabRequest</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+      <span class="k">else</span> <span class="n">elabCommand</span><span class="p">(</span><span class="n">message</span><span class="p">);</span> <span class="c1">//command =&gt; no answer</span>
+      <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabCommand</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;activate&quot;</span><span class="p">))</span> <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;deactivate&quot;</span><span class="p">))</span> <span class="n">sonar</span><span class="p">.</span><span class="na">deactivate</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="kd">protected</span> <span class="n">String</span> <span class="nf">elabRequest</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">answer</span>  <span class="o">=</span> <span class="s">&quot;request_unknown&quot;</span><span class="p">;</span>
+    <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;getDistance&quot;</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">getVal</span><span class="p">();</span>
+    <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">payload</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;isActive&quot;</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">sonar</span><span class="p">.</span><span class="na">isActive</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="n">IApplMessage</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span> <span class="n">message</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">elaborate</span></code> di <code class="docutils literal notranslate"><span class="pre">SonarApplInterpreter</span></code> viene invocato dal componente applicativo <code class="docutils literal notranslate"><span class="pre">SonarApplHandler</span></code>, a sua volta
+invocato dall’oggetto di tipo <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> creato dal server relativo al protocollo usato.</p>
 </section>
-<section id="metodo-elaborate-di-sonarapplhandler">
-<span id="sonarapplhandlerwithctx"></span><h4>Metodo elaborate di <a class="reference internal" href="Enablers.html#sonarapplhandler"><span class="std std-ref">SonarApplHandler</span></a><a class="headerlink" href="#metodo-elaborate-di-sonarapplhandler" title="Permalink to this headline">¶</a></h4>
+<section id="refactor-elaborate-di-sonarapplhandler">
+<span id="sonarapplhandlerwithctx"></span><h4>refactor elaborate di <a class="reference internal" href="Enablers.html#sonarapplhandler"><span class="std std-ref">SonarApplHandler</span></a><a class="headerlink" href="#refactor-elaborate-di-sonarapplhandler" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarApplHandler</span> <span class="kd">extends</span> <span class="n">ApplMsgHandler</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">IApplInterpreter</span> <span class="n">sonarIntepr</span><span class="p">;</span>
 <span class="p">...</span>
 <span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
-    <span class="k">if</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
       <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">sonarIntepr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
-      <span class="n">sendMsgToClient</span><span class="p">(</span> <span class="n">answer</span><span class="p">,</span> <span class="n">conn</span> <span class="p">);</span>
-    <span class="p">}</span><span class="k">else</span> <span class="n">sonarIntepr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">()</span> <span class="p">);</span>
+      <span class="n">sendAnswerToClient</span><span class="p">(</span> <span class="n">answer</span><span class="p">,</span> <span class="n">conn</span> <span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span> <span class="n">sonarIntepr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">()</span> <span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="sonarproxyasclient">
-<h4>SonarProxyAsClient<a class="headerlink" href="#sonarproxyasclient" title="Permalink to this headline">¶</a></h4>
-<p>Simile al caso del Led.</p>
+<section id="sonarproxy">
+<h4>SonarProxy<a class="headerlink" href="#sonarproxy" title="Permalink to this headline">¶</a></h4>
+<p>Come al solito, il proxy traduce invocazioni di metodi in invio di messaggi.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarProxyAsClient</span> <span class="kd">extends</span> <span class="n">ProxyAsClient</span> <span class="kd">implements</span> <span class="n">ISonar</span><span class="p">{</span>
   <span class="kd">public</span> <span class="kd">static</span>    <span class="n">IApplMessage</span> <span class="n">sonarActivate</span>   <span class="p">;</span>
   <span class="kd">public</span> <span class="kd">static</span>    <span class="n">IApplMessage</span> <span class="n">sonarDeactivate</span> <span class="p">;</span>
@@ -508,14 +641,18 @@ di <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler">
   <span class="kd">public</span> <span class="nf">SonarProxyAsClient</span><span class="p">(</span>
       <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
     <span class="kd">super</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span>  <span class="n">host</span><span class="p">,</span>  <span class="n">entry</span><span class="p">,</span> <span class="n">protocol</span> <span class="p">);</span>
-    <span class="n">sonarActivate</span>   <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s">&quot;cmd&quot;</span><span class="p">,</span> <span class="s">&quot;activate&quot;</span><span class="p">,</span>   <span class="s">&quot;sonar&quot;</span><span class="p">);</span>
-    <span class="n">sonarDeactivate</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s">&quot;cmd&quot;</span><span class="p">,</span> <span class="s">&quot;deactivate&quot;</span><span class="p">,</span> <span class="s">&quot;sonar&quot;</span><span class="p">);</span>
-    <span class="n">getDistance</span>     <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildRequest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;req&quot;</span><span class="p">,</span> <span class="s">&quot;getDistance&quot;</span><span class="p">,</span><span class="s">&quot;sonar&quot;</span><span class="p">);</span>
-    <span class="n">isActive</span>        <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildRequest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;req&quot;</span><span class="p">,</span> <span class="s">&quot;isActive&quot;</span><span class="p">,</span>   <span class="s">&quot;sonar&quot;</span><span class="p">);</span>
+    <span class="n">sonarActivate</span>   <span class="o">=</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s">&quot;cmd&quot;</span><span class="p">,</span> <span class="s">&quot;activate&quot;</span><span class="p">,</span>   <span class="s">&quot;sonar&quot;</span><span class="p">);</span>
+    <span class="n">sonarDeactivate</span> <span class="o">=</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s">&quot;cmd&quot;</span><span class="p">,</span> <span class="s">&quot;deactivate&quot;</span><span class="p">,</span> <span class="s">&quot;sonar&quot;</span><span class="p">);</span>
+    <span class="n">getDistance</span>     <span class="o">=</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildRequest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;req&quot;</span><span class="p">,</span> <span class="s">&quot;getDistance&quot;</span><span class="p">,</span><span class="s">&quot;sonar&quot;</span><span class="p">);</span>
+    <span class="n">isActive</span>        <span class="o">=</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildRequest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;req&quot;</span><span class="p">,</span> <span class="s">&quot;isActive&quot;</span><span class="p">,</span>   <span class="s">&quot;sonar&quot;</span><span class="p">);</span>
   <span class="p">}</span>
   <span class="nd">@Override</span>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span>  <span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="o">||</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">udp</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">sendCommandOnConnection</span><span class="p">(</span><span class="n">sonarActivate</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
     <span class="p">}</span>
     <span class="c1">//ALTRI PROTOCOLLI ...</span>
@@ -523,13 +660,13 @@ di <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler">
   <span class="p">...</span>
   <span class="nd">@Override</span>
   <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isActive</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;false&quot;</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span>  <span class="p">)</span> <span class="p">{</span>
-      <span class="n">answer</span> <span class="o">=</span> <span class="n">sendRequestOnConnection</span><span class="p">(</span><span class="n">isActive</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="o">||</span> <span class="n">protocol</span> <span class="o">==</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">udp</span><span class="p">)</span> <span class="p">{</span>
+              <span class="n">String</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">sendRequestOnConnection</span><span class="p">(</span> <span class="n">isActive</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+              <span class="n">answer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">reply</span><span class="p">).</span><span class="na">msgContent</span><span class="p">();</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">answer</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span> <span class="s">&quot;true&quot;</span> <span class="p">);</span>
   <span class="p">}</span>
-
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -537,19 +674,21 @@ di <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler">
 </section>
 <section id="architettura-con-contesto">
 <h3>Architettura con contesto<a class="headerlink" href="#architettura-con-contesto" title="Permalink to this headline">¶</a></h3>
-<p>Avvaledoci dei componenti introdotti in precedenza, costruiamo un sistema che abbia il Controller (e il radar) su PC
-e i dispositivi sul Raspberry, secondo l’architettura mostrata in figura:</p>
-<a class="reference internal image-reference" href="_images/sysDistr1.PNG"><img alt="_images/sysDistr1.PNG" class="align-center" src="_images/sysDistr1.PNG" style="width: 80%;" /></a>
-<p>Si veda (nel package <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22_4.appl.main</span></code>):</p>
+<p>Avvalendoci dei componenti introdotti in precedenza, costruiamo un sistema che abbia  i dispositivi sul Raspberry
+e la business logic su PC. Ad esempio, la figura che segue illuistra l’architettura di un sistema che</p>
+<a class="reference internal image-reference" href="_images/LedUsageWithCtx.PNG"><img alt="_images/LedUsageWithCtx.PNG" class="align-center" src="_images/LedUsageWithCtx.PNG" style="width: 80%;" /></a>
+<p>Il package <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22_4.appl.main</span></code> contiene i seguenti programmi</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainDevsCtxOnRasp</span></code> : da attivare sul Raspberry</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainWithCtxOnPc</span></code> : da attivare sul PC</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainDevsCtxOnRasp</span></code> :  attiva il contesto e i dispositivi su Raspberry</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UseLedFromPc</span></code> : invia da PC comandi e richieste relative al Led</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UseSonarFromPc</span></code> : invia da PC comandi e richieste relative al Sonar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainWithCtxOnPc</span></code> : attiva Controller e radar sul PC</p></li>
 </ul>
 </section>
 <section id="deployoment-del-prototipo-con-contesto">
 <h3>Deployoment del prototipo con contesto<a class="headerlink" href="#deployoment-del-prototipo-con-contesto" title="Permalink to this headline">¶</a></h3>
 <p>Simile a quanto fatto in <a class="reference internal" href="RadarSystemProgetto.html#sprint1-deployment-su-raspberrypi"><span class="std std-ref">SPRINT1: Deployment su RaspberryPi</span></a>. Il comando:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">distZip</span> <span class="n">jar</span> <span class="o">-</span><span class="n">x</span> <span class="n">test</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">distZip</span> <span class="n">jar</span> <span class="o">-</span><span class="n">x</span> <span class="n">test</span>
 </pre></div>
 </div>
 <p>crea il file <cite>builddistributionsit.unibo.radarSystem22_4-1.0.zip</cite>.</p>
@@ -557,9 +696,10 @@ e i dispositivi sul Raspberry, secondo l’architettura mostrata in figura:</p>
 </section>
 <section id="problemi-ancora-aperti">
 <h2>Problemi ancora aperti<a class="headerlink" href="#problemi-ancora-aperti" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Un handler lento o che si blocca, rallenta o blocca la gestione dei messaggi da parte del
-<code class="docutils literal notranslate"><span class="pre">ContextMsgHandler</span></code> e quindi del <a class="reference internal" href="#tcpcontextserver"><span class="std std-ref">TcpContextServer</span></a>.</p></li>
+<ul>
+<li><p>Un handler applicativo lento o che si blocca, potrebbe avere le seguenti conseguenze:</p>
+<p><span class="worktodo">WORKTODO: discutere le conseguenze di un handler applicativo che si blocca</span></p>
+</li>
 <li><p>Nel caso di componenti con stato utlizzabili da più clienti, vi possono essere problemi di concorrenza.</p></li>
 </ul>
 <p>Per un esempio, si consideri un contatore (POJO) che effettua una operazione di decremento rilasciando il controllo
@@ -576,6 +716,20 @@ prima del completamento della operazione.</p>
     <span class="n">ColorsOut</span><span class="p">.</span><span class="na">out</span><span class="p">(</span><span class="s">&quot;Counter new value after dec= &quot;</span> <span class="o">+</span> <span class="n">n</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</pre></div>
+</div>
+<p>La chiamata al contatore può essere effettuata da un Proxy che invia un messaggio</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">cmd,</span> <span class="pre">dispatch,</span> <span class="pre">main,</span> <span class="pre">counter,</span> <span class="pre">dec(DELAY),</span> <span class="pre">1)</span></code></p>
+</div></blockquote>
+<p>con <code class="docutils literal notranslate"><span class="pre">DELAY</span></code> fissato a un certo valore. Ad esempio:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">delay</span> <span class="o">=</span> <span class="s">&quot;50&quot;</span><span class="p">;</span>
+<span class="n">ApplMessage</span> <span class="n">msgDec</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span>
+    <span class="s">&quot;msg( dec, dispatch, main, counter, dec(DELAY), 1)&quot;</span>
+    <span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;DELAY&quot;</span><span class="p">,</span> <span class="n">delay</span><span class="p">));</span>
+<span class="n">ProxyAsClient</span> <span class="n">client1</span> <span class="o">=</span>
+    <span class="k">new</span> <span class="n">ProxyAsClient</span><span class="p">(</span><span class="s">&quot;client1&quot;</span><span class="p">,</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ctxServerPort</span><span class="p">,</span><span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span><span class="p">).</span>
+<span class="n">client1</span><span class="p">.</span><span class="na">sendCommandOnConnection</span><span class="p">(</span><span class="n">msgDec</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/CounterDelayHandler.PNG"><img alt="_images/CounterDelayHandler.PNG" class="align-center" src="_images/CounterDelayHandler.PNG" style="width: 70%;" /></a>
@@ -598,24 +752,17 @@ prima del completamento della operazione.</p>
 
 <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elaborateForObject</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span>  <span class="p">)</span> <span class="p">{</span>
 <span class="n">String</span> <span class="n">answer</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span>
-<span class="k">try</span> <span class="p">{</span>
-  <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span>  <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
-  <span class="kt">int</span> <span class="n">delay</span>   <span class="o">=</span> <span class="n">getDecDelayArg</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
-  <span class="n">counter</span><span class="p">.</span><span class="na">dec</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span>
-  <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">counter</span><span class="p">.</span><span class="na">getVal</span><span class="p">();</span>
-  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="n">IApplMessage</span>  <span class="n">reply</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
-    <span class="n">sendAnswerToClient</span><span class="p">(</span><span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
-  <span class="p">}</span>
-<span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span>  <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">delay</span>   <span class="o">=</span> <span class="n">getDecDelayArg</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+    <span class="n">counter</span><span class="p">.</span><span class="na">dec</span><span class="p">(</span><span class="n">delay</span><span class="p">);</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">counter</span><span class="p">.</span><span class="na">getVal</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">IApplMessage</span>  <span class="n">reply</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
+      <span class="n">sendAnswerToClient</span><span class="p">(</span><span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+    <span class="p">}</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{}</span>
 <span class="p">}</span>
-
-<span class="cm">/*</span>
-<span class="cm">Il messaggio completo è</span>
-<span class="cm">  msg( dec, dispatch, main, counter, dec(DELAY), 1)</span>
-<span class="cm">Quindi il payload è una String che denita un termine Prolog</span>
-<span class="cm">  dec(DELAY)</span>
-<span class="cm">*/</span>
 <span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getDecDelayArg</span><span class="p">(</span><span class="n">String</span> <span class="n">cmd</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
   <span class="n">Struct</span> <span class="n">cmdT</span>     <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span> <span class="n">Term</span><span class="p">.</span><span class="na">createTerm</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
   <span class="n">String</span> <span class="n">cmdName</span>  <span class="o">=</span> <span class="n">cmdT</span><span class="p">.</span><span class="na">getName</span><span class="p">();</span>
@@ -626,23 +773,16 @@ prima del completamento della operazione.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>La chiamata al contatore può essere effettuata da un Proxy che invia un messaggio</p>
+<p>Il messaggio completo è</p>
 <blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">cmd,</span> <span class="pre">dispatch,</span> <span class="pre">main,</span> <span class="pre">counter,</span> <span class="pre">dec(DELAY),</span> <span class="pre">1)</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">dec,</span> <span class="pre">dispatch,</span> <span class="pre">main,</span> <span class="pre">counter,</span> <span class="pre">dec(DELAY),</span> <span class="pre">1)</span></code></p>
 </div></blockquote>
-<p>con <code class="docutils literal notranslate"><span class="pre">DELAY</span></code> fissato a un certo valore.
-Ad esempio:</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">String</span> <span class="n">delay</span> <span class="o">=</span> <span class="s">&quot;50&quot;</span><span class="p">;</span>
-<span class="n">ApplMessage</span> <span class="n">msgDec</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span>
-    <span class="s">&quot;msg( dec, dispatch, main, counter, dec(DELAY), 1)&quot;</span>
-    <span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;DELAY&quot;</span><span class="p">,</span> <span class="n">delay</span><span class="p">));</span>
-
-<span class="n">ProxyAsClient</span> <span class="n">client1</span> <span class="o">=</span>
-  <span class="k">new</span> <span class="n">ProxyAsClient</span><span class="p">(</span><span class="s">&quot;client1&quot;</span><span class="p">,</span><span class="s">&quot;localhost&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ctxServerPort</span><span class="p">,</span><span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span><span class="p">).</span>
-<span class="n">client1</span><span class="p">.</span><span class="na">sendCommandOnConnection</span><span class="p">(</span><span class="n">msgDec</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
-</pre></div>
-</div>
-<p>Il programma <code class="docutils literal notranslate"><span class="pre">SharedCounterExampleMain</span></code> crea due chiamate di questo tipo una di seguito all’altra.
+<p>Quindi il payload è una String che denota un termine Prolog</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">dec(DELAY)</span></code></p>
+</div></blockquote>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">getDecDelayArg</span></code> restituisce il valore di DELAY secondo quanto discusso in <a class="reference internal" href="#accesso-al-payload-usando-prolog">accesso al payload usando Prolog</a></p>
+<p>Il programma <code class="docutils literal notranslate"><span class="pre">SharedCounterExampleMain</span></code> crea due chiamate una di seguito all’altra.
 Con delay basso (ad esempio <code class="docutils literal notranslate"><span class="pre">delay=&quot;0&quot;;</span></code>) il comportamento è corretto (e il contatore va a 0),
 ma con <code class="docutils literal notranslate"><span class="pre">delay=&quot;50&quot;;</span></code> si vede che il decremento non avviene (il contatore si fissa a 1).</p>
 <p>Questi problemi possono essere evitati sostituendo il POJO <code class="docutils literal notranslate"><span class="pre">CounterWithDelay</span></code> con un
@@ -687,8 +827,10 @@ attore:</p>
 <li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contesti-contenitori</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#analisi-del-concetto-di-contesto">Analisi del concetto di Contesto</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#icontext">IContext</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#struttura-dei-messaggi-applicativi">Struttura dei messaggi applicativi</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#rappresentazione-dei-messaggi">Rappresentazione dei messaggi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iapplmessage">IApplMessage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#il-problema-delle-risposte">Il problema delle risposte</a></li>
 </ul>
 </li>
@@ -696,17 +838,23 @@ attore:</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#sprint4-il-progetto-del-systemdesigner">SPRINT4: il progetto del SystemDesigner</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#la-classe-applmessage">La classe ApplMessage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#iapplmessage">IApplMessage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#la-classe-applmessage">La classe ApplMessage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#il-metodo-setfields">Il metodo setFields</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#perche-prolog">Perchè Prolog?</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#estensione-della-interfaccia-iapplmsghandler">Estensione della interfaccia <span class="xref std std-ref">IApplMsgHandler</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#modifica-della-classe-applmsghandler">Modifica della classe <span class="xref std std-ref">ApplMsgHandler</span></a><ul>
-<li class="toctree-l5"><a class="reference internal" href="#preparereply">prepareReply</a></li>
-</ul>
-</li>
 <li class="toctree-l4"><a class="reference internal" href="#estensione-della-interfaccia-iapplintepreter">Estensione della interfaccia <span class="xref std std-ref">IApplIntepreter</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifica-della-classe-applmsghandler">Modifica della classe <span class="xref std std-ref">ApplMsgHandler</span></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#metodo-preparereply">Metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#il-tcpcontextserver">Il TcpContextServer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#abilitatore-di-contesto">Abilitatore di contesto</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enablercontext">EnablerContext</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#il-gestore-di-sistema-dei-messaggi">Il gestore di sistema dei messaggi</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#verso-gli-attori">Verso gli attori</a></li>
 </ul>
@@ -715,15 +863,15 @@ attore:</p>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#sprint4-il-progetto-dell-applicationdesigner">SPRINT4: il progetto dell’ ApplicationDesigner</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#refactoring-per-il-led">Refactoring per il Led</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#elaborate-di-ledapplinterpreter">elaborate di <span class="xref std std-ref">LedApplInterpreter</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#elaborate-di-ledapplhandler">elaborate di <span class="xref std std-ref">LedApplHandler</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ledproxyasclient">LedProxyAsClient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rafactor-elaborate-di-ledapplinterpreter">rafactor elaborate di <span class="xref std std-ref">LedApplInterpreter</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refactor-elaborate-di-ledapplhandler">refactor elaborate di <span class="xref std std-ref">LedApplHandler</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ledproxy">LedProxy</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#refactoring-per-il-sonar">Refactoring per il Sonar</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#elaborate-di-sonarapplinterpreter">elaborate di <span class="xref std std-ref">SonarApplInterpreter</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#metodo-elaborate-di-sonarapplhandler">Metodo elaborate di <span class="xref std std-ref">SonarApplHandler</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#sonarproxyasclient">SonarProxyAsClient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rafactor-elaborate-di-sonarapplinterpreter">rafactor elaborate di <span class="xref std std-ref">SonarApplInterpreter</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#refactor-elaborate-di-sonarapplhandler">refactor elaborate di <span class="xref std std-ref">SonarApplHandler</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sonarproxy">SonarProxy</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#architettura-con-contesto">Architettura con contesto</a></li>

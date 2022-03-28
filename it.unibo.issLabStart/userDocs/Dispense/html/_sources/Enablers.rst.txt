@@ -118,16 +118,16 @@ ad oggetti (*handler*) di una classe che implementa :ref:`IApplMsgHandler`.
     }   
   }
 
+
+:remark:`Un EnablerAsServer non è un server.`
+
 Notiamo che un ``EnablerAsServer``:
 
 - **non è un server**, ma incapsula il :ref:`TCPServer<TCPServer>` introdotto in precedenza;
 - opera in modo da fornire a un *handler* di tipo  :ref:`IApplMsgHandler<IApplMsgHandler>` la capacità di essere
   attivato da un messaggio e di inviare risposte al mottente;
-- prevede la possibilità di introdurre :blue:`server basati su altri protocolli`.
-
-
-.. nel caso ``protocol==null``, non viene creato alcun supporto. 
-.. Questo caso sarà applicato più avanti, nella sezione  :doc:`ContestiContenitori`.
+- prevede la possibilità di introdurre :blue:`server basati su altri protocolli` (si veda :ref:`UDP oltre il TCP`).
+ 
 
 
 ++++++++++++++++++++++++++++++++++++++++
@@ -559,7 +559,12 @@ Al termine di questa fase dello sviluppo, poniamo in evidenza alcuni punti:
   che abilita alle interazioni via rete.
 - I messaggi gestiti dagli *handler* sono  ``String`` la cui struttura  è nota a un interpreter definito dall'ApplicationDesigner.
 
-:remark:`Connessioni su UDP realizzate da Loris Giannatempo`
+
+
+++++++++++++++++++++++++++++++++++++++++++++
+UDP oltre il TCP
+++++++++++++++++++++++++++++++++++++++++++++
+
 
 Lo SPRINT3 del progetto ``it.unibo.radarSystem22`` utilizza la versione 2.0 del supporto alle comunicazioni
 (file  ``it.unibo.comm2022-2.0.jar``)
@@ -575,7 +580,7 @@ Il supporto a **UDP** è definito nel package ``it.unibo.comm2022.udp.giannatemp
 Richieste multiple
 +++++++++++++++++++++++++++++++++++++++++++++
 
-:worktodo:`WORKTODO: richieste multiple in parallelo`
+:worktodo:`WORKTODO: Esperimento di richieste multiple in parallelo`
 
 - Definire un componente (``caller``) che invia due richieste diverse a uno stesso destinatario 
   attivando per ciascuna di esse un Thread diverso.

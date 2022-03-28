@@ -292,6 +292,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Enablers.html#sprint3-review-da-pojo-a-gestori-di-messaggi">SPRINT3-review: da POJO a (gestori di) messaggi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Enablers.html#udp-oltre-il-tcp">UDP oltre il TCP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Enablers.html#richieste-multiple">Richieste multiple</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Enablers.html#un-punto-critico">Un punto  critico</a></li>
 </ul>
@@ -300,8 +301,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="ContestiContenitori.html#analisi-del-concetto-di-contesto">Analisi del concetto di Contesto</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#icontext">IContext</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi">Struttura dei messaggi applicativi</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#rappresentazione-dei-messaggi">Rappresentazione dei messaggi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#iapplmessage">IApplMessage</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#il-problema-delle-risposte">Il problema delle risposte</a></li>
 </ul>
 </li>
@@ -309,17 +312,23 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="ContestiContenitori.html#sprint4-il-progetto-del-systemdesigner">SPRINT4: il progetto del SystemDesigner</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#la-classe-applmessage">La classe ApplMessage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#iapplmessage">IApplMessage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#la-classe-applmessage">La classe ApplMessage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#il-metodo-setfields">Il metodo setFields</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#perche-prolog">Perchè Prolog?</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#estensione-della-interfaccia-iapplmsghandler">Estensione della interfaccia <span class="xref std std-ref">IApplMsgHandler</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#modifica-della-classe-applmsghandler">Modifica della classe <span class="xref std std-ref">ApplMsgHandler</span></a><ul>
-<li class="toctree-l5"><a class="reference internal" href="ContestiContenitori.html#preparereply">prepareReply</a></li>
-</ul>
-</li>
 <li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#estensione-della-interfaccia-iapplintepreter">Estensione della interfaccia <span class="xref std std-ref">IApplIntepreter</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#modifica-della-classe-applmsghandler">Modifica della classe <span class="xref std std-ref">ApplMsgHandler</span></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="ContestiContenitori.html#metodo-preparereply">Metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#il-tcpcontextserver">Il TcpContextServer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#abilitatore-di-contesto">Abilitatore di contesto</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#enablercontext">EnablerContext</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#il-gestore-di-sistema-dei-messaggi">Il gestore di sistema dei messaggi</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#verso-gli-attori">Verso gli attori</a></li>
 </ul>
@@ -328,15 +337,15 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="ContestiContenitori.html#sprint4-il-progetto-dell-applicationdesigner">SPRINT4: il progetto dell’ ApplicationDesigner</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#refactoring-per-il-led">Refactoring per il Led</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#elaborate-di-ledapplinterpreter">elaborate di <span class="xref std std-ref">LedApplInterpreter</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#elaborate-di-ledapplhandler">elaborate di <span class="xref std std-ref">LedApplHandler</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#ledproxyasclient">LedProxyAsClient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#rafactor-elaborate-di-ledapplinterpreter">rafactor elaborate di <span class="xref std std-ref">LedApplInterpreter</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#refactor-elaborate-di-ledapplhandler">refactor elaborate di <span class="xref std std-ref">LedApplHandler</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#ledproxy">LedProxy</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#refactoring-per-il-sonar">Refactoring per il Sonar</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#elaborate-di-sonarapplinterpreter">elaborate di <span class="xref std std-ref">SonarApplInterpreter</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#metodo-elaborate-di-sonarapplhandler">Metodo elaborate di <span class="xref std std-ref">SonarApplHandler</span></a></li>
-<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#sonarproxyasclient">SonarProxyAsClient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#rafactor-elaborate-di-sonarapplinterpreter">rafactor elaborate di <span class="xref std std-ref">SonarApplInterpreter</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#refactor-elaborate-di-sonarapplhandler">refactor elaborate di <span class="xref std std-ref">SonarApplHandler</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="ContestiContenitori.html#sonarproxy">SonarProxy</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="ContestiContenitori.html#architettura-con-contesto">Architettura con contesto</a></li>
@@ -346,7 +355,16 @@
 <li class="toctree-l2"><a class="reference internal" href="ContestiContenitori.html#problemi-ancora-aperti">Problemi ancora aperti</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#progetto-it-unibo-actorcomm">Progetto it.unibo.actorComm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#actorjk">ActorJK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#actor22">Actor22</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#it-unibo-radarsystem22-actors">it.unibo.radarSystem22.actors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#la-visione">La visione</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="RaspberrySoftware.html#azioni-preliminari">Azioni Preliminari</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="RaspberrySoftware.html#se-non-abbiamo-wifi">Se non abbiamo WIFI</a></li>
