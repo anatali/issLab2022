@@ -35,84 +35,6 @@
             
   <section id="attori">
 <h1>Attori<a class="headerlink" href="#attori" title="Permalink to this headline">¶</a></h1>
-<section id="progetto-it-unibo-actorcomm">
-<h2>Progetto it.unibo.actorComm<a class="headerlink" href="#progetto-it-unibo-actorcomm" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p>realizza un contesto che permette comunicazioni <code class="docutils literal notranslate"><span class="pre">TCP/UDP</span></code> con componenti <code class="docutils literal notranslate"><span class="pre">Actor22</span></code> (attori versione 2022)</p></li>
-<li><p>produce la libreria: <strong>it.unibo.actorComm-1.1.jar</strong></p></li>
-<li><p>dipende dalla libreria <strong>it.unibo.qakactor-2.6</strong> di cui usa;</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">IApplMessage</span>
-<span class="kd">class</span> <span class="nc">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">ApplMessage</span>
-          <span class="kd">implements</span> <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">IApplMessage</span>
-<span class="kd">class</span> <span class="nc">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">Actor22</span>
-          <span class="kd">extends</span> <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">ActorBasic</span>
-</pre></div>
-</div>
-</li>
-<li><p>definisce:</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="kd">extends</span>
-     <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">is</span><span class="p">.</span><span class="na">interfaces</span><span class="p">.</span><span class="na">protocols</span><span class="p">.</span><span class="na">IConnInteraction</span> <span class="c1">//libreria uniboInterfaces.jar</span>
-<span class="kd">public</span>  <span class="kd">class</span> <span class="nc">ActorJK</span>
-</pre></div>
-</div>
-</li>
-</ul>
-<section id="actorjk">
-<h3>ActorJK<a class="headerlink" href="#actorjk" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>ActorJK : classe Java che fornisce metodi <strong>static</strong> per l’uso di Attori-kotlin 2020</p></li>
-</ul>
-</section>
-<section id="actor22">
-<h3>Actor22<a class="headerlink" href="#actor22" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>Actor22 : classe Java che specializza la classe-base degli attori-kotlin 2020 per la usabilità nella versione 2022.</p></li>
-</ul>
-</section>
-</section>
-<section id="it-unibo-radarsystem22-actors">
-<h2>it.unibo.radarSystem22.actors<a class="headerlink" href="#it-unibo-radarsystem22-actors" title="Permalink to this headline">¶</a></h2>
-<a class="reference internal image-reference" href="_images/RadarSystemActor0.PNG"><img alt="_images/RadarSystemActor0.PNG" class="align-center" src="_images/RadarSystemActor0.PNG" style="width: 60%;" /></a>
-</section>
-<section id="la-visione">
-<h2>La visione<a class="headerlink" href="#la-visione" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Un attore è una entità concettualmente autonoma che vive in un contesto</p></li>
-<li><p>Un attore interagisce con altri attori inviando loro messaggi (dispatch o request)</p></li>
-<li><p>Un attore deve essere capace di ricevere messaggi (o risposte) al fine di elaborarli realizzando
-la voluta business-logic</p></li>
-<li><p>Un attore conosce il nome degli altri attori del sistema</p></li>
-</ul>
-<p>Focalizziamo l’attenzione su un componente, denominato <strong>attore (actor)</strong>, che presenta le seguenti proprietà:</p>
-<ul class="simple">
-<li><p>ha un <strong>nome univoco</strong> nell’ambito di tutto il sistema;</p></li>
-<li><p>è logicamente attivo, cioè dotato di flusso di controllo autonomo;</p></li>
-<li><p>nasce, vive e muore in un contesto che può essere comune a (molti) altri attori;</p></li>
-<li><p>è capace di eseguire elaborazioni autonome o elaborazioni di messaggi inviategli da perte di altri attori;</p></li>
-<li><p>è capace di inviare messaggi ad un altro attore, di cui conosce il <strong>nome</strong>;</p></li>
-<li><p>è dotato di una sua <strong>coda locale</strong> in cui sono depositati i messaggi inviategli da altri attori
-(o da se stesso) quando i mesaaggi arrivano mentre l’attore è impegnato in una fase di elaborazione;</p></li>
-<li><p>elabora i messaggi ricevuti uno alla volta, prelevandoli dalla coda in modo FIFO.</p></li>
-</ul>
-<p>Al momento possiamo pensare che ogni attore sia realizzato in Java con un Thread e una <a class="reference external" href="https://www.baeldung.com/java-blocking-queue">BlokingQueue</a>,
-ma motivi di efficienza ci porteranno in seguito ad utilizzare le <em>coroutines</em> e i <em>channel</em> di Kotlin.</p>
-<a class="reference internal image-reference" href="_images/contesti.PNG"><img alt="_images/contesti.PNG" class="align-center" src="_images/contesti.PNG" style="width: 60%;" /></a>
-<p>Un contesto:</p>
-<ul class="simple">
-<li><p>costituisce una macro-parte di un sistema distribuito, di norma formato da due o più contesti;</p></li>
-<li><p>è associato a un nodo di elaborazione; come tale  possiede un indirizzo IP e utilizza uno o più protocolli</p></li>
-<li><p>di comunicazione (tra cui sempre TCP);</p></li>
-<li><p>conosce tutti gli altri contesti del sistema e la dislocazione di ogni attore nei diversi contesti,
-distinguendo gli attori in due categorie: locali (a sè) e remoti (allocati in altri contesti);</p></li>
-<li><p>fornisce agli attori locali la capacità di inviare/ricevere messaggi a/da un altro attore;</p></li>
-<li><p>implementa l’invio di un messaggio da parte di un attore locale a ad un attore locale b
-usando la memoria comune (la coda di messaggi associata all’attore b);</p></li>
-<li><p>implementa l’invio di un messaggio da parte di un attore locale a ad un attore NON locale g
-avvaledosi della sua conoscenza sulla dislocazione degli attori nel sistema e del protocollo
-di comunicazione usato dal contesto di g;</p></li>
-<li><p>implementa la ricezione di un messaggio utilizzando il nome del destinatario</p></li>
-</ul>
-</section>
 </section>
 
 
@@ -150,16 +72,7 @@ di comunicazione usato dal contesto di g;</p></li>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Attori</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#progetto-it-unibo-actorcomm">Progetto it.unibo.actorComm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#actorjk">ActorJK</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#actor22">Actor22</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#it-unibo-radarsystem22-actors">it.unibo.radarSystem22.actors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#la-visione">La visione</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Attori</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>

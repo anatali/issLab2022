@@ -1,12 +1,14 @@
-package it.unibo.comm2022.udp.giannatempo;
+package it.unibo.radarSystem22_4.comm.udp;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import it.unibo.comm2022.interfaces.IApplMsgHandler;
-import it.unibo.comm2022.utils.ColorsOut;
+
+import it.unibo.radarSystem22_4.comm.interfaces.IApplMsgHandler;
+import it.unibo.radarSystem22_4.comm.utils.ColorsOut;
+
 
 
 
@@ -34,10 +36,10 @@ protected boolean stopped = true;
 	@Override
 	public void run() {
 	      try {
-		  	ColorsOut.out( "UdpServer | STARTING ... " + name, ColorsOut.BLUE  );
+		  	ColorsOut.out( "UdpServer | STARTING ... ", ColorsOut.BLUE  );
 			while( ! stopped ) {
 				//Wait a packet				 
-				ColorsOut.out( "UdpServer | waits a packet "  );	 
+				ColorsOut.out( "UdpServer | waits a packet ", ColorsOut.BLUE  );	 
 				buf = new byte[UdpConnection.MAX_PACKET_LEN];
 				DatagramPacket packet = new DatagramPacket(buf, buf.length);
 				socket.receive(packet);
@@ -53,7 +55,7 @@ protected boolean stopped = true;
 			 		//Create HERE a message handler on the connection !!!
 			 		new UdpApplMessageHandler( userDefHandler, conn );		 	 		
             }else {
-	            	 ColorsOut.outappl("UdpServer | CONNECTION ALREADY SET with " + client, ColorsOut.BLUE  ); 
+	            	 ColorsOut.outappl("UdpServer | CONNECTION ALREADY SET conn= " + conn + " client="+ client, ColorsOut.BLUE   ); 
 	            }
 	            conn.handle(packet);		 
 		 		//Create a message handler on the connection NOT HERE!!
