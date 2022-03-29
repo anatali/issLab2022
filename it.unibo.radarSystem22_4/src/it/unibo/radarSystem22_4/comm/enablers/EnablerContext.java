@@ -21,7 +21,7 @@ protected boolean isactive = false;
 			this.name     			= name;
 			this.protocol 			= protocol;
 			ctxMsgHandler           = handler;
- 			if( protocol != null ) {
+ 			if( protocol != null && ! isactive) {
 				setServerSupport( port, protocol, handler  );
 			}else ColorsOut.out(name+" |  CREATED no protocol"  );
 		} catch (Exception e) {
@@ -46,6 +46,7 @@ protected boolean isactive = false;
 		else if( protocol == ProtocolType.mqtt ) {  
 			ColorsOut.out(name+" |  Do nothing for mqtt" );
 		}
+		isactive = true;
 	}	
  	
  	public String getName() {
@@ -64,6 +65,7 @@ protected boolean isactive = false;
 	}
 	@Override
 	public void activate() {
+		if( isactive ) return;
 		ColorsOut.out(name+" |  activate ..." );
 		switch( protocol ) {
 	   		case tcp :  { serverTcp.activate();break;}
@@ -76,6 +78,7 @@ protected boolean isactive = false;
 	@Override
 	public void deactivate() {
  		//ColorsOut.out(name+" |  deactivate  "  );
+		if( ! isactive ) return;
 		switch( protocol ) {
 	   		case tcp :  { serverTcp.deactivate();break;}
 	   		case udp:   { serverUdp.deactivate();break;}
