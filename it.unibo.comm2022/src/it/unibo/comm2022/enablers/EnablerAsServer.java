@@ -19,14 +19,14 @@ protected boolean isactive = false;
  		try {
 			this.name     			= name;
 			this.protocol 			= protocol;
- 			if( protocol != null ) {
+ 			if( protocol != null  ) {
 				setServerSupport( port, protocol, handler  );
 			}else ColorsOut.out(name+" |  CREATED no protocol"  );
 		} catch (Exception e) {
 			ColorsOut.outerr(name+" |  CREATE Error: " + e.getMessage()  );
 		}
 	}
-	
+	//Crea il server
  	protected void setServerSupport( int port, ProtocolType protocol, IApplMsgHandler handler   ) throws Exception{
 		if( protocol == ProtocolType.tcp  ) {
 			serverTcp = new TcpServer( "EnabSrvTcp_"+count++, port,  handler );
@@ -34,7 +34,7 @@ protected boolean isactive = false;
 		}
 		else if( protocol == ProtocolType.udp ) {  
 			//ColorsOut.out(name+" |  Do nothing for udp" );
-			serverUdp = new UdpServer("ledServerUdp"+count++,port,handler);
+			serverUdp = new UdpServer("EnabSrvUdp"+count++,port,handler);
 		}
 		else if( protocol == ProtocolType.coap ) {
 			//CoapApplServer.getTheServer();	//Le risorse sono create alla configurazione del sistema
@@ -51,6 +51,7 @@ protected boolean isactive = false;
  	public boolean isActive() {
  		return isactive;
  	}
+ 	//Attiva il server
 	public void  start() {
 		switch( protocol ) {
  	   		case tcp :  { serverTcp.activate();break;}
@@ -62,6 +63,7 @@ protected boolean isactive = false;
  
  	public void stop() {
  		//Colors.out(name+" |  deactivate  "  );
+		if( ! isactive ) return;
 		switch( protocol ) {
 	   		case tcp :  { serverTcp.deactivate();break;}
 	   		case udp:   { serverUdp.deactivate();break;}
