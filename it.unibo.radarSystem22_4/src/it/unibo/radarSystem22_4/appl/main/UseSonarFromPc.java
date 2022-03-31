@@ -29,7 +29,7 @@ public class UseSonarFromPc implements IApplication{
 		ColorsOut.outappl(" === " + getName() + " ===", ColorsOut.MAGENTA);
 		RadarSystemConfig.DLIMIT           = 80;
 		RadarSystemConfig.ctxServerPort    = 8756;
-		CommSystemConfig.protcolType = ProtocolType.udp;
+		CommSystemConfig.protcolType = ProtocolType.tcp;
 	}
 	
 	protected void configure() {		

@@ -1,6 +1,7 @@
 package it.unibo.radarSystem22_4.comm.enablers;
 
 import it.unibo.radarSystem22_4.comm.ProtocolType;
+import it.unibo.radarSystem22_4.comm.context.ContextMsgHandler;
 import it.unibo.radarSystem22_4.comm.interfaces.IApplMsgHandler;
 import it.unibo.radarSystem22_4.comm.interfaces.IContext;
 import it.unibo.radarSystem22_4.comm.interfaces.IContextMsgHandler;
@@ -16,6 +17,9 @@ protected TcpServer serverTcp;
 protected UdpServer serverUdp;
 protected boolean isactive = false;
 
+public EnablerContext( String name, String port, ProtocolType protocol )   { 
+	this(name,port,protocol,new ContextMsgHandler("ctxH"));
+}
 	public EnablerContext( String name, String port, ProtocolType protocol, IContextMsgHandler handler )   { 
  		try {
 			this.name     			= name;
