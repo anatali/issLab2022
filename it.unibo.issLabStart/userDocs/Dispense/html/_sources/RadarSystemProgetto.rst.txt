@@ -55,6 +55,7 @@ SPRINT1: Componenti per i dispositivi di I/O
 Il primo :blue:`SPRINT` del nostro sviluppo bottom-up consiste nel realizzare componenti-base 
 per i dispositivi di I/O, partendo dalle interfacce introdotte nella analisi. 
 
+ 
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 DeviceFactory e file di configurazione

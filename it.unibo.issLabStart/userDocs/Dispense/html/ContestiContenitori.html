@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Attori" href="Attori.html" />
+    <link rel="next" title="Il SonarObservable" href="SonarObservable.html" />
     <link rel="prev" title="Abilitatori di comunicazione" href="Enablers.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -345,25 +345,26 @@ invieranno messaggi della forma:</p>
 <p>Di conseguenza, introduciamo nella classe astratta <a class="reference internal" href="RadarSystemSupporti.html#applmsghandler"><span class="std std-ref">ApplMsgHandler</span></a>
 la specifica del metodo</p>
 <blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">abstract</span>&#160; <span class="pre">elaborate(</span> <span class="pre">ApplMessage</span> <span class="pre">message,</span> <span class="pre">Interaction2021</span> <span class="pre">conn</span> <span class="pre">)</span></code></p>
+<div><p><code class="docutils literal notranslate"><span class="pre">abstract</span>&#160; <span class="pre">elaborate(</span> <span class="pre">IApplMessage</span> <span class="pre">message,</span> <span class="pre">Interaction2021</span> <span class="pre">conn</span> <span class="pre">)</span></code></p>
 </div></blockquote>
 <p>che dovrà essere definito dalle classi specializzate.</p>
 <section id="metodo-preparereply">
 <span id="preparereply"></span><h5>Metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code><a class="headerlink" href="#metodo-preparereply" title="Permalink to this headline">¶</a></h5>
-<p>Per associare le risposte alle richieste, viene introdotto il  metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code> che
+<p>Per associare le risposte alle richieste, viene introdotto (nella classe <code class="docutils literal notranslate"><span class="pre">CommUtils</span></code>) il  metodo <code class="docutils literal notranslate"><span class="pre">prepareReply</span></code> che
 generare un messaggio strutturato <code class="docutils literal notranslate"><span class="pre">msg/6</span></code> tale che:</p>
 <ul class="simple">
 <li><p>l’identificativo del messaggio di risposta sia l’identificativo del messaggio di richiesta;</p></li>
 <li><p>l’identificativo del destinatario sia l’identificativo del mittente della richiesta.</p></li>
 </ul>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="n">ApplMessage</span> <span class="nf">prepareReply</span><span class="p">(</span><span class="n">ApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">String</span> <span class="n">answer</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="n">ApplMessage</span> <span class="nf">prepareReply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">String</span> <span class="n">answer</span><span class="p">)</span> <span class="p">{</span>
 <span class="n">String</span> <span class="n">payload</span> <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
 <span class="n">String</span> <span class="n">sender</span>  <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgSender</span><span class="p">();</span>
 <span class="n">String</span> <span class="n">receiver</span><span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">();</span>
 <span class="n">String</span> <span class="n">reqId</span>   <span class="o">=</span> <span class="n">message</span><span class="p">.</span><span class="na">msgId</span><span class="p">();</span>
 <span class="n">ApplMessage</span> <span class="n">reply</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
   <span class="k">if</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
-     <span class="n">reply</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildReply</span><span class="p">(</span><span class="n">receiver</span><span class="p">,</span><span class="n">reqId</span><span class="p">,</span><span class="n">answer</span><span class="p">,</span><span class="n">message</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
+     <span class="n">reply</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildReply</span><span class="p">(</span>
+        <span class="n">receiver</span><span class="p">,</span><span class="n">reqId</span><span class="p">,</span><span class="n">answer</span><span class="p">,</span><span class="n">message</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
   <span class="p">}</span><span class="k">else</span> <span class="p">{</span> <span class="c1">//DEFENSIVE</span>
     <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | ApplMsgHandler prepareReply ERROR...&quot;</span><span class="p">);</span>
   <span class="p">}</span>
@@ -573,6 +574,8 @@ invocato dall’oggetto di tipo <a class="reference internal" href="RadarSystemP
 </div>
 <p>I metodi <code class="docutils literal notranslate"><span class="pre">sendCommandOnConnection</span></code> e <code class="docutils literal notranslate"><span class="pre">sendRequestOnConnection</span></code> sono definiti in <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a>
 e usano al connessione <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>.</p>
+<p>Pertanto l’invio di una richiesta da parte del Proxy viene subito seguito da un attesa della ricezione
+della risposta, che consiste in un messaggio strutturato creato mediante <a class="reference internal" href="#preparereply"><span class="std std-ref">prepareReply</span></a>.</p>
 </section>
 </section>
 <section id="refactoring-per-il-sonar">
@@ -670,18 +673,24 @@ invocato dall’oggetto di tipo <a class="reference internal" href="RadarSystemP
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>I metodi <code class="docutils literal notranslate"><span class="pre">sendCommandOnConnection</span></code> e <code class="docutils literal notranslate"><span class="pre">sendRequestOnConnection</span></code> sono definiti in <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a>
+e usano al connessione <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>.</p>
+<p>Pertanto l’invio di una richiesta da parte del Proxy viene subito seguito da un attesa della ricezione
+della risposta, che consiste in un messaggio strutturato creato mediante <a class="reference internal" href="#preparereply"><span class="std std-ref">prepareReply</span></a>.</p>
 </section>
 </section>
 <section id="architettura-con-contesto">
 <h3>Architettura con contesto<a class="headerlink" href="#architettura-con-contesto" title="Permalink to this headline">¶</a></h3>
 <p>Avvalendoci dei componenti introdotti in precedenza, costruiamo un sistema che abbia  i dispositivi sul Raspberry
-e la business logic su PC. Ad esempio, la figura che segue illuistra l’architettura di un sistema che</p>
+e la business logic su PC.</p>
+<p>Ad esempio, la figura che segue illuistra l’architettura di un sistema che
+pone sul PC un gestore del Led remoto (si veda la classe <code class="docutils literal notranslate"><span class="pre">UseLedFromPc.java</span></code>).</p>
 <a class="reference internal image-reference" href="_images/LedUsageWithCtx.PNG"><img alt="_images/LedUsageWithCtx.PNG" class="align-center" src="_images/LedUsageWithCtx.PNG" style="width: 80%;" /></a>
 <p>Il package <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22_4.appl.main</span></code> contiene i seguenti programmi</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainDevsCtxOnRasp</span></code> :  attiva il contesto e i dispositivi su Raspberry</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">UseLedFromPc</span></code> : invia da PC comandi e richieste relative al Led</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">UseSonarFromPc</span></code> : invia da PC comandi e richieste relative al Sonar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UseLedFromPc</span></code> : invia da PC comandi e richieste relative al Led; è usabile come tester</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">UseSonarFromPc</span></code> : invia da PC comandi e richieste relative al Sonar; è usabile come tester</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainWithCtxOnPc</span></code> : attiva Controller e radar sul PC</p></li>
 </ul>
 </section>
@@ -694,14 +703,53 @@ e la business logic su PC. Ad esempio, la figura che segue illuistra l’archite
 <p>crea il file <cite>builddistributionsit.unibo.radarSystem22_4-1.0.zip</cite>.</p>
 </section>
 </section>
-<section id="problemi-ancora-aperti">
-<h2>Problemi ancora aperti<a class="headerlink" href="#problemi-ancora-aperti" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p>Un handler applicativo lento o che si blocca, potrebbe avere le seguenti conseguenze:</p>
-<p><span class="worktodo">WORKTODO: discutere le conseguenze di un handler applicativo che si blocca</span></p>
-</li>
-<li><p>Nel caso di componenti con stato utlizzabili da più clienti, vi possono essere problemi di concorrenza.</p></li>
+<section id="sprint4-esperimenti">
+<h2>Sprint4: esperimenti<a class="headerlink" href="#sprint4-esperimenti" title="Permalink to this headline">¶</a></h2>
+<p><span class="worktodo">WORKTODO: eseguire gli esperimenti qui di seguito indicati</span></p>
+<ol class="arabic simple">
+<li><p>osservazione del numero di Thread creati nel RadarSystem su RaspberryPi</p></li>
+<li><p>verificare le conseguenze di un handler applicativo che si blocca</p></li>
+<li><p>usare l’operazione  <a class="reference internal" href="#preparereply"><span class="std std-ref">prepareReply</span></a>  per la creazione di risposte</p></li>
+<li><p>inviare due  richieste ‘in parallelo’ a un componente che le esegue in thread diversi</p></li>
+<li><p>l’uso di un  Contatore con delay</p></li>
+</ol>
+<section id="richieste-in-parallelo">
+<h3>Richieste ‘in parallelo’<a class="headerlink" href="#richieste-in-parallelo" title="Permalink to this headline">¶</a></h3>
+<p>Un oggetto istanza di <code class="docutils literal notranslate"><span class="pre">RequestHandler</span></code> (package <em>it.unibo.radarSystem22_4.appl.handler</em>)
+implementa <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a> nel modo che segue:</p>
+<ul class="simple">
+<li><p>alla ricezione di un messaggio di richiesta, attiva un nuovo Thread, cui affida l’elaborazione
+del messaggio e l’invio della risposta usando il metodo <a class="reference internal" href="#preparereply"><span class="std std-ref">prepareReply</span></a>;</p></li>
+<li><p>se la richiesta ricevuta è la prima, simula una valutazione che dura un certo tempo
+e poi invia la risposta;</p></li>
+<li><p>se la rchiesta non è la prima, invia subito la risposta.</p></li>
 </ul>
+<p>Il programma <code class="docutils literal notranslate"><span class="pre">ReplyProblem</span></code> (package <em>it.unibo.radarSystem22_4.appl.main</em>) opera come segue:</p>
+<ul>
+<li><p>definisce un contesto di nodo (basato su <code class="docutils literal notranslate"><span class="pre">TCP</span></code>) in cui inserisce come componente
+una istanza di <code class="docutils literal notranslate"><span class="pre">RequestHandler</span></code> di nome <strong>rh1</strong>;</p></li>
+<li><p>definisce un proxy <code class="docutils literal notranslate"><span class="pre">pxy</span></code> per inviare messaggi al contesto;</p></li>
+<li><p>crea due Thread, ciascuno dei quali usa <code class="docutils literal notranslate"><span class="pre">pxy</span></code> per inviare la richiesta che segue:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span><span class="p">(</span><span class="n">req</span><span class="p">,</span><span class="n">request</span><span class="p">,</span><span class="n">thread1</span><span class="p">,</span><span class="n">rh1</span><span class="p">,</span><span class="n">r1</span><span class="p">,</span><span class="n">N1</span><span class="p">)</span>   <span class="n">primo</span> <span class="n">Thread</span>
+<span class="nf">msg</span><span class="p">(</span><span class="n">req</span><span class="p">,</span><span class="n">request</span><span class="p">,</span><span class="n">thread2</span><span class="p">,</span><span class="n">rh1</span><span class="p">,</span><span class="n">r2</span><span class="p">,</span><span class="n">N2</span><span class="p">)</span>   <span class="n">secondo</span> <span class="n">Thread</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>In questo modo, sulla connessione stabilita dal <code class="docutils literal notranslate"><span class="pre">pxy</span></code> vengono trasmesse due richieste allo stesso
+componente <strong>rh1</strong>, il quale invia per prima la risposta alla seconda richiesta.
+Poichè la connessione è la stessa per ciascuno dei due Thread mittenti,
+il secondo Thread riceve come risposta un messaggio che dovrebbe giungere al primo
+Thread:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(req,reply,rh1,thread1,r1_done,N)</span></code></p>
+</div></blockquote>
+</section>
+<section id="uso-di-un-counterwithdelay">
+<h3>Uso di un CounterWithDelay<a class="headerlink" href="#uso-di-un-counterwithdelay" title="Permalink to this headline">¶</a></h3>
+<p>Nel caso di <strong>componenti con stato</strong> utlizzabili da più clienti, vi possono essere problemi di concorrenza.</p>
 <p>Per un esempio, si consideri un contatore (POJO) che effettua una operazione di decremento rilasciando il controllo
 prima del completamento della operazione.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CounterWithDelay</span> <span class="p">{</span>
@@ -710,7 +758,7 @@ prima del completamento della operazione.</p>
   <span class="kd">public</span> <span class="kt">void</span> <span class="nf">dec</span><span class="p">(</span><span class="kt">int</span> <span class="n">dt</span><span class="p">)</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>  <span class="c1">//the control is given to another client</span>
+    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">dt</span><span class="p">);</span>  <span class="c1">//the control is given to another thread</span>
     <span class="n">ColorsOut</span><span class="p">.</span><span class="na">out</span><span class="p">(</span><span class="s">&quot;Counter resumes v= &quot;</span> <span class="o">+</span> <span class="n">v</span><span class="p">);</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
     <span class="n">ColorsOut</span><span class="p">.</span><span class="na">out</span><span class="p">(</span><span class="s">&quot;Counter new value after dec= &quot;</span> <span class="o">+</span> <span class="n">n</span><span class="p">);</span>
@@ -733,6 +781,9 @@ prima del completamento della operazione.</p>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/CounterDelayHandler.PNG"><img alt="_images/CounterDelayHandler.PNG" class="align-center" src="_images/CounterDelayHandler.PNG" style="width: 70%;" /></a>
+<p>Il <code class="docutils literal notranslate"><span class="pre">CounterWithDelay</span></code> è incapsulato in un handler che, al solito, gestisce i messaggi
+che gli vengono pasati dalla infrastruttura e, nel caso di una richiesta, invia la
+risposta al chiamanete:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CounterApplHandler</span> <span class="kd">extends</span> <span class="n">ApplMsgHandler</span> <span class="p">{</span>
 <span class="kd">private</span> <span class="n">CounterWithDelay</span> <span class="n">counter</span><span class="p">;</span>
 
@@ -742,16 +793,8 @@ prima del completamento della operazione.</p>
 <span class="p">}</span>
 
 <span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">ColorsOut</span><span class="p">.</span><span class="na">out</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | (not used) elaborate cmd: &quot;</span><span class="o">+</span><span class="n">cmd</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nd">@Override</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">ApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">elaborateForObject</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elaborateForObject</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span>  <span class="p">)</span> <span class="p">{</span>
-<span class="n">String</span> <span class="n">answer</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">answer</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span>
   <span class="k">try</span> <span class="p">{</span>
     <span class="n">String</span> <span class="n">cmd</span> <span class="o">=</span>  <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
     <span class="kt">int</span> <span class="n">delay</span>   <span class="o">=</span> <span class="n">getDecDelayArg</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
@@ -761,9 +804,21 @@ prima del completamento della operazione.</p>
       <span class="n">IApplMessage</span>  <span class="n">reply</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">prepareReply</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">answer</span><span class="p">);</span>
       <span class="n">sendAnswerToClient</span><span class="p">(</span><span class="n">reply</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
     <span class="p">}</span>
-  <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
 <span class="p">}</span>
-<span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getDecDelayArg</span><span class="p">(</span><span class="n">String</span> <span class="n">cmd</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
+</pre></div>
+</div>
+<p>Il messaggio ricevuto ha la forma che segue:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">dec,</span> <span class="pre">dispatch,</span> <span class="pre">main,</span> <span class="pre">counter,</span> <span class="pre">dec(DELAY),</span> <span class="pre">1)</span></code></p>
+</div></blockquote>
+<p>Quindi il payload è una String che denota un termine Prolog</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">dec(DELAY)</span></code></p>
+</div></blockquote>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">getDecDelayArg</span></code> restituisce il valore di DELAY secondo quanto discusso
+in <a class="reference internal" href="#accesso-al-payload-usando-prolog">accesso al payload usando Prolog</a></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">int</span> <span class="nf">getDecDelayArg</span><span class="p">(</span><span class="n">String</span> <span class="n">cmd</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">{</span>
   <span class="n">Struct</span> <span class="n">cmdT</span>     <span class="o">=</span> <span class="p">(</span><span class="n">Struct</span><span class="p">)</span> <span class="n">Term</span><span class="p">.</span><span class="na">createTerm</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
   <span class="n">String</span> <span class="n">cmdName</span>  <span class="o">=</span> <span class="n">cmdT</span><span class="p">.</span><span class="na">getName</span><span class="p">();</span>
   <span class="k">if</span><span class="p">(</span> <span class="n">cmdName</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;dec&quot;</span><span class="p">))</span> <span class="p">{</span>
@@ -773,21 +828,13 @@ prima del completamento della operazione.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Il messaggio completo è</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">msg(</span> <span class="pre">dec,</span> <span class="pre">dispatch,</span> <span class="pre">main,</span> <span class="pre">counter,</span> <span class="pre">dec(DELAY),</span> <span class="pre">1)</span></code></p>
-</div></blockquote>
-<p>Quindi il payload è una String che denota un termine Prolog</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">dec(DELAY)</span></code></p>
-</div></blockquote>
-<p>Il metodo <code class="docutils literal notranslate"><span class="pre">getDecDelayArg</span></code> restituisce il valore di DELAY secondo quanto discusso in <a class="reference internal" href="#accesso-al-payload-usando-prolog">accesso al payload usando Prolog</a></p>
 <p>Il programma <code class="docutils literal notranslate"><span class="pre">SharedCounterExampleMain</span></code> crea due chiamate una di seguito all’altra.
 Con delay basso (ad esempio <code class="docutils literal notranslate"><span class="pre">delay=&quot;0&quot;;</span></code>) il comportamento è corretto (e il contatore va a 0),
 ma con <code class="docutils literal notranslate"><span class="pre">delay=&quot;50&quot;;</span></code> si vede che il decremento non avviene (il contatore si fissa a 1).</p>
 <p>Questi problemi possono essere evitati sostituendo il POJO <code class="docutils literal notranslate"><span class="pre">CounterWithDelay</span></code> con un
 attore:</p>
 <a class="reference internal image-reference" href="_images/CounterWithDelayActor.PNG"><img alt="_images/CounterWithDelayActor.PNG" class="align-center" src="_images/CounterWithDelayActor.PNG" style="width: 70%;" /></a>
+</section>
 </section>
 </section>
 
@@ -878,9 +925,14 @@ attore:</p>
 <li class="toctree-l3"><a class="reference internal" href="#deployoment-del-prototipo-con-contesto">Deployoment del prototipo con contesto</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#problemi-ancora-aperti">Problemi ancora aperti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sprint4-esperimenti">Sprint4: esperimenti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#richieste-in-parallelo">Richieste ‘in parallelo’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uso-di-un-counterwithdelay">Uso di un CounterWithDelay</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
@@ -891,7 +943,7 @@ attore:</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="Enablers.html" title="previous chapter">Abilitatori di comunicazione</a></li>
-      <li>Next: <a href="Attori.html" title="next chapter">Attori</a></li>
+      <li>Next: <a href="SonarObservable.html" title="next chapter">Il SonarObservable</a></li>
   </ul></li>
 </ul>
 </div>

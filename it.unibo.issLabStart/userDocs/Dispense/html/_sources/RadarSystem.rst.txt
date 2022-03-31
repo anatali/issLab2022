@@ -35,7 +35,7 @@ RadarSystem
 
 .. CostruireSoftware.html#indicazioni-sul-processo-di-produzione
 
-Tetendo conto di quanto detto in *Indicazioni-sul-processo-di-produzione* (:doc:`CostruireSoftware`),
+Tenendo conto di quanto detto in *Indicazioni-sul-processo-di-produzione* (:doc:`CostruireSoftware`),
 impostiamo un processo di produzione del software partendo da un insieme di requisiti.
 
 

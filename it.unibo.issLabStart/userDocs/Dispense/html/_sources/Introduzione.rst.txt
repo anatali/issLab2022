@@ -214,7 +214,7 @@ L'ordine di presentazione dei gruppi verrà opportunamente stabilito dal docente
    con la fase di analisi. In questa fase è RICHIESTA la preparazione di 2-3 SLIDES 
    di illustrazione delle architetture con figure e (se ritenuto utile) riferimenti al codice. 
    Al termine di queste fasi il gruppo può raggiungere un punteggio massimo di 27/30.
-#. Domande (per esempi, si veda il file domande.html) rivolte dal docente a singole persone, 
+#. Domande (per esempi, si veda qui sotto) rivolte dal docente a singole persone, 
    riguardo al prodotto, al progetto e alla analisi del problema /requisiti. 
    Al termine di questa fase una singola persona può raggiungere un punteggio massimo di 29/30.
 #. Altre domande rivolte dal docente a singole persone. Al termine di questa fase, una singola persona 

@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Attori &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="attori">
+<h1>Attori<a class="headerlink" href="#attori" title="Permalink to this headline">¶</a></h1>
+<p>Al termine de <a class="reference internal" href="ContestiContenitori.html#lo-sprint4"><span class="std std-ref">Lo SPRINT4</span></a> abbiamo costruito un sistema la cui architettura è basata sul seguente schema-base:</p>
+<a class="reference internal image-reference" href="_images/EnablerContext.PNG"><img alt="_images/EnablerContext.PNG" class="align-center" src="_images/EnablerContext.PNG" style="width: 70%;" /></a>
+<p>Come conseguenza, risulta possibile che lo stesso componente applicativo di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a> possa
+essere utilizzato da due o più clienti remoti.</p>
+<p>I casi di studio introdotto in <a class="reference internal" href="ContestiContenitori.html#sprint4-esperimenti"><span class="std std-ref">Sprint4: esperimenti</span></a>  pone in evidenza comportamenti erronei che potrebbero derivare
+da questa condivisione e la difficoltà di concepire test unit in grado di fare emergere le situazioni che li generano.</p>
+<p>Non merviglia che, per evitare alla radice il problema, molti propongano di vincolare i componenti applicativi
+ad un modello di <a class="reference external" href="https://it.wikipedia.org/wiki/Programmazione_funzionale">Programmazione funzionale</a>, privandoli di uno stato interno modificabile.</p>
+<p>Abbiamo anche detto che la trasformazione di un componente applicativo da POJO ad Attore potrebbe evitare
+questo vincolo, sostituendo alla interazione basata su procedure-call una interazione basata sullo scambio di messaggi.</p>
+<a class="reference internal image-reference" href="_images/ContestiEComponenti.PNG"><img alt="_images/ContestiEComponenti.PNG" class="align-center" src="_images/ContestiEComponenti.PNG" style="width: 80%;" /></a>
+<p>In questo modo, il ‘macro-mondo’ rappresentato dalla applicazioni distribuite di rete troverebbe una sua reificazione anche a livello
+del ‘micro-mondo’ rappresentato dalla interazioni di componenti interni al sistema.
+Questa uniformità concettuale introduce di fatto un nuovo <a class="reference external" href="https://it.wikipedia.org/wiki/">Paradigma di programmazione</a>.</p>
+<section id="il-paradigma-ad-attori">
+<h2>Il paradigma ad Attori<a class="headerlink" href="#il-paradigma-ad-attori" title="Permalink to this headline">¶</a></h2>
+<p>Secondo Carl <a class="reference external" href="https://en.wikipedia.org/wiki/Carl_Hewitt">Hewitt</a>  (uno dei padri fondatori) il modello dell’attore è stato ispirato,
+a differenza dei precedenti modelli di calcolo,
+dalla fisica , inclusa la relatività generale e la meccanica quantistica.</p>
+<p>Vi è oggi una ampia gamma di proposte di linguaggi / libreire ad attori Molte oggi sono le libreire , tra cui:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://akka.io/">Akka</a> : ispirato a <a class="reference external" href="https://en.wikipedia.org/wiki/Actor_model">Modello computazionale ad attori</a> di  Hewitt. Per le motivazioni si veda <a class="reference external" href="https://doc.akka.io//docs/akka/current/typed/guide/actors-motivation.html">Akka actors</a>.</p></li>
+<li><p><a class="reference external" href="https://go.dev/">GO</a> : ispirato a <a class="reference external" href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</a> propone <em>goroutine</em> e <em>CanaliGO</em>. Per la documentazione si veda <a class="reference external" href="https://go.dev/doc/">GO doc</a>.</p></li>
+<li><p><a class="reference external" href="https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#actors">Kotlin actors</a> : propone <em>croutines</em> e <em>channels</em> (si veda <a class="reference external" href="https://play.kotlinlang.org/hands-on/Introduction%20to%20Coroutines%20and%20Channels/08_Channels">Kotlin channel</a>)</p></li>
+</ul>
+<p>Un motto di riferimento per questo modello è il seguente:</p>
+<p><span class="remark">Do not communicate by sharing memory; instead, share memory by communicating.</span></p>
+<p>Prima di addentraci nei dettagli tecnici, può essere conveniente operare ancora come semplici utenti
+di un qualche supporto/infrastruttura disponibile,
+in modo da acquisire confidenza con il nuovo modo di organizzare il software implicato dal modello ad attori.</p>
+<p>L’infrastruttura che useremo qui è stata sviluppata in Kotlin, per la sua compatibità con Java.</p>
+<section id="actor20-e-actor22">
+<h3>Actor20 e Actor22<a class="headerlink" href="#actor20-e-actor22" title="Permalink to this headline">¶</a></h3>
+<p>Per evitare confusioni, indicheremo</p>
+<ul class="simple">
+<li><p><strong>Actor20</strong> o <strong>ActorQak</strong>: gli attori implementati in Kotlin dalla libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.6.jar</span></code></p></li>
+<li><p><strong>Actor22</strong>: gli attori usabili in Java in questa fase del nostro percorso, grazie a due classi:</p>
+<ul>
+<li><p><span class="blue">Actor22.java</span> : classe che specializza la classe-base degli Actor20  (<code class="docutils literal notranslate"><span class="pre">ActorBasic.kt</span></code>)  per
+agevolare l’uso degli Actor20 nell’ambito di applicazioni Java (e non Kotlin).</p></li>
+<li><p><span class="blue">ActorJK.java</span> : classe  che fornisce metodi <strong>static</strong> di utilità per l’uso di Attor20</p></li>
+</ul>
+</li>
+<li><p>Contesto che include attori</p></li>
+<li><p>Invio di un messaggio a un attore locale o remoto</p></li>
+<li><p>Controller che attiva il Led</p></li>
+</ul>
+</section>
+</section>
+<section id="progetto-it-unibo-actorcomm">
+<h2>Progetto it.unibo.actorComm<a class="headerlink" href="#progetto-it-unibo-actorcomm" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>realizza un contesto che permette comunicazioni <code class="docutils literal notranslate"><span class="pre">TCP/UDP</span></code> con componenti <code class="docutils literal notranslate"><span class="pre">Actor22</span></code> (attori versione 2022)</p></li>
+<li><p>produce la libreria: <strong>it.unibo.actorComm-1.1.jar</strong></p></li>
+<li><p>dipende dalla libreria <strong>it.unibo.qakactor-2.6</strong> di cui usa;</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">IApplMessage</span>
+<span class="kd">class</span> <span class="nc">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">ApplMessage</span>
+          <span class="kd">implements</span> <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">IApplMessage</span>
+<span class="kd">class</span> <span class="nc">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">Actor22</span>
+          <span class="kd">extends</span> <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">kactor</span><span class="p">.</span><span class="na">ActorBasic</span>
+</pre></div>
+</div>
+</li>
+<li><p>definisce:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="kd">extends</span>
+     <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">is</span><span class="p">.</span><span class="na">interfaces</span><span class="p">.</span><span class="na">protocols</span><span class="p">.</span><span class="na">IConnInteraction</span> <span class="c1">//libreria uniboInterfaces.jar</span>
+<span class="kd">public</span>  <span class="kd">class</span> <span class="nc">ActorJK</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="it-unibo-radarsystem22-actors">
+<h2>it.unibo.radarSystem22.actors<a class="headerlink" href="#it-unibo-radarsystem22-actors" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/RadarSystemActor0.PNG"><img alt="_images/RadarSystemActor0.PNG" class="align-center" src="_images/RadarSystemActor0.PNG" style="width: 60%;" /></a>
+</section>
+<section id="la-visione">
+<h2>La visione<a class="headerlink" href="#la-visione" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Un attore è una entità concettualmente autonoma che vive in un contesto</p></li>
+<li><p>Un attore interagisce con altri attori inviando loro messaggi (dispatch o request)</p></li>
+<li><p>Un attore deve essere capace di ricevere messaggi (o risposte) al fine di elaborarli realizzando
+la voluta business-logic</p></li>
+<li><p>Un attore conosce il nome degli altri attori del sistema</p></li>
+</ul>
+<p>Focalizziamo l’attenzione su un componente, denominato <strong>attore (actor)</strong>, che presenta le seguenti proprietà:</p>
+<ul class="simple">
+<li><p>ha un <strong>nome univoco</strong> nell’ambito di tutto il sistema;</p></li>
+<li><p>è logicamente attivo, cioè dotato di flusso di controllo autonomo;</p></li>
+<li><p>nasce, vive e muore in un contesto che può essere comune a (molti) altri attori;</p></li>
+<li><p>è capace di eseguire elaborazioni autonome o elaborazioni di messaggi inviategli da perte di altri attori;</p></li>
+<li><p>è capace di inviare messaggi ad un altro attore, di cui conosce il <strong>nome</strong>;</p></li>
+<li><p>è dotato di una sua <strong>coda locale</strong> in cui sono depositati i messaggi inviategli da altri attori
+(o da se stesso) quando i mesaaggi arrivano mentre l’attore è impegnato in una fase di elaborazione;</p></li>
+<li><p>elabora i messaggi ricevuti uno alla volta, prelevandoli dalla coda in modo FIFO.</p></li>
+</ul>
+<p>Al momento possiamo pensare che ogni attore sia realizzato in Java con un Thread e una <a class="reference external" href="https://www.baeldung.com/java-blocking-">BlokingQueue</a>,
+ma motivi di efficienza ci porteranno in seguito ad utilizzare le <em>coroutines</em> e i <em>channel</em> di Kotlin.</p>
+<a class="reference internal image-reference" href="_images/contesti.PNG"><img alt="_images/contesti.PNG" class="align-center" src="_images/contesti.PNG" style="width: 60%;" /></a>
+<p>Un contesto:</p>
+<ul class="simple">
+<li><p>costituisce una macro-parte di un sistema distribuito, di norma formato da due o più contesti;</p></li>
+<li><p>è associato a un nodo di elaborazione; come tale  possiede un indirizzo IP e utilizza uno o più protocolli</p></li>
+<li><p>di comunicazione (tra cui sempre TCP);</p></li>
+<li><p>conosce tutti gli altri contesti del sistema e la dislocazione di ogni attore nei diversi contesti,
+distinguendo gli attori in due categorie: locali (a sè) e remoti (allocati in altri contesti);</p></li>
+<li><p>fornisce agli attori locali la capacità di inviare/ricevere messaggi a/da un altro attore;</p></li>
+<li><p>implementa l’invio di un messaggio da parte di un attore locale a ad un attore locale b
+usando la memoria comune (la coda di messaggi associata all’attore b);</p></li>
+<li><p>implementa l’invio di un messaggio da parte di un attore locale a ad un attore NON locale g
+avvaledosi della sua conoscenza sulla dislocazione degli attori nel sistema e del protocollo
+di comunicazione usato dal contesto di g;</p></li>
+<li><p>implementa la ricezione di un messaggio utilizzando il nome del destinatario</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/AttoriOld.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

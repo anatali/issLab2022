@@ -272,7 +272,7 @@ Completamento dello <b>Sprint1</b>:
 <ul>
 <li>Il <tt>SonarMock</tt> come specializzazione di una classe astratta <tt>SonarModel</tt> e una sua TestUnit. </li>
 <li>Il <tt>SonarConcrete</tt> come componente che riusa il core-code <tt>Sonar.c</tt>.</li>
-<li>Un primo prototipo: il <tt>RadarSystem</tt> con dispositivi simulati in ambiente locale e un suo (integration)Test.</li> 
+<li><b>Sprint1</b>: Un primo prototipo: il <tt>RadarSystem</tt> con dispositivi simulati in ambiente locale e un suo (integration)Test.</li> 
 <li>Deployment e sperimentazione <tt>RadarSystem</tt> con dispositivi simulati sul RaspberryPi.</li>
 <li>Sperimentazione del <tt>RadarSystem</tt> con dispositivi concreti sul RaspberryPi.</li>
 </ul>
@@ -315,7 +315,7 @@ Gli enablers come wrapper del server che invoca metodi di elaborazione di messag
 <ul>
 <li>Aggiunta del protocollo UDP nel progetto <tt>it.unibo.comm2022</tt></li>
 <li>Problema: accendere/spegnere il Led su RaspberryPi usando TCP o UDP e un programma Python (con Jupyter)</li> <!-- jupyter notebook -->
-<li><b>Sprint3</b>:  Abilitatori di comunicazione</li>
+<li><b>Sprint3</b>:  <b>Abilitatori di comunicazione</b></li>
 <li>Introduzione al concetto di contesto</li>
 </ul>
 </td>
@@ -331,8 +331,8 @@ Gli enablers come wrapper del server che invoca metodi di elaborazione di messag
 <td>
 <ul>
 <li>Sperimentazione in Lab2 del sistema distribuito prodotto nello Sprint3</li>
-<li><b>Sprint3 review</b>:  verso un unico server per nodo computazionale</li>
-<li><b>Sprint4</b>:  Il concetto di contesto e la sua implementazione: i messaggi strutturati</li>
+<li><b>Sprint3 review</b>:  verso un <tt>unico server per nodo</tt> computazionale</li>
+<li><b>Sprint4</b>:  <b>Il  concetto di contesto</b> e la sua implementazione: <b>i messaggi strutturati</b></li>
 <li>Refactoring del sistema utilizzando un contesto su RaspberryPi</li>
 </ul> 
 </td>
@@ -342,8 +342,15 @@ Gli enablers come wrapper del server che invoca metodi di elaborazione di messag
 <tr><td><m>31/04/2022 (12-14)</m></td><td>Lab2</td> 
 <td>
 <ul>
-<li>Sperimentazione in Lab2 del sistema distribuito prodotto nello Sprint4</li
-<li>Analisi di un caso critico: il contatore con delay</li>
+<li>Sperimentazione in Lab2 del sistema distribuito prodotto nello Sprint4: 
+<ul>
+<li>osservazione del <tt>numero di Thread</tt> creati nel RadarSystem su RaspberryPi</li>
+<li>l'operazione <tt>prepareReply</tt> per la creazione di risposte</li>
+<li>l'invio di <tt>richieste 'in parallelo'</tt> (entro thread)</li>
+<li>l'uso di un <tt>Contatore con delay</tt></li>
+</ul>
+</li>
+<li>Proposta del progetto <tt>SonarObservable</tt></li>
 <li><b>Sprint4 review</b>:  dai POJO agli attori</li>
 </ul> 
 </td>

@@ -396,7 +396,7 @@ Modifica della classe :ref:`ApplMsgHandler<ApplMsgHandler>`
 Di conseguenza, introduciamo nella classe astratta :ref:`ApplMsgHandler<ApplMsgHandler>`  
 la specifica del metodo
 
-  ``abstract  elaborate( ApplMessage message, Interaction2021 conn )`` 
+  ``abstract  elaborate( IApplMessage message, Interaction2021 conn )`` 
 
 che dovrà essere definito dalle classi specializzate.
 
@@ -406,7 +406,7 @@ che dovrà essere definito dalle classi specializzate.
 Metodo ``prepareReply``
 &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-Per associare le risposte alle richieste, viene introdotto il  metodo ``prepareReply`` che
+Per associare le risposte alle richieste, viene introdotto (nella classe ``CommUtils``) il  metodo ``prepareReply`` che
 generare un messaggio strutturato ``msg/6`` tale che:
 
 - l'identificativo del messaggio di risposta sia l'identificativo del messaggio di richiesta;
@@ -414,14 +414,15 @@ generare un messaggio strutturato ``msg/6`` tale che:
  
 .. code:: java
 
-    protected ApplMessage prepareReply(ApplMessage message, String answer) {
+    protected ApplMessage prepareReply(IApplMessage message, String answer) {
     String payload = message.msgContent();
     String sender  = message.msgSender();
     String receiver= message.msgReceiver();
     String reqId   = message.msgId();
     ApplMessage reply = null;
       if( message.isRequest() ) {
-         reply = CommUtils.buildReply(receiver,reqId,answer,message.msgSender());
+         reply = CommUtils.buildReply(
+            receiver,reqId,answer,message.msgSender());
       }else { //DEFENSIVE
         ColorsOut.outerr(name + " | ApplMsgHandler prepareReply ERROR...");
       }
@@ -689,6 +690,8 @@ Come al solito, il proxy traduce invocazioni di metodi in invio di messaggi.
 I metodi ``sendCommandOnConnection`` e ``sendRequestOnConnection`` sono definiti in :ref:`ProxyAsClient`
 e usano al connessione :ref:`Interaction2021<Interaction2021>`.
 
+Pertanto l'invio di una richiesta da parte del Proxy viene subito seguito da un attesa della ricezione 
+della risposta, che consiste in un messaggio strutturato creato mediante :ref:`prepareReply<prepareReply>`.
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Refactoring per il Sonar
@@ -803,6 +806,11 @@ Come al solito, il proxy traduce invocazioni di metodi in invio di messaggi.
     }
   }
 
+I metodi ``sendCommandOnConnection`` e ``sendRequestOnConnection`` sono definiti in :ref:`ProxyAsClient`
+e usano al connessione :ref:`Interaction2021<Interaction2021>`.
+
+Pertanto l'invio di una richiesta da parte del Proxy viene subito seguito da un attesa della ricezione 
+della risposta, che consiste in un messaggio strutturato creato mediante :ref:`prepareReply<prepareReply>`.
  
 +++++++++++++++++++++++++++++++++++++++++++++++
 Architettura con contesto
@@ -810,8 +818,10 @@ Architettura con contesto
 
 
 Avvalendoci dei componenti introdotti in precedenza, costruiamo un sistema che abbia  i dispositivi sul Raspberry 
-e la business logic su PC. Ad esempio, la figura che segue illuistra l'architettura di un sistema che 
+e la business logic su PC. 
 
+Ad esempio, la figura che segue illuistra l'architettura di un sistema che 
+pone sul PC un gestore del Led remoto (si veda la classe ``UseLedFromPc.java``).
 
 .. image:: ./_static/img/Radar/LedUsageWithCtx.PNG
    :align: center 
@@ -820,8 +830,8 @@ e la business logic su PC. Ad esempio, la figura che segue illuistra l'architett
 Il package ``it.unibo.radarSystem22_4.appl.main`` contiene i seguenti programmi
 
 - ``RadarSystemMainDevsCtxOnRasp`` :  attiva il contesto e i dispositivi su Raspberry 
-- ``UseLedFromPc`` : invia da PC comandi e richieste relative al Led 
-- ``UseSonarFromPc`` : invia da PC comandi e richieste relative al Sonar 
+- ``UseLedFromPc`` : invia da PC comandi e richieste relative al Led; è usabile come tester 
+- ``UseSonarFromPc`` : invia da PC comandi e richieste relative al Sonar; è usabile come tester  
 - ``RadarSystemMainWithCtxOnPc`` : attiva Controller e radar sul PC
  
 +++++++++++++++++++++++++++++++++++++++++++++++
@@ -838,14 +848,59 @@ crea il file `build\distributions\it.unibo.radarSystem22_4-1.0.zip`.
 
 
 -----------------------------------------------
-Problemi ancora aperti  
+Sprint4: esperimenti  
 -----------------------------------------------
 
-- Un handler applicativo lento o che si blocca, potrebbe avere le seguenti conseguenze:
-  
-  :worktodo:`WORKTODO: discutere le conseguenze di un handler applicativo che si blocca`
+:worktodo:`WORKTODO: eseguire gli esperimenti qui di seguito indicati`
 
-- Nel caso di componenti con stato utlizzabili da più clienti, vi possono essere problemi di concorrenza.
+#. osservazione del numero di Thread creati nel RadarSystem su RaspberryPi 
+#. verificare le conseguenze di un handler applicativo che si blocca
+#. usare l'operazione  :ref:`prepareReply<prepareReply>`  per la creazione di risposte
+#. inviare due  richieste 'in parallelo' a un componente che le esegue in thread diversi
+#. l'uso di un  Contatore con delay 
+
++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+Richieste 'in parallelo'
++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+
+Un oggetto istanza di ``RequestHandler`` (package *it.unibo.radarSystem22_4.appl.handler*) 
+implementa :ref:`IApplMsgHandler<IApplMsgHandler>` nel modo che segue:
+
+- alla ricezione di un messaggio di richiesta, attiva un nuovo Thread, cui affida l'elaborazione
+  del messaggio e l'invio della risposta usando il metodo :ref:`prepareReply<prepareReply>`;
+- se la richiesta ricevuta è la prima, simula una valutazione che dura un certo tempo 
+  e poi invia la risposta;
+- se la rchiesta non è la prima, invia subito la risposta.
+
+Il programma ``ReplyProblem`` (package *it.unibo.radarSystem22_4.appl.main*) opera come segue:
+
+- definisce un contesto di nodo (basato su ``TCP``) in cui inserisce come componente 
+  una istanza di ``RequestHandler`` di nome **rh1**; 
+- definisce un proxy ``pxy`` per inviare messaggi al contesto;
+- crea due Thread, ciascuno dei quali usa ``pxy`` per inviare la richiesta che segue:
+  
+   .. code:: java
+
+        msg(req,request,thread1,rh1,r1,N1)   primo Thread
+        msg(req,request,thread2,rh1,r2,N2)   secondo Thread
+
+In questo modo, sulla connessione stabilita dal ``pxy`` vengono trasmesse due richieste allo stesso
+componente **rh1**, il quale invia per prima la risposta alla seconda richiesta.
+Poichè la connessione è la stessa per ciascuno dei due Thread mittenti, 
+il secondo Thread riceve come risposta un messaggio che dovrebbe giungere al primo
+Thread:
+
+  ``msg(req,reply,rh1,thread1,r1_done,N)``
+
+
+ 
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+Uso di un CounterWithDelay
++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+
+Nel caso di **componenti con stato** utlizzabili da più clienti, vi possono essere problemi di concorrenza.
   
 Per un esempio, si consideri un contatore (POJO) che effettua una operazione di decremento rilasciando il controllo 
 prima del completamento della operazione. 
@@ -858,7 +913,7 @@ prima del completamento della operazione.
     public void dec(int dt) {	
       int v = n;
       v = v - 1;
-      ColorsOut.delay(dt);  //the control is given to another client
+      ColorsOut.delay(dt);  //the control is given to another thread
       ColorsOut.out("Counter resumes v= " + v);
       n = v;
       ColorsOut.out("Counter new value after dec= " + n);
@@ -885,8 +940,11 @@ con ``DELAY`` fissato a un certo valore. Ad esempio:
    :align: center  
    :width: 70%
 
+Il ``CounterWithDelay`` è incapsulato in un handler che, al solito, gestisce i messaggi 
+che gli vengono pasati dalla infrastruttura e, nel caso di una richiesta, invia la
+risposta al chiamanete:
 
-.. code:: java
+.. code:: java 
 
   public class CounterApplHandler extends ApplMsgHandler {
   private CounterWithDelay counter;
@@ -895,18 +953,10 @@ con ``DELAY`` fissato a un certo valore. Ad esempio:
     super(name);
     this.counter = counter;
   }
-
+ 
   @Override
-  public void elaborate(String message, Interaction2021 conn) {
-    ColorsOut.out(name + " | (not used) elaborate cmd: "+cmd);  
-  }
-  @Override
-  public void elaborate(ApplMessage message, Interaction2021 conn) {
-    elaborateForObject( msg );
-  }
-
-  protected void elaborateForObject( IApplMessage msg  ) {
-  String answer=null;
+  public void elaborate(IApplMessage message, Interaction2021 conn) {
+    String answer=null;
     try {
       String cmd =  msg.msgContent();
       int delay   = getDecDelayArg(cmd);
@@ -916,8 +966,22 @@ con ``DELAY`` fissato a un certo valore. Ad esempio:
         IApplMessage  reply = CommUtils.prepareReply(msg, answer);
         sendAnswerToClient(reply.toString());			
       }
-    }catch( Exception e) {}	
+    }catch( Exception e) { ... }	
   }
+
+Il messaggio ricevuto ha la forma che segue:
+
+    ``msg( dec, dispatch, main, counter, dec(DELAY), 1)``
+
+Quindi il payload è una String che denota un termine Prolog
+    
+    ``dec(DELAY)`` 
+
+Il metodo ``getDecDelayArg`` restituisce il valore di DELAY secondo quanto discusso 
+in `accesso al payload usando Prolog`_
+
+.. code:: java 
+
   protected int getDecDelayArg(String cmd) throws Exception{
     Struct cmdT     = (Struct) Term.createTerm(cmd);
     String cmdName  = cmdT.getName();
@@ -926,17 +990,6 @@ con ``DELAY`` fissato a un certo valore. Ad esempio:
       return delay;
     }else return 0;		
   }
-
-Il messaggio completo è
-
-    ``msg( dec, dispatch, main, counter, dec(DELAY), 1)``
-
-Quindi il payload è una String che denota un termine Prolog
-    
-    ``dec(DELAY)`` 
-
-Il metodo ``getDecDelayArg`` restituisce il valore di DELAY secondo quanto discusso in `accesso al payload usando Prolog`_
-
 
 Il programma ``SharedCounterExampleMain`` crea due chiamate una di seguito all'altra. 
 Con delay basso (ad esempio ``delay="0";``) il comportamento è corretto (e il contatore va a 0), 

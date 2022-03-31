@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="RaspberrySoftware" href="RaspberrySoftware.html" />
-    <link rel="prev" title="Contesti-contenitori" href="ContestiContenitori.html" />
+    <link rel="prev" title="Il SonarObservable" href="SonarObservable.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -35,6 +35,35 @@
             
   <section id="attori">
 <h1>Attori<a class="headerlink" href="#attori" title="Permalink to this headline">¶</a></h1>
+<p>Al termine de <a class="reference internal" href="ContestiContenitori.html#lo-sprint4"><span class="std std-ref">Lo SPRINT4</span></a> abbiamo costruito un sistema la cui architettura è basata sul seguente schema-base:</p>
+<a class="reference internal image-reference" href="_images/EnablerContext.PNG"><img alt="_images/EnablerContext.PNG" class="align-center" src="_images/EnablerContext.PNG" style="width: 70%;" /></a>
+<p>Come conseguenza, risulta possibile che lo stesso componente applicativo di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a> possa
+essere utilizzato da due o più clienti remoti.</p>
+<p>I casi di studio introdotto in <a class="reference internal" href="ContestiContenitori.html#sprint4-esperimenti"><span class="std std-ref">Sprint4: esperimenti</span></a>  pongono in evidenza comportamenti erronei che potrebbero derivare
+da questa condivisione e la difficoltà di concepire test unit in grado di fare emergere le situazioni che li generano.</p>
+<p>Non merviglia che, per evitare alla radice il problema, molti propongano di vincolare i componenti applicativi
+ad un modello di <a class="reference external" href="https://it.wikipedia.org/wiki/Programmazione_funzionale">Programmazione funzionale</a>, privandoli di uno stato interno modificabile.</p>
+<p>Abbiamo però anche osservato che la trasformazione di un componente applicativo da POJO ad Attore potrebbe evitare
+questo vincolo, sostituendo alla interazione basata su procedure-call una interazione basata sullo scambio di messaggi.</p>
+<a class="reference internal image-reference" href="_images/ContestiEComponenti.PNG"><img alt="_images/ContestiEComponenti.PNG" class="align-center" src="_images/ContestiEComponenti.PNG" style="width: 80%;" /></a>
+<p>In questo modo, il <em>‘macro-mondo’</em> rappresentato dalla applicazioni distribuite di rete in cui macro-componenti (servizi)
+interagiscono a messaggi, troverebbe una corrispondenza anche a livello del <em>‘micro-mondo’</em> rappresentato dalla interazioni
+tra i componenti interni ai servizi.
+Questa uniformità concettuale introduce di fatto un nuovo <a class="reference external" href="https://it.wikipedia.org/wiki/">Paradigma di programmazione</a>.</p>
+<section id="il-paradigma-ad-attori">
+<h2>Il paradigma ad Attori<a class="headerlink" href="#il-paradigma-ad-attori" title="Permalink to this headline">¶</a></h2>
+<p>Secondo Carl <a class="reference external" href="https://en.wikipedia.org/wiki/Carl_Hewitt">Hewitt</a>  (uno dei padri fondatori) il modello dell’attore è stato ispirato,
+a differenza dei precedenti modelli di calcolo,
+dalla fisica , inclusa la relatività generale e la meccanica quantistica.</p>
+<p>Vi è oggi una ampia gamma di proposte di linguaggi / librerie ad attori, tra cui:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://akka.io/">Akka</a> : ispirato a <a class="reference external" href="https://en.wikipedia.org/wiki/Actor_model">Modello computazionale ad attori</a> di  Hewitt. Per le motivazioni si veda <a class="reference external" href="https://doc.akka.io//docs/akka/current/typed/guide/actors-motivation.html">Akka actors</a>.</p></li>
+<li><p><a class="reference external" href="https://go.dev/">GO</a> : ispirato a <a class="reference external" href="https://en.wikipedia.org/wiki/Communicating_sequential_processes">CSP</a> propone <em>goroutine</em> e <em>CanaliGO</em>. Per la documentazione si veda <a class="reference external" href="https://go.dev/doc/">GO doc</a>.</p></li>
+<li><p><a class="reference external" href="https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#actors">Kotlin actors</a> : propone <em>croutines</em> e <em>channels</em> (si veda <a class="reference external" href="https://play.kotlinlang.org/hands-on/Introduction%20to%20Coroutines%20and%20Channels/08_Channels">Kotlin channel</a>)</p></li>
+</ul>
+<p>Un motto di riferimento alquanto significativo per questo modello è il seguente:</p>
+<p><span class="remark">Do not communicate by sharing memory; instead, share memory by communicating.</span></p>
+</section>
 </section>
 
 
@@ -72,7 +101,11 @@
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Attori</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#il-paradigma-ad-attori">Il paradigma ad Attori</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
@@ -81,7 +114,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="ContestiContenitori.html" title="previous chapter">Contesti-contenitori</a></li>
+      <li>Previous: <a href="SonarObservable.html" title="previous chapter">Il SonarObservable</a></li>
       <li>Next: <a href="RaspberrySoftware.html" title="next chapter">RaspberrySoftware</a></li>
   </ul></li>
 </ul>
