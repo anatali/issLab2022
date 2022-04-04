@@ -63,6 +63,589 @@ dalla fisica , inclusa la relatività generale e la meccanica quantistica.</p>
 </ul>
 <p>Un motto di riferimento alquanto significativo per questo modello è il seguente:</p>
 <p><span class="remark">Do not communicate by sharing memory; instead, share memory by communicating.</span></p>
+<p>Nel nostro modello computazionale, un attore presenta le seguenti proprietà:</p>
+<ul class="simple">
+<li><p>ha un <strong>nome univoco</strong> nell’ambito di tutto il sistema;</p></li>
+<li><p>è logicamente attivo, cioè dotato di flusso di controllo autonomo;</p></li>
+<li><p>nasce, vive e muore in un contesto che può essere comune a (molti) altri attori;</p></li>
+<li><p>è capace di inviare messaggi ad un altro attore, di cui conosce il <strong>nome</strong>, incluso sè stesso;</p></li>
+<li><p>è capace di eseguire elaborazioni autonome o elaborazioni di messaggi;</p></li>
+<li><p>è dotato di una sua <strong>coda locale</strong> in cui sono depositati i messaggi inviategli da altri attori
+(o da sè stesso) quando i messaggi arrivano mentre l’attore è impegnato in una fase di elaborazione;</p></li>
+<li><p>elabora i messaggi ricevuti uno alla volta, prelevandoli dalla sua coda in modo FIFO.</p></li>
+</ul>
+<p>Possiamo pensare che questo modello di attore sia realizzato in Java con un Thread e una <a class="reference external" href="https://www.baeldung.com/java-blocking-">BlokingQueue</a>,
+ma motivi di efficienza ci porteranno ad utilizzare le <em>coroutines</em> e i <em>channel</em> di Kotlin.</p>
+<a class="reference internal image-reference" href="_images/contesti.PNG"><img alt="_images/contesti.PNG" class="align-center" src="_images/contesti.PNG" style="width: 60%;" /></a>
+</section>
+<section id="actorqak-e-qakactor22">
+<h2>ActorQak e QakActor22<a class="headerlink" href="#actorqak-e-qakactor22" title="Permalink to this headline">¶</a></h2>
+<p>Nel seguito, per evitare confusioni, useremo i segenti termini:</p>
+<ul class="simple">
+<li><p><strong>ActorQak</strong>: per indicare gli attori implementati in Kotlin dalla libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.6.jar</span></code>
+realizzata in anni passati;</p></li>
+<li><p><strong>QakActor22</strong>: per indicare gli attori che useremo in questa fase del nostro percorso, all’interno di normali programmi Java,
+utilizzando classi appositamente definite nel progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>:</p>
+<ul>
+<li><p><span class="blue">QakActor22.java</span> : classe astratta che specializza la classe-base (<code class="docutils literal notranslate"><span class="pre">ActorBasic.kt</span></code>) degli <code class="docutils literal notranslate"><span class="pre">ActorQak</span></code> per
+agevolare l’uso degli <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> nell’ambito di applicazioni Java;</p></li>
+<li><p><span class="blue">Qak22Util.java</span> : classe  che fornisce metodi <strong>static</strong> di utilità per l’uso di attori <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code>;</p></li>
+<li><p><span class="blue">Qak22Context.java</span> : classe  che realizza il contesto in cui vivono gli attori.</p></li>
+</ul>
+</li>
+</ul>
+<p>Grazie a queste classi potremo usare gli attori  <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> senza dovere, al momento, conoscere Kotlin.
+Ovviamente, in una fase successiva cercheremo di operare avvaledoci direttamnte di Kotlin.</p>
+<p>Per introdurci all’uso degli attori <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code>, vediamo come definire ed usare un attore relativo al Led.</p>
+</section>
+<section id="ledactor">
+<h2>LedActor<a class="headerlink" href="#ledactor" title="Permalink to this headline">¶</a></h2>
+<p>Un attore relativo al Led è un componente attivo che specializza la classe astratta <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedActor</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">ILed</span> <span class="n">led</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="nf">LedActor</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+    <span class="n">led</span> <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createLed</span><span class="p">();</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Il dispositivo di tipo <a class="reference internal" href="RadarSystemProdottiAnalisi.html#iled"><span class="std std-ref">ILed</span></a> gestito dal core-code (si veda <a class="reference internal" href="RadarSystemProdottiAnalisi.html#concettodienabler"><span class="std std-ref">Il concetto di ‘oggetto enabler’</span></a>)
+viene incapsulato (<strong>embedded</strong>) all’interno dell’attore.</p>
+</section>
+<section id="qakactor22-il-costruttore">
+<span id="qakactor22"></span><h2>QakActor22: il costruttore<a class="headerlink" href="#qakactor22-il-costruttore" title="Permalink to this headline">¶</a></h2>
+<p>Al momento della creazione del LedActor viene invocato il costruttore definito in <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> che aggiunge l’attore al contesto,
+controllando che non ce ne sia già un altro con lo stesso nome.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="nf">QakActor22</span><span class="p">(</span><span class="nd">@NotNull</span> <span class="n">String</span> <span class="n">name</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">QakContext</span><span class="p">.</span><span class="na">Companion</span><span class="p">.</span><span class="na">createScope</span><span class="p">(),</span><span class="kc">false</span><span class="p">,</span><span class="kc">true</span><span class="p">,</span><span class="kc">false</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">Qak22Context</span><span class="p">.</span><span class="na">addActor</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;QakActor22 | actor &quot;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s">&quot;already exists&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qak22context">
+<h2>Qak22Context<a class="headerlink" href="#qak22context" title="Permalink to this headline">¶</a></h2>
+<p>La classe che realizza il contesto degli attori  <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> mantiene memoria di tutti gli attori
+creati attraverso una
+tabella (<code class="docutils literal notranslate"><span class="pre">ctxMap</span></code>) che associa il nome dell’attore al suo riferimento in quanto oggetto Java.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Qak22Context</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">QakActor22</span><span class="o">&gt;</span> <span class="n">ctxMap</span> <span class="o">=</span>
+                   <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">QakActor22</span><span class="o">&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+<section id="qakactor22-getactor">
+<h3>QakActor22: getActor<a class="headerlink" href="#qakactor22-getactor" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">getActor</span></code> restituisce il riferimento all’oggetto che implementa l’attore, dato il suo nome.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">QakActor22</span> <span class="nf">getActor</span><span class="p">(</span><span class="n">String</span> <span class="n">actorName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">ctxMap</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">actorName</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="qakactor22-handlemsg">
+<h2>QakActor22: handleMsg<a class="headerlink" href="#qakactor22-handlemsg" title="Permalink to this headline">¶</a></h2>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> è astratta in quanto lascia alle classi specilizzate il compito di definire il metodo <code class="docutils literal notranslate"><span class="pre">handleMsg</span></code>
+con cui un attore applicativo gestisce (interpretandoli) comandi e richieste di tipo <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor.IApplMessage</span></code>.</p>
+<p>Si noti che l’interfaccia  <code class="docutils literal notranslate"><span class="pre">IApplMessage</span></code> è ora definita nel package <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor</span></code> della libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.6.jar</span></code>,
+così da riutilizzare il codice già sviluppato negli anni scorsi.</p>
+<section id="ledactor-handlemsg">
+<h3>LedActor: handleMsg<a class="headerlink" href="#ledactor-handlemsg" title="Permalink to this headline">¶</a></h3>
+<p>Nel caso del Led possiamo scrivere <code class="docutils literal notranslate"><span class="pre">handleMsg</span></code> come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="n">elabRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+  <span class="k">else</span> <span class="n">elabCommand</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">handleMsg</span></code> viene invocato dalla infrastruttura di supporto quando (almeno) un messaggio è disponibile nella
+coda di ingresso associata all’attore.</p>
+<p>Nella implementazione attuale:</p>
+<p><span class="remark">Tutti gli attori sono eseguiti all’interno di uno stesso Thread Java</span></p>
+</section>
+<section id="ledactor-esecuzione-di-comandi">
+<h3>LedActor: esecuzione di comandi<a class="headerlink" href="#ledactor-esecuzione-di-comandi" title="Permalink to this headline">¶</a></h3>
+<p>L’elaborazione dei comandi è analoga a quanto fatto in <a class="reference internal" href="Enablers.html#ledapplhandler"><span class="std std-ref">LedApplHandler</span></a>; in questa versione
+rinunciamo, per semplicità, alla introduzione di un <a class="reference internal" href="Enablers.html#un-interpreter-per-il-led"><span class="std std-ref">LedApplInterpreter</span></a> esplicito.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabCmd</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">msgCmd</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+  <span class="k">switch</span><span class="p">(</span> <span class="n">msgCmd</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">comdLedon</span>  <span class="p">:</span> <span class="n">led</span><span class="p">.</span><span class="na">turnOn</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">comdLedoff</span> <span class="p">:</span> <span class="n">led</span><span class="p">.</span><span class="na">turnOff</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+    <span class="k">default</span><span class="p">:</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span>  <span class="o">+</span> <span class="s">&quot; | unknown &quot;</span> <span class="o">+</span> <span class="n">msgCmd</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="la-classe-appldata">
+<h3>La classe ApplData<a class="headerlink" href="#la-classe-appldata" title="Permalink to this headline">¶</a></h3>
+<p>Notiamo il ruolo importante della classe di livello applicativo <code class="docutils literal notranslate"><span class="pre">ApplData</span></code> che raccoglie le definizioni dei nomi e
+dei principali messaggi.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ledName</span>        <span class="o">=</span> <span class="s">&quot;led&quot;</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">controllerName</span> <span class="o">=</span> <span class="s">&quot;controller&quot;</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">comdLedon</span>   <span class="o">=</span> <span class="s">&quot;turnOn&quot;</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">comdLedoff</span>  <span class="o">=</span> <span class="s">&quot;turnOff&quot;</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">reqLedState</span> <span class="o">=</span> <span class="s">&quot;getState&quot;</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">IApplMessage</span> <span class="n">turnOnLed</span>    <span class="o">=</span>
+  <span class="n">buildDispatch</span><span class="p">(</span><span class="n">controllerName</span><span class="p">,</span> <span class="s">&quot;cmd&quot;</span><span class="p">,</span> <span class="n">comdLedon</span><span class="p">,</span>   <span class="n">ledName</span><span class="p">);</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">IApplMessage</span> <span class="n">turnOffLed</span>   <span class="o">=</span>
+  <span class="n">buildDispatch</span><span class="p">(</span><span class="n">controllerName</span><span class="p">,</span> <span class="s">&quot;cmd&quot;</span><span class="p">,</span> <span class="n">comdLedoff</span><span class="p">,</span>  <span class="n">ledName</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="c1">//msg(MSGID,MSGTYPE,SENDER,RECEIVER,CONTENT,SEQNUM)</span>
+      <span class="kd">private</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">msgNum</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">IApplMessage</span> <span class="nf">buildDispatch</span><span class="p">(</span>
+    <span class="n">String</span> <span class="n">sender</span><span class="p">,</span> <span class="n">String</span> <span class="n">msgId</span><span class="p">,</span> <span class="n">String</span> <span class="n">payload</span><span class="p">,</span> <span class="n">String</span> <span class="n">dest</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">...</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">IApplMessage</span> <span class="nf">prepareReply</span><span class="p">(</span>
+    <span class="n">IApplMessage</span> <span class="n">requestMsg</span><span class="p">,</span> <span class="n">String</span> <span class="n">answer</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="ledactor-esecuzione-di-richieste">
+<h3>LedActor: esecuzione di richieste<a class="headerlink" href="#ledactor-esecuzione-di-richieste" title="Permalink to this headline">¶</a></h3>
+<p>L’elaborazione delle richieste è ancora del tutto simile a quanto fatto in <a class="reference internal" href="Enablers.html#ledapplhandler"><span class="std std-ref">LedApplHandler</span></a></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabRequest</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">msgReq</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+  <span class="k">switch</span><span class="p">(</span> <span class="n">msgReq</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">reqLedState</span><span class="p">:{</span>
+      <span class="kt">boolean</span> <span class="n">b</span> <span class="o">=</span> <span class="n">led</span><span class="p">.</span><span class="na">getState</span><span class="p">();</span>
+      <span class="n">IApplMessage</span> <span class="n">reply</span> <span class="o">=</span> <span class="n">MsgUtil</span><span class="p">.</span><span class="na">buildReply</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span>
+          <span class="n">ApplData</span><span class="p">.</span><span class="na">reqLedState</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">b</span><span class="p">,</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
+      <span class="n">sendReply</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">reply</span> <span class="p">);</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="k">default</span><span class="p">:</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span>  <span class="o">+</span> <span class="s">&quot; | unknown &quot;</span> <span class="o">+</span> <span class="n">msgReq</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="richieste-asincrone">
+<h2>Richieste asincrone<a class="headerlink" href="#richieste-asincrone" title="Permalink to this headline">¶</a></h2>
+<p>Fino ad ora, le nostre infrastrutture realizzano richieste in modo
+bloccante (<strong>sincrono</strong>), cioè fermano il processo chiamante in attesa della risposta sulla connessione
+su cui aveva fatto la richiesta.</p>
+<p>Ora invece:</p>
+<p><span class="remark">Nel modello ad attori le richieste sono asincrone</span></p>
+<p>In altre parole, l’invio di una richiesta non implica la attesa immediata di una risposta,
+ma solo l’<span class="blue">aspettativa di ricevere una risposta</span> relativa a qualle richiesta
+(si veda <a class="reference internal" href="ContestiContenitori.html#il-problema-delle-risposte"><span class="std std-ref">Il problema delle risposte</span></a>).</p>
+<p>Un attore deve quindi aspettarsi di ricevere (e di gestire) in modo esplicito messaggi di risposta
+che vengano depositati sulla sua coda di input.</p>
+<section id="qakactor22-sendreply">
+<h3>QakActor22: sendReply<a class="headerlink" href="#qakactor22-sendreply" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">sendReply</span></code> usato dal Led per inviare la risposta alla richiesta <code class="docutils literal notranslate"><span class="pre">getState</span></code>,
+viene ereditato dalla classe <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> e viene definito come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sendReply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">IApplMessage</span> <span class="n">reply</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">QakActor22</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">()</span> <span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">dest</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="n">dest</span><span class="p">.</span><span class="na">queueMsg</span><span class="p">(</span> <span class="n">reply</span> <span class="p">);</span>  <span class="c1">//(1)</span>
+  <span class="k">else</span> <span class="n">replyToRemoteCaller</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">reply</span><span class="p">)</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Quando  <code class="docutils literal notranslate"><span class="pre">sendReply</span></code> non riesce a trovare il <em>sender</em> della richiesta nel contesto, vuol dire che il
+<em>sender</em> è un attore non locale. Vedremo  <a class="reference internal" href="#qakactor22-replytoremotecaller"><span class="std std-ref">più avanti</span></a> come
+definire il memtodo <code class="docutils literal notranslate"><span class="pre">replyToRemoteCaller</span></code>.</p>
+<p>In questa fase, approfondiamo invece i meccanismi relativi all’invio di un messaggio
+ad un attore locale, di cui abbiamo un esempio alla linea <strong>(1)</strong> .</p>
+</section>
+</section>
+<section id="qakactor22-invio-di-messaggi">
+<h2>QakActor22: invio di messaggi<a class="headerlink" href="#qakactor22-invio-di-messaggi" title="Permalink to this headline">¶</a></h2>
+<p>L’invio di un messaggio (comando o richiesta) ad un attore come <a class="reference internal" href="#ledactor"><span class="std std-ref">LedActor</span></a> può avvenire in due modi:</p>
+<ol class="arabic simple">
+<li><p>da parte di un normale programma Java</p></li>
+<li><p>da parte di un altro attore</p></li>
+</ol>
+<section id="invio-di-messaggi-da-non-attori">
+<h3>Invio di messaggi da non-attori<a class="headerlink" href="#invio-di-messaggi-da-non-attori" title="Permalink to this headline">¶</a></h3>
+<p>Un programma Java può inviare messaggi ad un attore attraverso il metodo <code class="docutils literal notranslate"><span class="pre">sendAMsg</span></code>
+definito nella classe <code class="docutils literal notranslate"><span class="pre">Qak22Util</span></code></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sendAMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Ad esempio, per accendere il Led, un programma può eseguire:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">turnOnLed</span>  <span class="p">);</span>
+</pre></div>
+</div>
+<section id="usinglednocontrolleronpc">
+<h4>UsingLedNoControllerOnPc<a class="headerlink" href="#usinglednocontrolleronpc" title="Permalink to this headline">¶</a></h4>
+<p>Esempi di questo tipo si trovano in <code class="docutils literal notranslate"><span class="pre">UsingLedNoControllerOnPc</span></code> del package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.local</span></code>
+(directory test del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>).</p>
+</section>
+<section id="invio-di-richieste-da-programma">
+<h4>Invio di richieste da programma<a class="headerlink" href="#invio-di-richieste-da-programma" title="Permalink to this headline">¶</a></h4>
+<p>L’invio di un messaggio di richiesta ad un attore da parte di normale codice Java è possibile:
+il sender potrebbe avere un nome qualsiasi (ad esempio <code class="docutils literal notranslate"><span class="pre">main</span></code>), e  la richiesta viene eseguita,
+ma il messaggio di risposta non trova alcun attore destinatario e quindi genera un segnale di errore.</p>
+</section>
+</section>
+<section id="invio-di-messaggi-da-attore">
+<span id="sendmsgfromactor"></span><h3>Invio di messaggi da attore<a class="headerlink" href="#invio-di-messaggi-da-attore" title="Permalink to this headline">¶</a></h3>
+<p>Ogni attore possiede ‘geneticamente’ non solo la capacità di ricevere messaggi, ma anche la capacità di inviarli.
+A questo fine, la classe <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> definisce il seguente metodo:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sendMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span>  <span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">destActorName</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">();</span>
+  <span class="n">QakActor22</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">destActorName</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">dest</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span>   <span class="n">dest</span><span class="p">.</span><span class="na">queueMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span> <span class="c1">//attore locale</span>
+  <span class="k">else</span> <span class="n">sendMsgToRemoteActor</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>  <span class="c1">//attore non locale</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">sendMsgToRemoteActor</span></code> che implementa la comunicazione con attori non locali verrà introdotto
+quando ci occuperemo di attori distribuiti.</p>
+<section id="il-metodo-queuemsg">
+<h4>Il metodo queueMsg<a class="headerlink" href="#il-metodo-queuemsg" title="Permalink to this headline">¶</a></h4>
+<p>Dovendo inviare un messaggio ad un attorie locale,  siamo in grado di avere un riferimento all’aggetto Java
+che rappresenta l’attore e quindi  possiamo invocarne il metodo <code class="docutils literal notranslate"><span class="pre">queueMsg</span></code> che inserisce il messaggio
+nella coda di ingresso dell’attore.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">queueMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La implementazione del metodo <code class="docutils literal notranslate"><span class="pre">queueMsg</span></code> prevede l’uso di canali e coroutines Kotlin. Ne rimandiamo quindi
+la descrizione a quando esamineremo i dettagli della implementazione Kotlin.</p>
+</section>
+<section id="metodi-di-invio-messaggi">
+<h4>Metodi di invio messaggi<a class="headerlink" href="#metodi-di-invio-messaggi" title="Permalink to this headline">¶</a></h4>
+<p>Dal punto di vista dell’Application Designer, il metodo  <code class="docutils literal notranslate"><span class="pre">sendMsg</span></code> può anche essere ignorato,
+in quanto <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> definisce metodi di invio messaggi al giusto livello di astrazione applicativo:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isDispatch</span><span class="p">()</span> <span class="p">)</span> <span class="n">sendMsg</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+  <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;QakActor22 | forward requires a dispatch&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">request</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="n">sendMsg</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+  <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;QakActor22 | forward requires a request&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="automsg">
+<h4>autoMsg<a class="headerlink" href="#automsg" title="Permalink to this headline">¶</a></h4>
+<p>Se un attore vuole inviare un messaggio a sè stesso, può utilizzare il metodo <code class="docutils literal notranslate"><span class="pre">autoMsg</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">autoMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">){</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span> <span class="n">getName</span><span class="p">()</span> <span class="p">))</span> <span class="n">sendMsg</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+  <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;QakActor22 | autoMsg wrong receiver&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="usingledandcontrolleronpc">
+<h2>UsingLedAndControllerOnPc<a class="headerlink" href="#usingledandcontrolleronpc" title="Permalink to this headline">¶</a></h2>
+<p>Il programma <code class="docutils literal notranslate"><span class="pre">UsingLedAndControllerOnPc</span></code> del package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.local</span></code> (directory test del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>)
+relaiiza il sistema rappresentato nella figura che segue, costituito da un attore Controller che invia
+comandi e richieste a un attore Led.</p>
+<a class="reference internal image-reference" href="_images/ControllerLedActorLocal.PNG"><img alt="_images/ControllerLedActorLocal.PNG" class="align-center" src="_images/ControllerLedActorLocal.PNG" style="width: 60%;" /></a>
+<p>La configurazione del sistema si riduce alla creazione dei due attori, mentre l’esecuzione si attiva inviando un dispatch al Controller:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">new</span> <span class="n">LedActor</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">ledName</span> <span class="p">);</span>
+  <span class="k">new</span> <span class="n">ControllerActor</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">controllerName</span> <span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">execute</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">activateCrtl</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Per comprendere (e poi progettare) il comportamento del sistema, si tenga conto dei seguenti <strong>vincoli</strong>:</p>
+<p><span class="remark">Tutti gli attori vengono eseguiti all’interno di un unico Thread</span></p>
+<p>Pertanto, affinchè ogni attore possa essere eseguito e affinchè un attore possa elaborare un altro messaggio:</p>
+<p><span class="remark">Un attore deve cedere il controllo</span></p>
+<p>In altre parole, solo quando il metodo <strong>handleMsg termina</strong> restituendo il controllo alla infrastruttura che lo ha invocato,
+si apre la possibilità che altri attori possano essere eseguiti e che l’attore stesso possa elaborare un altro messaggio.</p>
+<section id="controlleractor">
+<h3>ControllerActor<a class="headerlink" href="#controlleractor" title="Permalink to this headline">¶</a></h3>
+<p>Al momento della costruzione, ControllerActor prepara un messaggio di richiesta sullo stato del Led</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ControllerActor</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+<span class="kd">protected</span> <span class="kt">int</span> <span class="n">numIter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="n">IApplMessage</span> <span class="n">getStateRequest</span> <span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">ControllerActor</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span>  <span class="p">)</span> <span class="p">{</span>
+  <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+  <span class="n">getStateRequest</span>  <span class="o">=</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">buildRequest</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="s">&quot;ask&quot;</span><span class="p">,</span>
+              <span class="n">ApplData</span><span class="p">.</span><span class="na">reqLedState</span><span class="p">,</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">ledName</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>La gestione dei messaggi del <code class="docutils literal notranslate"><span class="pre">ControllerActor</span></code> riguarda i seguenti messaggi:</p>
+<ul class="simple">
+<li><p>il <strong>comando</strong> di attivazione <code class="docutils literal notranslate"><span class="pre">ApplData.activateCrtl</span></code></p></li>
+<li><p>la <strong>risposta</strong> all sua richiesta al Led sullo stato</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isReply</span><span class="p">()</span> <span class="p">)</span> <span class="n">elabAnswer</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+  <span class="k">else</span> <span class="n">elabCmd</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabCmd</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">msgCmd</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+  <span class="k">switch</span><span class="p">(</span> <span class="n">msgCmd</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">cmdActivate</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="n">doControllerWork</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">default</span><span class="p">:</span><span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<section id="controlleractor-comportamento">
+<h4>ControllerActor: comportamento<a class="headerlink" href="#controlleractor-comportamento" title="Permalink to this headline">¶</a></h4>
+<p>Alla ricezione del messaggio di attivazione, il <code class="docutils literal notranslate"><span class="pre">ControllerActor</span></code> esegue il primo passo della sua BusinessLogic
+inviando al Led un comando di accensione o spegnimento
+seguito da una richiesta sullo stato del Led;  poi cede il controllo.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doControllerWork</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">numIter</span><span class="o">++</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">numIter</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>  <span class="n">forward</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">turnOnLed</span> <span class="p">);</span> <span class="c1">//accesione</span>
+    <span class="k">else</span> <span class="n">forward</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">turnOffLed</span> <span class="p">);</span> <span class="c1">//spegnimento</span>
+    <span class="n">request</span><span class="p">(</span><span class="n">getStateRequest</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span>       <span class="n">forward</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">turnOffLed</span> <span class="p">);</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>All’arrivo della risposta del Led, il <code class="docutils literal notranslate"><span class="pre">ControllerActor</span></code>  esegue un altro passo della sua BusinessLogic:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabAnswer</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+  <span class="n">doControllerWork</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="worktodo">WORKTODO: riprogettare il sistema inserendo un SonarActor</span></p>
+</section>
+</section>
+</section>
+<section id="dal-locale-al-distribuito">
+<h2>Dal locale al distribuito<a class="headerlink" href="#dal-locale-al-distribuito" title="Permalink to this headline">¶</a></h2>
+<p>Ora che abbiamo esplorato i meccanismi-base del modello ad attori in ambiente locale, poniamoci il problema
+di distribuire gli attori in nodi diversi.</p>
+<a class="reference internal image-reference" href="_images/RadarSystemActor0.PNG"><img alt="_images/RadarSystemActor0.PNG" class="align-center" src="_images/RadarSystemActor0.PNG" style="width: 60%;" /></a>
+<p>Un sistema distribuito è di norma formato da due o più contesti, ciascuno dei quali:</p>
+<ul class="simple">
+<li><p>opera su un nodo di elaborazione associato a un indirizzo IP;</p></li>
+<li><p>uitlizza almeno un protocollo di comunicazione (tra cui sempre TCP) per
+ricevere messaggi su una data porta di ingresso (che potrebbe assumere la forma di un URI,
+come anticipato in <a class="reference internal" href="RadarSystemSupporti.html#entryport"><span class="std std-ref">entryPort</span></a>);</p></li>
+<li><p>conosce tutti gli altri contesti del sistema e la dislocazione di ogni attore nei diversi contesti,
+distinguendo gli attori in due categorie: locali (a sè) e remoti (allocati in altri contesti);</p></li>
+<li><p>implementa l’invio di un messaggio da parte di un attore locale <code class="docutils literal notranslate"><span class="pre">a</span></code> ad un attore NON locale <code class="docutils literal notranslate"><span class="pre">b</span></code>
+avvaledosi della sua conoscenza sulla dislocazione degli attori nel sistema e del protocollo
+di comunicazione usato dal contesto di <code class="docutils literal notranslate"><span class="pre">b</span></code>;</p></li>
+<li><p>implementa la ricezione di un messaggio utilizzando il nome del destinatario.</p></li>
+</ul>
+<section id="qakcontext-setactorasremote">
+<span id="setactorasremote"></span><h3>QakContext: setActorAsRemote<a class="headerlink" href="#qakcontext-setactorasremote" title="Permalink to this headline">¶</a></h3>
+<p>In questa fase, la conoscenza sulla dislocazione degli attori non locali viene ‘iniettata’ in un contesto
+dal livello applicativo, attraverso il metodo <code class="docutils literal notranslate"><span class="pre">setActorAsRemote</span></code>.
+Vedremo in seguito forme più evolute di dichiarazione.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Qak22Context</span> <span class="p">{</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">QakActor22</span><span class="o">&gt;</span> <span class="n">ctxMap</span>      <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">QakActor22</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="kd">private</span> <span class="kd">static</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">ProxyAsClient</span><span class="o">&gt;</span> <span class="n">proxyMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">ProxyAsClient</span><span class="o">&gt;</span><span class="p">();</span>
+
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setActorAsRemote</span><span class="p">(</span>
+      <span class="n">String</span> <span class="n">actorName</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">proxyMap</span><span class="p">.</span><span class="na">containsKey</span><span class="p">(</span><span class="n">actorName</span><span class="o">+</span><span class="s">&quot;Pxy&quot;</span><span class="p">)</span>   <span class="p">)</span> <span class="p">{</span>
+    <span class="n">ProxyAsClient</span> <span class="n">pxy</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProxyAsClient</span><span class="p">(</span><span class="n">actorName</span><span class="o">+</span><span class="s">&quot;Pxy&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">protocol</span><span class="p">);</span>
+    <span class="n">proxyMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">actorName</span><span class="p">,</span> <span class="n">pxy</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La classe <a class="reference internal" href="#qak22context"><span class="std std-ref">Qak22Context</span></a> definisce ora anche tabella (<code class="docutils literal notranslate"><span class="pre">proxyMap</span></code>) che tiene memoria
+dei proxy ai contesti remoti.</p>
+<p>Per l’attore non locale il cui nome è dato come input a <code class="docutils literal notranslate"><span class="pre">setActorAsRemote</span></code>, viene costruito (se non già creato)
+un proxy per il nodo (contesto) remoto indicato dai parametri <code class="docutils literal notranslate"><span class="pre">host</span></code> e <code class="docutils literal notranslate"><span class="pre">protocol</span></code>.</p>
+</section>
+<section id="package-unibo-actor22comm">
+<h3>Package <code class="docutils literal notranslate"><span class="pre">unibo.actor22Comm</span></code><a class="headerlink" href="#package-unibo-actor22comm" title="Permalink to this headline">¶</a></h3>
+<p>In questo package inseriamo la realizzazione una nuova versione del concetto di contesto
+introdotto in <a class="reference internal" href="ContestiContenitori.html#contesti-contenitori"><span class="std std-ref">Contesti-contenitori</span></a> tenendo conto di quanto già fatto
+nello <a class="reference internal" href="ContestiContenitori.html#lo-sprint4"><span class="std std-ref">Sprint4</span></a> e dei seguenti punti:</p>
+<ul>
+<li><p>il codice dipende dalla libreria <em>it.unibo.qakactor-2.6</em>  e viene distribuito nella libreria
+<strong>unibo.actor22-1.0.jar</strong>;</p></li>
+<li><p>l’astrazione <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">connessione</span></a> viene definita
+come una estensione di quanto introdotto nel supporto agli attori <a class="reference internal" href="#actorqak-e-qakactor22"><span class="std std-ref">ActorQak</span></a>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="kd">extends</span> <span class="c1">//from uniboInterfaces.jar</span>
+  <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">is</span><span class="p">.</span><span class="na">interfaces</span><span class="p">.</span><span class="na">protocols</span><span class="p">.</span><span class="na">IConnInteraction</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span>  <span class="n">String</span> <span class="n">reqid</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">(</span>  <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">(</span> <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>il contesto è realizzato come un <a class="reference internal" href="ContestiContenitori.html#enablercontext"><span class="std std-ref">EnablerContext</span></a> che attiva
+una elaborazione di sistema dei messaggi in ingresso specializzata per gli attori,
+grazie ad una nuova versione del <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>;</p></li>
+</ul>
+</section>
+<section id="contextmsghandler-per-attori">
+<h3>ContextMsgHandler per attori<a class="headerlink" href="#contextmsghandler-per-attori" title="Permalink to this headline">¶</a></h3>
+<p>Il nuovo gestore di sistema dei messaggi  <strong>non memorizza più</strong>  (riferimenti a) POJO
+di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>,
+ma si avvale di <a class="reference internal" href="#qak22context"><span class="std std-ref">Qak22Context</span></a> per reindirizzare i messaggi agli attori
+<a class="reference internal" href="#actorqak-e-qakactor22"><span class="std std-ref">QakActor22</span></a>  locali al nodo:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContextMsgHandler</span>
+    <span class="kd">extends</span> <span class="n">ApplMsgHandler</span> <span class="kd">implements</span> <span class="n">IApplMsgHandler</span><span class="p">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="n">elabRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">conn</span><span class="p">);</span>
+    <span class="k">else</span>  <span class="n">elabNonRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">conn</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabNonRequest</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">QakActor22</span> <span class="n">a</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">a</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span>  <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+    <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | I should not be here .. &quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">());</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Notiamo che per i messaggi di richiesta viene invocato un metodo diverso dalla gestione di tutti gli
+altri tipi di messggio (<em>dispatch</em> e <em>reply</em>).
+Ciò in quanto si vuole dare alla infrastruttura anche il compito di inviare al mittente la risposta
+prodotta dall’attore destinatario a livello applicativo.</p>
+</section>
+<section id="gestione-di-richieste">
+<h3>Gestione di richieste<a class="headerlink" href="#gestione-di-richieste" title="Permalink to this headline">¶</a></h3>
+<p>Se un messaggio pervenuto è una richiesta, il gestore di sistema dei messaggi predispone
+un attore temporaneo capace di ricevere il messaggio di risposta prodotto dall’attore destinatario
+e inviarlo all’attore richiedente:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabRequest</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">senderName</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">();</span>
+  <span class="n">String</span> <span class="n">actorRepyName</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">actorReplyPrefix</span><span class="o">+</span><span class="n">senderName</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">actorRepyName</span><span class="p">)</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">//non esiste già</span>
+    <span class="k">new</span> <span class="n">ActorForReply</span><span class="p">(</span><span class="n">actorRepyName</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">conn</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il nome dell’attore temporaneo ha un prefisso constante definito in <code class="docutils literal notranslate"><span class="pre">Qak22Context.actorReplyPrefix</span></code>
+seguito dal nome del destinatario.</p>
+<section id="actorforreply">
+<h4>ActorForReply<a class="headerlink" href="#actorforreply" title="Permalink to this headline">¶</a></h4>
+<p>L’attore (dinamicamente creato) che gestisce l’invio di una risposta all’attore remoto attende che il livello applicativo
+produca il messaggio di risposta e poi lo invia sulla connessione ricevuta. Quindi si auto-elimina dal sistema.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ActorForReply</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+  <span class="kd">private</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">;</span>
+  <span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="nf">ActorForReply</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span>
+          <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">h</span> <span class="o">=</span> <span class="n">h</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">conn</span> <span class="o">=</span> <span class="n">conn</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isReply</span><span class="p">()</span> <span class="p">)</span> <span class="n">h</span><span class="p">.</span><span class="na">sendAnswerToClient</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="n">conn</span><span class="p">);</span>
+    <span class="n">Qak22Context</span><span class="p">.</span><span class="na">removeActor</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’attore ad hoc per l’invio di una risposta assume il ruolo di proxy verso il contesto dell’attore
+remoto che ha inviato la richiesta.</p>
+</section>
+</section>
+<section id="invio-di-messaggi-ad-attori-remoti">
+<h3>Invio di messaggi ad attori remoti<a class="headerlink" href="#invio-di-messaggi-ad-attori-remoti" title="Permalink to this headline">¶</a></h3>
+<p>Per inviare un messaggio (<strong>dispatch</strong>, <strong>request</strong>, <strong>reply</strong>) ad un attore remoto <code class="docutils literal notranslate"><span class="pre">dest</span></code> ci si avvale del Proxy al contesto
+di <code class="docutils literal notranslate"><span class="pre">dest</span></code>, creato dalla operazione <a class="reference internal" href="#setactorasremote"><span class="std std-ref">QakContext: setActorAsRemote</span></a>.</p>
+<section id="sendmsgtoremoteactor">
+<h4>sendMsgToRemoteActor<a class="headerlink" href="#sendmsgtoremoteactor" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <a class="reference internal" href="#sendmsgfromactor"><span class="std std-ref">sendMsgFromActor</span></a> di <a class="reference internal" href="#qakactor22"><span class="std std-ref">QakActor22</span></a> introdotto in precedenza
+può quindi essere definito come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sendMsgToRemoteActor</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">destActorName</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">();</span>
+  <span class="n">ProxyAsClient</span> <span class="n">pxy</span>    <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getProxy</span><span class="p">(</span><span class="n">destActorName</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">pxy</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;Perhaps no setActorAsRemote for &quot;</span> <span class="o">+</span> <span class="n">destActorName</span> <span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">pxy</span><span class="p">.</span><span class="na">sendMsgOnConnection</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="proxyasclient-in-actor22comm">
+<h3>ProxyAsClient in actor22comm<a class="headerlink" href="#proxyasclient-in-actor22comm" title="Permalink to this headline">¶</a></h3>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">ProxyAsClient</span></code> del package <code class="docutils literal notranslate"><span class="pre">unibo.actor22comm.proxy</span></code> contiene il codice che
+permette di creare un proxy ad un contesto remoto, usando un dato protocollo.</p>
+<p>A differenza della precedente versione <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a>, questa versione relativa agli attori
+realizza <strong>comunicazioni asincrone</strong> anche per le richieste.
+Pertanto il proxy ad un contesto è simile alla versione <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a>, con due differenze:</p>
+<ul class="simple">
+<li><p>definisce un unico metodo <code class="docutils literal notranslate"><span class="pre">sendMsgOnConnection</span></code> per l’invio di messaggi sulla connessione,
+senza distinguere le richieste;</p></li>
+<li><p>attiva un Thread interno per la <strong>ricezione</strong> di messaggi di risposta che poi reindirizza all’attore
+destinatario.</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="nf">ProxyAsClient</span><span class="p">(</span>
+  <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+  <span class="n">setConnection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span>  <span class="n">entry</span><span class="p">,</span>  <span class="n">protocol</span><span class="p">);</span>
+  <span class="n">activateReceiver</span><span class="p">(</span><span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="activatereceiver">
+<h4>activateReceiver<a class="headerlink" href="#activatereceiver" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">activateReceiver</span><span class="p">(</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">try</span> <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">String</span> <span class="n">msgStr</span>    <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="na">receiveMsg</span><span class="p">();</span>
+          <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msgStr</span><span class="p">);</span>
+          <span class="n">QakActor22</span> <span class="n">a</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">());</span>
+          <span class="k">if</span><span class="p">(</span> <span class="n">a</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+          <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | activateReceiver:  (I should not be here) &quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="qakactor22-replytoremotecaller">
+<h4>QakActor22: replyToRemoteCaller<a class="headerlink" href="#qakactor22-replytoremotecaller" title="Permalink to this headline">¶</a></h4>
+<p>Per l’invio di una risposta ad un attore remoto, possiamo ora definire il metodo <code class="docutils literal notranslate"><span class="pre">replyToRemoteCaller</span></code>
+introdotto in <a class="reference internal" href="#qakactor22-sendreply"><span class="std std-ref">sendReply</span></a>, che utilizza l’attore temporaneo
+creato da <a class="reference internal" href="#gestione-di-richieste"><span class="std std-ref">elabRequest</span></a></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">replyToRemoteCaller</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">IApplMessage</span> <span class="n">reply</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">QakActor22</span> <span class="n">ar</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">Qak22Context</span><span class="p">.</span><span class="na">actorReplyPrefix</span><span class="o">+</span><span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ar</span> <span class="o">!=</span><span class="kc">null</span><span class="p">)</span> <span class="n">ar</span><span class="p">.</span><span class="na">queueMsg</span><span class="p">(</span> <span class="n">reply</span> <span class="p">);</span>
+    <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;QakActor22 | WARNING: reply &quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&quot; IMPOSSIBLE&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="esempi">
+<h3>Esempi<a class="headerlink" href="#esempi" title="Permalink to this headline">¶</a></h3>
+<p>Nel package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.distrib</span></code> (directory test del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>) :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LedActorOnRasp</span></code> :   attiva un <a class="reference internal" href="#ledactor"><span class="std std-ref">LedActor</span></a> in un contesto</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ControllerOnPcUsingLedRemote</span></code> :   attiva un <a class="reference internal" href="#controlleractor"><span class="std std-ref">ControllerActor</span></a> in un diverso contesto, io quale usa il Led remoto</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -104,6 +687,65 @@ dalla fisica , inclusa la relatività generale e la meccanica quantistica.</p>
 <li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Attori</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#il-paradigma-ad-attori">Il paradigma ad Attori</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#actorqak-e-qakactor22">ActorQak e QakActor22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ledactor">LedActor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#qakactor22-il-costruttore">QakActor22: il costruttore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#qak22context">Qak22Context</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qakactor22-getactor">QakActor22: getActor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#qakactor22-handlemsg">QakActor22: handleMsg</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ledactor-handlemsg">LedActor: handleMsg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ledactor-esecuzione-di-comandi">LedActor: esecuzione di comandi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#la-classe-appldata">La classe ApplData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ledactor-esecuzione-di-richieste">LedActor: esecuzione di richieste</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#richieste-asincrone">Richieste asincrone</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qakactor22-sendreply">QakActor22: sendReply</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#qakactor22-invio-di-messaggi">QakActor22: invio di messaggi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#invio-di-messaggi-da-non-attori">Invio di messaggi da non-attori</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usinglednocontrolleronpc">UsingLedNoControllerOnPc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#invio-di-richieste-da-programma">Invio di richieste da programma</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#invio-di-messaggi-da-attore">Invio di messaggi da attore</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#il-metodo-queuemsg">Il metodo queueMsg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metodi-di-invio-messaggi">Metodi di invio messaggi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#automsg">autoMsg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usingledandcontrolleronpc">UsingLedAndControllerOnPc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#controlleractor">ControllerActor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#controlleractor-comportamento">ControllerActor: comportamento</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dal-locale-al-distribuito">Dal locale al distribuito</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qakcontext-setactorasremote">QakContext: setActorAsRemote</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-unibo-actor22comm">Package <code class="docutils literal notranslate"><span class="pre">unibo.actor22Comm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contextmsghandler-per-attori">ContextMsgHandler per attori</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gestione-di-richieste">Gestione di richieste</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#actorforreply">ActorForReply</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#invio-di-messaggi-ad-attori-remoti">Invio di messaggi ad attori remoti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sendmsgtoremoteactor">sendMsgToRemoteActor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#proxyasclient-in-actor22comm">ProxyAsClient in actor22comm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#activatereceiver">activateReceiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qakactor22-replytoremotecaller">QakActor22: replyToRemoteCaller</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#esempi">Esempi</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>

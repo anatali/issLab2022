@@ -245,6 +245,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="RadarSystemSupporti.html#proxyasclient">ProxyAsClient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RadarSystemSupporti.html#entryport">entryPort</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RadarSystemSupporti.html#setconnection">setConnection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RadarSystemSupporti.html#sendcommandonconnection">sendCommandOnConnection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RadarSystemSupporti.html#sendrequestonconnection">sendRequestOnConnection</a></li>
@@ -362,13 +363,92 @@
 <li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="SonarObservable.html#sonarobservable-requisiti">SonarObservable: Requisiti</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#sonarobservable-analisi-dei-requisiti">SonarObservable: analisi dei requisiti</a></li>
-<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#sonarobservable-analisi-del-problema">SonarObservable: analisi del problema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#sonarobservable-analisi-del-problema">SonarObservable: analisi del problema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#la-distanza-misurata-come-risorsa-osservabile">La distanza misurata come risorsa osservabile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="SonarObservable.html#idistancemeasured">IDistanceMeasured</a></li>
+<li class="toctree-l5"><a class="reference internal" href="SonarObservable.html#iobservable">IObservable</a></li>
+<li class="toctree-l5"><a class="reference internal" href="SonarObservable.html#iobserver">IObserver</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#sonarobservable-progetto">SonarObservable: progetto</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#distancemeasured">DistanceMeasured</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#sonarmockforobs">SonarMockForObs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#sonarconcreteforobs">SonarConcreteForObs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#aggiornamento-di-devicefactory">Aggiornamento di DeviceFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#testing-del-sonar-osservabile">Testing del Sonar ‘osservabile’</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="SonarObservable.html#un-observer-per-il-testing">Un observer per il testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SonarObservable.html#verso-gli-eventi">Verso gli eventi</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Attori.html#il-paradigma-ad-attori">Il paradigma ad Attori</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#actorqak-e-qakactor22">ActorQak e QakActor22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#ledactor">LedActor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#qakactor22-il-costruttore">QakActor22: il costruttore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#qak22context">Qak22Context</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#qakactor22-getactor">QakActor22: getActor</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#qakactor22-handlemsg">QakActor22: handleMsg</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#ledactor-handlemsg">LedActor: handleMsg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#ledactor-esecuzione-di-comandi">LedActor: esecuzione di comandi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#la-classe-appldata">La classe ApplData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#ledactor-esecuzione-di-richieste">LedActor: esecuzione di richieste</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#richieste-asincrone">Richieste asincrone</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#qakactor22-sendreply">QakActor22: sendReply</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#qakactor22-invio-di-messaggi">QakActor22: invio di messaggi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#invio-di-messaggi-da-non-attori">Invio di messaggi da non-attori</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#usinglednocontrolleronpc">UsingLedNoControllerOnPc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#invio-di-richieste-da-programma">Invio di richieste da programma</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#invio-di-messaggi-da-attore">Invio di messaggi da attore</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#il-metodo-queuemsg">Il metodo queueMsg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#metodi-di-invio-messaggi">Metodi di invio messaggi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#automsg">autoMsg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#usingledandcontrolleronpc">UsingLedAndControllerOnPc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#controlleractor">ControllerActor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#controlleractor-comportamento">ControllerActor: comportamento</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Attori.html#dal-locale-al-distribuito">Dal locale al distribuito</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#qakcontext-setactorasremote">QakContext: setActorAsRemote</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#package-unibo-actor22comm">Package <code class="docutils literal notranslate"><span class="pre">unibo.actor22Comm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#contextmsghandler-per-attori">ContextMsgHandler per attori</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#gestione-di-richieste">Gestione di richieste</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#actorforreply">ActorForReply</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#invio-di-messaggi-ad-attori-remoti">Invio di messaggi ad attori remoti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#sendmsgtoremoteactor">sendMsgToRemoteActor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#proxyasclient-in-actor22comm">ProxyAsClient in actor22comm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#activatereceiver">activateReceiver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#qakactor22-replytoremotecaller">QakActor22: replyToRemoteCaller</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Attori.html#esempi">Esempi</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a><ul>

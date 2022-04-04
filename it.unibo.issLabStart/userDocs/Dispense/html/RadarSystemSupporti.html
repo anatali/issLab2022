@@ -433,6 +433,8 @@ e reso accessibile attraverso un Server, come ad esempio il <a class="reference 
   <span class="kd">public</span> <span class="n">Interaction2021</span> <span class="nf">getConn</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">conn</span><span class="p">;</span> <span class="p">}</span>
 </pre></div>
 </div>
+<section id="entryport">
+<h3>entryPort<a class="headerlink" href="#entryport" title="Permalink to this headline">¶</a></h3>
 <p>Il fatto di denotare la porta del server con una <em>String</em> invece che con un <em>int</em> ci darà
 la possibilità di gestire anche comunicazioni basate su altri protocolli oltre TCP; ad esempio per CoAP
 il parametro <code class="docutils literal notranslate"><span class="pre">entry</span></code> denoterà un <span class="blue">Uniform Resource Identifier (URI)</span>
@@ -443,6 +445,7 @@ il parametro <code class="docutils literal notranslate"><span class="pre">entry<
 <li><p><strong>sendCommandOnConnection</strong>: invia un comando (un <strong>dispatch</strong>) al server;</p></li>
 <li><p><strong>sendRequestOnConnection</strong>: invia una richiesta (un <strong>request</strong>) al server e attendere la risposta/ack;</p></li>
 </ul>
+</section>
 <section id="setconnection">
 <h3>setConnection<a class="headerlink" href="#setconnection" title="Permalink to this headline">¶</a></h3>
 <p>Il metodo <code class="docutils literal notranslate"><span class="pre">setConnection</span></code> effettua la connessione al server remoto in funzione del tipo di
@@ -704,6 +707,7 @@ solo il software relativo al Led e al Sonar.</p>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#proxyasclient">ProxyAsClient</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#entryport">entryPort</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setconnection">setConnection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sendcommandonconnection">sendCommandOnConnection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sendrequestonconnection">sendRequestOnConnection</a></li>
@@ -726,6 +730,7 @@ solo il software relativo al Led e al Sonar.</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>

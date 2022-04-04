@@ -509,9 +509,6 @@ Per agevolare il lavoro dell'Application Designer, introduciamo la classe ``Prox
 - la porta espressa da una *String* denominata ``entry``
 - il tipo di protocollo (:ref:`ProtocolType`) da usare
 
-
-
-
 .. code:: java
 
   public class ProxyAsClient {
@@ -529,6 +526,10 @@ Per agevolare il lavoro dell'Application Designer, introduciamo la classe ``Prox
     }
 
     public Interaction2021 getConn() { return conn; }
+
+++++++++++++++++++++++++++
+entryPort
+++++++++++++++++++++++++++
 
 Il fatto di denotare la porta del server con una *String* invece che con un *int* ci darà
 la possibilità di gestire anche comunicazioni basate su altri protocolli oltre TCP; ad esempio per CoAP 
