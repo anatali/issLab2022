@@ -61,8 +61,8 @@ protected boolean on = true;
 	        request(getStateRequest);
 	      }else {
 	    	  forward( ApplData.turnOffLed );
-			  ColorsOut.outappl(getName() + " | emit " + ApplData.endWorkEvent, ColorsOut.MAGENTA);
-	    	  emit( ApplData.endWorkEvent );
+			  //ColorsOut.outappl(getName() + " | emit " + ApplData.endWorkEvent, ColorsOut.MAGENTA);
+	    	  //emit( ApplData.endWorkEvent );
 	      }
 		
 	}
