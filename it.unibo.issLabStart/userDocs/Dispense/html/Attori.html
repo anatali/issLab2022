@@ -460,17 +460,20 @@ Vedremo in seguito (ad esempio, in <a class="reference internal" href="Annotazio
 
 <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setActorAsRemote</span><span class="p">(</span>
       <span class="n">String</span> <span class="n">actorName</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">proxyMap</span><span class="p">.</span><span class="na">containsKey</span><span class="p">(</span><span class="n">actorName</span><span class="o">+</span><span class="s">&quot;Pxy&quot;</span><span class="p">)</span>   <span class="p">)</span> <span class="p">{</span>
-    <span class="n">ProxyAsClient</span> <span class="n">pxy</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProxyAsClient</span><span class="p">(</span><span class="n">actorName</span><span class="o">+</span><span class="s">&quot;Pxy&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">protocol</span><span class="p">);</span>
-    <span class="n">proxyMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">actorName</span><span class="p">,</span> <span class="n">pxy</span><span class="p">);</span>
+  <span class="n">ProxyAsClient</span> <span class="n">pxy</span> <span class="o">=</span> <span class="n">proxyMap</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">host</span><span class="o">+</span><span class="s">&quot;Pxy&quot;</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">pxy</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">//un solo proxy per contesto remoto</span>
+    <span class="n">pxy</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ProxyAsClient</span><span class="p">(</span><span class="n">host</span><span class="o">+</span><span class="s">&quot;Pxy&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">protocol</span><span class="p">);</span>
+    <span class="n">proxyMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">host</span><span class="o">+</span><span class="s">&quot;Pxy&quot;</span><span class="p">,</span> <span class="n">pxy</span><span class="p">);</span>
   <span class="p">}</span>
+  <span class="n">proxyMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">actorName</span><span class="p">,</span> <span class="n">pxy</span><span class="p">);</span> <span class="c1">//memo il proxy per l&#39;attore</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>La classe <a class="reference internal" href="#qak22context"><span class="std std-ref">Qak22Context</span></a> definisce ora anche tabella (<code class="docutils literal notranslate"><span class="pre">proxyMap</span></code>) che tiene memoria
 dei proxy ai contesti remoti.</p>
 <p>Per l’attore non locale il cui nome è dato come input a <code class="docutils literal notranslate"><span class="pre">setActorAsRemote</span></code>, viene costruito (se non già creato)
-un proxy per il nodo (contesto) remoto indicato dai parametri <code class="docutils literal notranslate"><span class="pre">host</span></code> e <code class="docutils literal notranslate"><span class="pre">protocol</span></code>.</p>
+un proxy per il nodo (contesto) remoto indicato dal parametro <code class="docutils literal notranslate"><span class="pre">host</span></code> .</p>
+<p><span class="remark">Viene creato un solo proxy per ogni contesto remoto</span></p>
 </section>
 <section id="package-unibo-actor22comm">
 <h3>Package <code class="docutils literal notranslate"><span class="pre">unibo.actor22Comm</span></code><a class="headerlink" href="#package-unibo-actor22comm" title="Permalink to this headline">¶</a></h3>
@@ -534,6 +537,7 @@ e inviarlo all’attore richiedente:</p>
   <span class="k">if</span><span class="p">(</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">actorRepyName</span><span class="p">)</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">//non esiste già</span>
     <span class="k">new</span> <span class="n">ActorForReply</span><span class="p">(</span><span class="n">actorRepyName</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">conn</span><span class="p">);</span>
   <span class="p">}</span>
+  <span class="n">elabNonRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">conn</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -571,7 +575,7 @@ di <code class="docutils literal notranslate"><span class="pre">dest</span></cod
 <section id="sendmsgtoremoteactor">
 <h4>sendMsgToRemoteActor<a class="headerlink" href="#sendmsgtoremoteactor" title="Permalink to this headline">¶</a></h4>
 <p>Il metodo <a class="reference internal" href="#sendmsgfromactor"><span class="std std-ref">sendMsgFromActor</span></a> di <a class="reference internal" href="#qakactor22"><span class="std std-ref">QakActor22</span></a> introdotto in precedenza
-può quindi essere definito come segue:</p>
+può quindi essere completato come segue:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sendMsgToRemoteActor</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">destActorName</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">();</span>
   <span class="n">ProxyAsClient</span> <span class="n">pxy</span>    <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getProxy</span><span class="p">(</span><span class="n">destActorName</span><span class="p">);</span>

@@ -596,19 +596,21 @@ Vedremo in seguito (ad esempio, in :doc:`Annotazioni`) forme più evolute di dic
 
   public static void setActorAsRemote(
         String actorName, String entry, String host, ProtocolType protocol ) {
-    if( ! proxyMap.containsKey(actorName+"Pxy")   ) {  
-      ProxyAsClient pxy = new ProxyAsClient(actorName+"Pxy", host, entry, protocol);
-      proxyMap.put(actorName, pxy);
-    }   	
+    ProxyAsClient pxy = proxyMap.get(host+"Pxy");
+    if( pxy == null ) { //un solo proxy per contesto remoto
+      pxy = new ProxyAsClient(host+"Pxy", host, entry, protocol);
+      proxyMap.put(host+"Pxy", pxy);
+    }
+    proxyMap.put(actorName, pxy); //memo il proxy per l'attore
   }
 
 La classe :ref:`Qak22Context` definisce ora anche tabella (``proxyMap``) che tiene memoria
 dei proxy ai contesti remoti.
 
 Per l'attore non locale il cui nome è dato come input a ``setActorAsRemote``, viene costruito (se non già creato) 
-un proxy per il nodo (contesto) remoto indicato dai parametri ``host`` e ``protocol``.
+un proxy per il nodo (contesto) remoto indicato dal parametro ``host`` .
 
-
+:remark:`Viene creato un solo proxy per ogni contesto remoto`
 
 +++++++++++++++++++++++++++++++++++++++++
 Package ``unibo.actor22Comm``
@@ -685,6 +687,7 @@ e inviarlo all'attore richiedente:
     if( Qak22Context.getActor(actorRepyName) == null ) { //non esiste già
       new ActorForReply(actorRepyName, this, conn);
     }		
+    elabNonRequest(msg,conn);
   }
 
 Il nome dell'attore temporaneo ha un prefisso constante definito in ``Qak22Context.actorReplyPrefix`` 
@@ -731,7 +734,7 @@ sendMsgToRemoteActor
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Il metodo :ref:`sendMsgFromActor<sendMsgFromActor>` di :ref:`QakActor22<QakActor22>` introdotto in precedenza 
-può quindi essere definito come segue:
+può quindi essere completato come segue:
  
 .. code::  java
 

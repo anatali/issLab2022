@@ -19,14 +19,19 @@ public class Qak22Context {
 	private static HashMap<String,QakActor22> ctxMap      = new HashMap<String,QakActor22>();
     private static HashMap<String,ProxyAsClient> proxyMap = new HashMap<String,ProxyAsClient>();
 
-    public static final String actorReplyPrefix = "arp_";
+    public static final String actorReplyPrefix = "arply_";
     
     public static void setActorAsRemote(
     		String actorName, String entry, String host, ProtocolType protocol ) {
-    		if( ! proxyMap.containsKey(actorName+"Pxy")) { //un solo proxy per contesto remoto
-	    		ProxyAsClient pxy = new ProxyAsClient(actorName+"Pxy", host, entry, protocol);
-	    		proxyMap.put(actorName, pxy);
+    	    ProxyAsClient pxy = proxyMap.get(host+"Pxy");
+     		if( pxy == null ) { //un solo proxy per contesto remoto
+	    		pxy = new ProxyAsClient(host+"Pxy", host, entry, protocol);
+	    		ColorsOut.outappl("Qak22Context | CREATED proxy for " + host + " since:" + actorName, ColorsOut.MAGENTA);
+	    		proxyMap.put(host+"Pxy", pxy);
+    		}else {
+	    		ColorsOut.outappl("Qak22Context | EXISTS proxy for " + host + " since:" + actorName, ColorsOut.MAGENTA);  			
     		}
+    		proxyMap.put(actorName, pxy);
     }
     
 
@@ -61,7 +66,7 @@ public class Qak22Context {
         			 Class  impl     = a.implement()[i];
             		 try {
 						impl.getConstructor( String.class ).newInstance( name );
-	            		 ColorsOut.outappl( "CREATED LOCAL ACTOR: "+ name, ColorsOut.MAGENTA );
+	            		 ColorsOut.outappl( "Qak22Context | CREATED LOCAL ACTOR: "+ name, ColorsOut.MAGENTA );
 					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException | NoSuchMethodException | SecurityException e) {
  						e.printStackTrace();
@@ -82,9 +87,9 @@ public class Qak22Context {
         			 String port     = a.port()[i];
         			 String protocol = a.protocol()[i];        			 
         			 Qak22Context.setActorAsRemote(name, port, host, ProtocolInfo.getProtocol(protocol));
-            		 ColorsOut.outappl(
-            				 "CREATE REMOTE ACTOR PROXY:"+ name + " host:" + host + " port:"+port
-            						 + " protocol:" + protocol, ColorsOut.MAGENTA);        			 
+//            		 ColorsOut.outappl(
+//            				 "Qak22Context | CREATE REMOTE ACTOR PROXY:"+ name + " host:" + host + " port:"+port
+//            						 + " protocol:" + protocol, ColorsOut.MAGENTA);        			 
         		 }
         	 }
         }
