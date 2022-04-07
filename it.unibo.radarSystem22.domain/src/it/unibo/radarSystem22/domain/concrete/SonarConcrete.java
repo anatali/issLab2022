@@ -46,7 +46,7 @@ public class SonarConcrete extends SonarModel implements ISonar{
 			String data = reader.readLine();
 			if( data == null ) return;
 			int v = Integer.parseInt(data);
-			ColorsOut.out("SonarConcrete | v=" + v, ColorsOut.YELLOW );
+			ColorsOut.out("SonarConcrete | v=" + v );
 			int lastSonarVal = curVal.getVal();
 			if( lastSonarVal != v && v < DomainSystemConfig.sonarDistanceMax) {	
 				//Eliminiamo dati del tipo 3430 //TODO: filtri in sottosistemi a stream

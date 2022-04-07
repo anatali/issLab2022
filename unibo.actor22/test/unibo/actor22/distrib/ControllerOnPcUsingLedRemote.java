@@ -51,7 +51,7 @@ public class ControllerOnPcUsingLedRemote {
 	//IL main può fare richieste, ma non è in grado di ricevere risposte
 	//in quanto le richieste adesso sono ASINCRONE
 	protected void askLedStateForTesting() {
-		IApplMessage getStateRequest  = ApplData.buildRequest("main","ask", ApplData.reqLedState, ApplData.ledName);
+		IApplMessage getStateRequest  = Qak22Util.buildRequest("main","ask", ApplData.reqLedState, ApplData.ledName);
 		for( int i=1; i<=3; i++) {
 	 		ColorsOut.outappl( "ControllerOnPcUsingLedRemote  | doRequest "  , ColorsOut.YELLOW_BACKGROUND  );
 			Qak22Util.sendAMsg( getStateRequest );

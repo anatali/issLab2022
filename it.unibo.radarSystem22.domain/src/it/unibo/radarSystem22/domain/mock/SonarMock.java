@@ -24,6 +24,7 @@ private int delta = 1;
 	protected void sonarProduce( ) {
 		if( DomainSystemConfig.testing ) {	//produces always the same value
 			updateDistance( DomainSystemConfig.testingDistance );			      
+			//stopped = true;  //one shot
 		}else {
 			int v = curVal.getVal() - delta;
 			updateDistance( v );			    

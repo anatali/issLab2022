@@ -16,7 +16,7 @@ protected boolean on = true;
 
 	public ControllerActor(String name  ) {
 		super(name);
-		getStateRequest  = ApplData.buildRequest(name,"ask", ApplData.reqLedState, ApplData.ledName);
+		getStateRequest  = Qak22Util.buildRequest(name,"ask", ApplData.reqLedState, ApplData.ledName);
  	}
 
 	@Override
@@ -33,6 +33,7 @@ protected boolean on = true;
 		ColorsOut.outappl( getName()  + " | elabCmd=" + msgCmd, ColorsOut.GREEN);
 		switch( msgCmd ) {
 			case ApplData.cmdActivate : {
+				forward(ApplData.activateSonar);
 				doControllerWork();
 	 			break;
 			}
@@ -61,8 +62,9 @@ protected boolean on = true;
 	        request(getStateRequest);
 	      }else {
 	    	  forward( ApplData.turnOffLed );
-			  //ColorsOut.outappl(getName() + " | emit " + ApplData.endWorkEvent, ColorsOut.MAGENTA);
-	    	  //emit( ApplData.endWorkEvent );
+	  		  forward( ApplData.deactivateSonar );
+			  ColorsOut.outappl(getName() + " | emit " + ApplData.endWorkEvent, ColorsOut.MAGENTA);
+	    	  emit( ApplData.endWorkEvent );
 	      }
 		
 	}

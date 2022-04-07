@@ -19,6 +19,7 @@
 .. _Kotlin Channel: https://play.kotlinlang.org/hands-on/Introduction%20to%20Coroutines%20and%20Channels/08_Channels
 .. _Akka Actors: https://doc.akka.io//docs/akka/current/typed/guide/actors-motivation.html
 .. _Akka Documentation: https://doc.akka.io//docs/akka/current/index.html
+.. _Java annotation: https://en.wikipedia.org/wiki/Java_annotation
 
 .. http://www-lia.deis.unibo.it/Courses/RetiLM/proposteProgetti/akka_dds_proposal.html
 .. it.unibo.qakactor/userDocs/LabQakPrologUsage2020.html
@@ -105,7 +106,7 @@ ActorQak e QakActor22
 
 Nel seguito, per evitare confusioni, useremo i segenti termini:
 
-- **ActorQak**: per indicare gli attori implementati in Kotlin dalla libreria ``it.unibo.qakactor-2.6.jar``
+- **ActorQak**: per indicare gli attori implementati in Kotlin dalla libreria ``it.unibo.qakactor-2.7.jar``
   realizzata in anni passati;
 - **QakActor22**: per indicare gli attori che useremo in questa fase del nostro percorso, all'interno di normali programmi Java, 
   utilizzando classi appositamente definite nel progetto ``unibo.actor22``:
@@ -188,7 +189,7 @@ QakActor22: handleMsg
 La classe ``QakActor22`` è astratta in quanto lascia alle classi specilizzate il compito di definire il metodo ``handleMsg`` 
 con cui un attore applicativo gestisce (interpretandoli) comandi e richieste di tipo ``it.unibo.kactor.IApplMessage``.
 
-Si noti che l'interfaccia  ``IApplMessage`` è ora definita nel package ``it.unibo.kactor`` della libreria ``it.unibo.qakactor-2.6.jar``,
+Si noti che l'interfaccia  ``IApplMessage`` è ora definita nel package ``it.unibo.kactor`` della libreria ``it.unibo.qakactor-2.7.jar``,
 così da riutilizzare il codice già sviluppato negli anni scorsi.
 
 +++++++++++++++++++++++++++++++++++++++
@@ -319,7 +320,7 @@ viene ereditato dalla classe ``QakActor22`` e viene definito come segue:
 
 Quando  ``sendReply`` non riesce a trovare il *sender* della richiesta nel contesto, vuol dire che il 
 *sender* è un attore non locale. Vedremo  :ref:`più avanti<QakActor22: replyToRemoteCaller>` come 
-definire il memtodo ``replyToRemoteCaller``.
+definire il metodo ``replyToRemoteCaller``.
 
 In questa fase, approfondiamo invece i meccanismi relativi all'invio di un messaggio
 ad un attore locale, di cui abbiamo un esempio alla linea **(1)** .
@@ -348,6 +349,9 @@ Ad esempio, per accendere il Led, un programma può eseguire:
 .. code:: java
 
     Qak22Util.sendAMsg( ApplData.turnOnLed  );
+
+Il parametro è uno solo perchè il messaggio, se non reppresenta un evento
+(si veda :ref:`Eventi`), contiene il nome del destinatario.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 UsingLedNoControllerOnPc
@@ -580,7 +584,7 @@ QakContext: setActorAsRemote
 
 In questa fase, la conoscenza sulla dislocazione degli attori non locali viene 'iniettata' in un contesto 
 dal livello applicativo, attraverso il metodo ``setActorAsRemote``.
-Vedremo in seguito forme più evolute di dichiarazione.
+Vedremo in seguito (ad esempio, in :doc:`Annotazioni`) forme più evolute di dichiarazione.
 
 
 .. code::  java
@@ -614,11 +618,11 @@ In questo package inseriamo la realizzazione una nuova versione del concetto di 
 introdotto in :ref:`Contesti-contenitori` tenendo conto di quanto già fatto 
 nello :ref:`Sprint4<Lo SPRINT4>` e dei seguenti punti:
 
-- il codice dipende dalla libreria *it.unibo.qakactor-2.6*  e viene distribuito nella libreria
-  **unibo.actor22-1.0.jar**;
+- il codice dipende dalla libreria *it.unibo.qakactor-2.7*  e viene distribuito nella libreria
+  **unibo.actor22-1.1.jar**;
 
 - l'astrazione :ref:`connessione<Interaction2021>` viene definita
-  come una estensione di quanto introdotto nel supporto agli attori :ref:`ActorQak<ActorQak e QakActor22>`: 
+  come una estensione di quanto introdotto (*IConnInteraction*) nel supporto agli attori :ref:`ActorQak<ActorQak e QakActor22>`: 
  
   .. code::  java
 
@@ -632,8 +636,8 @@ nello :ref:`Sprint4<Lo SPRINT4>` e dei seguenti punti:
     }
 
 - il contesto è realizzato come un :ref:`EnablerContext` che attiva
-  una elaborazione di sistema dei messaggi in ingresso specializzata per gli attori,
-  grazie ad una nuova versione del :ref:`ContextMsgHandler<ContextMsgHandler>`;
+  una elaborazione di sistema dei messaggi in ingresso ,
+  grazie ad una nuova versione del :ref:`ContextMsgHandler<ContextMsgHandler>` specializzata per gli attori;
 
 +++++++++++++++++++++++++++++++++++++++++
 ContextMsgHandler per attori
@@ -670,7 +674,7 @@ Gestione di richieste
 +++++++++++++++++++++++++++++++++++++++++
 
 Se un messaggio pervenuto è una richiesta, il gestore di sistema dei messaggi predispone 
-un attore temporaneo capace di ricevere il messaggio di risposta prodotto dall'attore destinatario
+un **attore temporaneo** capace di ricevere il messaggio di risposta prodotto dall'attore destinatario
 e inviarlo all'attore richiedente:
 
 .. code::  java
@@ -801,9 +805,11 @@ creato da :ref:`elabRequest<Gestione di richieste>`
 .. code::  java
 
   protected void replyToRemoteCaller(IApplMessage msg, IApplMessage reply) {
-    QakActor22 ar = Qak22Context.getActor(Qak22Context.actorReplyPrefix+msg.msgSender());  
+    QakActor22 ar = Qak22Context.getActor(
+                Qak22Context.actorReplyPrefix+msg.msgSender());  
       if(ar !=null) ar.queueMsg( reply );
-      else ColorsOut.outerr("QakActor22 | WARNING: reply " + msg + " IMPOSSIBLE");		
+      else ColorsOut.outerr(
+          "QakActor22 | WARNING: reply " + msg + " IMPOSSIBLE");		
   }
 
 +++++++++++++++++++++++++++++++++++++++++
@@ -814,5 +820,32 @@ Esempi
 Nel package ``unibo.actor22.distrib`` (directory test del progetto ``unibo.actor22``) :
 
 - ``LedActorOnRasp`` :   attiva un :ref:`LedActor` in un contesto
-- ``ControllerOnPcUsingLedRemote`` :   attiva un :ref:`ControllerActor` in un diverso contesto, io quale usa il Led remoto
+- ``ControllerOnPcUsingLedRemote`` :   attiva un :ref:`ControllerActor` in un diverso contesto, il quale usa il Led remoto.
 
+---------------------------------------------
+Configurazione usando annotazioni
+---------------------------------------------
+
+Iniettare la conoscenza sulla dislocazione degli attori non locali attraverso il metodo :ref:`setActorAsRemote`
+segue uno **stile imperativo** tipico di Java.
+
+Per la configurazione di un sistema è però ormai ampiamente diffuso l'uso di uno **stile dichiarativo**
+sfruttando le `Java annotation`_. Per il loro uso nei nostri sistemi si veda :doc:`Annotazioni`.
+
+
+----------------------------------------
+Evoluzioni del RadarSystem
+----------------------------------------
+
+:worktodo:`WORKTODO: sperimentare RadarSystem ad attori`
+
+
+#. :blue:`RSActor22onPC`: Definire il ReadarSystem ad attori in un unico contesto con 
+   dispositivi simulati e provare su PC.
+#. :blue:`RSActor22onRasp`: Definire il ReadarSystem ad attori in un unico contesto con 
+   dispositivi reali e provare su RaspberryPi.
+#. :blue:`RSActor22Distrib`: Definire il ReadarSystem ad attori in due contesti: 
+   uno con dispostivi reali su RaspberryPi e   uno con Controller e Radar su PC.
+#. :blue:`RSActor22DistSonarObs`: Definire il ReadarSystem ad attori con *SonarObservable* versione 'naive'.
+#. :blue:`RSActor22DistSonarEventEmitter`: Definire il ReadarSystem ad attori con *SonarObservable* 
+   come emettitore di ad :ref:`Eventi`.

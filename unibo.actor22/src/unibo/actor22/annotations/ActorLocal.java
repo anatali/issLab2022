@@ -5,9 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
  
 
-@Retention(RetentionPolicy.RUNTIME)
 //@Target( value = {ElementType.CONSTRUCTOR,ElementType.METHOD, ElementType.TYPE} )
- 
+@Retention(RetentionPolicy.RUNTIME)
 public @interface ActorLocal {
 	String[] name();
 	@SuppressWarnings("rawtypes")

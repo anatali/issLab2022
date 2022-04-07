@@ -5,28 +5,28 @@ import static org.junit.Assert.assertTrue;
 import java.util.Observable;
 
 import it.unibo.radarSystem22.domain.interfaces.IObserver;
-import it.unibo.radarSystem22.domain.interfaces.ISonarObservable;
+import it.unibo.radarSystem22.domain.interfaces.ISonarForObs;
 import it.unibo.radarSystem22.domain.utils.ColorsOut;
 import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 
 
 
-@SuppressWarnings("deprecation")
+ 
 class SonarObserverFortesting implements IObserver{
 	private String name;
 	private boolean oneShot = false;
 	private int v0          = -1;
 	private int delta       =  1;
-//	private ISonarObservable sonar;
+ 	private ISonarForObs sonar;
 	
-	public SonarObserverFortesting(String name, ISonarObservable sonar, boolean oneShot) {
+	public SonarObserverFortesting(String name, ISonarForObs sonar, boolean oneShot) {
 		this.name    = name;
-//		this.sonar   = sonar;
+ 		this.sonar   = sonar;
 		this.oneShot = oneShot;
 	}
 	@Override
 	public void update(Observable source, Object data) {
-		 //Colors.out( name + " | update data=" + data ); //+ " from " + source	
+		 ColorsOut.outappl( name + " | update data=" + data, ColorsOut.GREEN ); //+ " from " + source	
 		 update( data.toString() );
 	}
 
@@ -46,7 +46,8 @@ class SonarObserverFortesting implements IObserver{
  				int vexpectedMax = v0+delta;
  				assertTrue(  value <= vexpectedMax && value >= vexpectedMin );
  				v0 = value;			 
- 				//if( v0 == 30 && name.equals("obs1")) sonar.unregister(this);
+ 				if( v0 == 70 && name.equals("obs1")) sonar.getDistance().deleteObserver(this);
+ 				if( v0 == 50 && name.equals("obs2")) sonar.getDistance().deleteObserver(this);
  			 }
  		 }
 	}

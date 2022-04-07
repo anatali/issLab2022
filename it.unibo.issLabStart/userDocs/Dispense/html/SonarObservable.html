@@ -79,7 +79,211 @@ citate in <a class="reference internal" href="Introduzione.html#dettagli-sul-col
 <li><p>se siamo convinti che si debbano osservare i valori prodotti pittosto che il dispositivo in sè,
 come <strong>formalizzare</strong> questo approccio nel caso del SonarObservable?</p></li>
 </ul>
+<section id="la-distanza-misurata-come-risorsa-osservabile">
+<h4>La distanza misurata come risorsa osservabile<a class="headerlink" href="#la-distanza-misurata-come-risorsa-osservabile" title="Permalink to this headline">¶</a></h4>
+<p>Optiaando per l’idea che il Sonar  sia un processo che aggiorna
+il valore  di una distanza, introduciamo il concetto di <strong>distanza misurata</strong> formalizzandolo con una
+interfaccia.</p>
+<section id="idistancemeasured">
+<h5>IDistanceMeasured<a class="headerlink" href="#idistancemeasured" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IDistanceMeasured</span> <span class="kd">extends</span> <span class="n">IDistance</span><span class="p">,</span> <span class="n">IObservable</span><span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setVal</span><span class="p">(</span> <span class="n">IDistance</span> <span class="n">d</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’interfaccia <code class="docutils literal notranslate"><span class="pre">IDistanceMeasured</span></code> dice che una <em>distanza misurata</em> è una distanza <a class="reference internal" href="RadarSystemProdottiAnalisi.html#idistance"><span class="std std-ref">IDistance</span></a>
+il cui valore può essere modificato. Inoltre è anche un observable in quanto
+estende  <a class="reference internal" href="#iobservable"><span class="std std-ref">IObservable</span></a> permettendo la
+registrazione/rimozione di <em>Observer</em> che implementano l’interfaccia <a class="reference internal" href="#iobserver"><span class="std std-ref">IObserver</span></a>.</p>
+</section>
+<section id="iobservable">
+<h5>IObservable<a class="headerlink" href="#iobservable" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IObservable</span><span class="p">{</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span> <span class="p">);</span><span class="c1">//implemented by Observable</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">);</span><span class="c1">//implemented by Observable</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="iobserver">
+<h5>IObserver<a class="headerlink" href="#iobserver" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IObserver</span> <span class="kd">extends</span> <span class="n">Observer</span><span class="p">{</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span> <span class="n">String</span> <span class="n">value</span> <span class="p">);</span>
+ <span class="c1">//From Observer: public void update(Observable o, Object news)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="sonarobservable-progetto">
+<h3>SonarObservable: progetto<a class="headerlink" href="#sonarobservable-progetto" title="Permalink to this headline">¶</a></h3>
+<p>Il progetto consiste nel realizzare i seguenti componenti:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#distancemeasured"><span class="std std-ref">DistanceMeasured</span></a> : implementa <a class="reference internal" href="#idistancemeasured"><span class="std std-ref">IDistanceMeasured</span></a> utlizzando la classe <code class="docutils literal notranslate"><span class="pre">java.util.Observable</span></code> per
+le gestione degli Observer;</p></li>
+<li><p><a class="reference internal" href="#sonarmockforobs"><span class="std std-ref">SonarMockForObs</span></a> : specializza <a class="reference internal" href="RadarSystemProgetto.html#sonarmodel"><span class="std std-ref">La classe astratta SonarModel</span></a> realizzando un Sonar mock orientato alla
+osservabilità dei dati, in quanto produttore di valori di  <em>distanza misurata osservabile</em>.</p></li>
+<li><p><a class="reference internal" href="#sonarconcreteforobs"><span class="std std-ref">SonarConcreteForObs</span></a> : specializza  <a class="reference internal" href="RadarSystemProgetto.html#sonarmodel"><span class="std std-ref">La classe astratta SonarModel</span></a> realizzando un Sonar concreto orientato alla
+osservabilità dei dati, in quanto produttore di valori di  <em>distanza misurata osservabile</em>.</p></li>
+</ul>
+<section id="distancemeasured">
+<h4>DistanceMeasured<a class="headerlink" href="#distancemeasured" title="Permalink to this headline">¶</a></h4>
+<p>La casse <span class="blue">DistanceMeasured</span> che realizza il concetto di <span class="blue">distanza misurata osservabile</span> può essere definita
+come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DistanceMeasured</span>
+      <span class="kd">extends</span> <span class="n">java</span><span class="p">.</span><span class="na">util</span><span class="p">.</span><span class="na">Observable</span> <span class="kd">implements</span> <span class="n">IDistanceMeasured</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">IDistance</span> <span class="n">d</span><span class="p">;</span>
+<span class="kd">public</span> <span class="nf">DistanceMeasured</span><span class="p">()</span> <span class="p">{}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setVal</span><span class="p">(</span> <span class="n">IDistance</span> <span class="n">v</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+    <span class="n">setChanged</span><span class="p">();</span> <span class="c1">//IMPORTANT!!</span>
+    <span class="n">notifyObservers</span><span class="p">(</span> <span class="n">d</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">IDistance</span> <span class="nf">getDistance</span><span class="p">(</span>   <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">d</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getVal</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">d</span><span class="p">.</span><span class="na">getVal</span><span class="p">();</span> <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">+</span> <span class="n">getVal</span><span class="p">();</span> <span class="p">}</span>
+      <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span><span class="n">obs</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">.</span><span class="na">deleteObserver</span><span class="p">(</span><span class="n">obs</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="sonarmockforobs">
+<h4>SonarMockForObs<a class="headerlink" href="#sonarmockforobs" title="Permalink to this headline">¶</a></h4>
+<p>Simile a <a class="reference internal" href="RadarSystemProgetto.html#il-sonarmock"><span class="std std-ref">SonarMock</span></a>, con la differenza che i valori correnti di distanza sono di tipo <a class="reference internal" href="#idistancemeasured"><span class="std std-ref">IDistanceMeasured</span></a>
+e che implementa il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">IDistanceMeasured</span> <span class="pre">getDistance()</span></code>.</p>
+</section>
+<section id="sonarconcreteforobs">
+<h4>SonarConcreteForObs<a class="headerlink" href="#sonarconcreteforobs" title="Permalink to this headline">¶</a></h4>
+<p>Simile a <a class="reference internal" href="RadarSystemProgetto.html#il-sonarconcrete"><span class="std std-ref">SonarConcrete</span></a>, con la differenza che i valori correnti di distanza sono di tipo <a class="reference internal" href="#idistancemeasured"><span class="std std-ref">IDistanceMeasured</span></a>
+e che implementa il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">IDistanceMeasured</span> <span class="pre">getDistance()</span></code>.</p>
+</section>
+<section id="aggiornamento-di-devicefactory">
+<h4>Aggiornamento di DeviceFactory<a class="headerlink" href="#aggiornamento-di-devicefactory" title="Permalink to this headline">¶</a></h4>
+<p>La nascita del nuovo tipo di Sonar induce a introdurre nuovi metodi in <a class="reference internal" href="RadarSystemProgetto.html#devicefactory"><span class="std std-ref">DeviceFactory</span></a>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">ISonarObservable</span> <span class="nf">createSonarForObs</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span><span class="p">)</span>  <span class="p">{</span> <span class="k">return</span> <span class="k">new</span> <span class="n">SonarMockForObs</span><span class="p">();</span>
+  <span class="p">}</span><span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="n">SonarConcreteForObs</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-del-sonar-osservabile">
+<h4>Testing del Sonar ‘osservabile’<a class="headerlink" href="#testing-del-sonar-osservabile" title="Permalink to this headline">¶</a></h4>
+<p>Il testing sul <code class="docutils literal notranslate"><span class="pre">SonarMockObservable</span></code> viene qui impostato nel modo che segue:</p>
+<ul class="simple">
+<li><p>si regola il Sonar in modo che produca un valore costante definito in <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.testingDistance</span></code></p></li>
+<li><p>si introduce (almeno) un observer che controlla che il dato osservato sia quello emesso</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSingleshotSonarForObsMock</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span>      <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="o">=</span> <span class="mi">22</span><span class="p">;</span>
+  <span class="kt">boolean</span> <span class="n">oneShot</span>           <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="n">ISonarForObs</span>  <span class="n">sonar</span>       <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createSonarForObs</span><span class="p">();</span>
+  <span class="n">IObserver</span> <span class="n">obs1</span>            <span class="o">=</span> <span class="k">new</span> <span class="n">SonarObserverFortesting</span><span class="p">(</span>
+                                  <span class="s">&quot;obs1&quot;</span><span class="p">,</span><span class="n">sonar</span><span class="p">,</span><span class="n">oneShot</span><span class="p">)</span> <span class="p">;</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">addObserver</span><span class="p">(</span> <span class="n">obs1</span> <span class="p">);</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+  <span class="n">BasicUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">v0</span> <span class="o">=</span> <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">getVal</span><span class="p">();</span>
+  <span class="n">assertTrue</span><span class="p">(</span>  <span class="n">v0</span> <span class="o">==</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="un-observer-per-il-testing">
+<h5>Un observer per il testing<a class="headerlink" href="#un-observer-per-il-testing" title="Permalink to this headline">¶</a></h5>
+<p>L’<em>observer</em> viene impostato in modo da controllare anche dati emessi da un sonar reale
+che opera con ostacolo fisso posto davanti ad esso, alla distanza prefissata.</p>
+<div class="highlight-java notranslate" id="sonarobserverfortesting"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">SonarObserverFortesting</span> <span class="kd">implements</span> <span class="n">IObserver</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">boolean</span> <span class="n">oneShot</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">v0</span>          <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">delta</span>       <span class="o">=</span>  <span class="mi">1</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">ISonarObservable</span> <span class="n">sonar</span><span class="p">;</span>
 
+<span class="kd">public</span> <span class="nf">SonarObserverFortesting</span><span class="p">(</span>
+        <span class="n">String</span> <span class="n">name</span><span class="p">,</span><span class="n">ISonarObservable</span> <span class="n">sonar</span><span class="p">,</span><span class="kt">boolean</span> <span class="n">oneShot</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">name</span>    <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">oneShot</span> <span class="o">=</span> <span class="n">oneShot</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>  <span class="c1">//from java.util.Observer</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">Observable</span> <span class="n">source</span><span class="p">,</span> <span class="n">Object</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span> <span class="c1">//from IObserver</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">oneShot</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assertTrue</span><span class="p">(</span> <span class="n">value</span> <span class="o">==</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">vs</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">v0</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">{</span><span class="c1">//set the first value observed</span>
+      <span class="n">v0</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+      <span class="kt">int</span> <span class="n">vexpectedMin</span> <span class="o">=</span> <span class="n">v0</span><span class="o">-</span><span class="n">delta</span><span class="p">;</span>
+      <span class="kt">int</span> <span class="n">vexpectedMax</span> <span class="o">=</span> <span class="n">v0</span><span class="o">+</span><span class="n">delta</span><span class="p">;</span>
+      <span class="n">assertTrue</span><span class="p">(</span><span class="n">value</span><span class="o">&lt;=</span><span class="n">vexpectedMax</span> <span class="o">&amp;&amp;</span> <span class="n">value</span><span class="o">&gt;=</span><span class="n">vexpectedMin</span> <span class="p">);</span>
+      <span class="n">v0</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="cm">/*</span>
+<span class="cm">    //Elimino l&#39;observer</span>
+<span class="cm">      if( v0 == 70 &amp;&amp; name.equals(&quot;obs1&quot;))</span>
+<span class="cm">        sonar.getDistance().deleteObserver(this);</span>
+<span class="cm">      if( v0 == 50 &amp;&amp; name.equals(&quot;obs2&quot;))</span>
+<span class="cm">        sonar.getDistance().deleteObserver(this);</span>
+<span class="cm">    */</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">}</span><span class="c1">//SonarObserverFortesting</span>
+</pre></div>
+</div>
+<p>Si noti che observer di questo tipo vengono di norma eseguiti all’interno del Thread dell’observable che sta operando
+per conto di un qualche client.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="verso-gli-eventi">
+<span id="ledosservabile"></span><h2>Verso gli eventi<a class="headerlink" href="#verso-gli-eventi" title="Permalink to this headline">¶</a></h2>
+<p>Il classico <a class="reference internal" href="RadarSystemAnalisi.html#patternobserver"><span class="std std-ref">Il pattern observer</span></a> prevede che la sorgente di informazione (nel nostro caso <a class="reference internal" href="#distancemeasured"><span class="std std-ref">DistanceMeasured</span></a>)
+offra metodi per la registrazione dei riferimenti agli oggetti Observer interessati agli aggiornamenti.
+Inoltre ogni Observer deve implementare un metodo (<code class="docutils literal notranslate"><span class="pre">update</span></code>) che viene invocato dal Sonar all’interno del suo
+Thread di lavoro o mediante altro Thread appositamente creato. L’aggiornamento degli Observer pone infatti un
+problema:</p>
+<ul class="simple">
+<li><p>se la sorgente invoca l’update degli observer nel suo Thread di lavoro, essa può subire un ritardo che
+dipende dal tempo di esecuzione dell’Observer; se un Observer entra in loop, la sorgente di blocca;</p></li>
+<li><p>se la sorgente invoca l’update degli observer in un Thread creato ad hoc, vi può essere un prolificazione
+non tollerabile di Thread nel caso di molti observer.</p></li>
+</ul>
+<p>Ci sentiamo quindi indotti a introdurre un principio:</p>
+<p><span class="remark">una sorgente osservabile non dovrebbe essere influenzata dalla presenza di Observer</span></p>
+<p>Secondo questo principio, dovremmo escludere anche la possibilità di rendere il Sonar osservabile
+a livello applicativo attraverso
+l’uso di un protocollo <em>publish-subscribe</em>, in quanto dipenderebbe da uno specifico protocollo,
+con relativa libreria e con riferimenti espliciti a un broker.</p>
+<p>Da un punto di vista concettuale, una sorgente di informazione dovrebbe risultare osservabile in quanto capace di
+emettere informazione percebibile da un numero qualsiasi di osservatori interessati,
+grazie a meccanismi che non alterano il funzionamento della sorgente.</p>
+<p>Questa idea fa sorgere un <strong>abstraction gap</strong>, e suggerisce un nuovo modello:</p>
+<p><span class="remark">una sorgente è osservabile quando emette informazione in forma di evento</span></p>
+<p>Il concetto di <strong>evento</strong> è stato introdotto in <a class="reference internal" href="CostruireSoftware.html#terminologia-di-riferimento"><span class="std std-ref">Terminologia di riferimento</span></a>
+come un messaggio che non ha un preciso destinatario.</p>
+</section>
+</section>
 
 
           </div>
@@ -145,6 +349,8 @@ come <strong>formalizzare</strong> questo approccio nel caso del SonarObservable
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>

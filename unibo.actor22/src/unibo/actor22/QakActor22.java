@@ -60,7 +60,7 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
 		ProxyAsClient pxy    = Qak22Context.getProxy(destActorName);
 		//ColorsOut.out("QakActor22 | sendAMsg " + msg + " using:" + pxy , ColorsOut.GREEN);
 		if( pxy == null ) {
-			ColorsOut.outerr("Perhaps no setActorAsRemote for " + destActorName );
+			ColorsOut.outerr(" Perhaps no setActorAsRemote for " + destActorName );
 			return;
 		}
 		pxy.sendMsgOnConnection( msg.toString() ) ;

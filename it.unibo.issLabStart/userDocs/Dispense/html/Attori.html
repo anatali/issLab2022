@@ -15,7 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="RaspberrySoftware" href="RaspberrySoftware.html" />
+    <link rel="next" title="Eventi" href="Eventi.html" />
     <link rel="prev" title="Il SonarObservable" href="SonarObservable.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -82,7 +82,7 @@ ma motivi di efficienza ci porteranno ad utilizzare le <em>coroutines</em> e i <
 <h2>ActorQak e QakActor22<a class="headerlink" href="#actorqak-e-qakactor22" title="Permalink to this headline">¶</a></h2>
 <p>Nel seguito, per evitare confusioni, useremo i segenti termini:</p>
 <ul class="simple">
-<li><p><strong>ActorQak</strong>: per indicare gli attori implementati in Kotlin dalla libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.6.jar</span></code>
+<li><p><strong>ActorQak</strong>: per indicare gli attori implementati in Kotlin dalla libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.7.jar</span></code>
 realizzata in anni passati;</p></li>
 <li><p><strong>QakActor22</strong>: per indicare gli attori che useremo in questa fase del nostro percorso, all’interno di normali programmi Java,
 utilizzando classi appositamente definite nel progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>:</p>
@@ -150,7 +150,7 @@ tabella (<code class="docutils literal notranslate"><span class="pre">ctxMap</sp
 <h2>QakActor22: handleMsg<a class="headerlink" href="#qakactor22-handlemsg" title="Permalink to this headline">¶</a></h2>
 <p>La classe <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> è astratta in quanto lascia alle classi specilizzate il compito di definire il metodo <code class="docutils literal notranslate"><span class="pre">handleMsg</span></code>
 con cui un attore applicativo gestisce (interpretandoli) comandi e richieste di tipo <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor.IApplMessage</span></code>.</p>
-<p>Si noti che l’interfaccia  <code class="docutils literal notranslate"><span class="pre">IApplMessage</span></code> è ora definita nel package <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor</span></code> della libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.6.jar</span></code>,
+<p>Si noti che l’interfaccia  <code class="docutils literal notranslate"><span class="pre">IApplMessage</span></code> è ora definita nel package <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor</span></code> della libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.7.jar</span></code>,
 così da riutilizzare il codice già sviluppato negli anni scorsi.</p>
 <section id="ledactor-handlemsg">
 <h3>LedActor: handleMsg<a class="headerlink" href="#ledactor-handlemsg" title="Permalink to this headline">¶</a></h3>
@@ -254,7 +254,7 @@ viene ereditato dalla classe <code class="docutils literal notranslate"><span cl
 </div>
 <p>Quando  <code class="docutils literal notranslate"><span class="pre">sendReply</span></code> non riesce a trovare il <em>sender</em> della richiesta nel contesto, vuol dire che il
 <em>sender</em> è un attore non locale. Vedremo  <a class="reference internal" href="#qakactor22-replytoremotecaller"><span class="std std-ref">più avanti</span></a> come
-definire il memtodo <code class="docutils literal notranslate"><span class="pre">replyToRemoteCaller</span></code>.</p>
+definire il metodo <code class="docutils literal notranslate"><span class="pre">replyToRemoteCaller</span></code>.</p>
 <p>In questa fase, approfondiamo invece i meccanismi relativi all’invio di un messaggio
 ad un attore locale, di cui abbiamo un esempio alla linea <strong>(1)</strong> .</p>
 </section>
@@ -277,6 +277,8 @@ definito nella classe <code class="docutils literal notranslate"><span class="pr
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">turnOnLed</span>  <span class="p">);</span>
 </pre></div>
 </div>
+<p>Il parametro è uno solo perchè il messaggio, se non reppresenta un evento
+(si veda <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a>), contiene il nome del destinatario.</p>
 <section id="usinglednocontrolleronpc">
 <h4>UsingLedNoControllerOnPc<a class="headerlink" href="#usinglednocontrolleronpc" title="Permalink to this headline">¶</a></h4>
 <p>Esempi di questo tipo si trovano in <code class="docutils literal notranslate"><span class="pre">UsingLedNoControllerOnPc</span></code> del package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.local</span></code>
@@ -450,7 +452,7 @@ di comunicazione usato dal contesto di <code class="docutils literal notranslate
 <span id="setactorasremote"></span><h3>QakContext: setActorAsRemote<a class="headerlink" href="#qakcontext-setactorasremote" title="Permalink to this headline">¶</a></h3>
 <p>In questa fase, la conoscenza sulla dislocazione degli attori non locali viene ‘iniettata’ in un contesto
 dal livello applicativo, attraverso il metodo <code class="docutils literal notranslate"><span class="pre">setActorAsRemote</span></code>.
-Vedremo in seguito forme più evolute di dichiarazione.</p>
+Vedremo in seguito (ad esempio, in <a class="reference internal" href="Annotazioni.html"><span class="doc">Annotazioni</span></a>) forme più evolute di dichiarazione.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Qak22Context</span> <span class="p">{</span>
   <span class="kd">private</span> <span class="kd">static</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">QakActor22</span><span class="o">&gt;</span> <span class="n">ctxMap</span>      <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">QakActor22</span><span class="o">&gt;</span><span class="p">();</span>
   <span class="kd">private</span> <span class="kd">static</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">ProxyAsClient</span><span class="o">&gt;</span> <span class="n">proxyMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">ProxyAsClient</span><span class="o">&gt;</span><span class="p">();</span>
@@ -476,10 +478,10 @@ un proxy per il nodo (contesto) remoto indicato dai parametri <code class="docut
 introdotto in <a class="reference internal" href="ContestiContenitori.html#contesti-contenitori"><span class="std std-ref">Contesti-contenitori</span></a> tenendo conto di quanto già fatto
 nello <a class="reference internal" href="ContestiContenitori.html#lo-sprint4"><span class="std std-ref">Sprint4</span></a> e dei seguenti punti:</p>
 <ul>
-<li><p>il codice dipende dalla libreria <em>it.unibo.qakactor-2.6</em>  e viene distribuito nella libreria
-<strong>unibo.actor22-1.0.jar</strong>;</p></li>
+<li><p>il codice dipende dalla libreria <em>it.unibo.qakactor-2.7</em>  e viene distribuito nella libreria
+<strong>unibo.actor22-1.1.jar</strong>;</p></li>
 <li><p>l’astrazione <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">connessione</span></a> viene definita
-come una estensione di quanto introdotto nel supporto agli attori <a class="reference internal" href="#actorqak-e-qakactor22"><span class="std std-ref">ActorQak</span></a>:</p>
+come una estensione di quanto introdotto (<em>IConnInteraction</em>) nel supporto agli attori <a class="reference internal" href="#actorqak-e-qakactor22"><span class="std std-ref">ActorQak</span></a>:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="kd">extends</span> <span class="c1">//from uniboInterfaces.jar</span>
   <span class="n">it</span><span class="p">.</span><span class="na">unibo</span><span class="p">.</span><span class="na">is</span><span class="p">.</span><span class="na">interfaces</span><span class="p">.</span><span class="na">protocols</span><span class="p">.</span><span class="na">IConnInteraction</span> <span class="p">{</span>
     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
@@ -492,8 +494,8 @@ come una estensione di quanto introdotto nel supporto agli attori <a class="refe
 </div>
 </li>
 <li><p>il contesto è realizzato come un <a class="reference internal" href="ContestiContenitori.html#enablercontext"><span class="std std-ref">EnablerContext</span></a> che attiva
-una elaborazione di sistema dei messaggi in ingresso specializzata per gli attori,
-grazie ad una nuova versione del <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>;</p></li>
+una elaborazione di sistema dei messaggi in ingresso ,
+grazie ad una nuova versione del <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a> specializzata per gli attori;</p></li>
 </ul>
 </section>
 <section id="contextmsghandler-per-attori">
@@ -524,7 +526,7 @@ prodotta dall’attore destinatario a livello applicativo.</p>
 <section id="gestione-di-richieste">
 <h3>Gestione di richieste<a class="headerlink" href="#gestione-di-richieste" title="Permalink to this headline">¶</a></h3>
 <p>Se un messaggio pervenuto è una richiesta, il gestore di sistema dei messaggi predispone
-un attore temporaneo capace di ricevere il messaggio di risposta prodotto dall’attore destinatario
+un <strong>attore temporaneo</strong> capace di ricevere il messaggio di risposta prodotto dall’attore destinatario
 e inviarlo all’attore richiedente:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabRequest</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
   <span class="n">String</span> <span class="n">senderName</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">();</span>
@@ -630,9 +632,11 @@ destinatario.</p></li>
 introdotto in <a class="reference internal" href="#qakactor22-sendreply"><span class="std std-ref">sendReply</span></a>, che utilizza l’attore temporaneo
 creato da <a class="reference internal" href="#gestione-di-richieste"><span class="std std-ref">elabRequest</span></a></p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">replyToRemoteCaller</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">IApplMessage</span> <span class="n">reply</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">QakActor22</span> <span class="n">ar</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">Qak22Context</span><span class="p">.</span><span class="na">actorReplyPrefix</span><span class="o">+</span><span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
+  <span class="n">QakActor22</span> <span class="n">ar</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span>
+              <span class="n">Qak22Context</span><span class="p">.</span><span class="na">actorReplyPrefix</span><span class="o">+</span><span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">());</span>
     <span class="k">if</span><span class="p">(</span><span class="n">ar</span> <span class="o">!=</span><span class="kc">null</span><span class="p">)</span> <span class="n">ar</span><span class="p">.</span><span class="na">queueMsg</span><span class="p">(</span> <span class="n">reply</span> <span class="p">);</span>
-    <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;QakActor22 | WARNING: reply &quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&quot; IMPOSSIBLE&quot;</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span>
+        <span class="s">&quot;QakActor22 | WARNING: reply &quot;</span> <span class="o">+</span> <span class="n">msg</span> <span class="o">+</span> <span class="s">&quot; IMPOSSIBLE&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -643,9 +647,31 @@ creato da <a class="reference internal" href="#gestione-di-richieste"><span clas
 <p>Nel package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.distrib</span></code> (directory test del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>) :</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">LedActorOnRasp</span></code> :   attiva un <a class="reference internal" href="#ledactor"><span class="std std-ref">LedActor</span></a> in un contesto</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ControllerOnPcUsingLedRemote</span></code> :   attiva un <a class="reference internal" href="#controlleractor"><span class="std std-ref">ControllerActor</span></a> in un diverso contesto, io quale usa il Led remoto</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ControllerOnPcUsingLedRemote</span></code> :   attiva un <a class="reference internal" href="#controlleractor"><span class="std std-ref">ControllerActor</span></a> in un diverso contesto, il quale usa il Led remoto.</p></li>
 </ul>
 </section>
+</section>
+<section id="configurazione-usando-annotazioni">
+<h2>Configurazione usando annotazioni<a class="headerlink" href="#configurazione-usando-annotazioni" title="Permalink to this headline">¶</a></h2>
+<p>Iniettare la conoscenza sulla dislocazione degli attori non locali attraverso il metodo <a class="reference internal" href="#setactorasremote"><span class="std std-ref">QakContext: setActorAsRemote</span></a>
+segue uno <strong>stile imperativo</strong> tipico di Java.</p>
+<p>Per la configurazione di un sistema è però ormai ampiamente diffuso l’uso di uno <strong>stile dichiarativo</strong>
+sfruttando le <a class="reference external" href="https://en.wikipedia.org/wiki/Java_annotation">Java annotation</a>. Per il loro uso nei nostri sistemi si veda <a class="reference internal" href="Annotazioni.html"><span class="doc">Annotazioni</span></a>.</p>
+</section>
+<section id="evoluzioni-del-radarsystem">
+<h2>Evoluzioni del RadarSystem<a class="headerlink" href="#evoluzioni-del-radarsystem" title="Permalink to this headline">¶</a></h2>
+<p><span class="worktodo">WORKTODO: sperimentare RadarSystem ad attori</span></p>
+<ol class="arabic simple">
+<li><p><span class="blue">RSActor22onPC</span>: Definire il ReadarSystem ad attori in un unico contesto con
+dispositivi simulati e provare su PC.</p></li>
+<li><p><span class="blue">RSActor22onRasp</span>: Definire il ReadarSystem ad attori in un unico contesto con
+dispositivi reali e provare su RaspberryPi.</p></li>
+<li><p><span class="blue">RSActor22Distrib</span>: Definire il ReadarSystem ad attori in due contesti:
+uno con dispostivi reali su RaspberryPi e   uno con Controller e Radar su PC.</p></li>
+<li><p><span class="blue">RSActor22DistSonarObs</span>: Definire il ReadarSystem ad attori con <em>SonarObservable</em> versione ‘naive’.</p></li>
+<li><p><span class="blue">RSActor22DistSonarEventEmitter</span>: Definire il ReadarSystem ad attori con <em>SonarObservable</em>
+come emettitore di ad <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a>.</p></li>
+</ol>
 </section>
 </section>
 
@@ -746,8 +772,12 @@ creato da <a class="reference internal" href="#gestione-di-richieste"><span clas
 <li class="toctree-l3"><a class="reference internal" href="#esempi">Esempi</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#configurazione-usando-annotazioni">Configurazione usando annotazioni</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evoluzioni-del-radarsystem">Evoluzioni del RadarSystem</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 </ul>
@@ -757,7 +787,7 @@ creato da <a class="reference internal" href="#gestione-di-richieste"><span clas
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="SonarObservable.html" title="previous chapter">Il SonarObservable</a></li>
-      <li>Next: <a href="RaspberrySoftware.html" title="next chapter">RaspberrySoftware</a></li>
+      <li>Next: <a href="Eventi.html" title="next chapter">Eventi</a></li>
   </ul></li>
 </ul>
 </div>

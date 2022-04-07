@@ -21,8 +21,11 @@ iss22
    ContestiContenitori
    SonarObservable
    Attori
+   Eventi
+   Annotazioni
    RaspberrySoftware
    RaspBasicCode
+
 
 Indices and tables
 -------------------

@@ -1,6 +1,8 @@
 package unibo.actor22comm.events;
 
 import java.util.HashMap;
+
+import it.unibo.kactor.ApplMessage;
 import it.unibo.kactor.IApplMessage;
 import unibo.actor22.*;
 import unibo.actor22comm.utils.ColorsOut;
@@ -38,9 +40,11 @@ protected HashMap<String,String> eventObserverMap = new HashMap<String,String>()
 	protected void updateTheObservers(IApplMessage msg) {
 		eventObserverMap.forEach(
 				( String actorName,  String evName) -> {
-					ColorsOut.outappl("updateTheObservers:" + actorName + " evName" + evName, ColorsOut.MAGENTA); 
-					if( evName.equals(msg.msgId()) ) {
-						Qak22Util.sendAMsg( msg,  actorName);
+					//ColorsOut.out("updateTheObservers:" + actorName + " evName:" + evName, ColorsOut.MAGENTA); 
+					if( evName.equals( msg.msgId()) ) {
+						IApplMessage m = Qak22Util.buildEvent(msg.msgSender(), msg.msgId(), msg.msgContent(), actorName ) ;
+						Qak22Util.sendAMsg( m );
+						//Warning: we must declare a remote observer
 					}
 		} ) ;
 	}

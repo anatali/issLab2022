@@ -1,8 +1,12 @@
 package unibo.actor22;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import it.unibo.kactor.IApplMessage;
-import unibo.actor22.annotations.AnnotUtil;
+import unibo.actor22.annotations.ActorLocal;
+import unibo.actor22.annotations.ActorRemote;
+import unibo.actor22comm.ProtocolInfo;
 import unibo.actor22comm.ProtocolType;
 import unibo.actor22comm.events.EventMsgHandler;
 import unibo.actor22comm.proxy.ProxyAsClient;
@@ -46,17 +50,52 @@ public class Qak22Context {
 	
 //Annotations
 	
-    public static void handleLocalActorDecl(Object element) {
-    	AnnotUtil.createActorLocal(element);
+    public static void handleLocalActorDecl(Object element) {   	
+        Class<?> clazz            = element.getClass();
+        Annotation[] annotations  = clazz.getAnnotations();
+         for (Annotation annot : annotations) {
+        	 if (annot instanceof ActorLocal) {
+        		 ActorLocal a = (ActorLocal) annot;
+        		 for( int i=0; i<a.name().length; i++) {
+        			 String name     = a.name()[i];
+        			 Class  impl     = a.implement()[i];
+            		 try {
+						impl.getConstructor( String.class ).newInstance( name );
+	            		 ColorsOut.outappl( "CREATED LOCAL ACTOR: "+ name, ColorsOut.MAGENTA );
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+ 						e.printStackTrace();
+					}
+         		 }
+        	 }
+         }
     }
     public static void handleRemoteActorDecl(Object element) {
-     	AnnotUtil.createProxyForRemoteActors(element);
+        Class<?> clazz            = element.getClass();
+        Annotation[] annotations  = clazz.getAnnotations();
+        for (Annotation annot : annotations) {
+        	 if (annot instanceof ActorRemote) {
+        		 ActorRemote a = (ActorRemote) annot;
+        		 for( int i=0; i<a.name().length;i++) {
+        			 String name     = a.name()[i];
+        			 String host     = a.host()[i];
+        			 String port     = a.port()[i];
+        			 String protocol = a.protocol()[i];        			 
+        			 Qak22Context.setActorAsRemote(name, port, host, ProtocolInfo.getProtocol(protocol));
+            		 ColorsOut.outappl(
+            				 "CREATE REMOTE ACTOR PROXY:"+ name + " host:" + host + " port:"+port
+            						 + " protocol:" + protocol, ColorsOut.MAGENTA);        			 
+        		 }
+        	 }
+        }
     }
-
     public static void handleActorDeclaration(Object element) {
-    	AnnotUtil.createActorLocal(element);
-    	AnnotUtil.createProxyForRemoteActors(element);
-    }
+    	handleLocalActorDecl(element);
+    	handleRemoteActorDecl(element);
+   }  
+    
+ 
+
    
 //Events
     
