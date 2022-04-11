@@ -23,7 +23,7 @@ public  class Qak22Util   {
 		//ColorsOut.out("Qak22Util | sendAMsg " + msg  , ColorsOut.GREEN);	  
         QakActor22 dest = Qak22Context.getActor(destActorName);  
         if( dest != null ) { //attore locale
-    		ColorsOut.out("Qak22Util | sendAMsg " + msg + " to:" + dest.getName() , ColorsOut.GREEN);
+    		//ColorsOut.out("Qak22Util | sendAMsg " + msg + " to:" + dest.getName() , ColorsOut.GREEN);
     		dest.queueMsg(msg);
         }else{ //invio di un msg ad un attore non locale : cerco in proxyMap
         	//ColorsOut.out("Qak22Util | send to a non local actor  " + msg, ColorsOut.GREEN  );

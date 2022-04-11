@@ -30,14 +30,15 @@ protected HashMap<String,String> eventObserverMap = new HashMap<String,String>()
 		}else if( msg.isDispatch() && msg.msgId().equals(Qak22Context.unregisterForEvent)) {
 			ColorsOut.outappl(myName + " unregister:" + msg.msgSender() + " for "+ msg.msgContent(), ColorsOut.MAGENTA);
 			eventObserverMap.remove(msg.msgSender(), msg.msgContent());
-		}else if( msg.isEvent()) {
+		}else if( msg.isEvent() ) {
  			updateTheObservers( msg );
 		}else {
 			ColorsOut.outerr(myName + " msg unknown");
 		}
-	}
+	}  
 
 	protected void updateTheObservers(IApplMessage msg) {
+		//ColorsOut.outappl("updateTheObservers:" + msg, ColorsOut.MAGENTA); 
 		eventObserverMap.forEach(
 				( String actorName,  String evName) -> {
 					//ColorsOut.out("updateTheObservers:" + actorName + " evName:" + evName, ColorsOut.MAGENTA); 

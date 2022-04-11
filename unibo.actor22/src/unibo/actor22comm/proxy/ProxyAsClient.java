@@ -73,7 +73,7 @@ protected ProtocolType protocol ;
 		try {
 			conn.forward(msg);
 		} catch (Exception e) {
-			ColorsOut.outerr( name+"  | sendMsgOnConnection ERROR=" + e.getMessage()  );
+			ColorsOut.outerr( name+"  | sendMsgOnConnection " + msg + " ERROR=" + e.getMessage()  );
 		}
 	}
  

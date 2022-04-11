@@ -19,6 +19,7 @@ public class ApplData {
 	public static final String comdLedon   = "turnOn";
 	public static final String comdLedoff  = "turnOff";
 	public static final String reqLedState = "getState";
+	public static final String reqDistance = "getDistance";
 
 	public static final String cmdActivate  = "activate";
 	public static final String cmdDectivate = "deactivate";
@@ -35,6 +36,7 @@ public class ApplData {
 	public static final  IApplMessage activateCrtl    = Qak22Util.buildDispatch("main", "cmd", cmdActivate, controllerName);
 	public static final  IApplMessage activateSonar   = Qak22Util.buildDispatch(controllerName, "cmd", cmdActivate, sonarName);
 	public static final  IApplMessage deactivateSonar = Qak22Util.buildDispatch(controllerName, "cmd", cmdDectivate, sonarName);
+	public static final  IApplMessage askDistance     = Qak22Util.buildRequest(controllerName, "ask", reqDistance, sonarName);
 	
 	public static final  IApplMessage endWorkEvent  = Qak22Util.buildEvent(controllerName, evEndWork, evEndWork );
 	

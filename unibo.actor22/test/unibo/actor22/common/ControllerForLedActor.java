@@ -9,12 +9,12 @@ import unibo.actor22comm.utils.CommUtils;
  * Il controller conosce SOLO I NOMI dei dispositivi 
  * (non ha riferimenti ai dispositivi-attori)
  */
-public class ControllerActor extends QakActor22{
+public class ControllerForLedActor extends QakActor22{
 protected int numIter = 1;
 //protected IApplMessage getStateRequest ;  //Eliminato per osservazione Filoni
 protected boolean on = true;
 
-	public ControllerActor(String name  ) {
+	public ControllerForLedActor(String name  ) {
 		super(name);
 		//getStateRequest  = Qak22Util.buildRequest(name,"ask", ApplData.reqLedState, ApplData.ledName);
  	}

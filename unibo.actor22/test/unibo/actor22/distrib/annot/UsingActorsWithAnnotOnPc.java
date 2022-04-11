@@ -20,7 +20,7 @@ import unibo.actor22comm.utils.CommUtils;
  * ATTIVARE LedActorOnRasp
  */
 @ActorLocal(name =     {"controller" }, 
-           implement = {unibo.actor22.common.ControllerActor.class })
+           implement = {unibo.actor22.common.ControllerForLedActor.class })
 @ActorRemote(name =   {"led","sonar"}, 
              host=    {ApplData.raspAddr,ApplData.raspAddr}, 
              port=    { ""+ApplData.ctxPort, ""+ApplData.ctxPort}, 

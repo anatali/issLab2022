@@ -6,7 +6,7 @@ import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 import unibo.actor22.Qak22Context;
 import unibo.actor22.Qak22Util;
 import unibo.actor22.common.ApplData;
-import unibo.actor22.common.ControllerActor;
+import unibo.actor22.common.ControllerForLedActor;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.utils.CommSystemConfig;
 import unibo.actor22comm.utils.CommUtils;
@@ -39,7 +39,7 @@ public class ControllerOnPcUsingLedRemote {
 		Qak22Context.setActorAsRemote( 
 				ApplData.ledName, ""+ApplData.ctxPort, raspHostAddr, ApplData.protocol);
 
-		new ControllerActor ( ApplData.controllerName );
+		new ControllerForLedActor ( ApplData.controllerName );
   	}
 	
 	protected void execute() {

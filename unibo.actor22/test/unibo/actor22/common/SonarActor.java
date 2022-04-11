@@ -8,9 +8,7 @@ import unibo.actor22.QakActor22;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.utils.CommUtils;
 
-/*
- * L'invio di risposta a un actore remoto deve essere fatto da MsgHandlerForActor
- */
+
 public class SonarActor extends QakActor22{
 private ISonar sonar;
 

@@ -113,6 +113,7 @@ public class Qak22Context {
 		if( a == null ) new EventMsgHandler();
 		IApplMessage m =
 				CommUtils.buildDispatch(observer, registerForEvent, evId, EventMsgHandler.myName);
+		ColorsOut.outappl( "Qak22Context | registerAsEventObserver m="+ m, ColorsOut.MAGENTA );
 		Qak22Util.sendAMsg( m, EventMsgHandler.myName );  //Redirection to store
 	}
 	
