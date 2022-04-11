@@ -270,7 +270,9 @@ ad un attore locale, di cui abbiamo un esempio alla linea <strong>(1)</strong> .
 <h3>Invio di messaggi da non-attori<a class="headerlink" href="#invio-di-messaggi-da-non-attori" title="Permalink to this headline">¶</a></h3>
 <p>Un programma Java può inviare messaggi ad un attore attraverso il metodo <code class="docutils literal notranslate"><span class="pre">sendAMsg</span></code>
 definito nella classe <code class="docutils literal notranslate"><span class="pre">Qak22Util</span></code></p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sendAMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sendAMsg</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">){</span>
+  <span class="n">sendAMsg</span><span class="p">(</span> <span class="n">msg</span><span class="p">,</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Ad esempio, per accendere il Led, un programma può eseguire:</p>
@@ -279,6 +281,10 @@ definito nella classe <code class="docutils literal notranslate"><span class="pr
 </div>
 <p>Il parametro è uno solo perchè il messaggio, se non reppresenta un evento
 (si veda <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a>), contiene il nome del destinatario.</p>
+<section id="qak22util-sendamsg">
+<h4>Qak22Util.sendAMsg<a class="headerlink" href="#qak22util-sendamsg" title="Permalink to this headline">¶</a></h4>
+<p>L’operazione <code class="docutils literal notranslate"><span class="pre">sendAMsg</span></code> a due argomenti verrà illustrata più avanti (si veda <a class="reference internal" href="#sendamsg-di-qak22util"><span class="std std-ref">sendAMsg</span></a>).</p>
+</section>
 <section id="usinglednocontrolleronpc">
 <h4>UsingLedNoControllerOnPc<a class="headerlink" href="#usinglednocontrolleronpc" title="Permalink to this headline">¶</a></h4>
 <p>Esempi di questo tipo si trovano in <code class="docutils literal notranslate"><span class="pre">UsingLedNoControllerOnPc</span></code> del package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.local</span></code>
@@ -645,6 +651,34 @@ creato da <a class="reference internal" href="#gestione-di-richieste"><span clas
 </pre></div>
 </div>
 </section>
+<section id="sendamsg-di-qak22util">
+<h4>sendAMsg di Qak22Util<a class="headerlink" href="#sendamsg-di-qak22util" title="Permalink to this headline">¶</a></h4>
+<p>Siamo ora in grado di definire nei dettagli l’operazione <a class="reference internal" href="#qak22util-sendamsg"><span class="std std-ref">Qak22Util.sendAMsg</span></a>,
+la quale opera in due modi diversi, a seconda che il destinatario sia locale o meno.</p>
+<ul class="simple">
+<li><p>Nel caso sia locale, inserisce il messaggio nella sua coda (si veda l’operazione <a class="reference internal" href="#il-metodo-queuemsg"><span class="std std-ref">queueMsg</span></a>).</p></li>
+<li><p>Nel caso l’attore sia remoto, cerca un <strong>proxy</strong> (si veda <a class="reference internal" href="#qakcontext-setactorasremote"><span class="std std-ref">QakContext: setActorAsRemote</span></a>) verso il contesto
+di tale attore e usa questo proxy per trasmettere il messaggio.
+Il <a class="reference internal" href="#contextmsghandler-per-attori"><span class="std std-ref">ContextMsgHandler</span></a>
+del contesto dell’attore ricevente provvederà a ridirigere il messaggio a tale attore.</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sendAMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">String</span> <span class="n">destActorName</span><span class="p">){</span>
+  <span class="n">QakActor22</span> <span class="n">dest</span> <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getActor</span><span class="p">(</span><span class="n">destActorName</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">dest</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">//attore locale</span>
+              <span class="n">dest</span><span class="p">.</span><span class="na">queueMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span> <span class="c1">//invio ad un attore non locale : cerco in proxyMap</span>
+    <span class="n">ProxyAsClient</span> <span class="n">pxy</span>    <span class="o">=</span> <span class="n">Qak22Context</span><span class="p">.</span><span class="na">getProxy</span><span class="p">(</span><span class="n">destActorName</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">pxy</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;Qak22Util |</span>
+<span class="s">            Perhaps no setActorAsRemote for &quot;</span> <span class="o">+</span> <span class="n">destActorName</span> <span class="p">);</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">pxy</span><span class="p">.</span><span class="na">sendMsgOnConnection</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">())</span> <span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="esempi">
 <h3>Esempi<a class="headerlink" href="#esempi" title="Permalink to this headline">¶</a></h3>
@@ -737,6 +771,7 @@ come emettitore di ad <a class="reference internal" href="Eventi.html#eventi"><s
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#qakactor22-invio-di-messaggi">QakActor22: invio di messaggi</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#invio-di-messaggi-da-non-attori">Invio di messaggi da non-attori</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qak22util-sendamsg">Qak22Util.sendAMsg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#usinglednocontrolleronpc">UsingLedNoControllerOnPc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#invio-di-richieste-da-programma">Invio di richieste da programma</a></li>
 </ul>
@@ -771,6 +806,7 @@ come emettitore di ad <a class="reference internal" href="Eventi.html#eventi"><s
 <li class="toctree-l3"><a class="reference internal" href="#proxyasclient-in-actor22comm">ProxyAsClient in actor22comm</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#activatereceiver">activateReceiver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#qakactor22-replytoremotecaller">QakActor22: replyToRemoteCaller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sendamsg-di-qak22util">sendAMsg di Qak22Util</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#esempi">Esempi</a></li>

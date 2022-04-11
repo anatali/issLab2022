@@ -342,7 +342,9 @@ definito nella classe ``Qak22Util``
 
 .. code:: java
 
-  public static void sendAMsg( IApplMessage msg ){ ... } 
+  public static void sendAMsg( IApplMessage msg ){ 
+    sendAMsg( msg, msg.msgReceiver() ); 
+  } 
 
 Ad esempio, per accendere il Led, un programma può eseguire:
 
@@ -352,6 +354,13 @@ Ad esempio, per accendere il Led, un programma può eseguire:
 
 Il parametro è uno solo perchè il messaggio, se non reppresenta un evento
 (si veda :ref:`Eventi`), contiene il nome del destinatario.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Qak22Util.sendAMsg
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+L'operazione ``sendAMsg`` a due argomenti verrà illustrata più avanti (si veda :ref:`sendAMsg<sendAMsg di Qak22Util>`).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 UsingLedNoControllerOnPc
@@ -813,6 +822,38 @@ creato da :ref:`elabRequest<Gestione di richieste>`
       if(ar !=null) ar.queueMsg( reply );
       else ColorsOut.outerr(
           "QakActor22 | WARNING: reply " + msg + " IMPOSSIBLE");		
+  }
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+sendAMsg di Qak22Util
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Siamo ora in grado di definire nei dettagli l'operazione :ref:`Qak22Util.sendAMsg`, 
+la quale opera in due modi diversi, a seconda che il destinatario sia locale o meno.
+
+- Nel caso sia locale, inserisce il messaggio nella sua coda (si veda l'operazione :ref:`queueMsg<Il metodo queueMsg>`).
+- Nel caso l'attore sia remoto, cerca un **proxy** (si veda :ref:`QakContext: setActorAsRemote`) verso il contesto 
+  di tale attore e usa questo proxy per trasmettere il messaggio. 
+  Il :ref:`ContextMsgHandler<ContextMsgHandler per attori>`
+  del contesto dell'attore ricevente provvederà a ridirigere il messaggio a tale attore.
+
+.. code:: java
+
+  public static void sendAMsg(IApplMessage msg, String destActorName){
+    QakActor22 dest = Qak22Context.getActor(destActorName);  
+    if( dest != null ) { //attore locale
+    		dest.queueMsg(msg);
+    }else{ //invio ad un attore non locale : cerco in proxyMap
+      ProxyAsClient pxy    = Qak22Context.getProxy(destActorName);
+      if( pxy == null ) {
+        ColorsOut.outerr("Qak22Util | 
+              Perhaps no setActorAsRemote for " + destActorName );
+        return;
+      }
+      pxy.sendMsgOnConnection( msg.toString()) ;
+    }
   }
 
 +++++++++++++++++++++++++++++++++++++++++

@@ -386,6 +386,19 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="SonarObservable.html#verso-gli-eventi">Verso gli eventi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SonarObservable.html#il-sonar-come-attore-che-emette-eventi">Il Sonar come attore che emette eventi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#parte-reattiva">Parte reattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#parte-proattiva">Parte proattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#emissione-di-eventi">Emissione di eventi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#controllerforsonaractor">ControllerForSonarActor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#elaborazione-delle-risposte">Elaborazione delle risposte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SonarObservable.html#elaborazione-degli-eventi">Elaborazione degli eventi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#configurazione-lato-raspberry">Configurazione lato Raspberry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SonarObservable.html#configurazione-lato-pc">Configurazione lato PC</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a><ul>
@@ -410,6 +423,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="Attori.html#qakactor22-invio-di-messaggi">QakActor22: invio di messaggi</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Attori.html#invio-di-messaggi-da-non-attori">Invio di messaggi da non-attori</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#qak22util-sendamsg">Qak22Util.sendAMsg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Attori.html#usinglednocontrolleronpc">UsingLedNoControllerOnPc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Attori.html#invio-di-richieste-da-programma">Invio di richieste da programma</a></li>
 </ul>
@@ -444,6 +458,7 @@
 <li class="toctree-l3"><a class="reference internal" href="Attori.html#proxyasclient-in-actor22comm">ProxyAsClient in actor22comm</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="Attori.html#activatereceiver">activateReceiver</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Attori.html#qakactor22-replytoremotecaller">QakActor22: replyToRemoteCaller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Attori.html#sendamsg-di-qak22util">sendAMsg di Qak22Util</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="Attori.html#esempi">Esempi</a></li>
@@ -453,7 +468,23 @@
 <li class="toctree-l2"><a class="reference internal" href="Attori.html#evoluzioni-del-radarsystem">Evoluzioni del RadarSystem</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Eventi.html#eventmsghandler">EventMsgHandler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Eventi.html#qak22context-registeraseventobserver">Qak22Context.registerAsEventObserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Eventi.html#eventmsghandler-updatetheobservers">EventMsgHandler updateTheObservers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Eventi.html#emit-di-un-evento">emit di un evento</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Eventi.html#esempio-sonaractor22">Esempio: <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Eventi.html#sonaractor22-parte-reattiva">SonarActor22: Parte reattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Eventi.html#sonaractor22-parte-proattiva">SonarActor22: Parte proattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Eventi.html#emissione-di-eventi">Emissione di eventi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Eventi.html#configurazione-lato-raspberry">Configurazione lato Raspberry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Eventi.html#configurazione-lato-pc">Configurazione lato PC</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Annotazioni.html#meta-annotation-in-java">Meta-Annotation in Java</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Annotazioni.html#annotazioni-esempio">Annotazioni: esempio</a><ul>
@@ -539,6 +570,38 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="VirtualRobot.html#differential-drive-robot">Differential Drive robot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#robot-reali">Robot reali</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="VirtualRobot.html#wenv">WEnv</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#usare-wenv">Usare WEnv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#scene-per-wenv">Scene per WEnv</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="VirtualRobot.html#sceneconfig-js">sceneConfig.js</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#sensori-virtuali">Sensori virtuali</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="VirtualRobot.html#comandi-base-per-il-robot-in-cril">Comandi-base per il robot in cril</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#interazioni-con-http">Interazioni con HTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#interazioni-mediante-ws">Interazioni mediante WS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#note-di-implementazione">Note di implementazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VirtualRobot.html#wenv-come-immagine-docker">WEnv come immagine docker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="VirtualRobot.html#dockerfile-e-creazione-dell-immagine">Dockerfile e creazione dell’immagine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="VirtualRobot.html#esecuzione-della-immagine">Esecuzione della immagine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="VirtualRobot.html#modificare-la-scena-nella-immagine">Modificare la scena nella immagine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="VirtualRobot.html#esecuzione-con-docker-compose">Esecuzione con docker-compose</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="VirtualRobot.html#virtualrobotonly3-0-yaml">virtualRobotOnly3.0.yaml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 <section id="indices-and-tables">
@@ -592,6 +655,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
 </ul>
 
 <div class="relations">

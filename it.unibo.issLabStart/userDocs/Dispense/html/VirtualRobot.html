@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>VirtualRobot &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="RaspBasicCode" href="RaspBasicCode.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="virtualrobot">
+<h1>VirtualRobot<a class="headerlink" href="#virtualrobot" title="Permalink to this headline">¶</a></h1>
+<p>Unibo ha sviluppato un ambiente virtuale (denominato <code class="docutils literal notranslate"><span class="pre">WEnv</span></code> ) che include un robot
+che simula un <em>Differential Drive robot</em> (<strong>DDR</strong>) reale.</p>
+<section id="differential-drive-robot">
+<h2>Differential Drive robot<a class="headerlink" href="#differential-drive-robot" title="Permalink to this headline">¶</a></h2>
+<p>Un <a class="reference external" href="https://www.youtube.com/watch?v=aE7RQNhwnPQ">DDR Robot</a> possiede due ruote motrici sullo stesso asse e una terza ruota condotta (non motrice).
+La  tecnica <em>differential drive</em> consiste nel far muovere le ruote motrici a velocità
+indipendenti l’una dall’altra.</p>
+<p>Nel seguito faremo riferimento a una forma semplificata di DDR in cui le possibìili mosse sono:</p>
+<ul class="simple">
+<li><p>muoversi avanti-indietro lungo una direzione costante</p></li>
+<li><p>fermarsi</p></li>
+<li><p>ruotare di 90° a destra o sinistra</p></li>
+</ul>
+<p>Queste mosse sono realizzate inviando opportuni comandi al robot (simulato o reale).</p>
+<section id="robot-reali">
+<h3>Robot reali<a class="headerlink" href="#robot-reali" title="Permalink to this headline">¶</a></h3>
+<p>Per la costruzione di un DDR reale si veda <a class="reference external" href="./_static/devsDdr.html">devsDdr</a>.
+Al momento useremo una versione simulata, che descriviamo nella sezione <a class="reference internal" href="#wenv"><span class="std std-ref">WEnv</span></a>.</p>
+<p>Lo scopo non è certo quello di affrontare i problemi di progettazione tipici di un corso di robotica, ma quello di
+introdurre casi di studio non banali per la costruzione di sistemi software distribuiti <strong>reattivi</strong>, <strong>proattivi</strong> e
+<strong>situati</strong> in un ambiente che può essere fonte di <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a>.</p>
+</section>
+</section>
+<section id="wenv">
+<h2>WEnv<a class="headerlink" href="#wenv" title="Permalink to this headline">¶</a></h2>
+<p>L’ambiente virtuale WEnv  è stato realizzato principalmente da <a class="reference external" href="https://github.com/PierfrancescoSoffritti/ConfigurableThreejsApp">Pierfrancesco Soffritti</a> utilizzando la
+libreria JavaScript <a class="reference external" href="https://threejs.org/">three.js</a>. Il codice è disponibile nel progetto <code class="docutils literal notranslate"><span class="pre">it.unibo.virtualRobot2020</span></code>.</p>
+<p>Per attivare WEnv:</p>
+<ul class="simple">
+<li><p>Installare <a class="reference external" href="https://nodejs.org/it/">Node.js</a></p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">it.unibo.virtualRobot2020\node\WEnv\server</span></code>, eseguire <strong>npm install</strong></p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">it.unibo.virtualRobot2020\node\WEnv\WebGLScene</span></code>, eseguire <strong>npm install</strong></p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">it.unibo.virtualRobot2020\node\WEnv\server\src</span></code>, eseguire <strong>node WebpageServer.js</strong></p></li>
+</ul>
+<section id="usare-wenv">
+<h3>Usare WEnv<a class="headerlink" href="#usare-wenv" title="Permalink to this headline">¶</a></h3>
+<p>Aprendo un browser su  <strong>localhost:8090</strong>, WEnv mostrerà una scena MASTER in cui sono abilitati i <strong>comandi da tastiera</strong>: <span class="blue">w,a,s,d,h</span>.</p>
+<p>Se apriamo  <em>‘Strumenti di sviluppo’</em> del browser, vedremo i messaggi inviati su <code class="docutils literal notranslate"><span class="pre">console.log</span></code> dal codice Javascript
+(embedded nel file <code class="docutils literal notranslate"><span class="pre">IndexOk.html</span></code>) che gestisce la scena e i comandi da tastiera.</p>
+<p>La figura che segue mostra:</p>
+<ol class="arabic simple">
+<li><p>Il comando di attivazione di <code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code></p></li>
+<li><p>Il browser con <code class="docutils literal notranslate"><span class="pre">console.log</span></code></p></li>
+<li><p>La console di un programma applicativo.</p></li>
+</ol>
+<a class="reference internal image-reference" href="_images/vrExplain.PNG"><img alt="_images/vrExplain.PNG" class="align-center" src="_images/vrExplain.PNG" style="width: 100%;" /></a>
+<p>WEnv si può attivare anche usando una immagine docker; si veda <a class="reference internal" href="#wenv-come-immagine-docker"><span class="std std-ref">WEnv come immagine docker</span></a>.</p>
+</section>
+<section id="scene-per-wenv">
+<h3>Scene per WEnv<a class="headerlink" href="#scene-per-wenv" title="Permalink to this headline">¶</a></h3>
+<p>La scena del WEnv è costruita da una descrizione che può essere facilmente definita da un progettista di applicazioni
+modificando il file <code class="docutils literal notranslate"><span class="pre">sceneConfig.js</span></code>.</p>
+<section id="sceneconfig-js">
+<h4>sceneConfig.js<a class="headerlink" href="#sceneconfig-js" title="Permalink to this headline">¶</a></h4>
+<p>Un esempio (relativo alla scena della figura precedente) può essere trovato in <code class="docutils literal notranslate"><span class="pre">sceneConfig.js</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">floor</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">size</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mi">24</span>                   <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">player</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">position</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.10</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.16</span> <span class="p">},</span>             <span class="o">//</span><span class="n">INIT</span>
+        <span class="o">//</span><span class="n">position</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.5</span> <span class="p">},</span>             <span class="o">//</span><span class="n">CENTER</span>
+        <span class="o">//</span><span class="n">position</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.85</span> <span class="p">},</span>            <span class="o">//</span><span class="n">END</span>
+        <span class="n">speed</span><span class="p">:</span> <span class="mf">0.2</span>
+    <span class="p">},</span>
+    <span class="n">sonars</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">],</span>
+    <span class="n">movingObstacles</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">],</span>
+<span class="n">staticObstacles</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;plasticBox&quot;</span><span class="p">,</span>
+            <span class="n">centerPosition</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.34</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">},</span>
+            <span class="n">size</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.07</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;wallUp&quot;</span><span class="p">,</span>
+            <span class="n">centerPosition</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.44</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.97</span><span class="p">},</span>
+            <span class="n">size</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.88</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;wallDown&quot;</span><span class="p">,</span>
+            <span class="n">centerPosition</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.44</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+            <span class="n">size</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;wallLeft&quot;</span><span class="p">,</span>
+            <span class="n">centerPosition</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.48</span><span class="p">},</span>
+            <span class="n">size</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.94</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;wallRight&quot;</span><span class="p">,</span>
+            <span class="n">centerPosition</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+            <span class="n">size</span><span class="p">:</span> <span class="p">{</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">export</span> <span class="n">default</span> <span class="n">config</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>E’ possibile cambiare la scena in modo interattivo con la console che compare nella scena, per poi modificare manualmente il file
+<code class="docutils literal notranslate"><span class="pre">sceneConfig.js</span></code> per conservare le modifiche.</p>
+</section>
+</section>
+<section id="sensori-virtuali">
+<h3>Sensori virtuali<a class="headerlink" href="#sensori-virtuali" title="Permalink to this headline">¶</a></h3>
+<p>Il robot virtuale è dotato di due sensori di impatto, uno posto davanti e uno posto nella parte posteriore del robot.</p>
+<p>E’ inoltre possibile introdurre sonar virtuali che rilevano la posizione corrente del robot (o di altri ostacoli) nella scena.</p>
+</section>
+</section>
+<section id="comandi-base-per-il-robot-in-cril">
+<h2>Comandi-base per il robot in cril<a class="headerlink" href="#comandi-base-per-il-robot-in-cril" title="Permalink to this headline">¶</a></h2>
+<p>Il linguaggio per esprimere comandi di movimento del robot virtuale
+(detto <em>concrete-robot interaction language</em> o <span class="blue">cril</span> ) può essere
+introdotto in modo analogo al <a class="reference internal" href="Enablers.html#linguaggio-base-di-comando"><span class="std std-ref">Linguaggio-base di comando</span></a> per i dispostivi del RadarSystem,
+come campi di una stringa JSON della forma che segue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;robotmove&quot;</span><span class="p">:</span><span class="s2">&quot;MOVE&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span><span class="n">T</span><span class="p">}</span>
+
+<span class="n">MOVE</span> <span class="p">:</span><span class="o">:=</span> <span class="s2">&quot;turnLeft&quot;</span> <span class="o">|</span> <span class="s2">&quot;turnRight&quot;</span> <span class="o">|</span>
+         <span class="s2">&quot;moveForward&quot;</span> <span class="o">|</span> <span class="s2">&quot;moveBackward&quot;</span> <span class="o">|</span> <span class="s2">&quot;alarm&quot;</span>
+<span class="n">T</span>    <span class="p">:</span><span class="o">:=</span> <span class="n">naturalNum</span>
+</pre></div>
+</div>
+<p>Ad esempio, il comando</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">{&quot;robotmove&quot;:&quot;moveForward&quot;,</span> <span class="pre">&quot;time&quot;:800}</span></code></p>
+</div></blockquote>
+<p>muove in avanti il robot per <code class="docutils literal notranslate"><span class="pre">800</span> <span class="pre">msec</span></code>. Il significato di <strong>“alarm”</strong> è di fermare il robot
+(non è stato chiamato <code class="docutils literal notranslate"><span class="pre">halt</span></code> per motivi ‘storici’).</p>
+<p>Stringhe-comando di questa forma possono essere  inviate a WEnv in due modi diversi:</p>
+<ul class="simple">
+<li><p>come messaggi HTTP POST inviati sulla porta <strong>8090</strong></p></li>
+<li><p>come messaggi inviati su un websocket alla porta <strong>8091</strong></p></li>
+</ul>
+<section id="interazioni-con-http">
+<h3>Interazioni con HTTP<a class="headerlink" href="#interazioni-con-http" title="Permalink to this headline">¶</a></h3>
+<p>L’invio di messaggi con HTTP implica una interazione logica di tipo request-response che blocca il
+chiamante.</p>
+<p>Dopo l’esecuzione del comando, WEnv invia al chiamante una <span class="blue">risposta</span>, espressa in JSON :</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;endmove&quot;</span><span class="p">:</span><span class="s2">&quot;RESULT&quot;</span><span class="p">,</span> <span class="s2">&quot;move&quot;</span><span class="p">:</span><span class="n">MOVE</span><span class="p">}</span>
+
+<span class="n">RESULT</span> <span class="p">:</span><span class="o">:=</span> <span class="n">true</span> <span class="o">|</span> <span class="n">false</span>
+</pre></div>
+</div>
+<p>Il significato dei valori di <code class="docutils literal notranslate"><span class="pre">RESULT</span></code> è il seguente:</p>
+<ul class="simple">
+<li><p><strong>true</strong>: mossa completata con successo</p></li>
+<li><p><strong>false</strong>: mossa fallita (il robot virtuale ha  incontrato un ostacolo)</p></li>
+</ul>
+<p>Riportiamo (si veda il progetto <code class="docutils literal notranslate"><span class="pre">unibo.wenvUsage22</span></code>) un esempio di programma Java che esegue le mosse-base del robot mediante
+comandi in <a class="reference internal" href="#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a> contenuti in richieste HTTP (di tipo POST).</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>ClientNaiveUsingPost.java</p></td>
+<td><p><span class="blue">Key point</span>: Request-response <span class="blue">sincrona</span>.</p>
+<p>Richiede 1 thread.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Osserviamo che:</p>
+<ul class="simple">
+<li><p>Il codice di comunicazione è scritto completamente dal progettista dell’applicazione.</p></li>
+<li><p>Una mossa può terminare prima del tempo indicato nel comando, restituendo la risposta <strong>false</strong>.</p></li>
+<li><p>La gestione delle risposte JSON viene eseguita utilizzando la libreria  <a class="reference external" href="https://www.baeldung.com/java-org-json">org.json</a>
+(vedi anche <a class="reference external" href="https://www.baeldung.com/java-org-json">Introduzione a JSON-Java</a> ).</p></li>
+<li><p><span class="remark">Non è possibile interrompere l’esecuzione di una mossa.</span></p></li>
+</ul>
+</section>
+<section id="interazioni-mediante-ws">
+<h3>Interazioni mediante WS<a class="headerlink" href="#interazioni-mediante-ws" title="Permalink to this headline">¶</a></h3>
+<p>L’invio di un comando di movimento al robot (mossa) mediante WebSocket <a class="reference external" href="https://www.npmjs.com/package/ws">ws</a>  sulla porta <strong>8091</strong>
+implica una forma di comunicazione <span class="blue">asincrona</span>
+(<em>fire-and-forget</em>) che può essere seguita dall’invio al client (sulla connessione ws) di informazioni
+su variazioni dello stato del ‘mondo’ dopo l’esecuzione della mossa, quali:</p>
+<ul class="simple">
+<li><p>dati emessi dai sonar presenti nella scena, se rilevano il robot in movimento</p></li>
+<li><p>dati emessi dai sensori di impatto posti davanti e dietro al robot, quando rilevano un ostacolo.</p></li>
+</ul>
+<p>Si noti che dati relativi a sonar presenti nella scena possono essere emessi indipendentemente dalla esecuzione
+di mosse del robot, ad esempio in relazione alla rilevazione di ostacoli mobili.</p>
+<p>Esempi di messaggi (che qui denominiamo <strong>messaggi di stato</strong>) sono:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="s2">&quot;sonarName&quot;</span><span class="p">:</span> <span class="s2">&quot;sonarName&quot;</span><span class="p">,</span> <span class="s2">&quot;distanza&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;asse&quot;</span><span class="p">:</span> <span class="s2">&quot;x&quot;</span> <span class="p">}</span>
+<span class="p">{</span> <span class="s2">&quot;collision&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span> <span class="s2">&quot;move&quot;</span><span class="p">:</span> <span class="s2">&quot;moveForward&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Poichè l’invio asincrono di un comando non blocca il chiamante, un client può inviare un nuovo
+comando prima che il precedente sia terminato. Per gestire situazioni di questo tipo, WEnv segue la
+regola che segue:</p>
+<p><span class="remark">è possibile interrompere l’esecuzione di una mossa solo con il comando alarm.</span></p>
+<p>Supponendo che il metodo <code class="docutils literal notranslate"><span class="pre">request(</span> <span class="pre">String</span> <span class="pre">crilCmd</span> <span class="pre">)</span></code> esegua l’invio asincrono di un comando,
+allora la sequenza di comandi che  segue viene corettamente eseguita:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">String</span> <span class="n">moveForward</span><span class="p">(</span><span class="nb">int</span> <span class="n">duration</span><span class="p">)</span>  <span class="p">{</span>
+    <span class="k">return</span> <span class="n">crilCmd</span><span class="p">(</span><span class="s2">&quot;moveForward&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span> <span class="p">;</span>
+<span class="p">}</span>
+<span class="n">public</span> <span class="n">String</span> <span class="n">stop</span><span class="p">(</span> <span class="p">){</span> <span class="k">return</span> <span class="n">crilCmd</span><span class="p">(</span><span class="s2">&quot;alarm&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span> <span class="p">}</span>
+
+<span class="n">request</span><span class="p">(</span> <span class="n">moveForward</span><span class="p">(</span>  <span class="mi">1800</span><span class="p">)</span> <span class="p">);</span>
+<span class="n">Thread</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span> <span class="mi">500</span> <span class="p">);</span>
+<span class="n">request</span><span class="p">(</span> <span class="n">stop</span><span class="p">()</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>I <em>messaggi di stato</em> dopo l’esecuzione di un comando possono essere:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;endmove&quot;</span><span class="p">:</span><span class="s2">&quot;RESULT&quot;</span><span class="p">,</span> <span class="s2">&quot;move&quot;</span><span class="p">:</span><span class="n">MOVE</span><span class="p">}</span>
+
+<span class="n">RESULT</span> <span class="p">:</span><span class="o">:=</span> <span class="n">halted</span> <span class="o">|</span> <span class="n">notallowed</span>
+</pre></div>
+</div>
+<p>Il significato dei valori di <code class="docutils literal notranslate"><span class="pre">RESULT</span></code> è il seguente:</p>
+<ul class="simple">
+<li><p><strong>halted</strong>: mossa interrotta perchè il robot ha ricevuto un comando  <code class="docutils literal notranslate"><span class="pre">alarm</span></code></p></li>
+<li><p><strong>notallowed</strong>: mossa rifiutata (non eseguita) in quanto la mossa relativa al comando precedente
+non è ancora terminata</p></li>
+</ul>
+<p>Riportiamo (si veda il progetto <code class="docutils literal notranslate"><span class="pre">unibo.wenvUsage22</span></code>)  un esempio di programma Java che esegue le mosse-base del robot mediante
+comandi in <a class="reference internal" href="#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a> inviati come Stringhe su <code class="docutils literal notranslate"><span class="pre">8091</span></code></p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>ClientNaiveUsingWs.java</p></td>
+<td><p>Esegue le mosse di base del robot inviando comandi scritti in <a class="reference internal" href="#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a>.</p>
+<p><span class="blue">Key point</span>: Richiesta <span class="blue">asincrona</span></p>
+<p>Richiede 4 thread, a causa della libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Dal punto di vista ‘sistemistico’, osserviamo che:</p>
+<ul>
+<li><p>Il codice di comunicazione è scritto completamente dal progettista dell’applicazione, che utilizza
+la libreria <code class="docutils literal notranslate"><span class="pre">javax.websocket</span></code>  (vedi anche <a class="reference external" href="http://losviluppatore.it/i-websocket-comunicazione-asincrona-full-duplex-per-il-web/">I WebSocket Comunicazione Asincrona Full-Duplex Per Il Web</a> )</p></li>
+<li><p>Gli eventi del ciclo di vita dell’endpoint WebSocket sono gestiti mediante <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">Annotazioni</span></a>
+secondo lo schema che segue:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ClientEndpoint</span>  <span class="c1">//La classe viene trattata come un client WebSocket</span>
+<span class="n">implementa</span> <span class="n">IssWsSupport</span> <span class="n">di</span> <span class="n">classe</span> <span class="n">pubblicaIssOperations</span><span class="p">{</span>
+<span class="p">...</span>
+<span class="kd">public</span> <span class="nf">IssWsSupport</span><span class="p">(</span> <span class="n">String</span> <span class="n">url</span> <span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="nd">@OnOpen</span> <span class="c1">//richiamato quando si avvia una nuova connessione WebSocket</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onOpen</span><span class="p">(</span><span class="n">Session</span> <span class="n">userSession</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="nd">@OnMessage</span> <span class="c1">//richiamato quando  arriva un  messaggio</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onMessage</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="nd">@OnError</span> <span class="c1">//richiamato quando si verifica un problema con la comunicazione</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">disconnesso</span> <span class="p">(</span><span class="n">sessione</span> <span class="n">di</span> <span class="n">sessione</span><span class="p">,</span> <span class="n">errore</span> <span class="n">lanciabile</span><span class="p">){...}</span>
+
+<span class="nd">@Chiudi</span> <span class="c1">//chiamato alla chiusura della connessione WebSocket</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClose</span><span class="p">(</span><span class="n">Session</span> <span class="n">userSession</span><span class="p">,</span><span class="n">CloseReason</span> <span class="n">reason</span><span class="p">){...}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Dal punto di vista ‘applicativo’, osserviamo che:</p>
+<ul class="simple">
+<li><p>Il chiamante esegue concettualmente una <em>fire-and-forget</em></p></li>
+<li><p>Un eventuale messaggio di stato viene ‘iniettata’ nell’applicazione tramite una chiamata al metodo annotato
+con <code class="docutils literal notranslate"><span class="pre">&#64;OnMessage</span></code></p></li>
+<li><p>E’ possibile <span class="blue">interrompere</span> la esecuzione di una mossa inviando il comando <strong>alarm</strong></p></li>
+</ul>
+</section>
+<section id="note-di-implementazione">
+<h3>Note di implementazione<a class="headerlink" href="#note-di-implementazione" title="Permalink to this headline">¶</a></h3>
+<p>L’implementazione di WEnv si basa su due componenti principali:</p>
+<ul class="simple">
+<li><p><strong>server</strong>: che definisce il programma <code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code> scritto con il framework Node express</p></li>
+<li><p><strong>WebGLScene</strong>: componente che gestisce la scena</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">WebpageServer.js</span></code> utilizza due diversi tipi  di WebSocket:</p>
+<ul>
+<li><p>un socket basato sulla libreria <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> che viene utilizzato per gestire
+l’interazione con <strong>WebGLScene</strong>.</p>
+<p><span class="remark">socket.io non è un’implementazione WebSocket.</span></p>
+<p>Sebbene <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> utilizzi effettivamente WebSocket come trasporto quando possibile,
+aggiunge alcuni metadati a ciascun pacchetto: il tipo di pacchetto, lo spazio dei nomi
+e l’ID di riconoscimento quando è necessario un riconoscimento del messaggio.
+Ecco perché un client WebSocket non sarà in grado di connettersi correttamente a un server Socket.IO
+e un client <a class="reference external" href="https://socket.io/docs/v4/">socket.io</a> non sarà in grado di connettersi a un server WebSocket.</p>
+</li>
+<li><p>il websocker <strong>8091</strong> basato sulla libreria <a class="reference external" href="https://www.npmjs.com/package/ws">ws</a> : questo socket viene utilizzato per gestire comandi
+applicativi asincroni per muovere il robot inviati da client remoti e per inviare a client remoti
+i <em>messaggi di stato</em>.</p>
+<p>WEnv utilizza la libreria Node <a class="reference external" href="https://github.com/einaros/ws">https://github.com/einaros/ws</a> per accettare questi comendi.</p>
+<p><span class="remark">Il modulo ws non funziona nel browser: bisogna utilizzare l’oggetto WebSocket nativo.</span></p>
+</li>
+</ul>
+</section>
+<section id="wenv-come-immagine-docker">
+<h3>WEnv come immagine docker<a class="headerlink" href="#wenv-come-immagine-docker" title="Permalink to this headline">¶</a></h3>
+<p>WEnv viene anche distribuito come immagine Docker.</p>
+<section id="dockerfile-e-creazione-dell-immagine">
+<h4>Dockerfile e creazione dell’immagine<a class="headerlink" href="#dockerfile-e-creazione-dell-immagine" title="Permalink to this headline">¶</a></h4>
+<p>Il file di nome <strong>Dockerfile</strong> nella directory <code class="docutils literal notranslate"><span class="pre">it.unibo.virtualRobot2020</span></code> contiene le istruzioni per creare una
+immagine Docker (per una introduizione a Docker si veda <a class="reference external" href="./_static/IntroDocker22.html">Introduction to Docker and DockerCompose</a>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">node</span><span class="p">:</span><span class="mi">13</span><span class="o">-</span><span class="n">alpine</span>
+<span class="n">RUN</span> <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">node</span>
+<span class="n">EXPOSE</span> <span class="mi">8090</span>
+<span class="n">EXPOSE</span> <span class="mi">8091</span>
+<span class="n">COPY</span> <span class="o">./</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span>
+<span class="n">COPY</span> <span class="o">./</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span><span class="o">/</span><span class="n">WebGLScene</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span><span class="o">/</span><span class="n">WebGLScene</span>
+<span class="c1">#set default dir so that next commands executes in it</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span><span class="o">/</span><span class="n">WebGLScene</span>
+<span class="n">RUN</span> <span class="n">npm</span> <span class="n">install</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span><span class="o">/</span><span class="n">server</span>
+<span class="n">RUN</span> <span class="n">npm</span> <span class="n">install</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">src</span>
+<span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;WebpageServer&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>L’immagine Docker può essere creata sul proprio PC eseguendo il comando (nella directory che contiene il <em>Dockerfile</em>):</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">build</span> <span class="pre">-t</span> <span class="pre">virtualrobotdisi:3.0</span> <span class="pre">.</span></code>    //Notare il .</p>
+</div></blockquote>
+</section>
+<section id="esecuzione-della-immagine">
+<h4>Esecuzione della immagine<a class="headerlink" href="#esecuzione-della-immagine" title="Permalink to this headline">¶</a></h4>
+<p>L’immagine Docker di WEnv può essere attivata sul PC con il comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8090</span><span class="p">:</span><span class="mi">8090</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span> <span class="o">--</span><span class="n">rm</span>  <span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">3.0</span>
+</pre></div>
+</div>
+<p>Il comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8090</span><span class="p">:</span><span class="mi">8090</span>
+              <span class="o">-</span><span class="n">p</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span> <span class="o">--</span><span class="n">rm</span>  <span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">3.0</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>permette di ispezionare il contenuto della macchina virtuale e di attivare manualmente il sistema
+(eseguendo  <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">WebpageServer.js</span></code>).</p>
+</section>
+<section id="modificare-la-scena-nella-immagine">
+<h4>Modificare la scena nella immagine<a class="headerlink" href="#modificare-la-scena-nella-immagine" title="Permalink to this headline">¶</a></h4>
+<p>Una volta attivata l’immagine docker, il comando</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">dockerps</span> <span class="pre">ps</span> <span class="pre">-a</span></code></p>
+</div></blockquote>
+<p>restituisce una tabella con 7 campi:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">CONTAINERID</span>&#160;&#160; <span class="pre">IMAGE</span>&#160;&#160;&#160;&#160; <span class="pre">COMMAND</span>&#160;&#160; <span class="pre">CREATED</span>&#160;&#160; <span class="pre">STATUS</span>&#160;&#160;&#160; <span class="pre">PORTS</span>&#160;&#160;&#160;&#160; <span class="pre">NAMES</span></code></p>
+</div></blockquote>
+<p>Per modificare il file che definisce la scena, si può copiare una nuova versione attraverso il comando <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">cp</span></code>
+e rendere permanente la modifica salvando il container.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="o">//</span><span class="n">change</span> <span class="n">the</span> <span class="n">scene</span>
+<span class="n">docker</span> <span class="n">cp</span> <span class="n">sceneConfig</span><span class="o">.</span><span class="n">js</span>  <span class="n">CONTAINERID</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">node</span><span class="o">/</span><span class="n">WEnv</span><span class="o">/</span><span class="n">WebGLScene</span><span class="o">/</span><span class="n">sceneConfig</span><span class="o">.</span><span class="n">js</span>
+<span class="o">//</span><span class="n">Save</span> <span class="n">the</span> <span class="n">cotainer</span>
+<span class="n">docker</span> <span class="n">commit</span>  <span class="n">CONTAINERID</span>
+<span class="n">TAG</span> <span class="n">the</span> <span class="n">new</span> <span class="n">image</span> <span class="n">IMAGEID</span>
+<span class="n">docker</span> <span class="n">tag</span>  <span class="n">IMAGEID</span> <span class="n">IMGNAME</span><span class="p">:</span><span class="n">X</span><span class="o">.</span><span class="n">Y</span>
+
+<span class="o">//</span><span class="n">Tag</span> <span class="ow">and</span> <span class="n">register</span> <span class="n">the</span> <span class="n">image</span>
+<span class="n">docker</span> <span class="n">tag</span> <span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">3.0</span> <span class="n">natbodocker</span><span class="o">/</span><span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">3.0</span>
+<span class="n">docker</span> <span class="n">push</span> <span class="n">natbodocker</span><span class="o">/</span><span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">3.0</span>
+</pre></div>
+</div>
+</section>
+<section id="esecuzione-con-docker-compose">
+<h4>Esecuzione con docker-compose<a class="headerlink" href="#esecuzione-con-docker-compose" title="Permalink to this headline">¶</a></h4>
+<p>L’immagine viene distribuita anche su <a class="reference external" href="https://hub.docker.com/">Docker Hub</a> in <code class="docutils literal notranslate"><span class="pre">docker.io/natbodocker/virtualrobotdisi:3.0</span></code>
+come risulta nella spefifica del file <code class="docutils literal notranslate"><span class="pre">virtualRobotOnly3.0.yaml</span></code>:</p>
+<section id="virtualrobotonly3-0-yaml">
+<h5>virtualRobotOnly3.0.yaml<a class="headerlink" href="#virtualrobotonly3-0-yaml" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span>
+<span class="n">services</span><span class="p">:</span>
+<span class="n">wenv</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">natbodocker</span><span class="o">/</span><span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">3.0</span>
+    <span class="n">ports</span><span class="p">:</span>
+    <span class="o">-</span> <span class="mi">8090</span><span class="p">:</span><span class="mi">8090</span>
+    <span class="o">-</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span>
+</pre></div>
+</div>
+<p>Il file <code class="docutils literal notranslate"><span class="pre">virtualRobotOnly3.0.yaml</span></code> permette l’attivazione di WEnv attraverso l’uso di docker-compose:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">virtualRobotOnly3</span><span class="o">.</span><span class="mf">0.</span><span class="n">yaml</span>  <span class="n">up</span>   <span class="o">//</span><span class="n">per</span> <span class="n">attivare</span>
+<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">virtualRobotOnly3</span><span class="o">.</span><span class="mf">0.</span><span class="n">yaml</span>  <span class="n">down</span> <span class="o">//</span><span class="n">per</span> <span class="n">terminare</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">VirtualRobot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#differential-drive-robot">Differential Drive robot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#robot-reali">Robot reali</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#wenv">WEnv</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usare-wenv">Usare WEnv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scene-per-wenv">Scene per WEnv</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sceneconfig-js">sceneConfig.js</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sensori-virtuali">Sensori virtuali</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#comandi-base-per-il-robot-in-cril">Comandi-base per il robot in cril</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interazioni-con-http">Interazioni con HTTP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interazioni-mediante-ws">Interazioni mediante WS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#note-di-implementazione">Note di implementazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wenv-come-immagine-docker">WEnv come immagine docker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dockerfile-e-creazione-dell-immagine">Dockerfile e creazione dell’immagine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#esecuzione-della-immagine">Esecuzione della immagine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modificare-la-scena-nella-immagine">Modificare la scena nella immagine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#esecuzione-con-docker-compose">Esecuzione con docker-compose</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#virtualrobotonly3-0-yaml">virtualRobotOnly3.0.yaml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="RaspBasicCode.html" title="previous chapter">RaspBasicCode</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/VirtualRobot.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

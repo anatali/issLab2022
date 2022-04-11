@@ -48,6 +48,202 @@ come indicato in <a class="reference internal" href="CostruireSoftware.html#term
 <li><p>dotare ‘geneticamente’ un attore di una operazione <code class="docutils literal notranslate"><span class="pre">emit</span></code> che produce come effetto la inserzione
 di <code class="docutils literal notranslate"><span class="pre">Ev</span></code> nella coda di tutti gli attori interessati, locali e remoti.</p></li>
 </ul>
+<blockquote>
+<div><p>Come supporto alla realizzazione, useremo un attore specializzato.</p>
+</div></blockquote>
+<section id="eventmsghandler">
+<h2>EventMsgHandler<a class="headerlink" href="#eventmsghandler" title="Permalink to this headline">¶</a></h2>
+<p>Un attore che ha due compiti principali:</p>
+<ol class="arabic simple">
+<li><p><span class="blue">registrazione</span>: tenere memoria del fatto che un attore  si è dichiarato interessato
+alla percezione di un evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code>. Per questa funzione, <em>EventMsgHandler</em> introduce una mappa
+che associa il nome di un attore-observer al’id delle’evento che desidera osservare.</p></li>
+<li><p><span class="blue">aggiornamento</span>: inserire l’evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code> nella coda di tutti gli attori interessati
+quando un attore emette l’evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code>. Per questa funzione,  <em>EventMsgHandler</em>
+usa l’operazione <a class="reference internal" href="Attori.html#sendamsg-di-qak22util"><span class="std std-ref">sendAMsg di Qak22Util</span></a>.</p></li>
+</ol>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventMsgHandler</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+ <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">myName</span> <span class="o">=</span> <span class="s">&quot;eventhandler&quot;</span><span class="p">;</span>
+ <span class="kd">protected</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">eventObserverMap</span> <span class="o">=</span>
+                          <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">Qak22Context</span><span class="p">.</span><span class="na">registerForEvent</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">eventObserverMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">());</span>
+  <span class="p">}</span><span class="k">else</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">Qak22Context</span><span class="p">.</span><span class="na">unregisterForEvent</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">eventObserverMap</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">());</span>
+  <span class="p">}</span><span class="k">else</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isEvent</span><span class="p">()</span> <span class="p">)</span>  <span class="n">updateTheObservers</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+    <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">myName</span> <span class="o">+</span> <span class="s">&quot; msg unknown&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="qak22context-registeraseventobserver">
+<h3>Qak22Context.registerAsEventObserver<a class="headerlink" href="#qak22context-registeraseventobserver" title="Permalink to this headline">¶</a></h3>
+<p>Il compito di registrazione di <a class="reference internal" href="#eventmsghandler"><span class="std std-ref">EventMsgHandler</span></a> viene svolto come conseguenza della ricezione
+di un <em>dispatch</em> con id <strong>registerForEvent</strong> che contiene il nome dell’attore-osservatore e l’identificatore
+dell’evento osservato:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(registerForEvent,dispatch,OBSERVERNAME,eventhandler,EVENTID,N)</span></code></p>
+</div></blockquote>
+<p>Questo messaggio è inviato da <a class="reference internal" href="Attori.html#qak22context"><span class="std std-ref">Qak22Context</span></a> quando il livello applicativo ne invoca il metodo
+<code class="docutils literal notranslate"><span class="pre">registerAsEventObserver</span></code></p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Qak22Context</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">registerForEvent</span>   <span class="o">=</span> <span class="s">&quot;registerForEvent&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">unregisterForEvent</span> <span class="o">=</span> <span class="s">&quot;unregisterForEvent&quot;</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">registerAsEventObserver</span><span class="p">(</span><span class="n">String</span> <span class="n">observer</span><span class="p">,</span> <span class="n">String</span> <span class="n">evId</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">QakActor22</span> <span class="n">a</span> <span class="o">=</span> <span class="n">getActor</span><span class="p">(</span><span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">a</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">new</span> <span class="n">EventMsgHandler</span><span class="p">();</span>
+        <span class="n">IApplMessage</span> <span class="n">m</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span>
+                            <span class="n">registerForEvent</span><span class="p">,</span> <span class="n">evId</span><span class="p">,</span> <span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span><span class="p">);</span>
+        <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="eventmsghandler-updatetheobservers">
+<h3>EventMsgHandler updateTheObservers<a class="headerlink" href="#eventmsghandler-updatetheobservers" title="Permalink to this headline">¶</a></h3>
+<p>L’operazione di <span class="blue">aggiornamento</span> degli observer registrati viene realizzata usando l’operazione
+<a class="reference internal" href="Attori.html#sendamsg-di-qak22util"><span class="std std-ref">sendAMsg</span></a>  per inviare il messaggio a tutti gli attori registrati, locali o remoti.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">updateTheObservers</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">eventObserverMap</span><span class="p">.</span><span class="na">forEach</span><span class="p">(</span>
+  <span class="p">(</span> <span class="n">String</span> <span class="n">actorName</span><span class="p">,</span>  <span class="n">String</span> <span class="n">evName</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">evName</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">())</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="n">IApplMessage</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Qak22Util</span><span class="p">.</span><span class="na">buildEvent</span><span class="p">(</span>
+              <span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">(),</span> <span class="n">actorName</span> <span class="p">)</span> <span class="p">;</span>
+          <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">m</span> <span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">)</span> <span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ovviamente gli osservatori remoti devono essere stati dichiarati come tali.</p>
+</section>
+</section>
+<section id="emit-di-un-evento">
+<h2>emit di un evento<a class="headerlink" href="#emit-di-un-evento" title="Permalink to this headline">¶</a></h2>
+<p>L’operazione <code class="docutils literal notranslate"><span class="pre">emit</span></code> di un messaggio di evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code> viene implementata nella classe
+<a class="reference internal" href="Attori.html#qakactor22-il-costruttore"><span class="std std-ref">QakActor22</span></a> ‘ridirigendo’ <code class="docutils literal notranslate"><span class="pre">Ev</span></code> a <a class="reference internal" href="#eventmsghandler"><span class="std std-ref">EventMsgHandler</span></a>
+che a sua volta esegue il suo compito di <a class="reference internal" href="#eventmsghandler-updatetheobservers"><span class="std std-ref">aggiornamento</span></a>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">emit</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isEvent</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">msg</span><span class="p">,</span> <span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="esempio-sonaractor22">
+<h2>Esempio: <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code><a class="headerlink" href="#esempio-sonaractor22" title="Permalink to this headline">¶</a></h2>
+<p>L’attore <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code> NON riusa gli oggetti del dominio ma ridefinisce il componente come
+proattivo e reattivo, in modo simulato o meno.</p>
+<p>In quanto ente proattivo, il <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code> emette eventi di distanza-misurata della forma</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(distance,event,sonar,observer,D,N)</span></code></p>
+</div></blockquote>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarActor22</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">IDistance</span> <span class="n">curVal</span> <span class="p">;</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="p">)</span>  <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="k">else</span> <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+  <span class="p">}</span>
+      <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="n">elabRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">elabCmd</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+<section id="sonaractor22-parte-reattiva">
+<h3>SonarActor22: Parte reattiva<a class="headerlink" href="#sonaractor22-parte-reattiva" title="Permalink to this headline">¶</a></h3>
+<p>La parte reattiva consiste nella eleborazione dei comandi di attivazione/deattivazione e di richieste
+sul valore corrente della distanza.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabCmd</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">String</span> <span class="n">msgCmd</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+  <span class="k">switch</span><span class="p">(</span> <span class="n">msgCmd</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">cmdActivate</span>  <span class="p">:</span> <span class="n">sonarActivate</span><span class="p">();</span>  <span class="k">break</span><span class="p">;</span>
+  <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">cmdDectivate</span> <span class="p">:</span> <span class="n">sonarDeactivate</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+  <span class="k">default</span><span class="p">:</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span>  <span class="o">+</span> <span class="s">&quot; | unknown &quot;</span> <span class="o">+</span> <span class="n">msgCmd</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabRequest</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarActivate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="p">)</span> <span class="n">sonarStepAsMock</span><span class="p">();</span>
+  <span class="k">else</span> <span class="n">sonarStepAsConcrete</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+</section>
+<section id="sonaractor22-parte-proattiva">
+<h3>SonarActor22: Parte proattiva<a class="headerlink" href="#sonaractor22-parte-proattiva" title="Permalink to this headline">¶</a></h3>
+<p>La parte proattiva  consiste nella continua rilevazione della distanza e nella emissione di eventi.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarStepAsMock</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">curVal</span><span class="p">.</span><span class="na">getVal</span><span class="p">()</span> <span class="o">-</span> <span class="n">delta</span><span class="p">;</span>
+  <span class="n">updateDistance</span><span class="p">(</span> <span class="n">v</span> <span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="n">stopped</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span> <span class="p">);</span>
+    <span class="n">autoMsg</span><span class="p">(</span><span class="n">ApplData</span><span class="p">.</span><span class="na">activateSonar</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarStepAsConcrete</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="emissione-di-eventi">
+<h3>Emissione di eventi<a class="headerlink" href="#emissione-di-eventi" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">updateDistance</span></code> provvede ad emettere eventi che rendoo osservabile la distanza rilevata.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">updateDistance</span><span class="p">(</span> <span class="kt">int</span> <span class="n">d</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span> <span class="n">d</span> <span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">sonarObservable</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">IApplMessage</span> <span class="n">distanceEvent</span> <span class="o">=</span>
+         <span class="n">Qak22Util</span><span class="p">.</span><span class="na">buildEvent</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">evDistance</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">d</span> <span class="p">);</span>
+    <span class="n">emit</span><span class="p">(</span><span class="n">distanceEvent</span><span class="p">);</span>
+  <span class="p">}</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="configurazione-lato-raspberry">
+<h3>Configurazione lato Raspberry<a class="headerlink" href="#configurazione-lato-raspberry" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ActorLocal</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span>      <span class="p">{</span><span class="s">&quot;led&quot;</span><span class="p">,</span> <span class="s">&quot;sonar&quot;</span>  <span class="p">},</span>
+    <span class="n">implement</span> <span class="o">=</span> <span class="p">{</span> <span class="n">LedActor</span><span class="p">.</span><span class="na">class</span><span class="p">,</span>  <span class="n">SonarActor22</span><span class="p">.</span><span class="na">class</span> <span class="p">}</span>
+<span class="p">)</span>
+<span class="nd">@ActorRemote</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>   <span class="p">{</span><span class="s">&quot;controller&quot;</span> <span class="p">},</span>
+    <span class="n">host</span><span class="o">=</span>    <span class="p">{</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">pcAddr</span> <span class="p">},</span>
+    <span class="n">port</span><span class="o">=</span>    <span class="p">{</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxPcPort</span> <span class="p">},</span>
+    <span class="n">protocol</span><span class="o">=</span><span class="p">{</span> <span class="s">&quot;TCP&quot;</span>   <span class="p">}</span>
+<span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DeviceActorsOnRasp</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="configurazione-lato-pc">
+<h3>Configurazione lato PC<a class="headerlink" href="#configurazione-lato-pc" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ActorLocal</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>     <span class="p">{</span><span class="s">&quot;controller&quot;</span> <span class="p">},</span>
+          <span class="n">implement</span> <span class="o">=</span> <span class="p">{</span><span class="n">unibo</span><span class="p">.</span><span class="na">radarSystem22</span><span class="p">.</span><span class="na">actors</span><span class="p">.</span><span class="na">ControllerActor</span><span class="p">.</span><span class="na">class</span> <span class="p">})</span>
+<span class="nd">@ActorRemote</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>   <span class="p">{</span><span class="s">&quot;led&quot;</span><span class="p">,</span><span class="s">&quot;sonar&quot;</span><span class="p">},</span>
+            <span class="n">host</span><span class="o">=</span>    <span class="p">{</span><span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">,</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">},</span>
+            <span class="n">port</span><span class="o">=</span>    <span class="p">{</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxRaspPort</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxRaspPort</span><span class="p">},</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="p">{</span> <span class="s">&quot;TCP&quot;</span> <span class="p">,</span> <span class="s">&quot;TCP&quot;</span> <span class="p">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ControllerActorOnPc</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’esempio di una sorgente di eventi si trova in <a class="reference internal" href="SonarObservable.html#il-sonar-come-attore-che-emette-eventi"><span class="std std-ref">Il Sonar come attore che emette eventi</span></a>.</p>
+</section>
+</section>
 </section>
 
 
@@ -87,10 +283,27 @@ di <code class="docutils literal notranslate"><span class="pre">Ev</span></code>
 <li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Eventi</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Eventi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#eventmsghandler">EventMsgHandler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qak22context-registeraseventobserver">Qak22Context.registerAsEventObserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eventmsghandler-updatetheobservers">EventMsgHandler updateTheObservers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#emit-di-un-evento">emit di un evento</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#esempio-sonaractor22">Esempio: <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sonaractor22-parte-reattiva">SonarActor22: Parte reattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sonaractor22-parte-proattiva">SonarActor22: Parte proattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emissione-di-eventi">Emissione di eventi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configurazione-lato-raspberry">Configurazione lato Raspberry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configurazione-lato-pc">Configurazione lato PC</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
 </ul>
 
 <div class="relations">

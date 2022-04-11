@@ -320,5 +320,231 @@ Questa idea fa sorgere un **abstraction gap**, e suggerisce un nuovo modello:
 :remark:`una sorgente è osservabile quando emette informazione in forma di evento`
 
 Il concetto di **evento** è stato introdotto in :ref:`Terminologia di riferimento` 
-come un messaggio che non ha un preciso destinatario.
+come un messaggio che non ha un preciso destinatario; una sua implementazione è descritta in :ref:`Eventi`
+
+
+------------------------------------------
+Il Sonar come attore che emette eventi
+------------------------------------------
+
+Nel package ``unibo.actor22.events`` della directory ``test`` del progetto ``unibo.actor22``, riportiamo la classe ``SonarActor22``
+che definisce il Sonar come un **attore proattivo e reattivo**.
+
+.. L'attore ``SonarActor22`` NON riusa gli oggetti del dominio ma ridefinisce il componente come 
+
+.. code:: Java
+
+  public class SonarActor22 extends QakActor22{
+  private IDistance curVal ;	
+
+    protected void setup() {
+      if( ! DomainSystemConfig.simulation )  { ... }
+      else curVal = new Distance(90);		
+    }
+  	@Override
+    protected void handleMsg(IApplMessage msg) {
+      if( msg.isRequest() ) elabRequest(msg);
+      else elabCmd(msg);
+    }
+
++++++++++++++++++++++++++++++++++
+Parte reattiva    
++++++++++++++++++++++++++++++++++
+
+La parte reattiva consiste nella eleborazione dei messaggi di attivazione/deattivazione e di richieste
+sul valore corrente della distanza. I messaggi assumono queste forme:
+
+  - ``msg(cmd,dispatch,controller,sonar,activate,N)``
+  - ``msg(ask,request,controller,sonar,getDistance,N)``
+
+.. code:: Java
+
+    protected void elabCmd(IApplMessage msg) {
+    String msgCmd = msg.msgContent();
+      switch( msgCmd ) {
+      case ApplData.cmdActivate  : sonarActivate();  break;
+      case ApplData.cmdDectivate : sonarDeactivate();break;
+      default: ColorsOut.outerr(getName()  + " | unknown " + msgCmd);
+    }
+
+    protected void elabRequest(IApplMessage msg) { 
+      ... 
+      sendReply(msg, reply );		
+    }
+
+    protected void sonarActivate() {
+      if( DomainSystemConfig.simulation ) sonarStepAsMock();
+      else sonarStepAsConcrete();
+    }    
+    ...
+
+In questa versione, ``SonarActor22`` non riusa gli oggetti del dominio ma realizza un diverso comportamento interno 
+(Mock o concreto), in funzione del valore del parametro di configurazione ``DomainSystemConfig.simulation``.
+
+
++++++++++++++++++++++++++++++++++
+Parte proattiva    
++++++++++++++++++++++++++++++++++   
+
+La parte proattiva  consiste nella continua rilevazione della distanza e nella emissione di eventi con il valore della distanza-misurata.
+Questi eventi assumo la forma che segue:
+
+  ``msg(distance,event,sonar,OBSERVER,D,N)``
+
+Dove ``OBSERVER`` è il nome dell'attore-osservatore che ha dichiarato il suo interesse all'evento ``distance`` e 
+``D`` è il valore della distanza misurata.
+
+.. code:: Java
+
+    protected void sonarStepAsMock() {		
+      int v = curVal.getVal() - delta;
+      updateDistance( v );		
+      if( v > 0 && ! stopped) {
+        CommUtils.delay( DomainSystemConfig.sonarDelay );
+        stopped = ( v <= 0 );	
+        autoMsg(ApplData.activateSonar);   
+    }
+
+    protected void sonarStepAsConcrete() { 
+      //Interazione con SonarAlone
+      ... 
+      updateDistance( v );	 
+      ...
+      if( ! stopped ) {
+        autoMsg(ApplData.activateSonar);  
+      }
+    }
+
+Notiamo come l'attore ``SonarActor22`` trasmetta a se sè stesso il messaggio di attivazione al termine di ogni 
+passo di elaborazione. Ciò per consentire l'esecuzione degli altri attori, in quanto 
+**gli attori sono eseguiti all’interno di uno stesso Thread Java**.
+
+
++++++++++++++++++++++++++++++++++
+Emissione di eventi    
++++++++++++++++++++++++++++++++++ 
+
+Il metodo ``updateDistance`` provvede ad emettere eventi che rendoo osservabile la distanza rilevata.
+
+.. code:: Java
+
+  protected void updateDistance( int d ) {
+   curVal = new Distance( d );
+   if( RadarSystemConfig.sonarObservable ) {
+      IApplMessage dEvent=Qak22Util.buildEvent(getName() ApplData.evDistance,""+d);
+      emit(dEvent);
+    }	
+  }	
+
+
++++++++++++++++++++++++++++++++++
+ControllerForSonarActor  
++++++++++++++++++++++++++++++++++ 
+
+I messaggi al Sonar sono inviati dall'attore ``ControllerForSonarActor`` che assume il ruolo di osservatore nel caso in cui si ponga 
+
+  ``RadarSystemConfig.sonarObservable = true``
+
+In caso contrario, il ``ControllerForSonarActor`` lavora 'a polling' inviando richeste ``getDistance``.
+
+.. code:: Java
+
+  public class ControllerForSonarActor extends QakActor22{
+    ...
+    @Override
+    protected void handleMsg(IApplMessage msg) {  
+      if( msg.isEvent() )        elabEvent(msg);
+      else if( msg.isDispatch()) elabCmd(msg) ;	
+      else if( msg.isReply() )   elabReply(msg) ;	
+    }
+
+    protected void elabCmd(IApplMessage msg) {
+      String msgCmd = msg.msgContent();
+      if( msgCmd.equals(ApplData.cmdActivate)  ) {
+          sendMsg( ApplData.activateSonar);
+          doControllerWork();
+      }		
+    }
+
+    protected void doControllerWork() {
+      if( ! RadarSystemConfig.sonarObservable)  
+              request( ApplData.askDistance );
+    }
+    ...
+  }
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Elaborazione delle risposte
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. code:: Java
+
+  protected void elabReply(IApplMessage msg) {
+    String dStr = msg.msgContent();
+    int d = Integer.parseInt(dStr);
+		radar.update(dStr, "60");
+		if( d <  RadarSystemConfig.DLIMIT ) {
+			forward(ApplData.deactivateSonar);
+		}
+		else {
+	    	doControllerWork();
+		}
+	}
  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Elaborazione degli eventi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. code:: Java
+
+  protected void elabEvent(IApplMessage msg) {
+    if( msg.isEvent()  ) {  //defensive
+      String dstr = msg.msgContent();
+      int d       = Integer.parseInt(dstr);
+      radar.update(dstr, "60");
+			if( d <  RadarSystemConfig.DLIMIT ) {
+        forward(ApplData.deactivateSonar);
+      }
+		}
+	}
+
++++++++++++++++++++++++++++++++++
+Configurazione lato Raspberry   
++++++++++++++++++++++++++++++++++ 
+
+.. code:: Java
+
+  @ActorLocal(
+      name =      {"led", "sonar"  }, 
+      implement = { LedActor.class,  SonarActor22.class }
+  )
+  @ActorRemote(name =   {"controller" },    
+      host=    { ApplData.pcAddr }, 
+      port=    { ""+ApplData.ctxPcPort }, 
+      protocol={ "TCP"   }
+  )
+  public class DeviceActorsOnRasp {
+    ...
+  }
+
+
++++++++++++++++++++++++++++++++++
+Configurazione lato PC   
++++++++++++++++++++++++++++++++++ 
+
+.. code:: Java
+
+  @ActorLocal(name =     {"controller" }, 
+            implement = {unibo.radarSystem22.actors.ControllerActor.class })
+  @ActorRemote(name =   {"led","sonar"}, 
+              host=    {ApplData.raspAddr, ApplData.raspAddr}, 
+              port=    { ""+ApplData.ctxRaspPort, ""+ApplData.ctxRaspPort}, 
+              protocol={ "TCP" , "TCP" })
+  public class ControllerActorOnPc {
+    ...
+  }
+
