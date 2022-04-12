@@ -337,7 +337,7 @@ sul valore corrente della distanza. I messaggi assumono queste forme:</p>
 <section id="parte-proattiva">
 <h3>Parte proattiva<a class="headerlink" href="#parte-proattiva" title="Permalink to this headline">¶</a></h3>
 <p>La parte proattiva  consiste nella continua rilevazione della distanza e nella emissione di eventi con il valore della distanza-misurata.
-Questi eventi assumo la forma che segue:</p>
+Questi eventi assumono la forma che segue:</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">msg(distance,event,sonar,OBSERVER,D,N)</span></code></p>
 </div></blockquote>
@@ -369,11 +369,12 @@ passo di elaborazione. Ciò per consentire l’esecuzione degli altri attori, in
 </section>
 <section id="emissione-di-eventi">
 <h3>Emissione di eventi<a class="headerlink" href="#emissione-di-eventi" title="Permalink to this headline">¶</a></h3>
-<p>Il metodo <code class="docutils literal notranslate"><span class="pre">updateDistance</span></code> provvede ad emettere eventi che rendoo osservabile la distanza rilevata.</p>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">updateDistance</span></code> provvede ad emettere eventi che rendono osservabile la distanza rilevata.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">updateDistance</span><span class="p">(</span> <span class="kt">int</span> <span class="n">d</span> <span class="p">)</span> <span class="p">{</span>
  <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span> <span class="n">d</span> <span class="p">);</span>
  <span class="k">if</span><span class="p">(</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">sonarObservable</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="n">IApplMessage</span> <span class="n">dEvent</span><span class="o">=</span><span class="n">Qak22Util</span><span class="p">.</span><span class="na">buildEvent</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">evDistance</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">d</span><span class="p">);</span>
+    <span class="n">IApplMessage</span> <span class="n">dEvent</span><span class="o">=</span>
+      <span class="n">Qak22Util</span><span class="p">.</span><span class="na">buildEvent</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">evDistance</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">d</span><span class="p">);</span>
     <span class="n">emit</span><span class="p">(</span><span class="n">dEvent</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
@@ -559,6 +560,7 @@ passo di elaborazione. Ciò per consentire l’esecuzione degli altri attori, in
 <li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
 </ul>
 
 <div class="relations">
