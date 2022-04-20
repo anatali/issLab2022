@@ -35,6 +35,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-proxy
 	implementation group: 'org.eclipse.californium', name: 'californium-proxy', version: '2.0.0-M12'
 
+//OkHttp library for websockets with Kotlin
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.14.0'    
+	// https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
+	testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '4.9.3'
+
 
 //JSON
     // https://mvnrepository.com/artifact/org.json/json
@@ -46,14 +51,7 @@ dependencies {
     implementation name: 'unibonoawtsupports'
 	implementation name: 'it.unibo.qakactor-2.7'
 	
-	//RADAR (support and GUI)
-	implementation name: 'radarPojo'
-	// https://mvnrepository.com/artifact/org.pushingpixels/trident
-	implementation group: 'org.pushingpixels', name: 'trident', version: '1.3'
-
-//RadarSystem
-	implementation name: 'it.unibo.radarSystem22.domain-1.0'
-
+ 
 }
 
 sourceSets {

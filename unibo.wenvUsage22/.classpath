@@ -38,6 +38,11 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.14.0/775ec91f22324e24657fb832a9fc47b90738b25d/okhttp-3.14.0-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.14.0/c3a9efd10f26a802da2c47dbe54a8d4c44a6019f/okhttp-3.14.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/org.glassfish.tyrus.bundles/tyrus-standalone-client/1.9/7eb9b4401aa2690e5c9c5d3c1cc4ad34d397148/tyrus-standalone-client-1.9-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/org.glassfish.tyrus.bundles/tyrus-standalone-client/1.9/cf9e6cdbd6ad2a72bc54c0823c0ac31c76df4b9e/tyrus-standalone-client-1.9.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
@@ -48,27 +53,27 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Didattica2021/issLab2021/unibolibs/2p301.jar">
+	<classpathentry kind="lib" path="C:/Didattica2022/issLab2022/unibolibs/2p301.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Didattica2021/issLab2021/unibolibs/uniboInterfaces.jar">
+	<classpathentry kind="lib" path="C:/Didattica2022/issLab2022/unibolibs/uniboInterfaces.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Didattica2021/issLab2021/unibolibs/unibonoawtsupports.jar">
+	<classpathentry kind="lib" path="C:/Didattica2022/issLab2022/unibolibs/unibonoawtsupports.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Didattica2021/issLab2021/unibolibs/it.unibo.qakactor-2.7.jar">
+	<classpathentry kind="lib" path="C:/Didattica2022/issLab2022/unibolibs/it.unibo.qakactor-2.7.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Didattica2021/issLab2021/unibolibs/unibo.actor22-1.1.jar">
+	<classpathentry kind="lib" path="C:/Didattica2022/issLab2022/unibolibs/unibo.actor22-1.1.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
@@ -123,6 +128,11 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.17.2/331ecaeba2fd87c06a0766e8ebe718e1e294f27d/okio-1.17.2-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.17.2/78c7820b205002da4d2d137f6f312bd64b3d6049/okio-1.17.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/5991ca87ef1fb5544943d9abc5a9a37583fabe03/annotations-13.0-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
@@ -138,7 +148,25 @@
 			<attribute name="gradle_used_by_scope" value=""/>
 		</attributes>
 	</classpathentry>
-	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar">
+	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/mockwebserver/4.9.3/c40fecd51514266731b96d9bf516016e0c024da/mockwebserver-4.9.3-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/mockwebserver/4.9.3/436df81ae01a2326b72d013783a782b595f173a5/mockwebserver-4.9.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/2d2338937cea04ac5321bc89f1ffdc93345df448/okhttp-4.9.3-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/b0b14b3d12980912723fb8b66afb48dcda742fcb/okhttp-4.9.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/junit/junit/4.13/d10a9c3acc6c07a5700e37697b5a6b4dcfb8abf9/junit-4.13-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/junit/junit/4.13/e49ccba652b735c93bd6e6f59760d8254cf597dd/junit-4.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value=""/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/2.8.0/6d1b6e0ce288800b8662b4983a002620cd6ada95/okio-2.8.0-sources.jar" kind="lib" path="C:/Users/utente/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/2.8.0/49b64e09d81c0cc84b267edd0c2fd7df5a64c78c/okio-jvm-2.8.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value=""/>
 			<attribute name="test" value="true"/>

@@ -6,7 +6,7 @@
  ===============================================================
  */
 
-package unibo.wenvUsage22;
+package unibo.wenvUsage22.naive;
 import javax.websocket.*; 
 import java.io.IOException;
 import java.net.URI;
@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import org.json.JSONObject;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.utils.CommUtils;
+import unibo.wenvUsage22.common.ApplData;
 
 @ClientEndpoint
 public class ClientNaiveUsingWs {
@@ -84,18 +85,6 @@ public class ClientNaiveUsingWs {
 /*
 BUSINESS LOGIC
  */
-    protected String crilCmd(String move, int time){
-        String crilCmd  = "{\"robotmove\":\"" + move + "\" , \"time\": " + time + "}";
-        //ColorsOut.out( "ClientNaiveUsingPost |  buildCrilCmd:" + crilCmd );
-        return crilCmd;
-    }
-
-    public String moveForward(int duration)  { return crilCmd("moveForward", duration) ;  }
-    public String moveBackward(int duration) { return crilCmd("moveBackward", duration); }
-    public String turnLeft(int duration)     { return crilCmd("turnLeft", duration);     }
-    public String turnRight(int duration)    { return crilCmd("turnRight", duration);    }
-    public String stop(int duration)         { return crilCmd("alarm", duration);        }
-    public String stop( )                    { return crilCmd("alarm", 10);              }
 
     protected void request( String crilCmd ) throws Exception  {
         //ColorsOut.out("ClientNaiveUsingWs | request " + crilCmd);
@@ -114,12 +103,16 @@ BUSINESS LOGIC
     }
 
     protected void doBasicMoves() throws Exception{
-    	request( moveForward(  1800) );
-    	Thread.sleep( 500 );
-    	request( stop( ) );
+//    	request( moveForward(  1800) );
+//    	Thread.sleep( 500 );
+//    	request( stop( ) );
     	
 //    	request( moveForward( 400  ) );
 //     	request( moveBackward( 400 ) );
+    	request( ApplData.turnLeft( 800  ) );
+    	request( ApplData.stop( ) );
+//    	Thread.sleep( 500 );
+     	request( ApplData.turnRight( 400 ) );
      	
 //     	requestSynch(  moveForward( 400  ) );
 //     	requestSynch(  moveBackward( 400  ) );
@@ -130,7 +123,7 @@ BUSINESS LOGIC
 
     protected void doBasicMovesOld() throws Exception{
 //    	  request( stop(10) );
-    	  requestSynch( moveForward(  1400) );
+    	  requestSynch( ApplData.moveForward(  1400) );
 //        requestDelayed( turnLeft(2800) );
 //          request( moveForward(  1800) );
 //          Thread.sleep( 500 );
