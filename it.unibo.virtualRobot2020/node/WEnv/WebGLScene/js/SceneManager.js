@@ -102,8 +102,7 @@ export default (canvas, mirror,stopRotating) => {  //
         return { sceneSubjects, controls }
     }
 
-    function update() {     
-    
+    function update() {
         const elapsedTime = clock.getElapsedTime()
 
         for(let i=0; i<sceneSubjects.length; i++)
@@ -125,9 +124,9 @@ export default (canvas, mirror,stopRotating) => {  //
     }
 
 
-    function onKeyDown(keyCode, duration, remote) {
-//console.log("onKeyDown from SceneManager keyCode=" + keyCode + " remote=" + remote)
-        controls.onKeyDown(keyCode, duration, remote)
+    function onKeyDown(keyCode, duration, moveIndex) {
+//console.log("onKeyDown from SceneManager keyCode=" + keyCode + " moveIndex=" + moveIndex)
+        controls.onKeyDown(keyCode, duration, moveIndex)
     }
 
     function onKeyUp(keyCode) {

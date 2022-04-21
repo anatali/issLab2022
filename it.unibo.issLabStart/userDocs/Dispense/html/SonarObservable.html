@@ -339,10 +339,17 @@ sul valore corrente della distanza. I messaggi assumono queste forme:</p>
 <p>La parte proattiva  consiste nella continua rilevazione della distanza e nella emissione di eventi con il valore della distanza-misurata.
 Questi eventi assumono la forma che segue:</p>
 <blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(distance,event,sonar,_,D,N)</span></code></p>
+</div></blockquote>
+<p>ove <code class="docutils literal notranslate"><span class="pre">D</span></code> è il valore della distanza misurata.</p>
+<p>Quando il messaggio viene emesso, il campo <strong>receiver</strong> (si veda <a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi"><span class="std std-ref">Struttura dei messaggi applicativi</span></a>) non è specificato.</p>
+<p>L’operazione di emissione <a class="reference internal" href="Eventi.html#emit-di-un-evento"><span class="std std-ref">emit</span></a> si avvale del componente <a class="reference internal" href="Eventi.html#eventmsghandler"><span class="std std-ref">EventMsgHandler</span></a> interno della infrastruttura
+per creare tanti messaggi quanti gli ossservatori registrati, ciascuno col campo <strong>receiver</strong> settato al nome del destinatario.
+Questi messaggi hanno la forma:</p>
+<blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">msg(distance,event,sonar,OBSERVER,D,N)</span></code></p>
 </div></blockquote>
-<p>Dove <code class="docutils literal notranslate"><span class="pre">OBSERVER</span></code> è il nome dell’attore-osservatore che ha dichiarato il suo interesse all’evento <code class="docutils literal notranslate"><span class="pre">distance</span></code> e
-<code class="docutils literal notranslate"><span class="pre">D</span></code> è il valore della distanza misurata.</p>
+<p>Dove <code class="docutils literal notranslate"><span class="pre">OBSERVER</span></code> è il nome dell’attore-osservatore che ha dichiarato il suo interesse all’evento <code class="docutils literal notranslate"><span class="pre">distance</span></code>.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarStepAsMock</span><span class="p">()</span> <span class="p">{</span>
   <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">curVal</span><span class="p">.</span><span class="na">getVal</span><span class="p">()</span> <span class="o">-</span> <span class="n">delta</span><span class="p">;</span>
   <span class="n">updateDistance</span><span class="p">(</span> <span class="n">v</span> <span class="p">);</span>

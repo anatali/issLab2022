@@ -9,8 +9,29 @@ const config = {
         speed: 0.2
     },
     sonars: [
-       ],
+    /*
+        {
+            name: "sonar1",
+            position: { x: 0.55, y: 0.01 },
+            senseAxis: { x: false, y: true }
+        },
+
+        {
+            name: "sonar2",
+            position: { x: 1.00, y: 0.95},
+            senseAxis: { x: true, y: false }
+        }
+ */
+     ],
     movingObstacles: [
+    /*
+        {
+             name: "movingobstacle",
+             position: { x: .64, y: .42 },
+             directionAxis: { x: true, y: true },
+             speed: 0.4,
+             range: 8
+         }*/
     ],
    staticObstacles: [
         {
@@ -69,7 +90,7 @@ const config = {
         },
         {
             name: "wallRight",
-            centerPosition: { x: 1.0, y: 0.5},
+            centerPosition: { x: 0.98, y: 0.5},
             size: { x: 0.01, y: 0.99}
         }
     ]

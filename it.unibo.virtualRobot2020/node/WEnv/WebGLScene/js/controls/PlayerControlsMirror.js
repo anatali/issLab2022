@@ -12,7 +12,8 @@ export default (mesh, camera, config, collisionManager) => {
         S: 83,
         D: 68,
         R: 82,
-        F: 70
+        F: 70,
+        Z: 90
     }
 	
     let forward = false

@@ -13,56 +13,53 @@ export default (mesh, camera, config, collisionManager, mirror) => {
         S: 83,
         D: 68,
         R: 82,
-        F: 70
+        F: 70,
+        Z: 90
     }
 	
     let forward = false
     let backward = false
     let rotating = false
+    var tween ;
 
     setCameraPositionRelativeToMesh(camera, mesh)
 
 	function stopRotating(){ //April2022
-console.log("PlayerControls | stopRotatingggg "  )
+//console.log("PlayerControls | stopRotatinggg tween=" + tween )
 	    rotating = false
+	    if( tween != undefined) tween.stop();
 	}
 
-    function onKeyDown(keyCode, duration, remote ) {
- console.log("PlayerControls | onKeyDown from remote=" + remote + " keyCode=" + keyCode)
-        if(keyCode === keycodes.W)
-            forward = true
-        else if(keyCode === keycodes.S)
-            backward = true
-else if(keyCode === keycodes.F) stopRotating() //April2022
-        else if(keyCode === keycodes.D)
-            rotate(-Math.PI/2, duration)
-        else if(keyCode === keycodes.A)
-            rotate(Math.PI/2, duration)
+    function onKeyDown(keyCode, duration, moveindex ) {
+        //console.log("PlayerControls | onKeyDown  moveindex=" + moveindex + " keyCode=" + keyCode  )
+        if(keyCode === keycodes.W) forward = true
+        else if(keyCode === keycodes.S) backward = true
+else if(keyCode === keycodes.Z) stopRotating() //April2022
+        else if(keyCode === keycodes.D) rotate(-Math.PI/2, duration, moveindex)
+        else if(keyCode === keycodes.A) rotate(Math.PI/2, duration, moveindex)
     }
 
     function onKeyUp(keyCode) {
-        if(keyCode === keycodes.W)
-            forward = false
-        else if(keyCode === keycodes.S)
-            backward = false;
+        if(keyCode === keycodes.W) forward = false
+        else if(keyCode === keycodes.S) backward = false;
     }
 
-    function rotate(angle, duration = 300) {
-    console.log("rotateee rotating="+rotating)
+    function rotate(angle, duration = 300, moveindex) {
+        //console.log("rotateee rotating="+rotating)
         duration -= 50
-        if(rotating)  //April2020: la rotazione precedente ancora in corso inibisce la nuova
+        if(rotating){  //April2020: la rotazione precedente ancora in corso inibisce la nuova
+            console.log("PlayerControls | rotate  REJECTED"  )
             return
-
+        }
         const finalAngle = mesh.rotation.y + angle
-
         rotating = true
-        var turnMove = ""     //April2022
-        if( angle < 0 ) turnMove="turnRight"
-        else turnMove="turnLeft"
-        new TWEEN.Tween(mesh.rotation)
+        tween = new TWEEN.Tween(mesh.rotation)
             .to({ y: finalAngle }, duration)
             .easing(TWEEN.Easing.Quadratic.InOut)
-            .onComplete( () => {rotating = false; eventBus.post(eventBusEvents.endmove, turnMove)})
+            .onComplete( () => {
+                rotating = false;
+                eventBus.post(eventBusEvents.endmove, moveindex)
+             })
             .start()
     }    
 
