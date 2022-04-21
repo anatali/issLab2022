@@ -41,6 +41,12 @@ public class Qak22Context {
 	public static void removeActor(QakActor22 a) {	
         ctxMap.remove( a.getName() );
     }	
+	public static void showActorNames( ) {
+		ColorsOut.outappl("CURRENT ACTORS in Context:", ColorsOut.MAGENTA);
+		ctxMap.forEach( (  v,x) ->  
+    		ColorsOut.outappl("" + v , ColorsOut.MAGENTA)
+		 );
+	}
     public static QakActor22 getActor(String actorName) {
         return ctxMap.get(actorName);
     }

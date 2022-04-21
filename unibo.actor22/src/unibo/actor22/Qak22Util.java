@@ -2,6 +2,8 @@ package unibo.actor22;
 
  
 import it.unibo.kactor.*;
+import unibo.actor22comm.RequestCallUtilObj;
+import unibo.actor22comm.events.EventMsgHandler;
 import unibo.actor22comm.proxy.ProxyAsClient;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.utils.CommUtils;
@@ -9,11 +11,15 @@ import unibo.actor22comm.utils.CommUtils;
 
 public  class Qak22Util   {
 
-
-    public static void showActors22(){
-    	Qak22Util.showActors22();
+ 
+    public static void emitEvent( IApplMessage msg ){
+    	if( msg.isEvent() ) {
+    		sendAMsg( msg, EventMsgHandler.myName);
+    	}else {
+    		ColorsOut.outerr("Qak22Util | emitEvent: not an event:"+ msg); 
+    	}
     }
-      
+     
     //Usabile da Java: Distingue tra locale e remoto
     public static void sendAMsg( IApplMessage msg ){
     	sendAMsg( msg, msg.msgReceiver() );
@@ -40,6 +46,22 @@ public  class Qak22Util   {
         }
 	}
 
+    public static String requestSynch(IApplMessage msg) {
+    	if( !  msg.isRequest()) {
+    		ColorsOut.outerr("Qak22Util | requestSynch: no request: " + msg);
+    		return null;
+    	}
+    	String destActorName = msg.msgReceiver();
+    	QakActor22 dest      = Qak22Context.getActor(destActorName);  
+        if( dest != null ) { //attore locale
+        	RequestCallUtilObj waiter = new RequestCallUtilObj(msg);  
+        	return waiter.getAnswer();
+        }else {
+        	ColorsOut.outerr("Qak22Util | requestSynch: no local dest in:"+ msg); 
+    		return null;      	
+        }   	
+    }
+ 
     
   //String MSGID, String MSGTYPE, String SENDER, String RECEIVER, String CONTENT, String SEQNUM
   	private static int msgNum=0;	

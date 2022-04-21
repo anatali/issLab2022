@@ -25,6 +25,22 @@ public class ClientUsingWs implements IObserver{
  
  		//conn.forward( turnLeft( 800  ) );
  		conn.forward( ApplData.moveForward(2300) );
+//		conn.forward( stop( ) );
+////    	Thread.sleep( 500 );
+//		conn.forward( turnRight( 400 ) );
+
+//			conn.forward( turnRight(300) );
+// 			CommUtils.delay(500);
+//			conn.forward( stop() );
+//			conn.forward( turnLeft(300) );
+// 			CommUtils.delay(500);
+//			conn.forward( stop() );
+//			//CommUtils.delay(500);
+//			conn.forward( moveForward(1000) );
+ 
+//			CommUtils.delay(1500);
+//			conn.close();
+// 
 	}
 	
 	@Override

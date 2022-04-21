@@ -18,7 +18,7 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
 		super(name, QakContext.Companion.createScope(), false, true, false, 50);
         if( Qak22Context.getActor(name) == null ) {
         	Qak22Context.addActor( this );
-        	ColorsOut.out( getName()  + " | CREATED " , ColorsOut.CYAN);
+        	ColorsOut.outappl( getName()  + " | CREATED " , ColorsOut.CYAN);
         }
         else ColorsOut.outerr("QakActor22 | WARNING: an actor with name " + name + " already exists");	
 	}

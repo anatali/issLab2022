@@ -1,16 +1,15 @@
 package unibo.actor22.annotations;
-
  
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
- 
 
-//@Target( value = {ElementType.CONSTRUCTOR,ElementType.METHOD, ElementType.TYPE} )
 @Retention(RetentionPolicy.RUNTIME)
- 
-public @interface ActorLocal {
-	String[] name();
+@Repeatable(Actors.class)
+public @interface Actor {
+	String name();
+	boolean local() default true;
 	@SuppressWarnings("rawtypes")
-	Class[]  implement();
+	Class implement() default void.class;
+	String contextName() default "";
 }

@@ -13,9 +13,9 @@ import unibo.actor22comm.interfaces.IObserver;
 import unibo.actor22comm.interfaces.Interaction2021;
 import unibo.actor22comm.utils.ColorsOut;
 
-public class WsConnection extends WebSocketListener implements Interaction2021, IObservable{
-	private static HashMap<String,WsConnection> connMap=
-            				new HashMap<String,WsConnection>();
+public class WsConnectionForActors extends WebSocketListener implements Interaction2021, IObservable{
+	private static HashMap<String,WsConnectionForActors> connMap=
+            				new HashMap<String,WsConnectionForActors>();
 	private Vector<IObserver> observers  = new Vector<IObserver>();
     private OkHttpClient okHttpClient  = new OkHttpClient();
     final MediaType JSON_MediaType     = MediaType.get("application/json; charset=utf-8");
@@ -23,26 +23,28 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
     private boolean opened = false;
 	
  
-	public static Interaction2021 create(String addr ){
-        //ColorsOut.outappl("WsConnection | wsconnect addr=" + addr + " " + connMap.containsKey(addr), ColorsOut.GREEN );
+	public static Interaction2021 create(String addr, String ownerActor  ){
+        //ColorsOut.outappl("WsConnectionForActors | wsconnect addr=" + addr + " " + connMap.containsKey(addr), ColorsOut.GREEN );
 		if( ! connMap.containsKey(addr)){
-			connMap.put(addr, new WsConnection( addr ) );
+			connMap.put(addr, new WsConnectionForActors( addr,ownerActor ) );
 		}else {
-		    ColorsOut.outappl("WsConnection | ALREADY connected to addr=" + addr, ColorsOut.YELLOW );			
+		    ColorsOut.outappl("WsConnectionForActors | ALREADY connected to addr=" + addr, ColorsOut.YELLOW );			
 		}
 		return connMap.get(addr);
 	}	
 	
-	
-	public WsConnection(String addr  ) {
-        //ColorsOut.outappl("WsConnection | constructor addr=" + addr + " " + connMap.containsKey(addr), ColorsOut.GREEN );
+/*
+ * Constructor	
+ */
+	public WsConnectionForActors(String addr, String ownerActor  ) {
+        //ColorsOut.outappl("WsConnectionForActors | constructor addr=" + addr + " " + connMap.containsKey(addr), ColorsOut.GREEN );
 		wsconnect(addr);
+		addObserver( new WsConnSysObserver(ownerActor) );
  	}
 	
-//Since IObservable	 
-	
+//Since IObservable	 	
     protected void updateObservers( String msg ){
-        //ColorsOut.out("WsConnection | updateObservers " + observers.size() );
+        //ColorsOut.out("WsConnectionForActors | updateObservers " + observers.size() );
         observers.forEach( v -> v.update(null, msg) );
     }	
 
@@ -53,16 +55,13 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
 	}
 	@Override
 	public void sendALine(String msg, boolean isAnswer) throws Exception {
-		// TODO Auto-generated method stub		
 	}
 	@Override
 	public String receiveALine() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
 	public void closeConnection() throws Exception {
-		// TODO Auto-generated method stub		
 	}
 	
 	
@@ -86,25 +85,24 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
 
 	@Override
 	public String receiveMsg() throws Exception {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void close() throws Exception {
 	     boolean gracefulShutdown = myWs.close(1000, "close");
-	     ColorsOut.out("WsConnection | close gracefulShutdown=" + gracefulShutdown);
+	     ColorsOut.out("WsConnectionForActors | close gracefulShutdown=" + gracefulShutdown);
 	}
 	
 // Since extends WebSocketListener
     @Override
     public void onOpen(WebSocket webSocket, Response response  ) {
-        ColorsOut.out("WsConnection | onOpen ", ColorsOut.GREEN );
+        ColorsOut.out("WsConnectionForActors | onOpen ", ColorsOut.GREEN );
         opened = true;
     }
     @Override
     public void onClosing(WebSocket webSocket, int code, String reason  ) {
-        ColorsOut.out("WsConnection | onClosing ", ColorsOut.GREEN );
+        ColorsOut.out("WsConnectionForActors | onClosing ", ColorsOut.GREEN );
         try {
 			close();
 		} catch (Exception e) {
@@ -113,7 +111,7 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
     }
     @Override
     public void onMessage(WebSocket webSocket, String msg  ) {
-        ColorsOut.out("WsConnection | onMessage " + msg, ColorsOut.GREEN );
+        ColorsOut.out("WsConnectionForActors | onMessage " + msg, ColorsOut.GREEN );
         updateObservers( msg );
     }
 
@@ -121,19 +119,19 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
 	
 //----------------------------------------------------------------------
     protected void wsconnect(String wsAddr){    // localhost:8091
-         //ColorsOut.outappl("WsConnection | wsconnect wsAddr=" + wsAddr, ColorsOut.GREEN );
+         //ColorsOut.outappl("WsConnectionForActors | wsconnect wsAddr=" + wsAddr, ColorsOut.GREEN );
         Request request = new Request.Builder()
                 .url( "ws://"+wsAddr )
                 .build() ;
         myWs = okHttpClient.newWebSocket(request, this);
-        //ColorsOut.out("WsConnection | wsconnect myWs=" + myWs, ColorsOut.GREEN );
+        //ColorsOut.out("WsConnectionForActors | wsconnect myWs=" + myWs, ColorsOut.GREEN );
     }
 
      
 //Since IObservable    
 	@Override
 	public void addObserver(IObserver obs) {
-        ColorsOut.out("WsConnection | addObserver " + obs, ColorsOut.GREEN );
+        ColorsOut.out("WsConnectionForActors | addObserver " + obs, ColorsOut.GREEN );
 		observers.add( obs);		
 	}
 	@Override
