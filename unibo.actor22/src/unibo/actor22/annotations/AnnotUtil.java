@@ -56,7 +56,7 @@ RELATED TO Actor22
     }
 
     public static Map<String, Context> getRemoteContexts(Object element) {
-        Map<String, Context> out = new HashMap<>();
+        Map<String, Context> out  = new HashMap<>();
         Class<?> clazz            = element.getClass();
         Annotation[] annotations  = clazz.getAnnotations();
         Context[] remoteContexts = element.getClass().getAnnotationsByType(Context.class);
@@ -71,7 +71,73 @@ RELATED TO Actor22
         }
         return out;
     }
+    
+//    public static Map<String, Context22> setRemoteContexts22(Object element) {
+//        Map<String, Context22> out  = new HashMap<>();
+//        Class<?> clazz              = element.getClass();
+//        Annotation[] annotations    = clazz.getAnnotations();
+//        Context22[] contexts        = element.getClass().getAnnotationsByType(Context22.class);
+//        for (Context22 rc : contexts) {
+//            String name     = rc.name();
+//            String host     = rc.host();
+//            int port        = Integer.parseInt(rc.port());
+//            ProtocolType protocol = rc.protocol();
+//            out.put(name, rc);
+//            if( host.equals("localhost")) {
+//                new EnablerContextForActors( "ctx", port, protocol);
+//            }
+//            ColorsOut.outappl("Registered context: " + name+ " at "
+//                            + String.format("%s//%s:%s", protocol, host, port), ColorsOut.YELLOW);
+//        }
+//        return out;
+//    }
+    
+    public static void setActorAsRemote(Map<String, Context22> contexts, String actorCtxName, String actorName) {
+    	contexts.forEach( ( ctxName,  ctx) -> {
+            ColorsOut.outappl("Checking if remote context: " + ctxName , ColorsOut.GREEN);
+   		    if( ctxName.equals(actorCtxName)) {
+   	           ColorsOut.outappl("Attempt to connect with remote context " + actorCtxName + " for " + actorName , ColorsOut.GREEN);
+               Qak22Context.setActorAsRemote(actorName, ctx.port(), ctx.host(), ctx.protocol());
+               //WARNING: cerca di collegarsi
+               ColorsOut.outappl( "Qak22Context | SET REMOTE ACTOR: "+ actorName, ColorsOut.MAGENTA ); 	 
+               return;
+   		    }    		
+    	} );
+        ColorsOut.outerr("No context found for: " + actorName  );     
+    }
+    
 
+//    public static void handleContextDeclaration(Object element) {
+//        Class<?> clazz             = element.getClass();
+//        Map<String, Context22> contextsMap = setRemoteContexts22(element);
+//        Actor22[] actorAnnotations = clazz.getAnnotationsByType(Actor22.class);
+//        for (Actor22 actor : actorAnnotations) {
+//                String actorName = actor.name();
+//                String actorCtx  = actor.contextName();
+//                ColorsOut.outappl( "Qak22Context | handling actor: "+ actorName + " in " + actorCtx , ColorsOut.BLUE );
+//                Context22 refCtx = contextsMap.get(actorCtx);
+//                if( refCtx == null ) {
+//                	ColorsOut.outerr("No context found for: " + actorName  ); 
+//                	return;
+//                }
+//                if( refCtx.host().equals("localhost")) {
+//                    Class implement = actor.implement();
+//                    if (implement.equals(void.class))
+//                        throw new IllegalArgumentException("@Actor: Local actor needs a class specification");
+//                    try {
+//                        implement.getConstructor(String.class).newInstance(actorName);
+//                         ColorsOut.outappl( "Qak22Context | CREATED LOCAL ACTOR: "+ actorName, ColorsOut.MAGENTA );
+//                    } catch ( Exception e ) {
+//                        e.printStackTrace();
+//                    }              	
+//                }else { //Actor remote
+//                	setActorAsRemote( contextsMap, refCtx.name(), actorName );
+//                }
+//        }//for         
+//     }
+    	
+ 
+    
     public static void handleRepeatableActorDeclaration(Object element) {
         Class<?> clazz = element.getClass();
         Map<String, Context> remoteContexts = null;
@@ -149,51 +215,6 @@ RELATED TO PROTOCOLS
     }
 
 
-//    /*
-//-------------------------------------------------------------------------------
-//RELATED TO ROBOT MOVES
-//-------------------------------------------------------------------------------
-// */
-// 
-// 
-//    //Used also by IssArilRobotSupport
-//    public static boolean checkRobotConfigFile(
-//        String configFileName, HashMap<String, Integer> mvtimeMap){
-//        try{
-//            //spec( htime( 100 ),  ltime( 300 ), rtime( 300 ),  wtime( 600 ), wstime( 600 ) ).
-//            //System.out.println("IssAnnotationUtil | checkRobotConfigFile configFileName=" + configFileName);
-//            FileInputStream fis = new FileInputStream(configFileName);
-//            Scanner sc = new Scanner(fis);
-//            String line = sc.nextLine();
-//            //System.out.println("IssAnnotationUtil | checkRobotConfigFile line=" + line);
-//            String[] items = line.split(",");
-//            mvtimeMap.put("h", getRobotConfigInfo("htime", items[0] ));
-//            mvtimeMap.put("l", getRobotConfigInfo("ltime", items[1] ));
-//            mvtimeMap.put("r", getRobotConfigInfo("rtime", items[2] ));
-//            mvtimeMap.put("w", getRobotConfigInfo("wtime", items[3] ));
-//            mvtimeMap.put("s", getRobotConfigInfo("stime", items[4] ));
-//            //System.out.println("IssAnnotationUtil | checkRobotConfigFile ltime=:" + mvtimeMap.get("l"));
-//            return true;
-//        } catch (Exception e) {
-//            System.out.println("IssAnnotationUtil | checkRobotConfigFile WARNING:" + e.getMessage());
-//            return false;
-//        }
-//
-//    }
-//
-//    protected static Integer getRobotConfigInfo(String functor, String line){
-//        Pattern pattern = Pattern.compile(functor);
-//        Matcher matcher = pattern.matcher(line);
-//        String content = "0";
-//        if(matcher.find()) {
-//            int end = matcher.end() ;
-//            content = line.substring( end, line.indexOf(")") )
-//                    .replace("\"","")
-//                    .replace("(","").trim();
-//            //System.out.println("IssAnnotationUtil | getRobotConfigInfo functor=" + functor + " v=" + Integer.parseInt(content));
-//        }
-//        return Integer.parseInt( content );
-//    }
-//
+ 
  
 }

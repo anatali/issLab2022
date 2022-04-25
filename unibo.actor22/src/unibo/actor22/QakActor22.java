@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import it.unibo.kactor.*;
 import kotlin.Unit;
 import kotlin.coroutines.Continuation;
+import unibo.actor22.annotations.Context22;
+import unibo.actor22comm.SystemData;
 import unibo.actor22comm.events.EventMsgHandler;
 import unibo.actor22comm.proxy.ProxyAsClient;
 import unibo.actor22comm.utils.ColorsOut;
@@ -13,7 +15,7 @@ import unibo.actor22comm.utils.CommUtils;
 public abstract class QakActor22 extends ActorBasic{
 
 protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
-
+String ctx22Name ;
 	public QakActor22(@NotNull String name ) {      
 		super(name, QakContext.Companion.createScope(), false, true, false, 50);
         if( Qak22Context.getActor(name) == null ) {
@@ -23,8 +25,22 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
         else ColorsOut.outerr("QakActor22 | WARNING: an actor with name " + name + " already exists");	
 	}
 
-
+	public void setContext22Name( String ctx) {
+		ctx22Name = ctx;
+	}
+	public String getContext22Name( ) {
+		return ctx22Name ;
+	}
     
+//	protected void handleMsg(IApplMessage msg) {
+//		if( msg.isDispatch() && msg.msgId().equals(SystemData.activateActorCmd) ) {
+//			//forward( SystemData.activateActor("main", "a1") );
+//			ColorsOut.out( getName()  + " | ACTIVATED " , ColorsOut.CYAN);
+//		}else {
+//			//ColorsOut.outerr("QakActor22 | activation message error for" + getName() );
+//			elabMsg(msg);
+//		}	
+//	}
 	protected abstract void handleMsg(IApplMessage msg);
 	
 	@Override
@@ -58,7 +74,7 @@ protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
 		String destActorName = msg.msgReceiver();
 		//Occorre un proxy al contesto
 		ProxyAsClient pxy    = Qak22Context.getProxy(destActorName);
-		//ColorsOut.out("QakActor22 | sendAMsg " + msg + " using:" + pxy , ColorsOut.GREEN);
+		//ColorsOut.outappl("QakActor22 | sendMsgToRemoteActor " + msg + " using:" + pxy , ColorsOut.GREEN);
 		if( pxy == null ) {
 			ColorsOut.outerr( getName() + " sendMsgToRemoteActor: " + msg  + " Perhaps no setActorAsRemote for " + destActorName );
 			return;

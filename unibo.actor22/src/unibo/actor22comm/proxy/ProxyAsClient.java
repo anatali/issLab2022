@@ -96,7 +96,7 @@ protected ProtocolType protocol ;
 		new Thread() {
 			public void run() {
 				try {
-					ColorsOut.out(name + " |  activateReceiver STARTED on conn=" + conn  );
+					//ColorsOut.out(name + " |  activateReceiver STARTED on conn=" + conn, ColorsOut.BLUE  );
 					while(true) {
 						String msgStr    = conn.receiveMsg();
 						IApplMessage msg = new ApplMessage(msgStr);

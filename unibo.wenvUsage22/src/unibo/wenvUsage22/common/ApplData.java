@@ -5,10 +5,14 @@ import unibo.actor22comm.utils.CommUtils;
 
 public class ApplData {
 
+	public static final String resumeCmd     = "resume";
 	public static final String startSysCmdId = "activate";
 	public static final String haltSysCmdId  = "halt";
 	
 	//Generali, usati dalla classe-base QakActor22Fsm
+	public static final IApplMessage resumeCmd(String sender, String receiver)   {
+		return CommUtils.buildDispatch(sender, resumeCmd, "do", receiver );
+	}
 	public static final IApplMessage startSysCmd(String sender, String receiver)   {
 		return CommUtils.buildDispatch(sender, startSysCmdId, "do", receiver );
 	}
@@ -21,7 +25,7 @@ public class ApplData {
 	public static final String robotName      = "robot";
 	public static final String controllerName = "robotCtrl";
 	
-	public static IApplMessage startEv  = CommUtils.buildEvent("main", "maincmd", "activate" );
+	public static IApplMessage startEv  = CommUtils.buildEvent("main", "maincmd", activateId);
 
 	/*
 	 * MESSAGGI in cril
@@ -45,7 +49,10 @@ public class ApplData {
 	public static final IApplMessage moveCmd(String sender, String receiver, String payload)   {
 		return CommUtils.buildDispatch(sender, moveCmdId, payload, receiver );
 	}
- 
+	public static final IApplMessage infoRequest(String sender, String receiver, String payload)   {
+		return CommUtils.buildDispatch(sender, moveCmdId, payload, receiver );
+	}
+
 	//Per WEnv VirtualRobot
 	public final static String robotCmdId = "move";
 	public final static String aril_w = "moveForward(300)";

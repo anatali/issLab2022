@@ -6,23 +6,38 @@ import it.unibo.kactor.IApplMessage;
 import unibo.actor22comm.interfaces.IObserver;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22.Qak22Util;
+import unibo.actor22comm.SystemTimer;
 import unibo.actor22comm.SystemData;
 
 public class WsConnSysObserver implements IObserver{
-	private String ownerActor = null;
-	
+	protected String ownerActor = null;
+	protected SystemTimer timer;
+	protected String actionDuration;
+		
 	public WsConnSysObserver( String ownerActor ) {
 		this.ownerActor = ownerActor;
+		timer = new SystemTimer();
 	}
+	
+	public void startMoveTime() {
+		timer.startTime();
+	}
+
 	@Override
 	public void update(Observable source, Object data) {
-//		ColorsOut.out("WsConnSysObserver update/2 receives:" + data);
+		timer.stopTime();	
+		actionDuration = ""+timer.getDuration();
+ 		ColorsOut.out("WsConnSysObserver update/2 receives:" + data + " duration=" + actionDuration, ColorsOut.BLUE);
 		update( data.toString() );
 		
 	}
 	@Override
 	public void update(String data) {
-		ColorsOut.out("WsConnSysObserver update receives:" + data, ColorsOut.BLUE);
+//		timer.stopTime();	
+//		actionDuration = ""+timer.getDuration();
+		ColorsOut.out("WsConnSysObserver update receives:" + data + actionDuration, ColorsOut.BLUE);
+		//data sono definiti a livello applicativo. Qui non sappiamo dare semantica
+		//String duration = ""+timer.getDuration();
 		if( ownerActor == null ) {
 			IApplMessage ev = Qak22Util.buildEvent( "wsconn", SystemData.wsEventId, data  );
 			Qak22Util.emitEvent( ev );

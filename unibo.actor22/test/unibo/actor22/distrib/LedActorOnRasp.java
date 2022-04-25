@@ -28,14 +28,15 @@ private EnablerContextForActors ctx;
 		DomainSystemConfig.tracing      = false;					
 		CommSystemConfig.tracing        = false;
   
-		ctx = new EnablerContextForActors( "ctx",ApplData.ctxPort,ApplData.protocol);
+		//ctx = new 
+				EnablerContextForActors.create( "ctx",ApplData.ctxPort,ApplData.protocol);
 		new LedActor( ApplData.ledName );
  		//Registrazione dei componenti presso il contesto: NO MORE ... 
   	}
 	
 	protected void execute() {
 		ColorsOut.outappl("LedActorOnRasp | execute", ColorsOut.MAGENTA);
-		ctx.activate();
+		//ctx.activate();
 	} 
 
 	public void terminate() {

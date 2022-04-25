@@ -14,6 +14,7 @@ public  class Qak22Util   {
  
     public static void emitEvent( IApplMessage msg ){
     	if( msg.isEvent() ) {
+    		if( Qak22Context.getActor(EventMsgHandler.myName) == null )  new EventMsgHandler(); 
     		sendAMsg( msg, EventMsgHandler.myName);
     	}else {
     		ColorsOut.outerr("Qak22Util | emitEvent: not an event:"+ msg); 
