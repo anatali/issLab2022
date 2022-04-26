@@ -34,7 +34,7 @@ Un attore che ha due compiti principali:
 
 #. :blue:`registrazione`: tenere memoria del fatto che un attore  si è dichiarato interessato 
    alla percezione di un evento ``Ev``. Per questa funzione, *EventMsgHandler* introduce una mappa
-   che associa il nome di un attore-observer al'id delle'evento che desidera osservare.
+   che associa il nome di un attore-observer al'id dell'evento che desidera osservare.
 #. :blue:`aggiornamento`: inserire l'evento ``Ev`` nella coda di tutti gli attori interessati 
    quando un attore emette l'evento ``Ev``. Per questa funzione,  *EventMsgHandler*
    usa l'operazione :ref:`sendAMsg di Qak22Util`.
@@ -131,129 +131,7 @@ che a sua volta esegue il suo compito di :ref:`aggiornamento<EventMsgHandler upd
   }
 
 
--------------------------------
-Esempio: ``SonarActor22``
--------------------------------
 
-L'attore ``SonarActor22`` NON riusa gli oggetti del dominio ma ridefinisce il componente come 
-proattivo e reattivo, in modo simulato o meno.
-
-In quanto ente proattivo, il ``SonarActor22`` emette eventi di distanza-misurata della forma
-
-  ``msg(distance,event,sonar,observer,D,N)``
-
-
-.. code:: Java
-
-  public class SonarActor22 extends QakActor22{
-  private IDistance curVal ;	
-
-    protected void setup() {
-      if( ! DomainSystemConfig.simulation )  { ... }
-    else curVal = new Distance(90);		
-    }
-  	@Override
-    protected void handleMsg(IApplMessage msg) {
-      if( msg.isRequest() ) elabRequest(msg);
-      else elabCmd(msg);
-	  }
-
-+++++++++++++++++++++++++++++++++
-SonarActor22: Parte reattiva    
-+++++++++++++++++++++++++++++++++
-
-La parte reattiva consiste nella eleborazione dei comandi di attivazione/deattivazione e di richieste
-sul valore corrente della distanza.
-
-.. code:: Java
-
-    protected void elabCmd(IApplMessage msg) {
-    String msgCmd = msg.msgContent();
-      switch( msgCmd ) {
-      case ApplData.cmdActivate  : sonarActivate();  break;
-      case ApplData.cmdDectivate : sonarDeactivate();break;
-      default: ColorsOut.outerr(getName()  + " | unknown " + msgCmd);
-    }
-
-    protected void elabRequest(IApplMessage msg) { ... }
-
-    protected void sonarActivate() {
-      if( DomainSystemConfig.simulation ) sonarStepAsMock();
-      else sonarStepAsConcrete();
-    }    
-    ...
-
-+++++++++++++++++++++++++++++++++
-SonarActor22: Parte proattiva    
-+++++++++++++++++++++++++++++++++   
-
-La parte proattiva  consiste nella continua rilevazione della distanza e nella emissione di eventi.
-
-.. code:: Java
-
-    protected void sonarStepAsMock() {		
-      int v = curVal.getVal() - delta;
-      updateDistance( v );		
-      if( v > 0 && ! stopped) {
-        CommUtils.delay( DomainSystemConfig.sonarDelay );
-        autoMsg(ApplData.activateSonar);   
-    }
-
-    protected void sonarStepAsConcrete() { ... }
-
-
-+++++++++++++++++++++++++++++++++
-Emissione di eventi    
-+++++++++++++++++++++++++++++++++ 
-
-Il metodo ``updateDistance`` provvede ad emettere eventi che rendoo osservabile la distanza rilevata.
-
-.. code:: Java
-
-  protected void updateDistance( int d ) {
-    curVal = new Distance( d );
-    if( RadarSystemConfig.sonarObservable ) {
-      IApplMessage distanceEvent = 
-           Qak22Util.buildEvent(getName(), ApplData.evDistance, ""+d );
-      emit(distanceEvent);
-    }	
-	}	
- 
-+++++++++++++++++++++++++++++++++
-Configurazione lato Raspberry   
-+++++++++++++++++++++++++++++++++ 
-
-.. code:: Java
-
-  @ActorLocal(
-      name =      {"led", "sonar"  }, 
-      implement = { LedActor.class,  SonarActor22.class }
-  )
-  @ActorRemote(name =   {"controller" },    
-      host=    { ApplData.pcAddr }, 
-      port=    { ""+ApplData.ctxPcPort }, 
-      protocol={ "TCP"   }
-  )
-  public class DeviceActorsOnRasp {
-    ...
-  }
-
-
-+++++++++++++++++++++++++++++++++
-Configurazione lato PC   
-+++++++++++++++++++++++++++++++++ 
-
-.. code:: Java
-
-  @ActorLocal(name =     {"controller" }, 
-            implement = {unibo.radarSystem22.actors.ControllerActor.class })
-  @ActorRemote(name =   {"led","sonar"}, 
-              host=    {ApplData.raspAddr, ApplData.raspAddr}, 
-              port=    { ""+ApplData.ctxRaspPort, ""+ApplData.ctxRaspPort}, 
-              protocol={ "TCP" , "TCP" })
-  public class ControllerActorOnPc {
-    ...
-  }
 
 
 L'esempio di una sorgente di eventi si trova in :ref:`Il Sonar come attore che emette eventi`.

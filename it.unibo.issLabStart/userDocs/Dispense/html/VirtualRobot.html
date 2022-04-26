@@ -374,9 +374,41 @@ attraverso un browser.</p>
 <section id="interaction2021-per-http-e-ws">
 <h2>Interaction2021 per HTTP e WS<a class="headerlink" href="#interaction2021-per-http-e-ws" title="Permalink to this headline">¶</a></h2>
 <p>Il progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code> introduce le implementazioni di <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">L’interfaccia Interaction2021</span></a> per HTTP  (<code class="docutils literal notranslate"><span class="pre">HttpConnection</span></code>) e
-per WebSocket (<code class="docutils literal notranslate"><span class="pre">WsConnection</span></code>) estendendo l’insieme dei <a class="reference internal" href="RadarSystemAnalisi.html#tipi-di-protocollo"><span class="std std-ref">Tipi di protocollo</span></a> che possiamo usare per
+per WebSocket (<a class="reference internal" href="#wsconnection"><span class="std std-ref">WsConnection</span></a>) estendendo l’insieme dei <a class="reference internal" href="RadarSystemAnalisi.html#tipi-di-protocollo"><span class="std std-ref">Tipi di protocollo</span></a> che possiamo usare per
 realizzare la nostra <span class="blue">astrazione  connessione</span>.</p>
 <p>Ciò consente di riscrivere le applicazioni di esempio precedenti in modo più semplice e compatto.</p>
+<section id="httpconnection">
+<h3>HttpConnection<a class="headerlink" href="#httpconnection" title="Permalink to this headline">¶</a></h3>
+<p>La implementazione di <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">L’interfaccia Interaction2021</span></a> per HTTP non pone particolari problemi: si tratta di utilizzare una libreria
+che fornisce un HTTP-client. Noi abbiamo usato <a class="reference external" href="https://square.github.io/okhttp/">okhttp3</a>, adatta anche per Kotlin. La semplicità consiste nel fatto
+che si tratta di realizzare schemi request-response sincroni.</p>
+</section>
+<section id="wsconnection">
+<h3>WsConnection<a class="headerlink" href="#wsconnection" title="Permalink to this headline">¶</a></h3>
+<p>La implementazione di <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">L’interfaccia Interaction2021</span></a> per WS (WebSocket) è ancora basata su <code class="docutils literal notranslate"><span class="pre">okhttp3</span></code> (si veda <a class="reference external" href="https://square.github.io/okhttp/4.x/okhttp/okhttp3/-web-socket/">okhttp3Ws</a>)
+ma modifica la struttura del codice (ne abbiamo parlato in <a class="reference internal" href="#clientnaiveusingws"><span class="std std-ref">ClientNaiveUsingWs</span></a>)
+in quanto le interazioni sono asincrone.</p>
+<p>Su una WS-connection possono cioè giungere informazioni
+che sono risposte a messaggi inviati in precedenza o anche di altro tipo (ad esempio dati di un sensore, allarmi, etc.).</p>
+<p>Per meglio gestire queste informazioni in ingresso,
+questo tipo di connessione è stato realizzato come un POJO <strong>osservabile</strong> (che implementa <a class="reference internal" href="SonarObservable.html#iobservable"><span class="std std-ref">IObservable</span></a>),
+in modo da permettere al livello
+applicativo di gestire i messaggi in arrivo da parte di ossservatori che implementano <a class="reference internal" href="SonarObservable.html#iobserver"><span class="std std-ref">IObserver</span></a>.</p>
+<section id="wsconnsysobserver">
+<h4>WsConnSysObserver<a class="headerlink" href="#wsconnsysobserver" title="Permalink to this headline">¶</a></h4>
+<p>Viene fornito un  osservatore ‘di sistema’ definito dalla classe <code class="docutils literal notranslate"><span class="pre">WsConnSysObserver</span></code>, il quale:</p>
+<ul class="simple">
+<li><p>riceve al momento della costruzione il nome di un attore (detto <strong>owner</strong>) che può assumere il valore <code class="docutils literal notranslate"><span class="pre">null</span></code></p></li>
+<li><p>implementa <a class="reference internal" href="SonarObservable.html#iobserver"><span class="std std-ref">IObserver</span></a> e funziona  come osservatore dei <a class="reference internal" href="#messaggi-di-stato"><span class="std std-ref">Messaggi di stato</span></a> ricevuti sulla WS</p></li>
+<li><p>per ogni messaggio ricevuto (osservato) sulla WS, crea un messaggio <a class="reference internal" href="ContestiContenitori.html#iapplmessage"><span class="std std-ref">IApplMessage</span></a> che ha come
+msgId il valore <code class="docutils literal notranslate"><span class="pre">&quot;wsEvent&quot;</span></code> e come payload il messaggio osservato. Questo messaggio è un <span class="blue">evento</span>
+(si veda <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a>) se  <code class="docutils literal notranslate"><span class="pre">owner==</span> <span class="pre">null</span></code> oppure  un <span class="blue">dispatch</span> (si veda <a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi"><span class="std std-ref">Struttura dei messaggi applicativi</span></a>)
+con <strong>owner</strong> come destinatario, se  <code class="docutils literal notranslate"><span class="pre">owner!=</span> <span class="pre">null</span></code>.</p></li>
+</ul>
+<p>In altre parole:</p>
+<p><span class="remark">WsConnSysObserver trasforma informazioni in eventi o dispatch</span></p>
+</section>
+</section>
 <section id="esempi-di-uso-di-httpconnection-e-wsconnection">
 <h3>Esempi di uso di HttpConnection e WsConnection<a class="headerlink" href="#esempi-di-uso-di-httpconnection-e-wsconnection" title="Permalink to this headline">¶</a></h3>
 <p>Il progetto <code class="docutils literal notranslate"><span class="pre">unibo.wenvUsage22</span></code> introduce esempi di uso di questi nuovi tipi di connessione per realizzare
@@ -393,7 +425,7 @@ su una connessione <code class="docutils literal notranslate"><span class="pre">
 </tr>
 <tr class="row-even"><td><p>ClientUsingWs</p></td>
 <td><p>Esegue mosse di base del robot inviando comandi scritti in <a class="reference internal" href="#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a>
-su una connessione <code class="docutils literal notranslate"><span class="pre">WsConnection</span></code>.</p></td>
+su una connessione <code class="docutils literal notranslate"><span class="pre">WsConnection</span></code>. Funge anche da observer dei <a class="reference internal" href="#messaggi-di-stato"><span class="std std-ref">Messaggi di stato</span></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>ClientUsingWsHttp</p></td>
 <td><p>Interagisce con WEnv utilizzando sia una connessione <code class="docutils literal notranslate"><span class="pre">HttpConnection</span></code> sia una connessione <code class="docutils literal notranslate"><span class="pre">WsConnection</span></code>,
@@ -416,28 +448,6 @@ e poi <code class="docutils literal notranslate"><span class="pre">halt</span></
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">{&quot;endmove&quot;:false,&quot;move&quot;:&quot;interrupted&quot;}</span></code></p>
 </div></blockquote>
-</section>
-</section>
-<section id="wsconnectionforactors">
-<h2>WsConnectionForActors<a class="headerlink" href="#wsconnectionforactors" title="Permalink to this headline">¶</a></h2>
-<p>La classe <code class="docutils literal notranslate"><span class="pre">WsConnectionForActors</span></code> realizza una versione di <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> per WS specializzata
-per operare in un abiente ad <a class="reference internal" href="Attori.html#attori"><span class="std std-ref">Attori</span></a>.</p>
-<p>Questa versione riceve in ingresso al suo costruttore una String che può essere <strong>null</strong>
-o il nome di un attore (detto <strong>owner</strong>).</p>
-<section id="wsconnsysobserver">
-<h3>WsConnSysObserver<a class="headerlink" href="#wsconnsysobserver" title="Permalink to this headline">¶</a></h3>
-<p>Al momento della creazione, la classe <code class="docutils literal notranslate"><span class="pre">WsConnectionForActors</span></code> associa all’istanza
-un osservatore definito dalla classe <code class="docutils literal notranslate"><span class="pre">WsConnSysObserver</span></code>, il quale:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">implements</span> <span class="pre">IObserver</span></code>, funzionando come osservatore dei messaggi (di stato) ricevuti sulla WS</p></li>
-<li><p>per ogni messaggio ricevuto (osservato) sulla WS, crea un messaggio <a class="reference internal" href="ContestiContenitori.html#iapplmessage"><span class="std std-ref">IApplMessage</span></a> che ha come
-msgId il valore <code class="docutils literal notranslate"><span class="pre">&quot;wsEvent&quot;</span></code> e come payload il messaggio osservato. Questo messaggio è un <span class="blue">evento</span>
-(si veda <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a>)
-se  <code class="docutils literal notranslate"><span class="pre">owner==</span> <span class="pre">null</span></code> o  un <span class="blue">dispatch</span> (si veda <a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi"><span class="std std-ref">Struttura dei messaggi applicativi</span></a>)
-con <strong>owner</strong> come destinatario, se  <code class="docutils literal notranslate"><span class="pre">owner!=</span> <span class="pre">null</span></code>.</p></li>
-</ul>
-<p>In altre parole:</p>
-<p><span class="remark">WsConnectionForActors trasforma informazioni in eventi o dispatch</span></p>
 </section>
 </section>
 <section id="note-di-implementazione">
@@ -635,12 +645,13 @@ come risulta nella spefifica del file <code class="docutils literal notranslate"
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#naivegui">NaiveGui</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#interaction2021-per-http-e-ws">Interaction2021 per HTTP e WS</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#esempi-di-uso-di-httpconnection-e-wsconnection">Esempi di uso di HttpConnection e WsConnection</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#casi-di-interazione">Casi di interazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#httpconnection">HttpConnection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wsconnection">WsConnection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wsconnsysobserver">WsConnSysObserver</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#wsconnectionforactors">WsConnectionForActors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#wsconnsysobserver">WsConnSysObserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#esempi-di-uso-di-httpconnection-e-wsconnection">Esempi di uso di HttpConnection e WsConnection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#casi-di-interazione">Casi di interazione</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#note-di-implementazione">Note di implementazione</a><ul>
@@ -660,6 +671,8 @@ come risulta nella spefifica del file <code class="docutils literal notranslate"
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="UsingWEnv.html">Using WEnv</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
 </ul>
 
 <div class="relations">

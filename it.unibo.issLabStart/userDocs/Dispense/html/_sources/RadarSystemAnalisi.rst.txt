@@ -229,7 +229,7 @@ La classe ``ProtocolType`` enumera i protocolli cui potremo fare riferimento in 
 
 .. code:: java
 
-  public enum ProtocolType {  tcp, udp, coap, mqtt, http, bluetooth  }
+  public enum ProtocolType {  tcp, udp, coap, mqtt, http, ws, serial, bluetooth  }
 
 Attualmente, dovremmo avere conoscenze su come usare protocolli quali TCP/UDP e HTTP
 ma siamo forse meno esperti nell'uso di supporti per altri.

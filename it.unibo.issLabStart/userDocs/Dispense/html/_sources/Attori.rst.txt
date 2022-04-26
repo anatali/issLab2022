@@ -574,7 +574,7 @@ di distribuire gli attori in nodi diversi.
 Un sistema distribuito è di norma formato da due o più contesti, ciascuno dei quali:
 
 - opera su un nodo di elaborazione associato a un indirizzo IP;
-- uitlizza almeno un protocollo di comunicazione (tra cui sempre TCP) per 
+- utilizza almeno un protocollo di comunicazione (tra cui sempre TCP) per 
   ricevere messaggi su una data porta di ingresso (che potrebbe assumere la forma di un URI,
   come anticipato in :ref:`entryPort`);
 - conosce tutti gli altri contesti del sistema e la dislocazione di ogni attore nei diversi contesti, 
@@ -593,7 +593,8 @@ QakContext: setActorAsRemote
 
 In questa fase, la conoscenza sulla dislocazione degli attori non locali viene 'iniettata' in un contesto 
 dal livello applicativo, attraverso il metodo ``setActorAsRemote``.
-Vedremo in seguito (ad esempio, in :doc:`Annotazioni`) forme più evolute di dichiarazione.
+Vedremo in seguito (in :ref:`Configurare con Annotation`
+e in :ref:`Actors22`) forme più evolute di dichiarazione basate su :doc:`Annotazioni`.
 
 
 .. code::  java
@@ -622,7 +623,7 @@ un proxy per il nodo (contesto) remoto indicato dal parametro ``host`` .
 :remark:`Viene creato un solo proxy per ogni contesto remoto`
 
 +++++++++++++++++++++++++++++++++++++++++
-Package ``unibo.actor22Comm``
+Package unibo.actor22Comm
 +++++++++++++++++++++++++++++++++++++++++
 
 In questo package inseriamo la realizzazione una nuova versione del concetto di contesto 
