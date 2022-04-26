@@ -61,9 +61,7 @@ protected String initialState = null;
 		  doDeclareState(m,stateName,nextStates,msgIds );		
 	}
 	
-	protected boolean guardForTransition(String stateName, String transName ) {
-		return false;
-	}
+
 	
 	protected void doDeclareState(Method curMethod, String stateName, Vector<String> nextStates, Vector<String> msgIds) {
 		  declareState( stateName, new StateActionFun() {

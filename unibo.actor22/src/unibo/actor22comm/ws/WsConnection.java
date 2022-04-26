@@ -49,7 +49,8 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
 //Since inherits from IConnInteraction
 	@Override
 	public void sendALine(String msg) throws Exception {
-         myWs.send(msg);
+		observers.forEach( v -> ((WsConnSysObserver)v).startMoveTime() );
+        myWs.send(msg);
 	}
 	@Override
 	public void sendALine(String msg, boolean isAnswer) throws Exception {
@@ -65,13 +66,11 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
 		// TODO Auto-generated method stub		
 	}
 	
-	
-	
-	
 //Since inherits from Interaction2021 firstpart
 	@Override
 	public void forward( String msg) throws Exception {
-        myWs.send(msg);
+        //myWs.send(msg);
+		sendALine(msg);
  	}
 
 	@Override
@@ -81,7 +80,8 @@ public class WsConnection extends WebSocketListener implements Interaction2021, 
 
 	@Override
 	public void reply(String msgJson) throws Exception {
-		myWs.send(msgJson);
+		//myWs.send(msgJson); //non faccio sendALine perchè non interessa la durata
+		sendALine(msgJson);
 	}
 
 	@Override

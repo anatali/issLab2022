@@ -7,12 +7,7 @@ import unibo.actor22.annotations.State;
 import unibo.actor22.annotations.Transition;
 import unibo.actor22comm.SystemData;
 import unibo.actor22comm.interfaces.Interaction2021;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommUtils;
-import unibo.actor22comm.ws.WsConnSysObserver;
 import unibo.actor22comm.ws.WsConnection;
- 
-import unibo.wenvUsage22.common.ApplData;
 import unibo.wenvUsage22.common.VRobotMoves;
 
 public class BoundaryWalkerAnnot extends QakActor22FsmAnnot  {
@@ -22,7 +17,6 @@ public class BoundaryWalkerAnnot extends QakActor22FsmAnnot  {
 	public BoundaryWalkerAnnot(String name) {
 		super(name);
  	}
-
 	
 	@State( name = "robotStart", initial=true)
 	@Transition( state = "robotMoving" ,  msgId = SystemData.endMoveOkId )
@@ -49,11 +43,11 @@ public class BoundaryWalkerAnnot extends QakActor22FsmAnnot  {
  	@Transition( state = "endWork" ,     msgId = SystemData.haltSysCmdId)
 	protected void wallDetected( IApplMessage msg ) {
 		outInfo("ncorner="+ ncorner + " " + msg);	
-		VRobotMoves.turnLeft(getName(), conn);
 		ncorner++;
  		if( ncorner == 4 ) {
  			autoMsg(SystemData.haltSysCmd(getName(),getName() ));
-  		}
+  		}else VRobotMoves.turnLeft(getName(), conn);
+
  	}
  	
  	@State( name = "endWork" )
