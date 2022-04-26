@@ -11,5 +11,4 @@ public @interface Transition {
 	String name() default "t0";
 	String state()  ;
 	String msgId()  ;
-	//String guard() default "";  //nome di una funzione che restituisce boolean
 }

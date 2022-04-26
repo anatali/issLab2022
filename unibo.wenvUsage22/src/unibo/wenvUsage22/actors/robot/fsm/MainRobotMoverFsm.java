@@ -1,4 +1,4 @@
-package unibo.wenvUsage22.actors.robot;
+package unibo.wenvUsage22.actors.robot.fsm;
 
 import unibo.actor22.Qak22Context;
 import unibo.actor22.Qak22Util;

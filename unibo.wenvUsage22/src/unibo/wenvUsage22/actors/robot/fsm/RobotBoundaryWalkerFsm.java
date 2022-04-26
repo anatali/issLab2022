@@ -1,7 +1,7 @@
-package unibo.wenvUsage22.actors.robot;
+package unibo.wenvUsage22.actors.robot.fsm;
 import org.json.JSONObject;
 import it.unibo.kactor.IApplMessage;
-import unibo.actor22.QakActor22Fsm;
+import unibo.actor22.QakActor22FsmAnnot;
 import unibo.actor22comm.interfaces.Interaction2021;
 import unibo.actor22comm.interfaces.StateActionFun;
 import unibo.actor22comm.utils.ColorsOut;
@@ -10,7 +10,7 @@ import unibo.actor22comm.ws.WsConnection;
 import unibo.wenvUsage22.common.ApplData;
 import unibo.wenvUsage22.common.VRobotMoves;
 
-public  class RobotBoundaryWalkerFsm extends QakActor22Fsm {  
+public  class RobotBoundaryWalkerFsm extends QakActor22FsmAnnot {  
 	private Interaction2021 conn;
 	
 	public RobotBoundaryWalkerFsm(String name) {

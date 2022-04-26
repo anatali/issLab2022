@@ -56,18 +56,6 @@ protected String initialState = null;
 			  nextStates.add(t.state());
 			  msgIds.add(t.msgId());
 		  }
-		  //Farlo staticamente NO
-		  //Nextstate = controllo della guardia
-//		  for ( TransitionGuarded t : tg ) {
-//			  ColorsOut.outappl("TransitionGuarded "+ t.name() + " for " + t.msgId()  , ColorsOut.CYAN);
-//			  if( guardForTransition(stateName, t.name() ) ) {
-//				  nextStates.add(t.stateOk());
-//				  msgIds.add(t.msgId());				  
-//			  }else {
-//				  nextStates.add(t.stateKo());
-//				  msgIds.add(t.msgId());				  				  
-//			  }
-//		  }
 // 		  ColorsOut.outappl("nextStates "+ nextStates.size() , ColorsOut.CYAN);
 //		  ColorsOut.outappl("msgIds "+ msgIds.size() , ColorsOut.CYAN);
 		  doDeclareState(m,stateName,nextStates,msgIds );		

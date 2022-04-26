@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>RobotCleaner &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Actor22Plus" href="Actor22Plus.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="robotcleaner">
+<h1>RobotCleaner<a class="headerlink" href="#robotcleaner" title="Permalink to this headline">¶</a></h1>
+<section id="robotcleaner-requisiti">
+<h2>RobotCleaner: requisiti<a class="headerlink" href="#robotcleaner-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Muovere il <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a> in modo da coprire tutta la superficie di una stanza vuota.</p>
+</section>
+<section id="robotcleaner-analisi-dei-requisiti">
+<h2>RobotCleaner: analisi dei requisiti<a class="headerlink" href="#robotcleaner-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h2>
+<section id="analisi-del-testo">
+<h3>Analisi del testo<a class="headerlink" href="#analisi-del-testo" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Il VirtualRobot (detto brevemente robot) è quello introdotto in <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a>.</p></li>
+<li><p>La stanza ha pavimento piano, forma rettangolare ed è delimitata da muri.</p></li>
+<li><p>Il robot parte dalla <strong>HOME</strong>, definita come l’angolo formato dai muri denominati <code class="docutils literal notranslate"><span class="pre">wallUp</span></code> e  <code class="docutils literal notranslate"><span class="pre">wallLeft</span></code>.</p></li>
+</ul>
+<p>I requisiti possono essere meglio specificati come segue:</p>
+</section>
+<section id="requisiti-funzionali">
+<h3>Requisiti funzionali<a class="headerlink" href="#requisiti-funzionali" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><em>Copertura</em>: il robot deve seguire una strategia di movimento che garantisca di
+esplorare la superficie in modo completo.</p></li>
+<li><p><em>VerificaLavoro</em>: deve essere possibile controllare in modo automatico che la copertura sia stata realizzata.</p></li>
+<li><p><em>TipoDelRobot</em>: il committente ha specificato di essere interessato a un sistema che
+controlla il <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a>, ma ha anticipato che in futuro vorrà usare un robot reale.
+Al momento però, non siamo obbligati ad affrontare questo requisito.</p></li>
+</ol>
+</section>
+<section id="requisiti-non-funzionali">
+<h3>Requisiti non funzionali<a class="headerlink" href="#requisiti-non-funzionali" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p><em>Proattività</em>: il robot deve muoversi in modo autonomo fino a compimento del lavoro.</p></li>
+<li><p><em>Reattività</em>: il committente ha prospettato la possibilità che il robot sospenda il lavoro
+in caso di allarmi o altre condizioni (comandi di un operatore, temperatura ambiente elevata, etc.).
+Al momento però, non siamo obbligati ad affrontare requisiti di questo tipo.</p></li>
+<li><p><em>Sicurezza</em>: non vi sono requisiti specifici, se non l’assunzione che vi sia un unico programma di controllo.</p></li>
+</ol>
+</section>
+</section>
+<section id="robotcleaner-analisi-del-problema">
+<h2>RobotCleaner: analisi del problema<a class="headerlink" href="#robotcleaner-analisi-del-problema" title="Permalink to this headline">¶</a></h2>
+<p>Come analisti, poniamo in evidenza i seguenti punti.</p>
+<section id="il-cuore-del-problema">
+<h3>Il cuore del problema<a class="headerlink" href="#il-cuore-del-problema" title="Permalink to this headline">¶</a></h3>
+<p>Il problema consiste nel definire un controllore capace di realizzare una strategia di comando sistematica
+che permetta di soddisfare i requisiti di <em>Copertura</em> e di  <em>VerificaLavoro</em>.</p>
+</section>
+<section id="strategia-di-movimento">
+<h3>Strategia di movimento<a class="headerlink" href="#strategia-di-movimento" title="Permalink to this headline">¶</a></h3>
+<p>Si possono pensare diverse possibili strategie di movimento sistematico che permettono la verifica.
+Ad esempio:</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/columnMove.PNG"><img alt="_images/columnMove.PNG" class="align-center" src="_images/columnMove.PNG" style="width: 80%;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/spiralmove0.PNG"><img alt="_images/spiralmove0.PNG" class="align-center" src="_images/spiralmove0.PNG" style="width: 80%;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/OndeConcentriche.PNG"><img alt="_images/OndeConcentriche.PNG" class="align-center" src="_images/OndeConcentriche.PNG" style="width: 80%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="movimento-per-colonne">
+<h4>Movimento per colonne<a class="headerlink" href="#movimento-per-colonne" title="Permalink to this headline">¶</a></h4>
+<p>Nel caso della figura di sinistra, il robot lavora ‘per colonne’. In particolare,
+procede lungo il muro <code class="docutils literal notranslate"><span class="pre">wallLeft</span></code>  fino a incontrare <code class="docutils literal notranslate"><span class="pre">wallDown</span></code>. Qui gira a sinistra,
+fa un <span class="blue">passo laterale</span> di lunghezza adeguaata, poi gira di nuovo  a sinistra e procede diritto verso il
+muro <code class="docutils literal notranslate"><span class="pre">wallUp</span></code>; quando lo incontra gira a destra fa un <span class="blue">passo laterale</span>, rigira verso destra e di nuovo
+procede verso <code class="docutils literal notranslate"><span class="pre">wallDown</span></code>.</p>
+<p><em>CompletamentoLavoro</em>:  durante un <em>passo laterale</em>, il robot incontrerà di sicuro <code class="docutils literal notranslate"><span class="pre">wallRight</span></code>:
+come ultima mossa procede lungo
+tale muro fino a che non incontra di nuovo un muro (<code class="docutils literal notranslate"><span class="pre">wallUp</span></code> o  <code class="docutils literal notranslate"><span class="pre">wallDown</span></code>) e qui si ferma,
+considerando terminato il lavoro.</p>
+<p><em>VerificaLavoro</em>:  consiste nel tenere traccia del numero di passi laterali compiuti lungo il muro
+<code class="docutils literal notranslate"><span class="pre">wallDown</span></code>. Se ogni passo copre una distanza  DR pari alla lunghezza del robot, il numero totale
+dei passi da compiere è <code class="docutils literal notranslate"><span class="pre">DWallDown/DR</span> <span class="pre">+</span> <span class="pre">1</span></code>.</p>
+</section>
+<section id="movimento-a-spirale">
+<h4>Movimento a spirale<a class="headerlink" href="#movimento-a-spirale" title="Permalink to this headline">¶</a></h4>
+<p>Nel caso della figura di centro, il robot procede coprendo aree quadrate di lato <code class="docutils literal notranslate"><span class="pre">DR*N</span></code>, con <code class="docutils literal notranslate"><span class="pre">N=1,2,..,M</span></code>.
+Questa strategia risulta facile da realizzare per stanza quadrate o quasi, ma è più complicata per
+stanza rettangolari con lati di lunghezza diversa tra loro.</p>
+</section>
+<section id="movimento-a-onde">
+<h4>Movimento a onde<a class="headerlink" href="#movimento-a-onde" title="Permalink to this headline">¶</a></h4>
+<p>Nel caso della figura di destra, il robot segue i bordi della stanza, riducendo via via il lati della stanza di
+DR, lavrando in una ‘stanza virtuale’ di lati <code class="docutils literal notranslate"><span class="pre">DWallDown</span> <span class="pre">-</span> <span class="pre">N*DR</span></code> e <code class="docutils literal notranslate"><span class="pre">DWallLeft</span> <span class="pre">-</span> <span class="pre">N*DR</span></code>, con <code class="docutils literal notranslate"><span class="pre">N=1,2,..,M</span></code>.</p>
+<p><em>CompletamentoLavoro</em>:   quando la stanza virtuale perde una dimensione, il robot deve coprire quallo che rimane.</p>
+<p><em>VerificaLavoro</em>: se la parte che rimane ha lato <code class="docutils literal notranslate"><span class="pre">L</span> <span class="pre">&gt;</span> <span class="pre">DR</span></code>, può risultare complicato</p>
+<p><span class="remark">come analisti, riteniamo adeguata la strategia di lavoro per colonne</span></p>
+</section>
+</section>
+<section id="il-passo-del-robot">
+<h3>Il passo del robot<a class="headerlink" href="#il-passo-del-robot" title="Permalink to this headline">¶</a></h3>
+<p>In ogni caso, osserviamo che tutte le strategie di lavoro esaminate si basano su una stessa ipotesi:</p>
+<p><span class="remark">il robot si muove per passi di lunghezza DR</span></p>
+<p>La lunghezza <strong>DR</strong> può essere defiita come:</p>
+<p><span class="remark">DR=diametro del cerchio di raggio minimo che circoscrive il robot</span></p>
+<section id="il-robot-come-unita-di-misura">
+<h4>Il robot come unità di misura<a class="headerlink" href="#il-robot-come-unita-di-misura" title="Permalink to this headline">¶</a></h4>
+<p>In pratica, il robot (cioè <strong>DR</strong>) diventa la <strong>unità di misura per le distanze</strong>.
+La stanza stessa può essere pensata come suddivisa in celle quadrate di lato DR.</p>
+<a class="reference internal image-reference" href="_images/plant0.PNG"><img alt="_images/plant0.PNG" class="align-center" src="_images/plant0.PNG" style="width: 30%;" /></a>
+</section>
+</section>
+<section id="robotcleaner-interazioni">
+<h3>RobotCleaner: Interazioni<a class="headerlink" href="#robotcleaner-interazioni" title="Permalink to this headline">¶</a></h3>
+<p>Il <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a> può ricevere comandi via HTTP o via WS (WebSocket).
+Le prospettive delineate dal committente inducono a selezionare l’uso di <a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a>
+e quindi di interazioni asincrone.</p>
+</section>
+<section id="linguaggio-di-comando-da-cril-a-aril">
+<h3>Linguaggio di Comando: da cril a aril<a class="headerlink" href="#linguaggio-di-comando-da-cril-a-aril" title="Permalink to this headline">¶</a></h3>
+<p>Il <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a> comprende messaggi in <a class="reference internal" href="VirtualRobot.html#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a>. Altri robot potrebbero
+richiedere comandi identici concettualmente, ma espressi in una sintassi diversa.
+Può essere opportuno introdurre un linguaggio di comando ‘technology-independent’, che qui
+denominiamo <span class="blue">aril</span> (<strong>Abstract Robot Interaction Lanaguage</strong>).</p>
+</section>
+</section>
+<section id="robotcleaner-prototipo-dopo-l-analisi">
+<h2>RobotCleaner: prototipo dopo l’analisi<a class="headerlink" href="#robotcleaner-prototipo-dopo-l-analisi" title="Permalink to this headline">¶</a></h2>
+<p><span class="worktodo">WORKTODO: formalizzare l’analisi</span></p>
+<ul class="simple">
+<li><p>Occorre definire un modello del sistema che descrive in modo ‘formale’ (comprensibile/eseguibile da una macchina)
+il risultato che l’analista intende esporre e fornire al progettista come punto di partenza per lo sviluppo.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actor22Plus.html">Actor22Plus</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RobotCleaner</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-requisiti">RobotCleaner: requisiti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-analisi-dei-requisiti">RobotCleaner: analisi dei requisiti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#analisi-del-testo">Analisi del testo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#requisiti-funzionali">Requisiti funzionali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#requisiti-non-funzionali">Requisiti non funzionali</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-analisi-del-problema">RobotCleaner: analisi del problema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#il-cuore-del-problema">Il cuore del problema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#strategia-di-movimento">Strategia di movimento</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#movimento-per-colonne">Movimento per colonne</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#movimento-a-spirale">Movimento a spirale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#movimento-a-onde">Movimento a onde</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#il-passo-del-robot">Il passo del robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#il-robot-come-unita-di-misura">Il robot come unità di misura</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#robotcleaner-interazioni">RobotCleaner: Interazioni</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linguaggio-di-comando-da-cril-a-aril">Linguaggio di Comando: da cril a aril</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-prototipo-dopo-l-analisi">RobotCleaner: prototipo dopo l’analisi</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Actor22Plus.html" title="previous chapter">Actor22Plus</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/RobotCleaner.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
