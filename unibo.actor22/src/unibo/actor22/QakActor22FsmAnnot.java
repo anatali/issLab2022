@@ -34,7 +34,8 @@ protected String initialState = null;
    		} catch (Exception e) {
   			ColorsOut.outerr("readAnnots ERROR:" + e.getMessage() )   ;	
   		}		
-	}	
+	}
+	
 	protected void setTheInitialState( String stateName ) {
      if( initialState == null  ) {
 		initialState= stateName;
@@ -48,22 +49,30 @@ protected String initialState = null;
 		}
 		  Vector<String> nextStates = new Vector<String>();
 		  Vector<String> msgIds     = new Vector<String>();
+		  Vector<Class> guards      = new Vector<Class>();
 		  
 		  Transition[] ta        = m.getAnnotationsByType(Transition.class);
  		  
 		  for ( Transition t : ta ) {
-			  ColorsOut.outappl("Transition simple: "+ t.msgId() + " -> " + t.state(), ColorsOut.CYAN);
+			  ColorsOut.outappl("Transition simple: "+ t.msgId() + " -> " + t.state() + " guard=" + t.guard(), ColorsOut.CYAN);
 			  nextStates.add(t.state());
 			  msgIds.add(t.msgId());
-		  }
+			  guards.add(t.guard());
+ 		  }
+		  //Farlo staticamente NO
 // 		  ColorsOut.outappl("nextStates "+ nextStates.size() , ColorsOut.CYAN);
 //		  ColorsOut.outappl("msgIds "+ msgIds.size() , ColorsOut.CYAN);
-		  doDeclareState(m,stateName,nextStates,msgIds );		
+		  doDeclareState(m,stateName,nextStates,msgIds,guards );	
+		   
 	}
 	
-
+	protected boolean guardForTransition(String stateName, String transName ) {
+		return false;
+	}
 	
-	protected void doDeclareState(Method curMethod, String stateName, Vector<String> nextStates, Vector<String> msgIds) {
+	protected void doDeclareState(
+			Method curMethod, String stateName, 
+			Vector<String> nextStates, Vector<String> msgIds, Vector<Class> guards) {
 		  declareState( stateName, new StateActionFun() {
 				@Override
 				public void run( IApplMessage msg ) {
@@ -71,7 +80,13 @@ protected String initialState = null;
   					//outInfo("uuuu "+ msg  + " " + this );	
   					curMethod.invoke(  myself, msg   );  //I metodi hanno this come arg implicito
   					for( int j=0; j<nextStates.size();j++ ) {
-   						addTransition( nextStates.elementAt(j), msgIds.elementAt(j) );
+  						Class g   =  guards.elementAt(j);
+  						Object og = g.newInstance();
+  						Boolean result = (Boolean) g.getMethod("eval").invoke( og );
+						if( result ) {
+							//ColorsOut.outappl("g:"+ g + " result=" + result.getClass().getName(), ColorsOut.GREEN);
+							addTransition( nextStates.elementAt(j), msgIds.elementAt(j) );
+  						}
   					}					
   					nextState();
 				} catch ( Exception e) {

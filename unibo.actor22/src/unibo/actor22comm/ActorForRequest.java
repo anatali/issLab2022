@@ -38,7 +38,7 @@ private ActionFun callback;
 	
 	protected void sendAnswer(IApplMessage msg) {
 		ColorsOut.outappl( getName()  + " | sendAnswer " + msg, ColorsOut.BLUE);
-		callback.run(msg.toString() );
+		callback.execute(msg.toString() );
 		Qak22Context.removeActor(this);
 	}
 

@@ -190,18 +190,20 @@ public class Qak22Context {
     
 	
 	public static void registerAsEventObserver(String observer, String evId) {
-		QakActor22 a = getActor(EventMsgHandler.myName);
-		if( a == null ) new EventMsgHandler();
-		IApplMessage m =
-				CommUtils.buildDispatch(observer, registerForEvent, evId, EventMsgHandler.myName);
-		ColorsOut.out( "Qak22Context | registerAsEventObserver m="+ m, ColorsOut.MAGENTA );
-		Qak22Util.sendAMsg( m, EventMsgHandler.myName );  //Redirection to store
+//		QakActor22 a = getActor(EventMsgHandler.myName);
+//		if( a == null ) new EventMsgHandler();
+//		IApplMessage m =
+//				CommUtils.buildDispatch(observer, registerForEvent, evId, EventMsgHandler.myName);
+//		ColorsOut.out( "Qak22Context | registerAsEventObserver m="+ m, ColorsOut.MAGENTA );
+//		Qak22Util.sendAMsg( m, EventMsgHandler.myName );  //Redirection to store
+		EventMsgHandler.getEvMsgHandler().register(observer, evId);
 	}
 	
 	public static void unregisterAsEventObserver(String observer, String evId) {
-		IApplMessage m =
-				CommUtils.buildDispatch(observer, unregisterForEvent, evId, EventMsgHandler.myName);
-		Qak22Util.sendAMsg( m, EventMsgHandler.myName );  //Redirection to store
+//		IApplMessage m =
+//				CommUtils.buildDispatch(observer, unregisterForEvent, evId, EventMsgHandler.myName);
+//		Qak22Util.sendAMsg( m, EventMsgHandler.myName );  //Redirection to store
+		EventMsgHandler.getEvMsgHandler().unregister(observer, evId);
 	}
 	
 

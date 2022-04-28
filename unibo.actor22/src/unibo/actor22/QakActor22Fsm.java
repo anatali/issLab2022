@@ -14,6 +14,8 @@ public abstract class QakActor22Fsm extends QakActor22 {
 	protected HashMap<String,String> nextMsgMap       = new HashMap<String,String>();
 	protected Vector<IApplMessage>  OldMsgQueue       = new Vector< IApplMessage>();
 	protected Vector< Pair<String, String> > transTab = new Vector< Pair<String, String> >();
+
+	
 	private String curState = "";
 	protected IApplMessage currentMsg = null;
   	
@@ -43,8 +45,11 @@ public abstract class QakActor22Fsm extends QakActor22 {
 	}
 	
 	protected void addTransition(String state, String msgId) {
-		ColorsOut.out( getName() + " QakActor22Fsm | in " + curState + " | transition to " + state + " for " +  msgId, ColorsOut.BLUE);		
+		ColorsOut.out( getName() + " QakActor22Fsm | in " + curState + ": transition to " + state + " for " +  msgId, ColorsOut.BLUE);		
 		transTab.add( new Pair<>(state, msgId) );
+		if( msgId == null) {
+			ColorsOut.out( getName() + " QakActor22Fsm | in " + curState +	" adding an empty move" , ColorsOut.BLUE );		
+		}
 	}
 	
 	
@@ -53,8 +58,15 @@ public abstract class QakActor22Fsm extends QakActor22 {
 		Iterator< Pair<String, String> > iter = transTab.iterator();
 		while( iter.hasNext() ) {
 			Pair<String, String> v = iter.next();
+			
 			String state = v.getFirst();
 			String msgId = v.getSecond();
+			if( msgId == null ) { //Check the empty move
+				autoMsg(SystemData.emptyMoveCmd(getName(),getName() ));
+				stateTransition(state, null);
+				return;
+			}
+			 
 			IApplMessage oldMsg = searchInOldMsgQueue( msgId );
 			if( oldMsg != null ) {
 				stateTransition(state,oldMsg);
@@ -84,7 +96,7 @@ public abstract class QakActor22Fsm extends QakActor22 {
  	
 	@Override
 	protected void handleMsg(IApplMessage msg) {
-		//ColorsOut.out(getName() + " | QakActor22Fsm handleMsg " +  msg, ColorsOut.GREEN);
+		ColorsOut.out(getName() + " | QakActor22Fsm handleMsg " +  msg, ColorsOut.GREEN);
 		//currentMsg = msg;
 		String state = checkIfExpected(msg);
 		if ( state != null ) stateTransition(state,msg);

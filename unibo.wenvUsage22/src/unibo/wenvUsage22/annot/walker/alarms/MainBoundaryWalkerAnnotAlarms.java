@@ -1,7 +1,7 @@
 /*
 ClientUsingHttp.java
 */
-package unibo.wenvUsage22.annot.walker;
+package unibo.wenvUsage22.annot.walker.alarms;
 import unibo.actor22comm.SystemData;
 import unibo.actor22comm.utils.CommSystemConfig;
 import unibo.actor22comm.utils.CommUtils;
@@ -11,14 +11,16 @@ import unibo.actor22.annotations.Context22;
 import unibo.wenvUsage22.common.ApplData;
 
 @Context22(name = "pcCtx", host = "localhost", port = "8083")
-@Actor22(name = ApplData.robotName,contextName="pcCtx",implement = BoundaryWalkerAnnot.class)
+@Actor22(name = ApplData.robotName,contextName="pcCtx",implement = BoundaryWalkerAnnotAlarms.class)
 //@Actor22(name = "sentinel",contextName="pcCtx",implement = Sentinel.class)
-public class MainBoundaryWalkerAnnot { 
+public class MainBoundaryWalkerAnnotAlarms { 
  	
 
 	protected void configure() throws Exception {
  		Qak22Context.configureTheSystem(this);
-		CommUtils.delay(1000);  //Give time to start ...
+//		Qak22Context.registerAsEventObserver(ApplData.robotName,SystemData.fireEventId);
+//		Qak22Context.registerAsEventObserver(ApplData.robotName,SystemData.endAlarmId);
+		//EventHandler è un attore: protrebbe avere riterdi nella registrazione
 		Qak22Context.showActorNames();
 		CommSystemConfig.tracing = false;
  	}
@@ -28,7 +30,7 @@ MAIN
  */
 	public static void main(String[] args) throws Exception   {
 		CommUtils.aboutThreads("Before start - ");
- 		new MainBoundaryWalkerAnnot().configure();
+ 		new MainBoundaryWalkerAnnotAlarms().configure();
   		CommUtils.aboutThreads("At end - ");
 	}
 	

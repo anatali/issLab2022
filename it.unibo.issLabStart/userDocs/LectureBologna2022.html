@@ -437,29 +437,48 @@ La classe WsConnectionForActors.
 <tr><td><em>Week 10	</em></td><td></td><td></td></tr>    
     
 <tr><td><m>26/04/2022 (9-12)</m></td><td>Lab2</td> 
-<td>Actor22: Considerazioni sul lavoro svolto e su quello ancora da compiere.
-<br/>
-Annotazioni per la descrizione di sistemi distribuiti ad attori. 
+<td>
+<ul>
+<li>Actor22: Considerazioni sul lavoro svolto e su quello ancora da compiere.
+</li>
+<li>Annotazioni per la descrizione di sistemi distribuiti ad attori. 
 <i>MainAnnotationDemo22Pc</i> e <i>MainAnnotationDemo22Rasp</i> 
-<br/>
-Sistemi descritti mediante annotazioni: esempi con WEnv: 
+</li>
+<li>Sistemi descritti mediante annotazioni: esempi con WEnv: 
 <i>ActorWithObserverUsingWEnv</i> - un attore che percorre il boundary della stanza.
-<br/>
-Reimpostazione del funzionamento dell'attore precedente come automa stati finiti: <i>ActorWithFsmBasic</i>.
-<br/>
-Attori come automi a stati finiti di Moore: la classe <i>QakActor22Fsm</i>.
-<br/>
-Refactoring del <i>RobotBoundaryWalker</i> come specializzazione di <i>QakActor22Fsm</i>.
-<br/><br/>
-Il <b>problema RobotCleaner</b>: prima discussione sulla analisi dei requisiti e del problema  
-
- 
+</li>
+<li>Reimpostazione del funzionamento dell'attore precedente come automa stati finiti: <i>ActorWithFsmBasic</i>.
+</li>
+<li>Attori come automi a stati finiti di Moore: la classe <i>QakActor22Fsm</i>.
+</li>
+<li>Refactoring del <i>RobotBoundaryWalker</i> come specializzazione di <i>QakActor22Fsm</i>.
+</li> 
+<li>Il <b>problema RobotCleaner</b>: prima discussione sulla analisi dei requisiti e del problema  
+</li> 
+</ul> 
 </td>
 </tr>
 
 <tr><td><m>28/04/2022 (12-14)</m></td><td>Lab2</td> 
 
 <td>
+<ul>
+<li>Breve discussione sulla <b>autovalutazione</b> della analisi del RobotCleaner</li>
+<li>Completamento del <i>RobotBoundaryWalker</i> come specializzazione di <i>QakActor22Fsm</i></li>
+<li>Annotazioni per definire stati e transizioni di un automa di Moore: la classe <i>QakActor22Fsm</i></li>
+<li><i>BoundaryWalker</i>: refactoring usando le annotazioni per gli stati e le transizioni</li>
+<li><i>BoundaryWalker con eventi di allarme</i> (fireEvent) e di fine allarme (endAlarm)</li>
+<li><i>RobotCleaner</i>: un prototipo dopo l'analisi del problema. </li>
+<li>Il ruolo e i vantaggi di un approccio top-down che
+produce un modello eseguibile del sistema</li>
+<li>WorkTodo: <i>RobotCleaner con comandi</i> di start/stop/resume. 
+Due casi: 
+<ol>
+<li>dopo uno stop si ferma e riprende dopo resume </li>
+<li>dopo uno stop torna a HOME e dopo resume riprende dal punto in cui è stato interotto</li>
+</ol>
+</li>
+</ul>
  </td>
  
 </tr>

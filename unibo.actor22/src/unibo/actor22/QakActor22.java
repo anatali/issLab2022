@@ -120,7 +120,7 @@ String ctx22Name ;
 	
     protected void emit(IApplMessage msg) {
     	if( msg.isEvent() ) {
-    		//ColorsOut.outappl( "QakActor22 | emit=" + msg  , ColorsOut.GREEN);
+    		ColorsOut.out( "QakActor22 | emit=" + msg  , ColorsOut.GREEN);
     		Qak22Util.sendAMsg( msg, EventMsgHandler.myName);
     	}   	
     }
