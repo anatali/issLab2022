@@ -47,13 +47,15 @@ public abstract class QakActor22Fsm extends QakActor22 {
 	protected void addTransition(String state, String msgId) {
 		ColorsOut.out( getName() + " QakActor22Fsm | in " + curState + ": transition to " + state + " for " +  msgId, ColorsOut.BLUE);		
 		transTab.add( new Pair<>(state, msgId) );
-		if( msgId == null) {
-			ColorsOut.out( getName() + " QakActor22Fsm | in " + curState +	" adding an empty move" , ColorsOut.BLUE );		
-		}
+//		if( msgId.equals("emptyMove")) {//Per info
+//			ColorsOut.out( getName() + " QakActor22Fsm | in " + curState +	" adding an empty move" , ColorsOut.BLUE );		
+//		}
 	}
 	
 	
 	protected void nextState() {
+		
+		
 		clearExpectedMsgs();
 		Iterator< Pair<String, String> > iter = transTab.iterator();
 		while( iter.hasNext() ) {
@@ -61,9 +63,9 @@ public abstract class QakActor22Fsm extends QakActor22 {
 			
 			String state = v.getFirst();
 			String msgId = v.getSecond();
-			if( msgId == null ) { //Check the empty move
-				autoMsg(SystemData.emptyMoveCmd(getName(),getName() ));
-				stateTransition(state, null);
+			if( msgId.equals(SystemData.emptyMoveId) ) {  
+				//autoMsg(SystemData.emptyMoveCmd(getName(),getName() ));
+				stateTransition(state, SystemData.emptyMoveCmd(getName(),getName() ));
 				return;
 			}
 			 

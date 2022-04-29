@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 public @interface Transition {
 	String name() default "t0";
 	String state()  ;
-	String msgId()  ;
+	String msgId() default "emptyMove" ;
 	Class guard() default GuardAlwaysTrue.class; 
 }

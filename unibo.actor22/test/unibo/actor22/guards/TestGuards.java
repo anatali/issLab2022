@@ -12,15 +12,22 @@ private int n = 0;
 		super(name);
  	}
  	
-	@State( name = "s0", initial=true)
+	@State( name = "init", initial=true)
+	@Transition( state = "s0"   )	//empty move
+	protected void init( IApplMessage msg ) {
+		outInfo(""+msg );
+ 	}
+
+	@State( name = "s0" )
 	@Transition( state = "s1" ,  msgId = SystemData.demoSysId, guard = Guard0.class )
 	protected void s0( IApplMessage msg ) {
 		outInfo(""+msg );
-		//n++;
+		n++;   //Uncomment to go in s1
 		Guard0.setValue(n);
 		this.autoMsg( SystemData.demoSysCmd( getName(),getName() ) );
 	}
- 
+
+	
 	@State( name = "s1" )
 	protected void s1( IApplMessage msg ) {
 		outInfo(""+msg );

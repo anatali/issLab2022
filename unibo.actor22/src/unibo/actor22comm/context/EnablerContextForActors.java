@@ -48,6 +48,10 @@ public static void create(String name, int port, ProtocolType protocol) {
 			int port = Integer.parseInt(portStr);
 			serverTcp = new TcpServer( name+"Tcp" , port,  handler );
 		}
+		if( protocol == ProtocolType.ws  ) {
+			int port = Integer.parseInt(portStr);
+			//lancio un server Spring
+		}
 		else if( protocol == ProtocolType.udp ) {  
 			int port = Integer.parseInt(portStr);
 			serverUdp = new UdpServer(name+"Udp" ,port,handler);
