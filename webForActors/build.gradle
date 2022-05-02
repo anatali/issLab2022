@@ -1,0 +1,80 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.7'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'unibo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+	jcenter()
+	flatDir { dirs '../unibolibs' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+//FOR WebSocket NOSTOMP
+ 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+ // https://mvnrepository.com/artifact/org.springframework/spring-websocket
+	implementation("org.springframework:spring-websocket:5.3.14")
+//added
+	implementation 'org.webjars:webjars-locator-core'
+	implementation 'org.webjars:bootstrap:5.1.3'
+	implementation 'org.webjars:jquery:3.6.0'
+
+
+
+
+//KOTLIN
+	implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.6.10'
+//COROUTINE
+	implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-common', version: '1.3.8'
+	implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.6.0'
+
+//MQTT (required by actors)
+	implementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.5'
+//COAP (required by actors)
+	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-core
+	implementation group: 'org.eclipse.californium', name: 'californium-core', version: '2.0.0-M12'
+	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-proxy
+	implementation group: 'org.eclipse.californium', name: 'californium-proxy', version: '2.0.0-M12'
+
+//SOCKET.IO (for WEnv)
+	compileOnly group: 'javax.websocket', name: 'javax.websocket-api', version: '1.1'
+	//javax.websocket api is only the specification
+	implementation group: 'org.glassfish.tyrus.bundles', name: 'tyrus-standalone-client', version: '1.9'
+
+//OkHttp library for websockets with Kotlin
+	//implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.14.0'
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
+	// https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
+	testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '4.9.3'
+
+//LOGGING
+	//implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+	//implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+
+//JSON
+	// https://mvnrepository.com/artifact/org.json/json
+	implementation group: 'org.json', name: 'json', version: '20160810'
+
+
+//CUSTOM unibo
+	implementation name: '2p301'
+	implementation name: 'uniboInterfaces'
+	implementation name: 'unibonoawtsupports'
+	implementation name: 'it.unibo.qakactor-2.7'
+	implementation name: 'unibo.actor22-1.1'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

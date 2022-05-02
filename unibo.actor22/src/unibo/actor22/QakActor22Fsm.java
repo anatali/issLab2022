@@ -98,7 +98,7 @@ public abstract class QakActor22Fsm extends QakActor22 {
  	
 	@Override
 	protected void handleMsg(IApplMessage msg) {
-		ColorsOut.out(getName() + " | QakActor22Fsm handleMsg " +  msg, ColorsOut.GREEN);
+		//ColorsOut.out(getName() + " | QakActor22Fsm handleMsg " +  msg, ColorsOut.GREEN);
 		//currentMsg = msg;
 		String state = checkIfExpected(msg);
 		if ( state != null ) stateTransition(state,msg);

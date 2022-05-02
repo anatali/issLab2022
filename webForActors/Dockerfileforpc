@@ -1,0 +1,31 @@
+## ----------------------------------------------------------
+## DockerfileForPc for webForActors
+## ----------------------------------------------------------
+FROM openjdk:12.0.2
+EXPOSE 8088
+## ON PC
+ADD ./build/distributions/webForActors-1.0.tar  /
+ADD ./build/distributions/webForActors-boot-1.0.tar  /
+
+
+WORKDIR /webForActors-boot-1.0/bin
+COPY ./*.pl ./
+COPY ./*.json ./
+RUN ls
+
+CMD ["bash", "webForActors"]
+
+### gradlew build
+#### docker build -f Dockerfileforpc -t webbasicrobotqakforpc:1.1 .
+
+### run the image to test
+### docker run -p 8085:8085 -ti --rm webbasicrobotqak:1.1 /bin/bash //to use the console
+
+## Tag the image
+## docker tag webbasicrobotqakforpc:1.0 natbodocker/webbasicrobotqakforpc:1.1
+
+## Register the image on DockerHub
+## docker push natbodocker/webbasicrobotqakforpc:1.1
+
+
+

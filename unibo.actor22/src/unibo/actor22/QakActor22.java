@@ -1,6 +1,11 @@
 package unibo.actor22;
 
+import static org.eclipse.californium.core.coap.CoAP.ResponseCode.CHANGED;
+
+import java.net.InetAddress;
 import java.util.HashMap;
+
+import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.jetbrains.annotations.NotNull;
 import it.unibo.kactor.*;
 import kotlin.Unit;
@@ -15,11 +20,20 @@ import unibo.actor22comm.utils.CommUtils;
 public abstract class QakActor22 extends ActorBasic{
 
 protected kotlin.coroutines.Continuation<? super Unit> mycompletion;
-String ctx22Name ;
+protected String ctx22Name ;
+protected String actorResourceRep = "unbound";
+
 	public QakActor22(@NotNull String name ) {      
 		super(name, QakContext.Companion.createScope(), false, true, false, 50);
         if( Qak22Context.getActor(name) == null ) {
         	Qak22Context.addActor( this );
+//        	QakContext qakCtx = this.getContext();
+//        	if( qakCtx != null ) qakCtx.addActor( this ); 
+//        	else {
+//        		ColorsOut.outerr("WARNING: no qakcontext");
+//        		Qak22Context.resourceCtx.addActorResource( this ); 
+//        		
+//        	}
         	ColorsOut.outappl( getName()  + " | CREATED " , ColorsOut.CYAN);
         }
         else ColorsOut.outerr("QakActor22 | WARNING: an actor with name " + name + " already exists");	
@@ -145,6 +159,38 @@ String ctx22Name ;
 //			ColorsOut.outerr( "QakActor22 handleEvent ERROR:" + e.getMessage());
 //		}
 //	}    
-
+/*
+    //-----------------------------------------
+    //@Override
+	public void updateResourceRep22( String v  ){
+		actorResourceRep = v;
+        ColorsOut.out("&&&&&&&&&&& updateResourceRep22 CHANGE!!! " + actorResourceRep);
+        //ColorsOut.out("&&&&&&&&&&& getActorResourceRep " + getActorResourceRep() );
+        changed();             //DO NOT FORGET!!!
+   }
 	
+	@Override
+	public void handleGET( CoapExchange exchange) {
+        ColorsOut.out("&&&&&&&&&&& handleGET " + exchange);
+        //ColorsOut.out("&&&&&&&&&&& actorResourceRep=" + actorResourceRep );
+		exchange.respond( actorResourceRep );
+	}
+	@Override
+	public void handlePOST(CoapExchange exchange) {
+ 	}
+ 	@Override
+	public void handlePUT(CoapExchange exchange) {
+ 		ColorsOut.outappl(getName() + " | handlePUT addr=" + exchange.getSourceAddress(), ColorsOut.BgYellow );
+ 		String arg = exchange.getRequestText() ;
+		elaboratePut( arg, exchange.getSourceAddress() );
+		this.actorResourceRep = arg;
+		changed();
+		ColorsOut.out(getName() + " | after handlePUT arg=" + arg + " CHANGED="+ CHANGED );
+		exchange.respond(""+CHANGED);
+	}
+
+ 	protected  void elaboratePut(String req, InetAddress callerAddr) {
+		ColorsOut.out(getName() + " | elaboratePut TODO+" + req  );
+ 		
+ 	};*/
 }
