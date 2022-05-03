@@ -1,10 +1,7 @@
 package unibo.wenvUsage22.cleaner;
-
-
 /*
  * 
  */
-
 import it.unibo.kactor.IApplMessage;
 import unibo.actor22comm.SystemData;
 import unibo.actor22comm.interfaces.IObserver;
@@ -47,7 +44,6 @@ public class RobotCleaner extends QakActor22FsmAnnot{
 	}
 
 	@State( name = "start" )
-	@Transition( state = "stoppedDown", msgId= SystemData.stopSysCmdId  )
 	@Transition( state = "goingDown",   msgId="endMoveOk"  )
 	@Transition( state = "endJob",      msgId="endMoveKo"  )
 	protected void start( IApplMessage msg ) {
@@ -56,7 +52,6 @@ public class RobotCleaner extends QakActor22FsmAnnot{
 	}
 	
 	@State( name = "goingDown" )
-	@Transition( state = "stoppedDown",   msgId= SystemData.stopSysCmdId  )
 	@Transition( state = "goingDown",     msgId="endMoveOk"  )
 	@Transition( state = "turnGoingDown", msgId="endMoveKo"  )
 	protected void goingDown( IApplMessage msg ) {
@@ -73,7 +68,6 @@ public class RobotCleaner extends QakActor22FsmAnnot{
 	}
 
 	@State( name = "goingUp" )
-	@Transition( state = "stoppedUp",   msgId= SystemData.stopSysCmdId  )
 	@Transition( state = "goingUp",     msgId="endMoveOk"  )
 	@Transition( state = "turnGoingUp", msgId="endMoveKo"  )  //if numIter
 	protected void goingUp( IApplMessage msg ) {
@@ -121,45 +115,6 @@ public class RobotCleaner extends QakActor22FsmAnnot{
 		VRobotMoves.turnLeft(getName(), conn);
    	}
 
-  	//--------------------------------------------------
-
-	@State( name = "stoppedDown" )
-	@Transition( state = "resumedDown",  msgId= SystemData.resumeSysCmdId  )
- 	protected void stoppedDown( IApplMessage msg ) {
-		outInfo("" + msg);
-	}
-
-	@State( name = "resumedDown" )
-	@Transition( state = "goingDown",     msgId="endMoveOk"  )
-	@Transition( state = "turnGoingDown", msgId="endMoveKo"  )
-	protected void resumedDown( IApplMessage msg ) {
-		outInfo("" + msg);
-	}
-
-	@State( name = "stoppedUp" )
-	@Transition( state = "resumedUp",  msgId= SystemData.resumeSysCmdId  )
-	protected void stoppedUp( IApplMessage msg ) {
-		outInfo("" + msg);
-	}
-
-	@State( name = "resumedUp" )
-	@Transition( state = "goingUp",     msgId="endMoveOk"  )
-	@Transition( state = "turnGoingUp", msgId="endMoveKo"  )
-	protected void resumedUp( IApplMessage msg ) {
-		outInfo("" + msg);
-	}
-
-	@State( name = "stoppedLast" )
-	@Transition( state = "resumedLast",  msgId= SystemData.resumeSysCmdId  )
-	protected void stoppedLast( IApplMessage msg ) {
-		outInfo("" + msg);
-	}
-	@State( name = "resumedLast" )
-	@Transition( state = "lastColumn",   msgId="endMoveOk"  )
-	@Transition( state = "completed",    msgId="endMoveKo"  )
-	protected void resumedLast( IApplMessage msg ) {
-		outInfo("" + msg);
-	}
 
 }
 

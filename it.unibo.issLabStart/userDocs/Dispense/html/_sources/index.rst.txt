@@ -28,6 +28,8 @@ iss22
    VirtualRobot
    Actors22
    RobotCleaner
+   WebApplications
+   WebSockets
 
 
 Indices and tables

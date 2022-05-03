@@ -798,8 +798,8 @@ in tre liste (<code class="docutils literal notranslate"><span class="pre">nextS
 <blockquote>
 <div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">addTransition</span><span class="p">(</span><span class="n">String</span> <span class="n">state</span><span class="p">,</span><span class="n">String</span> <span class="n">msgId</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">transTab</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">msgId</span><span class="p">));</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">msgId</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//A scopo di &#39;demo&#39;</span>
-<span class="n">ColorsOut</span><span class="p">.</span><span class="na">out</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; QakActor22Fsm |</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">msgId</span><span class="p">.</span><span class="na">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//Per info</span>
+    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">out</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; QakActor22Fsm |</span>
 <span class="s">  in &quot;</span> <span class="o">+</span> <span class="n">curState</span> <span class="o">+</span> <span class="s">&quot; adding an empty move&quot;</span><span class="p">,</span><span class="n">ColorsOut</span><span class="p">.</span><span class="na">BLUE</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">}</span>
@@ -1100,6 +1100,7 @@ si introducono due classi-guardia: una per continuare e una per terminare il lav
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplications</a></li>
 </ul>
 
 <div class="relations">

@@ -5,13 +5,16 @@
 
 
 .. _visione olistica: https://it.wikipedia.org/wiki/Olismo
+.. _Macchina di Moore: https://it.wikipedia.org/wiki/Macchina_di_Moore
 
 ==============================
 RobotCleaner
 ==============================
 
+
+
 -------------------------------------------
-RobotCleaner: requisiti
+Aprile 2002: requisiti
 -------------------------------------------
 Muovere il :ref:`VirtualRobot` in modo da coprire tutta la superficie di una stanza vuota.
 
@@ -125,6 +128,7 @@ Nel caso della figura di destra, il robot segue i bordi della stanza, riducendo 
 DR, lavrando in una 'stanza virtuale' di lati ``DWallDown - N*DR`` e ``DWallLeft - N*DR``, con ``N=1,2,..,M``.
 
 *CompletamentoLavoro*:   quando la stanza virtuale perde una dimensione, il robot deve coprire quallo che rimane.
+
 *VerificaLavoro*: se la parte che rimane ha lato ``L > DR``, può risultare complicato 
 
 
@@ -178,11 +182,115 @@ denominiamo :blue:`aril` (**Abstract Robot Interaction Lanaguage**).
 
 
 
+:worktodo:`WORKTODO: formalizzare l'analisi`
 
+ 
 
 -------------------------------------------
-RobotCleaner: prototipo dopo l'analisi 
+Maggio 20022: prototipo dopo l'analisi 
 ------------------------------------------- 
 
+- Occorre definire un **modello** del sistema che descrive in modo 'formale' (comprensibile/eseguibile da una macchina)  
+  il risultato che l'analista intende esporre e fornire al progettista come punto di partenza per lo sviluppo.
 
-- aril con  mossa  step (p) che può avere successo o fallire inviando due messggi diversi.
+
+++++++++++++++++++++++++++++++++++++
+RobotCleaner: Architettura
+++++++++++++++++++++++++++++++++++++
+
+Il sistema è formato da un componente proattivo che può essere modellato come un attore che opera in un nodo computazionale.
+
+Utlizzando il (meta)modello :ref:`QakActor22<QakActor22>`, la specifica formale può essere:
+
+.. code:: Java
+
+   @Context22(name = "pcCtx", host = "localhost", port = "8083")
+   @Actor22(name = MainActorCleaner.myName, contextName = "pcCtx", implement = RobotCleaner.class)
+   public class MainActorCleaner {
+      ...
+   }
+
+Il componente proattivo che definisce la business logic può essere formalizzato come una attore che opera come una 
+`Macchina di Moore`_
+
+++++++++++++++++++++++++++++++++++++
+RobotCleaner Behaviour
+++++++++++++++++++++++++++++++++++++
+
+Progetto: **unibo.wenvUsage22** code: *unibo.wenvUsage22.cleaner.RobotCleaner*.
+
+
+- Gli stati dell'automa che opera secondo un :ref:`Movimento per colonne` sono
+
+   ``activate, start, goingDown, turnGoingDown, goingUp, turnGoingUp, lastColumn, completed, endJob``
+
+- L'automa invia (stati ``going..``) al robot comandi di movimento a passi in avanti  come indicato in :ref:`Il passo del robot` e di rotazione, 
+  (stati ``turn..``)  definiti nella classe ``VRobotMoves``.
+
+- La *VerificaLavoro* prospettata in :ref:`Movimento per colonne` viene realizzata contando il numero di passi verso ``wallRight`` che deve 
+  risultare, nello stato  ``completed `` non inferiore `DWallDown/DR + 1``. La distanza `DWallDown`` può essere misurata facendo muovere l'automa
+  per passi lunghi DR da ``wallLeft`` a ``wallRight``. Questi compito può essere svolto da una applicazione ad hoc.
+
+   :worktodo:`WORKTODO: Realizzare una applicazione che calcola DWallDown`
+
+- L'automa comunica con il robot (al momento il :ref:`VirtualRobot`) in modo asincrono (attraverso una :ref:`WsConnection`) 
+  e riceve dal supporto il messaggio ``endMoveOk`` oppure ``endMoveKo`` al termina di ogni movimento e rotazione.
+
+- Il supporto che trasforma le informazioni di :ref:`WEnv` in messaggi ``endMoveOk`` o ``endMoveKo`` è realizzato a livello applicativo 
+  da un POJO, observer di :ref:`WsConnection`, definito dalla classe ``WsConnApplObserver`` che implementa :ref:IObserver`.
+
+   .. code:: Java
+
+      public class WsConnApplObserver extends WsConnSysObserver implements IObserver{
+        ...
+        @Override
+	      public void update(String data) {
+         //data : {"endmove":,,,,"move":"..."}
+         //data : {"collision":"...","target":"..."}
+         //Genera SystemData.endMoveOk o SystemData.endMoveKo
+         }
+      }
+ 
+- Le transizioni di stato avvegono in conseguenza della ricezione di un messaggio ``endMoveOk`` oppura ``endMoveKo``
+
+.. image::  ./_static/img/Spring/RobotCleanerFsm.PNG
+    :align: center 
+    :width: 80% 
+
+Il modello eseguibile è riportato in RobotCleaner.java
+
+.. code:: Java
+
+   public class RobotCleaner extends QakActor22FsmAnnot{
+
+   	@State( name = "activate", initial=true)
+	   @Transition( state = "start",   msgId= SystemData.startSysCmdId  )
+      protected void activate( IApplMessage msg ) { ... }
+
+
+      @State( name = "start" )
+      @Transition( state = "goingDown",   msgId="endMoveOk"  )
+      @Transition( state = "endJob",      msgId="endMoveKo"  )
+      protected void start( IApplMessage msg ) { ... }
+   }
+
+
+------------------------------------------------------
+RobotCleaner reattivo a comandi
+------------------------------------------------------
+
+*RobotCleaner reattivo*: Estendere il funzionamento di il :ref:`RobotClenaer<RobotCleaner Behaviour>` in modo da eseguire i seguenti comandi inviati da un utente.
+(umano o macchina):
+
+- start (id = ``SystemData.startSysCmdId``) attiva il robot, che parte dalla posizione HOMe
+- stop (id = ``SystemData.stopSysCmdId``): ferma il robot nella posizione corrente
+- resume (id = ``SystemData.resumeSysCmdId``): riattiva il robot dalla posizione corrente
+
+
+Pianificazione del lavoro:
+
+#. Si estende il behavior introddto in :ref:`RobotCleaner Behaviour`, tenendo conto dei nuovi possibili messaggi
+#. Si realizza un attore che simula l'operatore umano che invia i comandi
+#. Si verifica il funzionamento del nuovo prototipo
+#. Si realizza una Web User Interface utlizzando SpringBoot. Per questa parte si veda :ref:`WebApplications con SpringBoot`
+   e :ref:`Una WebConsole per il RobotCleaner`

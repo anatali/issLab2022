@@ -15,7 +15,8 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Actor22Plus" href="Actor22Plus.html" />
+    <link rel="next" title="WebApplications con SpringBoot" href="WebApplications.html" />
+    <link rel="prev" title="Actors22" href="Actors22.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -34,8 +35,8 @@
             
   <section id="robotcleaner">
 <h1>RobotCleaner<a class="headerlink" href="#robotcleaner" title="Permalink to this headline">¶</a></h1>
-<section id="robotcleaner-requisiti">
-<h2>RobotCleaner: requisiti<a class="headerlink" href="#robotcleaner-requisiti" title="Permalink to this headline">¶</a></h2>
+<section id="aprile-2002-requisiti">
+<h2>Aprile 2002: requisiti<a class="headerlink" href="#aprile-2002-requisiti" title="Permalink to this headline">¶</a></h2>
 <p>Muovere il <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a> in modo da coprire tutta la superficie di una stanza vuota.</p>
 </section>
 <section id="robotcleaner-analisi-dei-requisiti">
@@ -154,15 +155,102 @@ e quindi di interazioni asincrone.</p>
 richiedere comandi identici concettualmente, ma espressi in una sintassi diversa.
 Può essere opportuno introdurre un linguaggio di comando ‘technology-independent’, che qui
 denominiamo <span class="blue">aril</span> (<strong>Abstract Robot Interaction Lanaguage</strong>).</p>
-</section>
-</section>
-<section id="robotcleaner-prototipo-dopo-l-analisi">
-<h2>RobotCleaner: prototipo dopo l’analisi<a class="headerlink" href="#robotcleaner-prototipo-dopo-l-analisi" title="Permalink to this headline">¶</a></h2>
 <p><span class="worktodo">WORKTODO: formalizzare l’analisi</span></p>
+</section>
+</section>
+<section id="maggio-20022-prototipo-dopo-l-analisi">
+<h2>Maggio 20022: prototipo dopo l’analisi<a class="headerlink" href="#maggio-20022-prototipo-dopo-l-analisi" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Occorre definire un modello del sistema che descrive in modo ‘formale’ (comprensibile/eseguibile da una macchina)
+<li><p>Occorre definire un <strong>modello</strong> del sistema che descrive in modo ‘formale’ (comprensibile/eseguibile da una macchina)
 il risultato che l’analista intende esporre e fornire al progettista come punto di partenza per lo sviluppo.</p></li>
 </ul>
+<section id="robotcleaner-architettura">
+<h3>RobotCleaner: Architettura<a class="headerlink" href="#robotcleaner-architettura" title="Permalink to this headline">¶</a></h3>
+<p>Il sistema è formato da un componente proattivo che può essere modellato come un attore che opera in un nodo computazionale.</p>
+<p>Utlizzando il (meta)modello <a class="reference internal" href="Attori.html#qakactor22"><span class="std std-ref">QakActor22</span></a>, la specifica formale può essere:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Context22</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;pcCtx&quot;</span><span class="p">,</span> <span class="n">host</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="s">&quot;8083&quot;</span><span class="p">)</span>
+<span class="nd">@Actor22</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="n">MainActorCleaner</span><span class="p">.</span><span class="na">myName</span><span class="p">,</span> <span class="n">contextName</span> <span class="o">=</span> <span class="s">&quot;pcCtx&quot;</span><span class="p">,</span> <span class="n">implement</span> <span class="o">=</span> <span class="n">RobotCleaner</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainActorCleaner</span> <span class="p">{</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il componente proattivo che definisce la business logic può essere formalizzato come una attore che opera come una
+<a class="reference external" href="https://it.wikipedia.org/wiki/Macchina_di_Moore">Macchina di Moore</a></p>
+</section>
+<section id="robotcleaner-behaviour">
+<h3>RobotCleaner Behaviour<a class="headerlink" href="#robotcleaner-behaviour" title="Permalink to this headline">¶</a></h3>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.cleaner.RobotCleaner</em>.</p>
+<ul>
+<li><p>Gli stati dell’automa che opera secondo un <a class="reference internal" href="#movimento-per-colonne"><span class="std std-ref">Movimento per colonne</span></a> sono</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">activate,</span> <span class="pre">start,</span> <span class="pre">goingDown,</span> <span class="pre">turnGoingDown,</span> <span class="pre">goingUp,</span> <span class="pre">turnGoingUp,</span> <span class="pre">lastColumn,</span> <span class="pre">completed,</span> <span class="pre">endJob</span></code></p>
+</div></blockquote>
+</li>
+<li><p>L’automa invia (stati <code class="docutils literal notranslate"><span class="pre">going..</span></code>) al robot comandi di movimento a passi in avanti  come indicato in <a class="reference internal" href="#il-passo-del-robot"><span class="std std-ref">Il passo del robot</span></a> e di rotazione,
+(stati <code class="docutils literal notranslate"><span class="pre">turn..</span></code>)  definiti nella classe <code class="docutils literal notranslate"><span class="pre">VRobotMoves</span></code>.</p></li>
+<li><p>La <em>VerificaLavoro</em> prospettata in <a class="reference internal" href="#movimento-per-colonne"><span class="std std-ref">Movimento per colonne</span></a> viene realizzata contando il numero di passi verso <code class="docutils literal notranslate"><span class="pre">wallRight</span></code> che deve
+risultare, nello stato  <code class="docutils literal notranslate"><span class="pre">completed</span> <span class="pre">``</span> <span class="pre">non</span> <span class="pre">inferiore</span> <span class="pre">`DWallDown/DR</span> <span class="pre">+</span> <span class="pre">1</span></code>. La distanza <cite>DWallDown`</cite> può essere misurata facendo muovere l’automa
+per passi lunghi DR da <code class="docutils literal notranslate"><span class="pre">wallLeft</span></code> a <code class="docutils literal notranslate"><span class="pre">wallRight</span></code>. Questi compito può essere svolto da una applicazione ad hoc.</p>
+<blockquote>
+<div><p><span class="worktodo">WORKTODO: Realizzare una applicazione che calcola DWallDown</span></p>
+</div></blockquote>
+</li>
+<li><p>L’automa comunica con il robot (al momento il <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a>) in modo asincrono (attraverso una <a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a>)
+e riceve dal supporto il messaggio <code class="docutils literal notranslate"><span class="pre">endMoveOk</span></code> oppure <code class="docutils literal notranslate"><span class="pre">endMoveKo</span></code> al termina di ogni movimento e rotazione.</p></li>
+<li><p>Il supporto che trasforma le informazioni di <a class="reference internal" href="VirtualRobot.html#wenv"><span class="std std-ref">WEnv</span></a> in messaggi <code class="docutils literal notranslate"><span class="pre">endMoveOk</span></code> o <code class="docutils literal notranslate"><span class="pre">endMoveKo</span></code> è realizzato a livello applicativo
+da un POJO, observer di <a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a>, definito dalla classe <code class="docutils literal notranslate"><span class="pre">WsConnApplObserver</span></code> che implementa :ref:IObserver`.</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WsConnApplObserver</span> <span class="kd">extends</span> <span class="n">WsConnSysObserver</span> <span class="kd">implements</span> <span class="n">IObserver</span><span class="p">{</span>
+  <span class="p">...</span>
+  <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+   <span class="c1">//data : {&quot;endmove&quot;:,,,,&quot;move&quot;:&quot;...&quot;}</span>
+   <span class="c1">//data : {&quot;collision&quot;:&quot;...&quot;,&quot;target&quot;:&quot;...&quot;}</span>
+   <span class="c1">//Genera SystemData.endMoveOk o SystemData.endMoveKo</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Le transizioni di stato avvegono in conseguenza della ricezione di un messaggio <code class="docutils literal notranslate"><span class="pre">endMoveOk</span></code> oppura <code class="docutils literal notranslate"><span class="pre">endMoveKo</span></code></p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsm.PNG"><img alt="_images/RobotCleanerFsm.PNG" class="align-center" src="_images/RobotCleanerFsm.PNG" style="width: 80%;" /></a>
+<p>Il modello eseguibile è riportato in RobotCleaner.java</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotCleaner</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
+
+     <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;activate&quot;</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+        <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;start&quot;</span><span class="p">,</span>   <span class="n">msgId</span><span class="o">=</span> <span class="n">SystemData</span><span class="p">.</span><span class="na">startSysCmdId</span>  <span class="p">)</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+
+   <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;start&quot;</span> <span class="p">)</span>
+   <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;goingDown&quot;</span><span class="p">,</span>   <span class="n">msgId</span><span class="o">=</span><span class="s">&quot;endMoveOk&quot;</span>  <span class="p">)</span>
+   <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;endJob&quot;</span><span class="p">,</span>      <span class="n">msgId</span><span class="o">=</span><span class="s">&quot;endMoveKo&quot;</span>  <span class="p">)</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">start</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="robotcleaner-reattivo-a-comandi">
+<h2>RobotCleaner reattivo a comandi<a class="headerlink" href="#robotcleaner-reattivo-a-comandi" title="Permalink to this headline">¶</a></h2>
+<p><em>RobotCleaner reattivo</em>: Estendere il funzionamento di il <a class="reference internal" href="#robotcleaner-behaviour"><span class="std std-ref">RobotClenaer</span></a> in modo da eseguire i seguenti comandi inviati da un utente.
+(umano o macchina):</p>
+<ul class="simple">
+<li><p>start (id = <code class="docutils literal notranslate"><span class="pre">SystemData.startSysCmdId</span></code>) attiva il robot, che parte dalla posizione HOMe</p></li>
+<li><p>stop (id = <code class="docutils literal notranslate"><span class="pre">SystemData.stopSysCmdId</span></code>): ferma il robot nella posizione corrente</p></li>
+<li><p>resume (id = <code class="docutils literal notranslate"><span class="pre">SystemData.resumeSysCmdId</span></code>): riattiva il robot dalla posizione corrente</p></li>
+</ul>
+<p>Pianificazione del lavoro:</p>
+<ol class="arabic simple">
+<li><p>Si estende il behavior introddto in <a class="reference internal" href="#robotcleaner-behaviour"><span class="std std-ref">RobotCleaner Behaviour</span></a>, tenendo conto dei nuovi possibili messaggi</p></li>
+<li><p>Si realizza un attore che simula l’operatore umano che invia i comandi</p></li>
+<li><p>Si verifica il funzionamento del nuovo prototipo</p></li>
+<li><p>Si realizza una Web User Interface utlizzando SpringBoot. Per questa parte si veda <a class="reference internal" href="WebApplications.html#webapplications-con-springboot"><span class="std std-ref">WebApplications con SpringBoot</span></a>
+e <a class="reference internal" href="WebApplications.html#una-webconsole-per-il-robotcleaner"><span class="std std-ref">Una WebConsole per il RobotCleaner</span></a></p></li>
+</ol>
 </section>
 </section>
 
@@ -209,9 +297,8 @@ il risultato che l’analista intende esporre e fornire al progettista come punt
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
 <li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Actor22Plus.html">Actor22Plus</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">RobotCleaner</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-requisiti">RobotCleaner: requisiti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aprile-2002-requisiti">Aprile 2002: requisiti</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#robotcleaner-analisi-dei-requisiti">RobotCleaner: analisi dei requisiti</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#analisi-del-testo">Analisi del testo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#requisiti-funzionali">Requisiti funzionali</a></li>
@@ -234,16 +321,24 @@ il risultato che l’analista intende esporre e fornire al progettista come punt
 <li class="toctree-l3"><a class="reference internal" href="#linguaggio-di-comando-da-cril-a-aril">Linguaggio di Comando: da cril a aril</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-prototipo-dopo-l-analisi">RobotCleaner: prototipo dopo l’analisi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#maggio-20022-prototipo-dopo-l-analisi">Maggio 20022: prototipo dopo l’analisi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#robotcleaner-architettura">RobotCleaner: Architettura</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#robotcleaner-behaviour">RobotCleaner Behaviour</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-reattivo-a-comandi">RobotCleaner reattivo a comandi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplications con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebSockets.html">WebSockets</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="Actor22Plus.html" title="previous chapter">Actor22Plus</a></li>
+      <li>Previous: <a href="Actors22.html" title="previous chapter">Actors22</a></li>
+      <li>Next: <a href="WebApplications.html" title="next chapter">WebApplications con SpringBoot</a></li>
   </ul></li>
 </ul>
 </div>
