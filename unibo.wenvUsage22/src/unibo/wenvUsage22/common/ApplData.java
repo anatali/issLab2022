@@ -59,10 +59,10 @@ public class ApplData {
 	public final static String aril_a = "turnLeft(300)";
 	
 	public static final IApplMessage w(String sender, String receiver)   {
-		return CommUtils.buildDispatch(sender,robotCmdId,aril_w,receiver);
+		return CommUtils.buildDispatch(sender,robotCmdId,"w",receiver);
 	}
 	public static final IApplMessage a(String sender, String receiver)   {
-		return CommUtils.buildDispatch(sender,robotCmdId,aril_a,receiver);
+		return CommUtils.buildDispatch(sender,robotCmdId,"a",receiver);
 	}
 	
 	//Per Robot 

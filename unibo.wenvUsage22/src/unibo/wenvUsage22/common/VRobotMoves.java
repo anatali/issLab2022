@@ -64,24 +64,22 @@ public class VRobotMoves {
 		try {
 			turnLeft(name,conn);
 			CommUtils.delay(300);  
-			//step( name,conn  );	  		
 			stepAfterTurn(name,conn,duration);     //con dt>300 sta barando ...
  			turnLeft(name,conn);
 			CommUtils.delay(300);  
  		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | turnLeft ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | turnLeftAndStep ERROR:" +  e.getMessage() );
 		}	
 	}
 	public static void turnRightAndStep(String name, int duration, Interaction2021 conn) {
 		try {
 			turnRight(name,conn);
 			CommUtils.delay(300);  
-			//step( name,conn  );	 //collision?		
 			stepAfterTurn(name,conn,duration);     //con dt>300 sta barando ...
 			turnRight(name,conn);
 			CommUtils.delay(300);  
  		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | turnLeft ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | turnRightAndStep ERROR:" +  e.getMessage() );
 		}	
 	}
 	public static void turnLeftAndHome(String name, Interaction2021 conn) {
@@ -90,17 +88,16 @@ public class VRobotMoves {
 			CommUtils.delay(300);  
  			stepAfterTurn(name,conn,2500);      
   		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | turnLeft ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | turnLeftAndHome ERROR:" +  e.getMessage() );
 		}	
 	}
 	
 	public static void step(String name, Interaction2021 conn) {
 		moveForward( name,conn,300 );	 //se collision non completa		
-		//CommUtils.delay(400); 		
 	}
 	public static void stepAfterTurn(String name, Interaction2021 conn, int dt) {
-		moveForward( name,conn,dt );	 //se collision non completa		
-		CommUtils.delay(dt+100); 		
+ 		moveForward( name,conn, dt);	 //se collision non completa		
+		CommUtils.delay(dt+200); 		
 	}
 
 }

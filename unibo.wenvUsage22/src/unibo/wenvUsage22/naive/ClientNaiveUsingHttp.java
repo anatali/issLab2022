@@ -43,12 +43,12 @@ public class ClientNaiveUsingHttp {
 			//ColorsOut.out( "ClientUsingPost | sendCmd response= " + response );
 			String jsonStr = EntityUtils.toString( response.getEntity() );
 			JSONObject jsonEndmove = new JSONObject(jsonStr) ;
-			//ColorsOut.out("IssHttpSupport | jsonEndmove=" + jsonEndmove);
+			ColorsOut.out("requestSynch | jsonEndmove=" + jsonEndmove);
 			if( jsonEndmove.get("endmove") != null ) {
 				endmove = jsonEndmove.getBoolean("endmove");
 			}
 		} catch(Exception e){
-			ColorsOut.out("        IssHttpSupport | ERROR:" + e.getMessage());
+			ColorsOut.outerr("requestSynch | ERROR:" + e.getMessage());
 		}
 		return endmove;
 	}
@@ -56,16 +56,16 @@ public class ClientNaiveUsingHttp {
 	protected void doBasicMoves() {
 			ColorsOut.out("STARTING doBasicMoves ... ");
 			boolean endmove = false;
-			endmove = requestSynch( ApplData.turnLeft(300) );
-			ColorsOut.out("turnLeft endmove=" + endmove);
-			endmove = requestSynch( ApplData.turnRight(300) );
-			ColorsOut.out("turnRight endmove=" + endmove);
-
-			//Now the value of endmove depends on the position of the robot
-			endmove = requestSynch( ApplData.moveForward(1800) );
+//			endmove = requestSynch( ApplData.turnLeft(300) );
+//			ColorsOut.out("turnLeft endmove=" + endmove);
+//			endmove = requestSynch( ApplData.turnRight(300) );
+//			ColorsOut.out("turnRight endmove=" + endmove);
+//
+//			//Now the value of endmove depends on the position of the robot
+			endmove = requestSynch( ApplData.moveForward(1000) );
 			ColorsOut.out("moveForward endmove=" + endmove);
-			endmove = requestSynch( ApplData.moveBackward(800) );
-			ColorsOut.out("moveBackward endmove=" + endmove);
+//			endmove = requestSynch( ApplData.moveBackward(800) );
+//			ColorsOut.out("moveBackward endmove=" + endmove);
 	}
 /*
 MAIN

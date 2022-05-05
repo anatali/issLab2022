@@ -10,7 +10,7 @@ import unibo.actor22.annotations.Actor22;
 import unibo.actor22.annotations.Context22;
 import unibo.wenvUsage22.common.ApplData;
 
-@Context22(name = "pcCtx", host = "localhost", port = "8083")
+@Context22(name = "pcCtx", host = "localhost", port = "8072")
 @Actor22(name = ApplData.robotName,contextName="pcCtx",implement = BoundaryWalkerAnnot.class)
 //@Actor22(name = "sentinel",contextName="pcCtx",implement = Sentinel.class)
 public class MainBoundaryWalkerAnnot { 

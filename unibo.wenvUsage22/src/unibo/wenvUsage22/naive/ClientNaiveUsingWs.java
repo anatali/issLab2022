@@ -61,23 +61,19 @@ public class ClientNaiveUsingWs {
             if (jsonObj.has("endmove")) {
                 boolean endmove = jsonObj.getBoolean("endmove");
                 String  move    = jsonObj.getString("move") ;
-                //ColorsOut.out("ClientNaiveUsingWs | onMessage " + move + " endmove=" + endmove);
+                ColorsOut.out("ClientNaiveUsingWs | onMessage " + move + " endmove=" + endmove);
             } else if (jsonObj.has("collision")  ) {
-                boolean collision = jsonObj.getBoolean("collision");
-                String move = jsonObj.get("move").toString();
-                //ColorsOut.out("ClientNaiveUsingWs | onMessage collision=" + collision + " move=" + move);
+                 
+                String move   = jsonObj.getString("collision");
+                String target = jsonObj.getString("target");
+                ColorsOut.out("ClientNaiveUsingWs | onMessage collision move=" + move + " target=" + target);
              } else if (jsonObj.has("sonarName")  ) {
                 String sonarNAme = jsonObj.getString("sonarName") ;
-                String distance = jsonObj.get("distance").toString();
-                //ColorsOut.out("ClientNaiveUsingWs | onMessage sonaraAme=" + sonarNAme + " distance=" + distance);
+                String distance  = jsonObj.get("distance").toString();
+                ColorsOut.out("ClientNaiveUsingWs | onMessage sonaraAme=" + sonarNAme + " distance=" + distance);
             }
         } catch (Exception e) {
         	ColorsOut.outerr("onMessage " + message + " " +e.getMessage());
-//        	try {
-//				request( stop(100) );
-//			} catch (Exception e1) {
-//				e1.printStackTrace();
-//			}
         }
 
     }
@@ -99,43 +95,25 @@ BUSINESS LOGIC
         int moveTime       = jsonObj.getInt("time");
         ColorsOut.out("ClientNaiveUsingWs | requestSynch " + crilCmd + " moveTime=" + moveTime);
         Thread.sleep( moveTime );
-//      	request( stop(10) );
     }
 
     protected void doBasicMoves() throws Exception{
-//    	request( moveForward(  1800) );
-//    	Thread.sleep( 500 );
-//    	request( stop( ) );
-    	
-//    	request( moveForward( 400  ) );
-//     	request( moveBackward( 400 ) );
-    	request( ApplData.turnLeft( 800  ) );
-    	request( ApplData.stop( ) );
-//    	Thread.sleep( 500 );
-     	request( ApplData.turnRight( 400 ) );
-     	
-//     	requestSynch(  moveForward( 400  ) );
-//     	requestSynch(  moveBackward( 400  ) );
+     	request( ApplData.turnLeft( 800  ) );
+    	Thread.sleep( 400 );
+     	request( ApplData.stop( ) );
+////    	Thread.sleep( 500 );
+    	request( ApplData.turnRight( 300 ) );
+//    	//request( ApplData.stop( ) );
+//     	Thread.sleep( 800 );   	
+//    	requestSynch(  ApplData.moveForward( 800  ) );
+//    	Thread.sleep( 500 ); 
+//      	requestSynch(  ApplData.moveBackward( 400  ) );
      	
      	Thread.sleep( 2500 );  //Give time to receive msgs from WEnv
     	
     }
 
-    protected void doBasicMovesOld() throws Exception{
-//    	  request( stop(10) );
-    	  requestSynch( ApplData.moveForward(  1400) );
-//        requestDelayed( turnLeft(2800) );
-//          request( moveForward(  1800) );
-//          Thread.sleep( 500 );
-//          request( stop(10) );
-//          request( moveBackward(  1000) );
-//          Thread.sleep( 500 );
-//          request( stop(10) );
-//         requestDelayed( turnRight(300) );
-//         requestDelayed( moveForward(  1800) );
-//         requestDelayed( moveBackward( 800) );
-//        this.userSession = null;
-    }
+ 
 
 /*
 MAIN

@@ -32,6 +32,18 @@ public class ClientUsingWsHttp implements IObserver{
  
 
 	private Interaction2021 connWs, connHttp;
+	
+//	protected String crilCmd(String move, int time){
+//		String crilCmd  = "{\"robotmove\":\"" + move + "\" , \"time\": " + time + "}";
+//		//ColorsOut.out( "ClientNaiveUsingPost |  buildCrilCmd:" + crilCmd );
+//		return crilCmd;
+//	}
+//	public String moveForward(int duration)  { return crilCmd("moveForward", duration) ; }
+//	public String moveBackward(int duration) { return crilCmd("moveBackward", duration); }
+//	public String turnLeft(int duration)     { return crilCmd("turnLeft", duration);     }
+//	public String turnRight(int duration)    { return crilCmd("turnRight", duration);    }
+//	public String stop(int duration)         { return crilCmd("alarm", duration);        }
+//	public String stop( )                    { return crilCmd("alarm", 10);        }
 
 	protected void doBasicMoves() throws Exception {
 		connWs   = WsConnection.create("localhost:8091" );

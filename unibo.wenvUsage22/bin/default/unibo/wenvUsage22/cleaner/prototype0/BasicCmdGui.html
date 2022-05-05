@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<meta charset = "utf-8" />
+<title>BasicCmdGui</title>
+<body>
+<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/2.1.0/jquery.js"></script>
+<script src="./wsInteraction2021.js"></script>
+<script src="./tcpInteraction2021.js"></script>
+
+<script src="./wenvData.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+	//createWs(  'ws://localhost:8091/' );
+	createTcp(  "localhost", 8083 );
+	
+	$(function () {
+		$( "#start" ).click(function() {  forward( moveForward );    })  	 
+		$( "#stop" ).click(function() {   forward( halt );    })  	 
+//		$( "#wsocket" ).click(function() {  doMove("moveForward", 1000);  })	 
+//		$( "#ssocket" ).click(function() { doMove("moveBackward", 1000);  })			
+//		$( "#hsocket" ).click(function() { doMove("alarm", 100);         })	 
+	});
+	/*
+	$(document).ready(function(){ 
+ 		forward( "{\"robotmove\":\"turnLeft\", \"time\": 300}" );   
+	});
+	*/
+	
+	function doMove(move, time) {
+        const moveJson = '{"robotmove":"'+ move + '", "time":'+time+'}'
+        console.log("doMove moveJson:" + moveJson);
+        forward(moveJson) 
+    }
+</script>
+
+<h3>COMMAND AREA</h3>
+
+ <button id="start" >start</button>  &nbsp;&nbsp;   <button id="stop" >stop</button> 
+ &nbsp;&nbsp;  <button id="resume" >resume</button>  
+  
+
+<hr/>
+<h3>DISPLAY AREA</h3>
+<div id = "display"></div>
+
+<script>
+ 	addObserver(document.getElementById("display"));
+</script>
+</body>
+</html>

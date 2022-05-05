@@ -92,11 +92,11 @@ public class BoundaryWalkerAnnotAlarms extends QakActor22FsmAnnot  {
 		ncorner++;
 		//Parte aggiunta al termine, per definire le transizioni
  		if( ncorner == 4 ) {
- 			addTransition("endWork", null); //empty move
+ 			addTransition("endWork", null, false); //empty move
   		}else {
   			currentMove="turnLeft";
   			VRobotMoves.turnLeft(getName(), conn);
-  			addTransition("robotMoving",  SystemData.endMoveOkId);
+  			addTransition("robotMoving",  SystemData.endMoveOkId, false);
   		}
  	}
  	
