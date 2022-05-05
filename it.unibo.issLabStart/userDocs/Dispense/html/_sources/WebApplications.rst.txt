@@ -14,7 +14,7 @@
 .. _Bullseye: https://www.raspberrypi.com/news/raspberry-pi-os-debian-bullseye/
 .. _REST : https://en.wikipedia.org/wiki/Representational_state_transfer
 .. _HATEOAS: https://en.wikipedia.org/wiki/HATEOAS
-
+.. _BannerTool: https://manytools.org/hacker-tools/ascii-banner/
 
 ==================================
 WebApplications con SpringBoot
@@ -229,7 +229,7 @@ Primi passi con SpringBoot
         human.logo    = Gui for human-machine interaction
         machine.logo  = Gui for machine-to-machine interaction
 
-#. Inserire un file ``banner.txt``  ( si veda ) personalizzato nella ``directory resources``
+#. Inserire nella ``directory resources`` un file ``banner.txt``  personalizzato ( si veda `BannerTool`_).  
 
 +++++++++++++++++++++++++++++++++++++++++++++
 Un primo controller  
@@ -257,7 +257,7 @@ Creiamo un file ``it.unibo.webspring.demo.HIControllerDemo`` con il seguente con
     public ResponseEntity handle(Exception ex) {
             HttpHeaders responseHeaders = new HttpHeaders();
         return new ResponseEntity(
-                    "BaseController ERROR " + ex.getMessage(), 
+                    "HIControllerDemo ERROR " + ex.getMessage(), 
                     responseHeaders, HttpStatus.CREATED);
         }
     }
@@ -277,7 +277,7 @@ Ci poniniamo l'obiettivo di creare con Spring una WebApplication che mostri agli
 
 .. image::  ./_static/img/Spring/RobotCleanerGui.PNG
   :align: center 
-  :width: 60%
+  :width: 80%
 
 
 
@@ -324,24 +324,23 @@ Un controller per RobotCleaner Appl
     public class HIController { 
     private static final String robotCmdId = "move";
     private static  String robotName       = "cleaner";
+    
+    private String mainPage = "RobotCleanerGui";
 
-
-    public HIController(){
-      //createRobotCleaner();
-    }
+    public HIController(){   }
 
     @GetMapping("/") 		 
     public String homePage(Model model) {
         model.addAttribute("arg", appName);
-        return "RobotCleanerGui";
+        return mainPage;
     } 
 
     //Dopo click sul pulsante connect
     @PostMapping("/configure")
     public String configure(Model viewmodel  , @RequestParam String move, String addr ){
+        createRobotCleaner();   //Busness logic: Modo locale
         ConnQakBase connToRobot = ConnQakBase.create( ProtocolType.tcp );
         conn = connToRobot.createConnection(addr, 8083);
-        Qak22Context.setActorAsRemote(robotName, "8083", "localhost", ProtocolType.tcp);
         return mainPage;
     }
 
@@ -360,14 +359,17 @@ Un controller per RobotCleaner Appl
     }
             
     @ExceptionHandler 
-    public ResponseEntity handle(Exception ex) {
-            HttpHeaders responseHeaders = new HttpHeaders();
-        return new ResponseEntity(
-                    "BaseController ERROR " + ex.getMessage(), 
-                    responseHeaders, HttpStatus.CREATED);
-        }
-    }
+    public ResponseEntity handle(Exception ex) {... }
 
  
  
+.. image::  ./_static/img/Spring/RobotCleanerFsmProject.PNG
+  :align: center 
+  :width: 60%
+
+
+.. image::  ./_static/img/Spring/RobotCleanerFsmStartStopProject.PNG
+  :align: center 
+  :width: 60%
+
 

@@ -180,17 +180,21 @@ il risultato che l’analista intende esporre e fornire al progettista come punt
 </section>
 <section id="robotcleaner-behaviour">
 <h3>RobotCleaner Behaviour<a class="headerlink" href="#robotcleaner-behaviour" title="Permalink to this headline">¶</a></h3>
-<p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.cleaner.RobotCleaner</em>.</p>
+<p>Progetto: <strong>unibo.wenvUsage22</strong>.</p>
 <ul>
 <li><p>Gli stati dell’automa che opera secondo un <a class="reference internal" href="#movimento-per-colonne"><span class="std std-ref">Movimento per colonne</span></a> sono</p>
 <blockquote>
 <div><p><code class="docutils literal notranslate"><span class="pre">activate,</span> <span class="pre">start,</span> <span class="pre">goingDown,</span> <span class="pre">turnGoingDown,</span> <span class="pre">goingUp,</span> <span class="pre">turnGoingUp,</span> <span class="pre">lastColumn,</span> <span class="pre">completed,</span> <span class="pre">endJob</span></code></p>
 </div></blockquote>
 </li>
+</ul>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsm.PNG"><img alt="_images/RobotCleanerFsm.PNG" class="align-center" src="_images/RobotCleanerFsm.PNG" style="width: 80%;" /></a>
+<ul>
 <li><p>L’automa invia (stati <code class="docutils literal notranslate"><span class="pre">going..</span></code>) al robot comandi di movimento a passi in avanti  come indicato in <a class="reference internal" href="#il-passo-del-robot"><span class="std std-ref">Il passo del robot</span></a> e di rotazione,
 (stati <code class="docutils literal notranslate"><span class="pre">turn..</span></code>)  definiti nella classe <code class="docutils literal notranslate"><span class="pre">VRobotMoves</span></code>.</p></li>
 <li><p>La <em>VerificaLavoro</em> prospettata in <a class="reference internal" href="#movimento-per-colonne"><span class="std std-ref">Movimento per colonne</span></a> viene realizzata contando il numero di passi verso <code class="docutils literal notranslate"><span class="pre">wallRight</span></code> che deve
-risultare, nello stato  <code class="docutils literal notranslate"><span class="pre">completed</span> <span class="pre">``</span> <span class="pre">non</span> <span class="pre">inferiore</span> <span class="pre">`DWallDown/DR</span> <span class="pre">+</span> <span class="pre">1</span></code>. La distanza <cite>DWallDown`</cite> può essere misurata facendo muovere l’automa
+risultare, nello stato  <code class="docutils literal notranslate"><span class="pre">completed</span></code> non inferiore <code class="docutils literal notranslate"><span class="pre">DWallDown/DR</span> <span class="pre">+</span> <span class="pre">1</span></code>. La distanza <code class="docutils literal notranslate"><span class="pre">DWallDown</span></code>
+può essere misurata facendo muovere l’automa
 per passi lunghi DR da <code class="docutils literal notranslate"><span class="pre">wallLeft</span></code> a <code class="docutils literal notranslate"><span class="pre">wallRight</span></code>. Questi compito può essere svolto da una applicazione ad hoc.</p>
 <blockquote>
 <div><p><span class="worktodo">WORKTODO: Realizzare una applicazione che calcola DWallDown</span></p>
@@ -216,14 +220,13 @@ da un POJO, observer di <a class="reference internal" href="VirtualRobot.html#ws
 </li>
 <li><p>Le transizioni di stato avvegono in conseguenza della ricezione di un messaggio <code class="docutils literal notranslate"><span class="pre">endMoveOk</span></code> oppura <code class="docutils literal notranslate"><span class="pre">endMoveKo</span></code></p></li>
 </ul>
-<a class="reference internal image-reference" href="_images/RobotCleanerFsm.PNG"><img alt="_images/RobotCleanerFsm.PNG" class="align-center" src="_images/RobotCleanerFsm.PNG" style="width: 80%;" /></a>
-<p>Il modello eseguibile è riportato in RobotCleaner.java</p>
+<p>Il modello eseguibile è riportato in <code class="docutils literal notranslate"><span class="pre">RobotCleanerAnalisi.java</span></code></p>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.cleaner.RobotCleanerAnalisi</em>.</p>
 <div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotCleaner</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
 
-     <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;activate&quot;</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
-        <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;start&quot;</span><span class="p">,</span>   <span class="n">msgId</span><span class="o">=</span> <span class="n">SystemData</span><span class="p">.</span><span class="na">startSysCmdId</span>  <span class="p">)</span>
+   <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;activate&quot;</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+   <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;start&quot;</span><span class="p">,</span>   <span class="n">msgId</span><span class="o">=</span> <span class="n">SystemData</span><span class="p">.</span><span class="na">startSysCmdId</span>  <span class="p">)</span>
    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
-
 
    <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;start&quot;</span> <span class="p">)</span>
    <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;goingDown&quot;</span><span class="p">,</span>   <span class="n">msgId</span><span class="o">=</span><span class="s">&quot;endMoveOk&quot;</span>  <span class="p">)</span>
@@ -234,23 +237,167 @@ da un POJO, observer di <a class="reference internal" href="VirtualRobot.html#ws
 </div>
 </section>
 </section>
+<section id="robotcleaner-progetto">
+<h2>RobotCleaner: progetto<a class="headerlink" href="#robotcleaner-progetto" title="Permalink to this headline">¶</a></h2>
+<p>Il progettista parte dal modello dell’analisi e inizia con la semplificazione
+dell’automa, riducendo il numero degli stati.</p>
+<p>Nello stato  <code class="docutils literal notranslate"><span class="pre">coverColumn</span></code> il robot percorre una colonna; la direzione è mantenuta in una variabile
+booleana <code class="docutils literal notranslate"><span class="pre">goingDown</span></code>, che viene usata nello stato <code class="docutils literal notranslate"><span class="pre">turn</span></code>  per eseguire uno di due macro-mosse:
+<code class="docutils literal notranslate"><span class="pre">turnLeftAndStep</span></code> o <code class="docutils literal notranslate"><span class="pre">turnRightAndStep</span></code>.</p>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsmProject.PNG"><img alt="_images/RobotCleanerFsmProject.PNG" class="align-center" src="_images/RobotCleanerFsmProject.PNG" style="width: 100%;" /></a>
+<p>Inoltre il progettista decide di permettere la riattivazione del robot dopo che ha completato il lavoro.</p>
+</section>
 <section id="robotcleaner-reattivo-a-comandi">
 <h2>RobotCleaner reattivo a comandi<a class="headerlink" href="#robotcleaner-reattivo-a-comandi" title="Permalink to this headline">¶</a></h2>
-<p><em>RobotCleaner reattivo</em>: Estendere il funzionamento di il <a class="reference internal" href="#robotcleaner-behaviour"><span class="std std-ref">RobotClenaer</span></a> in modo da eseguire i seguenti comandi inviati da un utente.
-(umano o macchina):</p>
+<p>Al termine della sprint review, il committente, soddisfatto del lavoro, chiede se sia possibile <span class="blue">realizzare
+una nuove funzionalità</span>.</p>
+<p><strong>RobotCleaner reattivo</strong>: Estendere il funzionamento di il <a class="reference internal" href="#robotcleaner-behaviour"><span class="std std-ref">RobotClenaer</span></a>
+in modo da eseguire i seguenti comandi inviati da un controllore (umano o macchina):</p>
 <ul class="simple">
-<li><p>start (id = <code class="docutils literal notranslate"><span class="pre">SystemData.startSysCmdId</span></code>) attiva il robot, che parte dalla posizione HOMe</p></li>
-<li><p>stop (id = <code class="docutils literal notranslate"><span class="pre">SystemData.stopSysCmdId</span></code>): ferma il robot nella posizione corrente</p></li>
-<li><p>resume (id = <code class="docutils literal notranslate"><span class="pre">SystemData.resumeSysCmdId</span></code>): riattiva il robot dalla posizione corrente</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start</span></code> (id = <code class="docutils literal notranslate"><span class="pre">SystemData.startSysCmdId</span></code>) attiva il robot, che parte dalla posizione HOME</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop</span></code> (id = <code class="docutils literal notranslate"><span class="pre">SystemData.stopSysCmdId</span></code>): ferma il robot nella posizione corrente</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resume</span></code> (id = <code class="docutils literal notranslate"><span class="pre">SystemData.resumeSysCmdId</span></code>): riattiva il robot dalla posizione corrente</p></li>
 </ul>
-<p>Pianificazione del lavoro:</p>
+<p>A questo punto si potrebbe pensare alla seguente pianificazione del lavoro:</p>
 <ol class="arabic simple">
-<li><p>Si estende il behavior introddto in <a class="reference internal" href="#robotcleaner-behaviour"><span class="std std-ref">RobotCleaner Behaviour</span></a>, tenendo conto dei nuovi possibili messaggi</p></li>
-<li><p>Si realizza un attore che simula l’operatore umano che invia i comandi</p></li>
-<li><p>Si verifica il funzionamento del nuovo prototipo</p></li>
+<li><p>Si estende il behavior introdotto in <a class="reference internal" href="#robotcleaner-behaviour"><span class="std std-ref">RobotCleaner Behaviour</span></a>, tenendo conto dei nuovi possibili messaggi.</p></li>
 <li><p>Si realizza una Web User Interface utlizzando SpringBoot. Per questa parte si veda <a class="reference internal" href="WebApplications.html#webapplications-con-springboot"><span class="std std-ref">WebApplications con SpringBoot</span></a>
 e <a class="reference internal" href="WebApplications.html#una-webconsole-per-il-robotcleaner"><span class="std std-ref">Una WebConsole per il RobotCleaner</span></a></p></li>
 </ol>
+<section id="troppo-precipitosi">
+<h3>Troppo precipitosi?<a class="headerlink" href="#troppo-precipitosi" title="Permalink to this headline">¶</a></h3>
+<p>Partire con l’idea di procedere lavorando immediatamente su una <strong>estensione  del funzionamento</strong> significa
+a <span class="blue">non trattare in modo esplcito</span> due punti importanti:</p>
+<ol class="arabic simple">
+<li><p>come si modifica l’architettura logica del sistema</p></li>
+<li><p>quale è il significato di <span class="blue">fermare e riattivare</span>: dopo uno <code class="docutils literal notranslate"><span class="pre">stop</span></code>, il robot potrebbe dover eseguire altre azioni?</p></li>
+</ol>
+<section id="la-nuova-architettura-logica">
+<h4>La nuova architettura logica<a class="headerlink" href="#la-nuova-architettura-logica" title="Permalink to this headline">¶</a></h4>
+<p><span class="worktodo">WORKTODO: impostare un modello (eseguibile) della nuova architettura</span></p>
+</section>
+<section id="il-significato-di-stop-resume">
+<h4>Il significato di stop/resume<a class="headerlink" href="#il-significato-di-stop-resume" title="Permalink to this headline">¶</a></h4>
+<p>Il committente chiarisce che il robot, sopo un comando di <code class="docutils literal notranslate"><span class="pre">stop</span></code>, <strong>al momento</strong>,
+non deve eseguire alcuna altra azione, se non rimanere in attesa di un <code class="docutils literal notranslate"><span class="pre">resume</span></code>.</p>
+<section id="il-nuovo-piano-di-lavoro">
+<h5>Il nuovo piano di lavoro<a class="headerlink" href="#il-nuovo-piano-di-lavoro" title="Permalink to this headline">¶</a></h5>
+<ol class="arabic simple">
+<li><p>Si realizza un attore che simula l’operatore umano che invia i comandi</p></li>
+<li><p>Si verifica il funzionamento del nuovo prototipo</p></li>
+<li><p>Al termine, si realizza una WebApplication con SpringBoot.</p></li>
+</ol>
+<p>Partendo dal modello della analisi, si considera
+la possibilità di gestire un messaggio di <code class="docutils literal notranslate"><span class="pre">stop</span></code> negli stati marcati nella figura che segue.</p>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsmStartStopAnalisi.PNG"><img alt="_images/RobotCleanerFsmStartStopAnalisi.PNG" class="align-center" src="_images/RobotCleanerFsmStartStopAnalisi.PNG" style="width: 80%;" /></a>
+<p>Per una versione di questo tipo si veda</p>
+<blockquote>
+<div><p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.cleaner.RobotCleanerStartStop</em>.</p>
+</div></blockquote>
+<p>Per ogni stato <code class="docutils literal notranslate"><span class="pre">XXX</span></code> marcato, nasce uno stato <code class="docutils literal notranslate"><span class="pre">stoppedXXX</span></code> in cui l’automa transita alla ricezione di un
+comando di <code class="docutils literal notranslate"><span class="pre">stop</span></code>. Questo stato rimane in attesa di un comando di <code class="docutils literal notranslate"><span class="pre">resume</span></code>, alla ricezione del
+quale transita nello stato <code class="docutils literal notranslate"><span class="pre">resumedXXX</span></code>, che provvede ad elaborare il messaggio  <code class="docutils literal notranslate"><span class="pre">endMoveOk</span></code>
+o  <code class="docutils literal notranslate"><span class="pre">endMoveKo</span></code> che avrebbe dovuto provocare una transizione dello stato <code class="docutils literal notranslate"><span class="pre">XXX</span></code>.</p>
+<p>Ad esempio:</p>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsmStartStopAnalisiNoInterrupt.PNG"><img alt="_images/RobotCleanerFsmStartStopAnalisiNoInterrupt.PNG" class="align-center" src="_images/RobotCleanerFsmStartStopAnalisiNoInterrupt.PNG" style="width: 80%;" /></a>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.cleaner.RobotCleanerStartStop</em>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;stoppedDown&quot;</span> <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;resumedDown&quot;</span><span class="p">,</span>  <span class="n">msgId</span><span class="o">=</span> <span class="n">SystemData</span><span class="p">.</span><span class="na">resumeSysCmdId</span>  <span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">stoppedDown</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+   <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;resumedDown&quot;</span> <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;goingDown&quot;</span><span class="p">,</span>     <span class="n">msgId</span><span class="o">=</span><span class="s">&quot;endMoveOk&quot;</span>  <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;turnGoingDown&quot;</span><span class="p">,</span> <span class="n">msgId</span><span class="o">=</span><span class="s">&quot;endMoveKo&quot;</span>  <span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">resumedDown</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+   <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il progettista potrebbe applicare lo stesso modo di procedere al modello <a class="reference internal" href="#robotcleaner-progetto"><span class="std std-ref">RobotCleaner: progetto</span></a>.</p>
+<p>Tuttavia, il progettista si chiede se non sia opportuno un approfondimento dell’analisi del problema,
+innescando una retroazione verso l’analista (tipico di un
+<a class="reference internal" href="CostruireSoftware.html#l-analisi-del-problema"><span class="std std-ref">processo incrementale, a spirale</span></a>).</p>
+</section>
+</section>
+</section>
+<section id="stop-resume-un-nuovo-abstraction-gap">
+<h3>Stop/resume: un nuovo abstraction gap?<a class="headerlink" href="#stop-resume-un-nuovo-abstraction-gap" title="Permalink to this headline">¶</a></h3>
+<p>La semantica stop/resume delineata in precedenza ricorda il meccanismo delle interruzioni (<span class="blue">interrupt</span>)
+che implica:</p>
+<ol class="arabic simple">
+<li><p>una memorizzazione (nello stack) del stato della CPU</p></li>
+<li><p>il trasferimento del controllo alla intruupt-routine e</p></li>
+<li><p>il ripristino dello stato salvato al termine di questa, con il ritorno al processo computazionale interrotto.</p></li>
+</ol>
+<section id="stop-resume-come-interrupt">
+<h4>Stop/resume come interrupt<a class="headerlink" href="#stop-resume-come-interrupt" title="Permalink to this headline">¶</a></h4>
+<p>Tranedo ispirazione dal meccanismo degli <span class="blue">interrupt</span>, il team di sviluppo ha concordato sulla opportunità
+di rendere disponibile un meccanismo analogo da parte della infrastruttura di supporto agli attori, che è stata
+così modificata:</p>
+<ul class="simple">
+<li><p>viene  introdotto un attributo <strong>interrupt</strong> alle transizioni (una sola per stato)</p></li>
+<li><p>quando uno stato S ha una transizione con <code class="docutils literal notranslate"><span class="pre">interrupt=true</span></code>, lo si  memorizza prima di passare al prossimo stato
+Si memorizza anche a una copia della tabella delle transizioni che l’automa avrebbe poututo
+effettuare in assenza dell’interrupt</p></li>
+<li><p>se il prossimo stato (<code class="docutils literal notranslate"><span class="pre">S_I</span></code>) è quello relativo alla transizione qualificata come interrupt,
+lo si esegue normalmente, ma alla fine della esecuzione di <code class="docutils literal notranslate"><span class="pre">S_I</span></code>, come ultima operazione si deve eseguire
+l’operazione built-in <span class="blue">resume</span>
+(una sorta return form interrupt) che ripristina la tabella delle transizioni memorizzata. In tal modo
+<code class="docutils literal notranslate"><span class="pre">S_I</span></code> opera come avrebbe fatto <code class="docutils literal notranslate"><span class="pre">S</span></code> se non ci fosse stato l’interrupt, attigendo dai messaggi non gestiti
+memoriizzati (<code class="docutils literal notranslate"><span class="pre">OldMsgQueue</span></code>)</p></li>
+</ul>
+<p>Osserviamo che dallo stato <code class="docutils literal notranslate"><span class="pre">S_I</span></code> si potrebbero avere anche transizioni normali verso altri stati.
+Basta che ci la nuova catena computazionale termini con una <span class="blue">resume</span>.</p>
+<p>Con questo meccansimo, il nuovo diagramma di progetto si presenta come segue:</p>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsmStartStopProject.PNG"><img alt="_images/RobotCleanerFsmStartStopProject.PNG" class="align-center" src="_images/RobotCleanerFsmStartStopProject.PNG" style="width: 100%;" /></a>
+<p>La sua formalizzazione in codice si presenta in qyesto modo:</p>
+<blockquote>
+<div><p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.cleaner.RobotCleanerProject</em>.</p>
+</div></blockquote>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotCleanerInterrupt</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
+ <span class="p">...</span>
+   <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;goingDown&quot;</span> <span class="p">)</span>
+   <span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;stopped&quot;</span><span class="p">,</span>
+        <span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">stopSysCmdId</span><span class="p">,</span><span class="n">interrupt</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+   <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;goingDown&quot;</span><span class="p">,</span>     <span class="n">msgId</span><span class="o">=</span><span class="s">&quot;endMoveOk&quot;</span>  <span class="p">)</span>
+   <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;turnGoingDown&quot;</span><span class="p">,</span> <span class="n">msgId</span><span class="o">=</span><span class="s">&quot;endMoveKo&quot;</span>  <span class="p">)</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">goingDown</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>
+      <span class="n">VRobotMoves</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span> <span class="n">conn</span> <span class="p">);</span>
+   <span class="p">}</span>
+   <span class="p">...</span>
+   <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;stopped&quot;</span> <span class="p">)</span>
+   <span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;backToInterrupted&quot;</span><span class="p">,</span><span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">resumeSysCmdId</span><span class="p">)</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">stopped</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+   <span class="p">}</span>
+
+   <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;backToInterrupted&quot;</span> <span class="p">)</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">backToInterrupted</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">+</span> <span class="n">msg</span><span class="p">);</span>
+      <span class="n">resume</span><span class="p">();</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="robotcleaner-return-to-home">
+<h3>RobotCleaner: return to HOME<a class="headerlink" href="#robotcleaner-return-to-home" title="Permalink to this headline">¶</a></h3>
+<p>Un <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> potrebbe dover essere reattivo a comadi o situazioni che non richiedono solo una
+momentanea interruzione delle attivtà che sta eseguendo come sua parte proattiva, ma anche
+un radicale cambiamento di queste.</p>
+<p>Ad esempio, il robot potrebbere ricevere un comando di <code class="docutils literal notranslate"><span class="pre">returnToHome</span></code>.</p>
+<p><span class="worktodo">WORKTODO: analizzare le problematiche connesse al comando returnToHome</span></p>
+</section>
+</section>
+<section id="robotcleaner-display-area">
+<h2>RobotCleaner:  display area<a class="headerlink" href="#robotcleaner-display-area" title="Permalink to this headline">¶</a></h2>
+<p><span class="worktodo">WORKTODO: aggiornare la DisplayArea con informazioni di stato</span></p>
+<p>Il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> deve emettere informazioni di stato che vengono inviate alla pagina Web mediante
+una webSocket su 8085.</p>
 </section>
 </section>
 
@@ -326,7 +473,24 @@ e <a class="reference internal" href="WebApplications.html#una-webconsole-per-il
 <li class="toctree-l3"><a class="reference internal" href="#robotcleaner-behaviour">RobotCleaner Behaviour</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-reattivo-a-comandi">RobotCleaner reattivo a comandi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-progetto">RobotCleaner: progetto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-reattivo-a-comandi">RobotCleaner reattivo a comandi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#troppo-precipitosi">Troppo precipitosi?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#la-nuova-architettura-logica">La nuova architettura logica</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#il-significato-di-stop-resume">Il significato di stop/resume</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#il-nuovo-piano-di-lavoro">Il nuovo piano di lavoro</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-resume-un-nuovo-abstraction-gap">Stop/resume: un nuovo abstraction gap?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#stop-resume-come-interrupt">Stop/resume come interrupt</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#robotcleaner-return-to-home">RobotCleaner: return to HOME</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-display-area">RobotCleaner:  display area</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplications con SpringBoot</a></li>

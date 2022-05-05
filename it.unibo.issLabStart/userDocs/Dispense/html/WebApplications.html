@@ -219,7 +219,7 @@ per visualizzare la modifica).</p></li>
 </div>
 </div></blockquote>
 </li>
-<li><p>Inserire un file <code class="docutils literal notranslate"><span class="pre">banner.txt</span></code>  ( si veda ) personalizzato nella <code class="docutils literal notranslate"><span class="pre">directory</span> <span class="pre">resources</span></code></p></li>
+<li><p>Inserire nella <code class="docutils literal notranslate"><span class="pre">directory</span> <span class="pre">resources</span></code> un file <code class="docutils literal notranslate"><span class="pre">banner.txt</span></code>  personalizzato ( si veda <a class="reference external" href="https://manytools.org/hacker-tools/ascii-banner/">BannerTool</a>).</p></li>
 </ol>
 <section id="un-primo-controller">
 <h3>Un primo controller<a class="headerlink" href="#un-primo-controller" title="Permalink to this headline">¶</a></h3>
@@ -242,7 +242,7 @@ per visualizzare la modifica).</p></li>
 <span class="n">public</span> <span class="n">ResponseEntity</span> <span class="n">handle</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">HttpHeaders</span> <span class="n">responseHeaders</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HttpHeaders</span><span class="p">();</span>
     <span class="k">return</span> <span class="n">new</span> <span class="n">ResponseEntity</span><span class="p">(</span>
-                <span class="s2">&quot;BaseController ERROR &quot;</span> <span class="o">+</span> <span class="n">ex</span><span class="o">.</span><span class="n">getMessage</span><span class="p">(),</span>
+                <span class="s2">&quot;HIControllerDemo ERROR &quot;</span> <span class="o">+</span> <span class="n">ex</span><span class="o">.</span><span class="n">getMessage</span><span class="p">(),</span>
                 <span class="n">responseHeaders</span><span class="p">,</span> <span class="n">HttpStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -255,7 +255,7 @@ per visualizzare la modifica).</p></li>
 <section id="una-webconsole-per-il-robotcleaner">
 <h2>Una WebConsole per il RobotCleaner<a class="headerlink" href="#una-webconsole-per-il-robotcleaner" title="Permalink to this headline">¶</a></h2>
 <p>Ci poniniamo l’obiettivo di creare con Spring una WebApplication che mostri agli utenti una pagina  HTML come quella di figura:</p>
-<a class="reference internal image-reference" href="_images/RobotCleanerGui.PNG"><img alt="_images/RobotCleanerGui.PNG" class="align-center" src="_images/RobotCleanerGui.PNG" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/RobotCleanerGui.PNG"><img alt="_images/RobotCleanerGui.PNG" class="align-center" src="_images/RobotCleanerGui.PNG" style="width: 80%;" /></a>
 <p><span class="remark">La business logic è nel prototipo RobotCleaner</span></p>
 <ul class="simple">
 <li><p>Obiettivo della applicazione Spring è solo quello di offrire una GUI. Tutta la logica applicativa è già stata realizzata
@@ -287,23 +287,22 @@ per visualizzare la modifica).</p></li>
  <span class="n">private</span> <span class="n">static</span> <span class="n">final</span> <span class="n">String</span> <span class="n">robotCmdId</span> <span class="o">=</span> <span class="s2">&quot;move&quot;</span><span class="p">;</span>
  <span class="n">private</span> <span class="n">static</span>  <span class="n">String</span> <span class="n">robotName</span>       <span class="o">=</span> <span class="s2">&quot;cleaner&quot;</span><span class="p">;</span>
 
+ <span class="n">private</span> <span class="n">String</span> <span class="n">mainPage</span> <span class="o">=</span> <span class="s2">&quot;RobotCleanerGui&quot;</span><span class="p">;</span>
 
- <span class="n">public</span> <span class="n">HIController</span><span class="p">(){</span>
-   <span class="o">//</span><span class="n">createRobotCleaner</span><span class="p">();</span>
- <span class="p">}</span>
+ <span class="n">public</span> <span class="n">HIController</span><span class="p">(){</span>   <span class="p">}</span>
 
  <span class="nd">@GetMapping</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
  <span class="n">public</span> <span class="n">String</span> <span class="n">homePage</span><span class="p">(</span><span class="n">Model</span> <span class="n">model</span><span class="p">)</span> <span class="p">{</span>
      <span class="n">model</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;arg&quot;</span><span class="p">,</span> <span class="n">appName</span><span class="p">);</span>
-     <span class="k">return</span> <span class="s2">&quot;RobotCleanerGui&quot;</span><span class="p">;</span>
+     <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
  <span class="p">}</span>
 
  <span class="o">//</span><span class="n">Dopo</span> <span class="n">click</span> <span class="n">sul</span> <span class="n">pulsante</span> <span class="n">connect</span>
  <span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/configure&quot;</span><span class="p">)</span>
  <span class="n">public</span> <span class="n">String</span> <span class="n">configure</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span>  <span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">move</span><span class="p">,</span> <span class="n">String</span> <span class="n">addr</span> <span class="p">){</span>
+     <span class="n">createRobotCleaner</span><span class="p">();</span>   <span class="o">//</span><span class="n">Busness</span> <span class="n">logic</span><span class="p">:</span> <span class="n">Modo</span> <span class="n">locale</span>
      <span class="n">ConnQakBase</span> <span class="n">connToRobot</span> <span class="o">=</span> <span class="n">ConnQakBase</span><span class="o">.</span><span class="n">create</span><span class="p">(</span> <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span> <span class="p">);</span>
      <span class="n">conn</span> <span class="o">=</span> <span class="n">connToRobot</span><span class="o">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">8083</span><span class="p">);</span>
-     <span class="n">Qak22Context</span><span class="o">.</span><span class="n">setActorAsRemote</span><span class="p">(</span><span class="n">robotName</span><span class="p">,</span> <span class="s2">&quot;8083&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">);</span>
      <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
  <span class="p">}</span>
 
@@ -322,15 +321,11 @@ per visualizzare la modifica).</p></li>
  <span class="p">}</span>
 
  <span class="nd">@ExceptionHandler</span>
- <span class="n">public</span> <span class="n">ResponseEntity</span> <span class="n">handle</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span>
-         <span class="n">HttpHeaders</span> <span class="n">responseHeaders</span> <span class="o">=</span> <span class="n">new</span> <span class="n">HttpHeaders</span><span class="p">();</span>
-     <span class="k">return</span> <span class="n">new</span> <span class="n">ResponseEntity</span><span class="p">(</span>
-                 <span class="s2">&quot;BaseController ERROR &quot;</span> <span class="o">+</span> <span class="n">ex</span><span class="o">.</span><span class="n">getMessage</span><span class="p">(),</span>
-                 <span class="n">responseHeaders</span><span class="p">,</span> <span class="n">HttpStatus</span><span class="o">.</span><span class="n">CREATED</span><span class="p">);</span>
-     <span class="p">}</span>
- <span class="p">}</span>
+ <span class="n">public</span> <span class="n">ResponseEntity</span> <span class="n">handle</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span> <span class="p">}</span>
 </pre></div>
 </div>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsmProject.PNG"><img alt="_images/RobotCleanerFsmProject.PNG" class="align-center" src="_images/RobotCleanerFsmProject.PNG" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsmStartStopProject.PNG"><img alt="_images/RobotCleanerFsmStartStopProject.PNG" class="align-center" src="_images/RobotCleanerFsmStartStopProject.PNG" style="width: 60%;" /></a>
 </section>
 </section>
 </section>

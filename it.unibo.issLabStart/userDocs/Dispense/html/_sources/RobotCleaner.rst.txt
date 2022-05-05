@@ -217,18 +217,24 @@ Il componente proattivo che definisce la business logic può essere formalizzato
 RobotCleaner Behaviour
 ++++++++++++++++++++++++++++++++++++
 
-Progetto: **unibo.wenvUsage22** code: *unibo.wenvUsage22.cleaner.RobotCleaner*.
+Progetto: **unibo.wenvUsage22**.
 
 
 - Gli stati dell'automa che opera secondo un :ref:`Movimento per colonne` sono
 
    ``activate, start, goingDown, turnGoingDown, goingUp, turnGoingUp, lastColumn, completed, endJob``
 
+.. image::  ./_static/img/Spring/RobotCleanerFsm.PNG
+    :align: center 
+    :width: 80% 
+
+
 - L'automa invia (stati ``going..``) al robot comandi di movimento a passi in avanti  come indicato in :ref:`Il passo del robot` e di rotazione, 
   (stati ``turn..``)  definiti nella classe ``VRobotMoves``.
 
 - La *VerificaLavoro* prospettata in :ref:`Movimento per colonne` viene realizzata contando il numero di passi verso ``wallRight`` che deve 
-  risultare, nello stato  ``completed `` non inferiore `DWallDown/DR + 1``. La distanza `DWallDown`` può essere misurata facendo muovere l'automa
+  risultare, nello stato  ``completed`` non inferiore ``DWallDown/DR + 1``. La distanza ``DWallDown`` 
+  può essere misurata facendo muovere l'automa
   per passi lunghi DR da ``wallLeft`` a ``wallRight``. Questi compito può essere svolto da una applicazione ad hoc.
 
    :worktodo:`WORKTODO: Realizzare una applicazione che calcola DWallDown`
@@ -253,20 +259,18 @@ Progetto: **unibo.wenvUsage22** code: *unibo.wenvUsage22.cleaner.RobotCleaner*.
  
 - Le transizioni di stato avvegono in conseguenza della ricezione di un messaggio ``endMoveOk`` oppura ``endMoveKo``
 
-.. image::  ./_static/img/Spring/RobotCleanerFsm.PNG
-    :align: center 
-    :width: 80% 
 
-Il modello eseguibile è riportato in RobotCleaner.java
+Il modello eseguibile è riportato in ``RobotCleanerAnalisi.java``
+
+Progetto: **unibo.wenvUsage22** code: *unibo.wenvUsage22.cleaner.RobotCleanerAnalisi*.
 
 .. code:: Java
 
    public class RobotCleaner extends QakActor22FsmAnnot{
 
-   	@State( name = "activate", initial=true)
-	   @Transition( state = "start",   msgId= SystemData.startSysCmdId  )
+      @State( name = "activate", initial=true)
+      @Transition( state = "start",   msgId= SystemData.startSysCmdId  )
       protected void activate( IApplMessage msg ) { ... }
-
 
       @State( name = "start" )
       @Transition( state = "goingDown",   msgId="endMoveOk"  )
@@ -275,22 +279,218 @@ Il modello eseguibile è riportato in RobotCleaner.java
    }
 
 
+
+------------------------------------------------------
+RobotCleaner: progetto
+------------------------------------------------------
+
+Il progettista parte dal modello dell'analisi e inizia con la semplificazione 
+dell'automa, riducendo il numero degli stati.
+
+Nello stato  ``coverColumn`` il robot percorre una colonna; la direzione è mantenuta in una variabile
+booleana ``goingDown``, che viene usata nello stato ``turn``  per eseguire uno di due macro-mosse:
+``turnLeftAndStep`` o ``turnRightAndStep``.
+
+.. image::  ./_static/img/Spring/RobotCleanerFsmProject.PNG
+  :align: center 
+  :width: 100%
+
+
+Inoltre il progettista decide di permettere la riattivazione del robot dopo che ha completato il lavoro.
+ 
+ 
 ------------------------------------------------------
 RobotCleaner reattivo a comandi
 ------------------------------------------------------
+Al termine della sprint review, il committente, soddisfatto del lavoro, chiede se sia possibile :blue:`realizzare 
+una nuove funzionalità`.
 
-*RobotCleaner reattivo*: Estendere il funzionamento di il :ref:`RobotClenaer<RobotCleaner Behaviour>` in modo da eseguire i seguenti comandi inviati da un utente.
-(umano o macchina):
+**RobotCleaner reattivo**: Estendere il funzionamento di il :ref:`RobotClenaer<RobotCleaner Behaviour>` 
+in modo da eseguire i seguenti comandi inviati da un controllore (umano o macchina):
 
-- start (id = ``SystemData.startSysCmdId``) attiva il robot, che parte dalla posizione HOMe
-- stop (id = ``SystemData.stopSysCmdId``): ferma il robot nella posizione corrente
-- resume (id = ``SystemData.resumeSysCmdId``): riattiva il robot dalla posizione corrente
+- ``start`` (id = ``SystemData.startSysCmdId``) attiva il robot, che parte dalla posizione HOME
+- ``stop`` (id = ``SystemData.stopSysCmdId``): ferma il robot nella posizione corrente
+- ``resume`` (id = ``SystemData.resumeSysCmdId``): riattiva il robot dalla posizione corrente
 
 
-Pianificazione del lavoro:
+A questo punto si potrebbe pensare alla seguente pianificazione del lavoro:
 
-#. Si estende il behavior introddto in :ref:`RobotCleaner Behaviour`, tenendo conto dei nuovi possibili messaggi
-#. Si realizza un attore che simula l'operatore umano che invia i comandi
-#. Si verifica il funzionamento del nuovo prototipo
+#. Si estende il behavior introdotto in :ref:`RobotCleaner Behaviour`, tenendo conto dei nuovi possibili messaggi.
 #. Si realizza una Web User Interface utlizzando SpringBoot. Per questa parte si veda :ref:`WebApplications con SpringBoot`
    e :ref:`Una WebConsole per il RobotCleaner`
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+Troppo precipitosi?
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Partire con l'idea di procedere lavorando immediatamente su una **estensione  del funzionamento** significa 
+a :blue:`non trattare in modo esplcito` due punti importanti:
+
+#. come si modifica l'architettura logica del sistema
+#. quale è il significato di :blue:`fermare e riattivare`: dopo uno ``stop``, il robot potrebbe dover eseguire altre azioni? 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La nuova architettura logica
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+:worktodo:`WORKTODO: impostare un modello (eseguibile) della nuova architettura`
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Il significato di stop/resume
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+Il committente chiarisce che il robot, sopo un comando di ``stop``, **al momento**,
+non deve eseguire alcuna altra azione, se non rimanere in attesa di un ``resume``.
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Il nuovo piano di lavoro
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+#. Si realizza un attore che simula l'operatore umano che invia i comandi
+#. Si verifica il funzionamento del nuovo prototipo
+#. Al termine, si realizza una WebApplication con SpringBoot.
+
+
+Partendo dal modello della analisi, si considera 
+la possibilità di gestire un messaggio di ``stop`` negli stati marcati nella figura che segue.
+
+.. image::  ./_static/img/Spring/RobotCleanerFsmStartStopAnalisi.PNG
+  :align: center 
+  :width: 80%
+
+Per una versione di questo tipo si veda
+
+   Progetto: **unibo.wenvUsage22** code: *unibo.wenvUsage22.cleaner.RobotCleanerStartStop*.
+
+Per ogni stato ``XXX`` marcato, nasce uno stato ``stoppedXXX`` in cui l'automa transita alla ricezione di un
+comando di ``stop``. Questo stato rimane in attesa di un comando di ``resume``, alla ricezione del
+quale transita nello stato ``resumedXXX``, che provvede ad elaborare il messaggio  ``endMoveOk``
+o  ``endMoveKo`` che avrebbe dovuto provocare una transizione dello stato ``XXX``.
+
+
+Ad esempio:
+
+.. image::  ./_static/img/Spring/RobotCleanerFsmStartStopAnalisiNoInterrupt.PNG
+  :align: center 
+  :width: 80%
+
+Progetto: **unibo.wenvUsage22** code: *unibo.wenvUsage22.cleaner.RobotCleanerStartStop*.
+
+.. code:: Java
+
+   @State( name = "stoppedDown" )
+   @Transition( state = "resumedDown",  msgId= SystemData.resumeSysCmdId  )
+   protected void stoppedDown( IApplMessage msg ) {
+      outInfo("" + msg);
+   }
+
+   @State( name = "resumedDown" )
+   @Transition( state = "goingDown",     msgId="endMoveOk"  )
+   @Transition( state = "turnGoingDown", msgId="endMoveKo"  )
+   protected void resumedDown( IApplMessage msg ) {
+      outInfo("" + msg);
+   }
+
+
+Il progettista potrebbe applicare lo stesso modo di procedere al modello :ref:`RobotCleaner: progetto`.
+
+Tuttavia, il progettista si chiede se non sia opportuno un approfondimento dell'analisi del problema,
+innescando una retroazione verso l'analista (tipico di un 
+:ref:`processo incrementale, a spirale<L'analisi del problema>`).
+
+++++++++++++++++++++++++++++++++++++++++++++++++
+Stop/resume: un nuovo abstraction gap? 
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+La semantica stop/resume delineata in precedenza ricorda il meccanismo delle interruzioni (:blue:`interrupt`) 
+che implica:
+
+#. una memorizzazione (nello stack) del stato della CPU
+#. il trasferimento del controllo alla intruupt-routine e 
+#. il ripristino dello stato salvato al termine di questa, con il ritorno al processo computazionale interrotto.
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Stop/resume come interrupt
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Tranedo ispirazione dal meccanismo degli :blue:`interrupt`, il team di sviluppo ha concordato sulla opportunità
+di rendere disponibile un meccanismo analogo da parte della infrastruttura di supporto agli attori, che è stata
+così modificata:
+
+- viene  introdotto un attributo **interrupt** alle transizioni (una sola per stato)
+- quando uno stato S ha una transizione con ``interrupt=true``, lo si  memorizza prima di passare al prossimo stato 
+  Si memorizza anche a una copia della tabella delle transizioni che l'automa avrebbe poututo
+  effettuare in assenza dell'interrupt
+- se il prossimo stato (``S_I``) è quello relativo alla transizione qualificata come interrupt, 
+  lo si esegue normalmente, ma alla fine della esecuzione di ``S_I``, come ultima operazione si deve eseguire 
+  l'operazione built-in :blue:`resume` 
+  (una sorta return form interrupt) che ripristina la tabella delle transizioni memorizzata. In tal modo 
+  ``S_I`` opera come avrebbe fatto ``S`` se non ci fosse stato l'interrupt, attigendo dai messaggi non gestiti
+  memoriizzati (``OldMsgQueue``)
+
+
+Osserviamo che dallo stato ``S_I`` si potrebbero avere anche transizioni normali verso altri stati. 
+Basta che ci la nuova catena computazionale termini con una :blue:`resume`.
+
+Con questo meccansimo, il nuovo diagramma di progetto si presenta come segue:
+
+.. image::  ./_static/img/Spring/RobotCleanerFsmStartStopProject.PNG
+  :align: center 
+  :width: 100%
+
+La sua formalizzazione in codice si presenta in qyesto modo:
+
+ Progetto: **unibo.wenvUsage22** code: *unibo.wenvUsage22.cleaner.RobotCleanerProject*.
+
+.. code:: Java
+   
+   public class RobotCleanerInterrupt extends QakActor22FsmAnnot{
+    ...
+      @State( name = "goingDown" )
+      @Transition(state="stopped",
+           msgId=SystemData.stopSysCmdId,interrupt=true)
+      @Transition( state = "goingDown",     msgId="endMoveOk"  )
+      @Transition( state = "turnGoingDown", msgId="endMoveKo"  )
+      protected void goingDown( IApplMessage msg ) {
+         outInfo(""+msg);
+         VRobotMoves.step(getName(), conn );
+      }
+      ...
+      @State( name = "stopped" )
+      @Transition(state="backToInterrupted",msgId=SystemData.resumeSysCmdId)
+      protected void stopped( IApplMessage msg ) {
+         outInfo("" + msg);
+      }
+
+      @State( name = "backToInterrupted" )
+      protected void backToInterrupted( IApplMessage msg ) {
+         outInfo("" + msg);
+         resume();
+      }
+   }
+
+
++++++++++++++++++++++++++++++++++++++
+RobotCleaner: return to HOME
++++++++++++++++++++++++++++++++++++++
+
+Un ``RobotCleaner`` potrebbe dover essere reattivo a comadi o situazioni che non richiedono solo una
+momentanea interruzione delle attivtà che sta eseguendo come sua parte proattiva, ma anche
+un radicale cambiamento di queste.
+
+Ad esempio, il robot potrebbere ricevere un comando di ``returnToHome``.
+
+:worktodo:`WORKTODO: analizzare le problematiche connesse al comando returnToHome`
+
+
+-------------------------------------------
+RobotCleaner:  display area
+-------------------------------------------    
+
+:worktodo:`WORKTODO: aggiornare la DisplayArea con informazioni di stato`
+
+Il ``RobotCleaner`` deve emettere informazioni di stato che vengono inviate alla pagina Web mediante 
+una webSocket su 8085.
+
