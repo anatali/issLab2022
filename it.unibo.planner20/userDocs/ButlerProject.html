@@ -1,0 +1,660 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/javascript" src="../css/issStyle.js"></script>
+-->
+<style type="text/css">
+<!--
+
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin: 10;
+    margin-right: 15px;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-bottom: 1px solid #242424;
+}
+
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+}
+
+h2 {
+    background-color: #d9fbff;
+    font-size: 110%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 80%;
+}
+h4 {
+    background-color: #99ffcc;
+    font-size: 100%;
+}
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 80%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #ccffff;
+    color: #0033cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 80%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+k{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #990000;
+	 
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	 
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	 
+}
+pre{
+	font-family: "Helvetica";
+	font-size: 70%;
+	background-color: #fcf8c7; 
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	width: 800px;
+    font-size: 18px;
+}    
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}    
+div.remark{
+	background-color: #FFFC33;     
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}  
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+  -->
+</style>
+    
+<head>
+   
+<title>ButlerProject</title></head>
+    
+<body>
+
+<div class="body"> 
+
+ 
+
+ 
+   	<center><table style="width:98%">
+	 
+	<tr>
+ 	<td style="width:60%">	 
+	 <h3>Boundary walker (<a href="../../it.unibo.qak20.robotroommap/src/boundarywalker.qak" target="code">boundarywalker.qak</a>)</h3>
+	<m>
+	We assume that:
+
+		<ul>
+		<li>the robot works in an empty, rectangular room limited by four walls;</li>
+		<li>along each border of the room there is a rectangular area in which the robot can freely move.</li>
+		</ul>  
+		
+		The robot walks along the room boundary and produces the following room map (stored in a binary file)  
+		whose representation is (see <a href="../../it.unibo.qak20.robotroommap/roomBoundary.txt" target="code">roomBoundary.txt</a>):<br/>
+ 	</m>
+ 	</td> 
+	<td>
+	  <center><img src="../../it.unibo.qak20.robotroommap/userdocs/img/roomborderfree.png" alt="roomborderfree" width="40%" /></center> <br/>
+	 <a href="../../it.unibo.qak20.robotroommap/src/boundarywalker.qak" target="code">boundarywalker.qak</a><br/> 
+	 <m>
+ 	With the scene described in
+	<a href="../../it.unibo.qak20.robotroommap/userdocs/maps/bottles/sceneBottlesWithSonarsConfig.js" target="code">sceneBottlesWithSonarsConfig.js</a>,
+	the virtual robot builds the map
+	 (see <a href="../../it.unibo.qak20.robotroommap/roomBoundary.txt" target="code">roomBoundary.txt</a>):
+		<pre>
+|r, 1, 1, 1, 1, 1, X, 
+|1, 0, 0, 0, 0, 1, X, 
+|1, 0, 0, 0, 0, 1, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, 	</pre>
+	</m>
+	
+ 
+	</td>
+	</tr> 
+	<tr> 
+	<td>
+	 <h3>Mapping walker (<a href="../../it.unibo.qak20.robotroommap/src/mappingwalker.qak" target="code">mappingwalker.qak</a>)</h3>
+	 <m>
+		We assume that 
+		<ul>
+		<li>the robot works in an empty, rectangular room with a obstacle-free area along the borders</li>
+		<li>that a map of the room is already available</li>
+		</ul>  
+		The robot:
+		<ol>
+		<li>loads the boundary-free-room map 
+		(e.g. <a href="../../it.unibo.qak20.robotroommap/roomBoundary.txt" target="code">roomBoundary.txt</a>);</li>
+		<li>tries to reach each not-yet-explored cell of the room;</li>
+		<li>when finds an obstacle during its trip, it  attempts to reach another not-yet-explored cell;</li>
+		<li> when all the cells have been explored, it returns to its home.</li>
+		</ol>
+ 
+	</m>
+	!-- <center><img src="./explan0_2.png" alt="explan0_2" width="100%" height="32%"/></center> --
+	</td>
+ 	<td>
+	 <a href="../../it.unibo.qak20.robotroommap/src/mappingwalker.qak" target="code">mappingwalker.qak</a><br/> <br/> 
+	 <m>
+	With the scene described in
+	<a href="../../it.unibo.qak20.robotroommap/userdocs/maps/bottles/sceneBottlesWithSonarsConfig.js" target="code">sceneBottlesWithSonarsConfig.js</a>,
+	the virtual robot builds the map
+	 (see <a href="../../it.unibo.qak20.robotroommap/mapRoomExplored.txt" target="code">mapRoomExplored.txt</a>):
+		<pre>
+|r, 1, 1, 1, 1, 1, X, 
+|1, 1, 1, X, 1, 1, X, 
+|1, 1, 1, X, X, 1, X, 
+|1, X, 1, X, X, 1, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, </pre>
+	</m>
+
+	</td>
+	</tr>
+	</table>
+	</center> 	
+	<br/><br/>
+Other examples are reported in 
+ <a href="../../it.unibo.qak20.robotroommap/userdocs/LabRobotPlanned.html" target="code">LabRobotPlanned | Moving a robot with plans</a>.
+ 
+ 	<br/><br/>
+ 	
+ 	
+ 	
+ 	
+ 
+ <h2>An approach for the butler project</h2>	
+ 
+<center><table style="width:98%">
+
+	<tr>
+ 	<td style="width:30%">	 
+	<em>Architecture</em><br/>
+	<m>
+	We start from  
+<a href="file:///C:/Didattica2018Work/iss2019Lab/it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html#core" 
+	target="code">LAB14 | Resource(domain) model</a>.
+	 
+	</m>
+ 	</td> 
+	<td>
+	<center><img src="./robotResourceBasedCoap.png" alt="robotResourceBasedCoap.png" width="80%" height="32%"/></center>
+	<m>
+	 
+	The starting system can be composed of the following actors:
+	<ol>
+	<li>a <k>basic robot</k> that actuates move comands</li>
+	<li>a <k>resourcemodel</k> that represents the (CoAP accessible) core of the system</li>
+	<li>a <k>robot mind </k> that reacts to changes in the <tt>resourcemodel</tt> and to events of the world </li>
+	<li>a <k>sonarhandler</k> that looks at the sonar on the robot </li>
+	<li>a <k>onestepahead</k> that reacts to <ks>onestep</ks> requests by moving the robot ahead for the time given in the request message.
+	It sends to the caller the answer (dispatch) <ks>stepOk</ks> if the move is completed with success or <ks>stepFail</ks>
+	if the move has found an obstacle.
+	</li>
+	</ol>
+	
+	 and a robot mind
+	 <a href="http://htmlpreview.github.com/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/src/robotmind.qak" 
+	target="code">robotmind.qak</a><br/><br/>
+
+	</m>	
+
+	</td>
+	</tr>
+
+	 	
+	<tr>
+ 	<td style="width:30%">	 
+	<em>Macro-moves</em><br/>
+	<a href="../resources/itunibo/planner/moveUtils.kt" target="code">moveUtils.kt</a><br/><br/>
+	<m>
+	Defines a set of macro-moves for a robot that include the usage of the planner.<br/><br/>
+	On the right we report examples of these macro-moves. For the full set, please look at the code.
+	</m>
+ 	</td> 
+	<td>
+	<m>
+	<h4>Planning</h4>
+		  <ul>
+	  <li><k>setGoal</k><tt>(actor:ActorBasic, x: String, y: String)</tt><br/>
+	  Sets the planning goal to the cell <tt>(x,y)</tt>.
+		<br/><br/>
+	  </li>	  
+
+	  <li><k>doPlannedMove</k><tt>(actor:ActorBasic, move:String)</tt><br/>
+	  Updates the room map with the given <tt>move</tt>.
+		<br/><br/>
+	  </li>	  
+
+	  <li><k>doPlan</k><tt>(actor:ActorBasic)</tt><br/>
+	  Builds a plan for the current goal and stores the moves in the <tt>actor</tt> kb as a sequence of <ks>move/1</ks> facts.
+		<br/><br/>
+	  </li>	  
+	</ul>
+	
+	<h4>Moving</h4>
+	  <ul>
+	  <li><k>moveAhead</k><tt>(actor:ActorBasic,stepTime:Int,pauseTime:Int=PauseTime,dest:String="resourcemodel")</tt><br/>
+	  Moves the robtot along the current direction  for the given <tt>stepTime</tt> and updates the room map.
+	  Afterwards, it waits for the given <tt>pauseTime</tt>.
+	  <br/><br/>
+	  </li>
+	  
+	  <li><k>rotate</k><tt>(actor:ActorBasic,move:String,pauseTime:Int=PauseTime)</tt><br/>
+	  Rotates the robtot and updates the room map.
+	  Afterwards, it waits for the given <tt>pauseTime</tt>.
+	  <br/><br/>
+	  </li>
+	  
+	  <li><k>attemptTomoveAhead</k><tt>(actor:ActorBasic,stepTime:Int,dest:String="resourcemodel")</tt><br/>
+	  Moves the robot ahead (<ks>w</ks>) by sending to <tt>dest</tt> the 'request' <ks>oneStep</ks> with the given <tt>stepTime</tt>.
+	  The requested actor will answer with the dispatch <ks>stepOk</ks> or <ks>stepFail</ks>.
+		<br/><br/>
+	  </li>	  
+	
+	  <li><k>updateMapAfterAheadOk</k><tt>(actor:ActorBasic)</tt><br/>
+	  Updates the room map (after receiving a <ks>stepOk</ks>) with the move <ks>w</ks> .
+		<br/><br/>
+	  </li>	  
+ 	  
+	  </ul>
+	  
+	  <h4>Utilities</h4>
+	  <ul>
+	  <li><k>showCurrentRobotState</k><tt>( )</tt><br/>
+	  Prints the current position of the robot, its direction and the size of the room.
+		<br/><br/>
+	  </li>	  
+	  </ul>
+	  
+	</m>
+	</td>
+	</tr>
+</table>
+</center> 	
+	
+	
+<h3>Scenarios (incremental design and development)</h3>		
+	
+<center><table style="width:98%">
+ 	
+	
+	<tr>
+ 	<td style="width:30%">	 
+	<em>Scenario 1</em><br/>
+	<a href="../src/roomboundaryplanned.qak" target="code">roomboundaryplanned.qak</a><br/><br/>
+	<m>
+	Builds a map of the <k>empty room</k> by using the planner.
+	</m>
+ 	</td> 
+	<td>
+	<center><img src="./roomEmpty.png" alt="roomEmpty" width="70%" height="32%"/></center>
+
+	</td>
+	</tr>
+	
+	<tr>
+ 	<td style="width:30%">	 
+	<em>Scenario 2</em><br/>
+	<a href="../src/roomexplore.qak" target="code">roomexplore.qak</a><br/><br/>
+	<m>
+  If no map exists, explore the room boundary by using the planner; <br/>
+  afterwards, finds the position of the table
+	</m>
+	
+ 	</td> 
+	<td>
+	<center><img src="./roomWithTable.png" alt="roomWithTable" width="70%" height="32%"/></center>
+
+	</td>
+	</tr>
+
+	<tr>
+ 	<td style="width:30%">	 
+	<em>Scenario 3</em><br/>
+	<a href="../src/workinroom.qak" target="code">workinroom.qak</a><br/><br/>
+	<m>
+The robot plans a trip from home to the east part of the table and executes it.
+
+	</m>
+ 	</td> 
+	<td>
+	<center><img src="./tripTableEast.png" alt="tripTableEast" width="70%" height="32%"/></center>
+
+	</td>
+	</tr>
+	
+</table>
+</center> 	
+
+ <ol>
+ <ul></ul>
+ <ul></ul>
+ </ol> 
+
+<h2>Towards the final application</h2>	
+<h3>Global architecture</h3> 
+The global architecture can be summarized as follows:
+ <center><table style="width:98%">
+	<tr>
+ 	<td>
+	<center><img src="./tfb019arch.png" alt="tfb019arch.png" width="90%" height="32%"/></center>
+	<m>
+ 	</m>	
+	</td>
+	</tr>
+</table>
+</center> 	
+<br/>
+<ul>
+<li>The robot can be moved by sending a <tt> modelChange  : modelChange( TARGET, VALUE )</tt> dispatch to the <bc>resourceModel</bc>.
+For example:
+
+ <center><table style="width:95%">
+	<tr>
+ 	<td style="width:40%">
+	<m>Move the robot ahead at model level</m>	
+	</td>
+ 	<td >
+<pre>
+forward resourcemodel -m modelChange : modelChange(robot,w)
+</pre>	 
+	</td>
+	</tr>
+<tr>
+ 	<td style="width:40%">
+	<m>Move the robot ahead at Kotlin level</m>	
+	</td>
+ 	<td >
+<pre>
+forward("modelChange", "modelChange(robot,w)" ,"resourcemodel" )
+</pre>	 
+	</td>
+</tr>
+
+<tr>
+ 	<td style="width:40%">
+	<m>Move the robot ahead at CoAP level</m>	
+	</td>
+ 	<td >
+<pre>
+coapClient = CoapClient("coap://$serverAddr:5683/resourcemodel)
+coapClient.put("w", MediaTypeRegistry.TEXT_PLAIN)
+</pre>	 
+	</td>
+</tr>
+</table>
+</center> 	
+<br/><br/>
+</li>
+
+
+<li>
+The 
+Sensor data handlers can change the model by sending a <tt> modelUpdate : modelUpdate(robot,V )</tt> dispatch to the <bc>resourceModel</bc>.
+For example:
+ <center><table style="width:95%">
+ 
+<tr>
+ 	<td style="width:40%">
+	<m>xxx</m>	
+	</td>
+ 	<td >
+<pre>
+ 
+</pre>	 
+	</td>
+</tr>
+</table>
+</center> 
+
+</li>
+</ul>
+
+<h3>Essential architecture layers</h3> 
+ <center><table style="width:98%">
+	<tr>
+ 	<td style="width:70%">
+	<center><img src="./tfb019archLayers.png" alt="tfb019archLayers.png" width="90%" height="32%"/></center>
+	<m>
+ 	</m>	
+	</td>
+	<td>
+	<m>
+	<li>Low-level layers can execute commands sent by higher-level layers. <br/><br/></li>
+	<li>A command changes the <em>resource model</em>. This change is perceived by the <bc>robotmind</bc> that has the responsibility to
+	execute the command. <br/><br/></li>
+	<li>Low-level layers generate <em>events</em> that can be sensed and handled by the <bc>robotmind</bc> or by higher-level layers.<br/><br/></li>
+	
+	<li>Layers separated by a continuous line can be executed on <em>different contexts</em> (nodes of a dsitributed system).<br/><br/></li>
+ 	</m>	
+	
+	</td>
+	</tr>
+</table>
+</center> 	
+<br/>
+
+<h3>Handle on</h3> 
+The steps to prepare and run the application can be summarized as follows:<br/><br/>
+
+ <ol>
+ <li><ks>PREPARE</ks>
+	 <ol>
+	 <li>ACTIVATE THE <bc>VIRTUAL ROBOT SERVER</bc>  
+	 (See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.robots19/userDocs/Lab9.html" 
+	target="code">LAB9 | Interacting with a virtual robot</a>)</li>
+	 <li>ACTIVATE THE <bc>MQTT BROKER</bc> (mosquitto)
+	 (See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.bls19d/userDocs/Lab7.html#mqtt" 
+	target="code">LAB7 | The QActor metamodel - Using MQTT</a>)</li>
+	 </ol>
+<br/></li> 
+ 
+<li><ks>ACTIVATE THE ROBOT BASIC-MIND</ks>
+	 <ol>
+	 <li>RUN <bc>MainCtxRobotMain</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> =>
+	 Resource needed: 
+	 <ul>
+	 <li><kc>sysRules.pl</kc> and <kc>robotmind.pl</kc></li
+	 <li><kc>resourceModel.pl</kc>: the model of the application resource written in Prolog:
+	 <pre>
+model( actuator, robot,      state(stopped) ).   %% initial state
+model( sensor,   sonarRobot, state(unknown) ).   %% initial state
+...</pre>
+ 	 (See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.bls19d/userDocs/Lab7.html#mqtt" 
+	target="code">TODO</a>)
+	 </li>
+	 <li><kc>basicRobotConfig.pl</kc>: the declaration of the robot to use:
+	 <pre>
+robot( virtual, "8999" ).
+%% robot( realmbot, "COM6" ).</pre>
+	 </li>
+	 <li><kc>sonarDataConfig.pl.pl</kc>: configuration parameters fot the sonar data pipe:
+	 <pre>
+limitDistance(12).
+minDistance( 2 ).
+maxDistance( 50 ).
+maxDelta( 1 ).
+amplif( 6	).   %%%sonar data amplification for the radar, that does D/3</pre>
+	 </li>
+	 </ul>
+	 
+	 </li>
+	 <li>RUN <bc>MainCtxRobotAppl</bc>  IN <tt>it.unibo.eclipse.qak.robotMinds19</tt> (just a test) => <br/>
+	 LOOK AT <em>logFiltered.txt</em> (the walls found as obstacles) </li>
+	 </ol>	
+<br/></li>
+ 
+ <li><ks>BUSINESS LOGIC</ks>
+	 <ol>	 
+	 <li>RUN <bc>MainCtxBoundaryPlanned</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> 
+	 Builds the map of the <i>empty room</i> and stores it in the file<em>roomMap.txt</em>:
+	 <pre>
+|1, 1, 1, 1, 1, 1, X, 
+|1, 1, 1, 0, 0, 1, X, 
+|1, 0, 1, r, 0, 1, X, 
+|1, 0, 0, X, 0, 1, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, 	 </pre>
+	 </li>
+	 <li>RUN <bc> MainCtxRoomExplore</bc>   IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/>
+	 Builds the map of the <i>room with the table</i> and stores it in the file <em>roomMapWithTable.txt</em>:
+	 <pre>
+|r, 1, 1, 1, 1, 1, X, 
+|1, 1, 1, 0, 0, 1, X, 
+|1, 0, 1, 1, 1, 1, X, 
+|1, 1, 1, <k>X, X</k>, 1, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, </pre>
+<br/></li>
+
+ 	 <li>RUN <bc>MainCtxWorkInRoom</bc>  IN <tt>it.unibo.eclipse.qak.planning19</tt> => <br/> 
+	 Using the <em>roomMapWithTable.txt</em>, moves the robot <tt>FROM (0,0) to (5,3)</tt> 
+<pre>
+|1, 1, 1, 1, 1, 1, X, 
+|1, 1, 1, 0, 0, 1, X, 
+|1, 0, 1, 1, 1, 1, X, 
+|1, 1, 1, X, X, <k>r</k>, X, 
+|1, 1, 1, 1, 1, 1, X, 
+|X, X, X, X, X, X, X, </pre>	 
+	 </li>
+	 <li>RUN the TestPlan</li>
+	 </ol>	
+<br/></li>
+
+
+<li><ks>M2M INTERACTION</ks>
+	 <ol>
+	 <li>RUN <bc>resourceObserverCoapClient</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt><br/>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robotMinds19/userDocs/Lab14.html#m2mcoap" 
+	target="code">LAB14 | Resource(domain) model - Machine-to-machine interaction</a>)	 => <br/>
+	 Since this works as a resource-observer, launch also some business logic.
+	 </li>
+	 <li>RUN <bc>MainCoapClientModelRobot</bc> IN <tt>it.unibo.eclipse.qak.robotMinds19</tt>	 => <br/>
+	 Moves the robot.
+	 </li>
+ 	 </ol>	
+<br/></li>
+
+ 
+<li><ks>HUMAN-MACHINE INTERACTION <tt>(front end)</tt></ks>
+	 <ol>
+	 <li>RUN <bc>node frontendServer &lt;resoourceCoAPAddress></bc> IN <tt>it.unibo.frontend19/nodeCode/frontend</tt>	 <br/>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.frontend19/userDocs/Lab13.html" 
+	target="code">LAB13 | A frontend in Node.js)	 => <br/>
+	 User console: sends commands to the butler.
+	 </li>
+	 <li>open <bc>localhost:8080/startappl</bc>
+ 	 </ol>	
+<br/></li>
+ 
+
+<li><ks>USING A REAL ROBOT</ks>
+	 <ol>
+ 	 <li>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.raspIntroK/userDocs/Lab8.html" 
+	target="code">LAB8 | Using RaspberryPi)	 => <br/>
+(See <a href="http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.robots19/userDocs/Lab12.html" 
+	target="code">LAB12 | Using real robot devices)	 => <br/>
+	 </li>
+ 	 </ol>	
+<br/></li>
+ 
+ </ol>
+
+-- 
+http://htmlpreview.github.io/?https://github.com/anatali/iss2019Lab/blob/master/it.unibo.eclipse.qak.chainPlus/userDocs/Lab10.html#Prolog
+ 
+
+
+ 
+<br/>  	<br/>  	
+	
+	
+	
+	<!-- planBookLaValle.png -->
+	
+</div>
+<div style="background-color:rgba(86, 56, 253, 0.9); width:100%;text-align:center;font-size:small;color:white">
+By AN Unibo-DISI    
+</div> 
+</body>
+</html>

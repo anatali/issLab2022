@@ -417,7 +417,7 @@ Dal punto di vista 'applicativo', osserviamo che:
 NaiveGui 
 -------------------------------------------------
 
-Il progetto ``unibo.wenvUsage22`` include un file ``resources/NaiveGui.html`` che permette di interagire con WEnv 
+Il progetto ``unibo.wenvUsage22`` include un file ``resources/html/NaiveGui.html`` che permette di interagire con WEnv 
 attraverso un browser. 
 
 Il programma presenta una  interfaccia che permette a un utente di:

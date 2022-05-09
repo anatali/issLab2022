@@ -9,6 +9,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 import unibo.Robots.common.IWsHandler;
+import unibo.Robots.common.RobotUtils;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.utils.CommUtils;
 
@@ -41,14 +42,13 @@ public class WebSocketHandler extends AbstractWebSocketHandler implements IWsHan
     }
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        System.out.println("WebSocketHandler | New Text Message Received: " + message);
-        //session.sendMessage(message);
-        //Send to all the connected clients
-        sendToAll(message);
+        System.out.println("WebSocketHandler | handleTextMessage Received: " + message);
+        String cmd = message.getPayload();
+        sendToAll("echo: "+cmd);
     }
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws IOException {
-        System.out.println("WebSocketHandler | New Binary Message Received " );
+        System.out.println("WebSocketHandler | handleBinaryMessage Received " );
         //session.sendMessage(message);
         //Send to all the connected clients
         Iterator<WebSocketSession> iter = sessions.iterator();
@@ -71,7 +71,7 @@ public class WebSocketHandler extends AbstractWebSocketHandler implements IWsHan
     }
     public void sendToAll(TextMessage message) throws IOException{
         while( sessions.size() == 0 ) {
-            ColorsOut.outappl("WebSocketHandler | sendToAll sessions:" + sessions.size(), ColorsOut.BLUE);
+            //ColorsOut.outappl("WebSocketHandler | sendToAll sessions:" + sessions.size(), ColorsOut.BLUE);
             CommUtils.delay(100);
         }
         Iterator<WebSocketSession> iter = sessions.iterator();

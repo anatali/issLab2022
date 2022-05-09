@@ -4,6 +4,7 @@ import it.unibo.kactor.IApplMessage;
 import unibo.actor22.QakActor22FsmAnnot;
 import unibo.actor22.annotations.State;
 import unibo.actor22.annotations.Transition;
+import unibo.actor22.annotations.TransitionGuard;
 import unibo.actor22comm.SystemData;
 import unibo.actor22comm.interfaces.Interaction2021;
 import unibo.actor22comm.ws.WsConnection;
@@ -38,9 +39,9 @@ public class BoundaryWalkerAnnot extends QakActor22FsmAnnot  {
  	
  	@State( name = "wallDetected" )
 	@Transition( state = "robotMoving" , 
-		msgId = SystemData.endMoveOkId,guard=GuardContinueWork.class   )
+		msgId = SystemData.endMoveOkId,guard="notCompleted"   )
  	@Transition( state = "endWork" ,     
- 		msgId = SystemData.endMoveOkId,guard=GuardEndOfWork.class )
+ 		msgId = SystemData.endMoveOkId,guard="completed" )
 	protected void wallDetected( IApplMessage msg ) {
 		outInfo("ncorner="+ ncorner + " " + msg);	
 		ncorner++;
@@ -49,21 +50,7 @@ public class BoundaryWalkerAnnot extends QakActor22FsmAnnot  {
 		VRobotMoves.turnLeft(getName(), conn);
  	}
 
- 	/*
- 	 * Transizioni condizionate (con guardie)
- 	 */
-// 	@State( name = "wallDetected" )
-// 	protected void wallDetected( IApplMessage msg ) {
-//		outInfo("ncorner="+ ncorner + " " + msg);	
-//		ncorner++;
-//		//Parte aggiunta al termine, per definire le transizioni
-// 		if( ncorner == 4 ) {
-// 			addTransition("endWork", null); //empty move
-//  		}else {
-//  			VRobotMoves.turnLeft(getName(), conn);
-//  			addTransition("robotMoving",  SystemData.endMoveOkId);
-//  		}
-// 	}
+
  	
  	@State( name = "endWork" )
  	protected void endWork( IApplMessage msg ) {
@@ -71,6 +58,16 @@ public class BoundaryWalkerAnnot extends QakActor22FsmAnnot  {
 		outInfo("BYE" );	
  		System.exit(0);
  	}
- 	
 
+//----------------------------------------------
+	@TransitionGuard
+	protected boolean completed() {
+		outInfo("completed "+ (ncorner ) );
+		return ncorner == 4 ;
+	}
+	@TransitionGuard
+	protected boolean notCompleted() {
+		outInfo("notCompleted "+ (ncorner ) );
+		return ncorner < 4 ;
+	}	
 }

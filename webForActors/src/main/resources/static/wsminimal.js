@@ -7,12 +7,8 @@ wsminimal.js
     //const sendButton      = document.getElementById("send");
     //const messageInput    = document.getElementById("inputmessage");
 
-/*
-     sendButton.onclick = function (event) {
-        sendMessage(messageInput.value);
-        messageInput.value = "";
-    };
-*/
+    var socket;
+
     function sendMessage(message) {
         //socket.send(message);
         //addMessageToWindow("Sent Message: " + message);
@@ -23,14 +19,15 @@ wsminimal.js
 
     function addMessageToWindow(message) {
         //messageWindow.innerHTML += `<div>${message}</div>`
-        messageWindow.innerHTML += `<div>${message}</div>`
+        var output = message.replaceAll("\n","<br/>")
+        messageWindow.innerHTML = `<tt>${output}</tt>`
     }
 
     //var socket = connect();
 
 
     function connect(){
-      var host       =  "localhost:8088"; //document.location.host;
+      var host       =  "localhost:8085"; //document.location.host;
         var pathname =  "/"//document.location.pathname;
         var addr     = "ws://" +host  + pathname + "socket"  ;
         //alert("connect addr=" + addr   );
@@ -39,7 +36,7 @@ wsminimal.js
         if(socket !== undefined && socket.readyState !== WebSocket.CLOSED){
              alert("WARNING: Connessione WebSocket già stabilita");
         }
-        var socket = new WebSocket(addr);
+        socket = new WebSocket(addr);
 
         //socket.binaryType = "arraybuffer";
 
@@ -48,13 +45,20 @@ wsminimal.js
         };
 
         socket.onmessage = function (event) {
-        console.log("ws-status:" + `${event.data}`);
+            console.log("ws-status:" + `${event.data}`);
             addMessageToWindow(""+`${event.data}`);
             //alert(`Got Message: ${event.data}`)
 
         };
-        return socket;
+        //return socket;
     }//connect
 
+
+//short-hand for $(document).ready(function() { ... });
+$(function () {
+	$( "#startws" ).click(function() { socket.send("start");    })
+	$( "#stopws" ).click(function() { socket.send("stop");  })
+	$( "#resumews" ).click(function() { socket.send("resume");  })
+});
 
 connect()

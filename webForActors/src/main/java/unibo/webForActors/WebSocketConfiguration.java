@@ -24,6 +24,13 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
     public static final WebSocketHandler wshandler = new WebSocketHandler();
     public static final String wspath              = "socket";
 
+    public WebSocketConfiguration(){
+        new Thread(){ //To test ws-connection
+            public void run(){
+                wshandler.sendToAll("WebSocketConfiguration created" );
+            }
+        }.start();
+    }
     /*
     Necessario per l'invio di immagini
     @Bean

@@ -61,6 +61,10 @@ dependencies {
 	implementation name: 'it.unibo.qakactor-2.7'
 	implementation name: 'unibo.actor22-1.1'
 
+ 	//PLANNER
+    compile name: 'it.unibo.planner20-1.0'
+ 	// https://mvnrepository.com/artifact/com.googlecode.aima-java/aima-core
+	compile group: 'com.googlecode.aima-java', name: 'aima-core', version: '3.0.0'
  
 }
 

@@ -20,7 +20,8 @@ public class ClientUsingWs implements IObserver{
 	private Interaction2021 conn;
   
 	protected void doBasicMoves() throws Exception {
-		conn = WsConnection.create("localhost:8091" );
+		//conn = WsConnection.create("localhost:8091" );
+		conn = WsConnection.create("localhost:8085/socket" );
 		((WsConnection)conn).addObserver(this);
  
  		//conn.forward( turnLeft( 800  ) );

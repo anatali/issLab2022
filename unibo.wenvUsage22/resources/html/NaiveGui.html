@@ -14,7 +14,6 @@ const socket = new WebSocket('ws://localhost:8091/');
 	  document.getElementById("display").innerHTML += event.data +"<br/>"
 	});
 
-
     function doMove(move, time) {
         const moveJson = '{"robotmove":"'+ move + '", "time":'+time+'}'
         console.log("doMove moveJson:" + moveJson);
@@ -27,14 +26,10 @@ $(document).ready(function(){
 });
 
 $(function () {
-	$( "#rsocket" ).click(function() {  doMove("turnRight", 2000);    })  
- 
+	$( "#rsocket" ).click(function() {  doMove("turnRight", 2000);    })   
 	$( "#wsocket" ).click(function() {  doMove("moveForward", 1000);  })
- 
-	$( "#ssocket" ).click(function() { doMove("moveBackward", 1000);  })
-		
+	$( "#ssocket" ).click(function() { doMove("moveBackward", 1000);  })		
 	$( "#hsocket" ).click(function() { doMove("alarm", 100);         })
- 
 });
 </script>
 

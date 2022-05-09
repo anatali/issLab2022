@@ -7,6 +7,5 @@ import java.io.IOException;
 import java.util.Iterator;
 
 public interface IWsHandler {
-
    void sendToAll(String message);
 }

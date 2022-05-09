@@ -1,19 +1,16 @@
 package unibo.Robots.common;
-
- 
-
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 import org.eclipse.californium.core.CoapResponse;
 import unibo.actor22comm.utils.ColorsOut;
 
-public class ActorObserver {
+public class RobotCleanaerObserver {
 	private CoapObserveRelation relation = null;
 	private CoapClient client = null;
 	private IWsHandler wsh ;
 
-	public ActorObserver(String port, String actorName){
+	public RobotCleanaerObserver(String port, String actorName){
 		client = new CoapClient("coap://localhost:"+port+"/actors/"+actorName);
 		ColorsOut.outappl("ActorObserver | CREATED client=" + client, ColorsOut.GREEN);
 		observe();
@@ -35,19 +32,5 @@ public class ActorObserver {
 					}
 				});		
 	}
-	
-//	public void waitUserEnd() {
-// 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-// 		System.out.println("ActorObserver | press enter to end ...");		
-//		try { br.readLine(); } catch (IOException e) { }		
-//		System.out.println("ActorObserver | CANCELLATION");		
-//		relation.proactiveCancel();		
-//	}
-	
-//	public static void main(String[] args) {
-//  		ActorObserver rco = new ActorObserver("","");
-//		rco.observe( );
-//		rco.waitUserEnd();
-//	}
 
 }

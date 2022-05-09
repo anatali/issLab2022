@@ -7,13 +7,10 @@ package unibo.Robots.basic;
 
 import it.unibo.kactor.IApplMessage;
 import org.json.JSONObject;
-import org.springframework.web.socket.TextMessage;
-import unibo.Robots.common.ActorObserver;
 import unibo.actor22.QakActor22FsmAnnot;
 import unibo.actor22.annotations.State;
 import unibo.actor22.annotations.Transition;
 import unibo.actor22comm.SystemData;
-import unibo.webForActors.WebSocketConfiguration;
 
 
 public class BasicRobotActor extends QakActor22FsmAnnot{

@@ -38,10 +38,18 @@ public class VRobotMoves {
 	
 	public static void moveForward(String name, Interaction2021 conn, int duration)  {
 		try {
-			//ColorsOut.outappl(name + " | moveForward conn:" + conn,  ColorsOut.BLUE);
+			ColorsOut.outappl(name + " | moveForward duration:" + duration,  ColorsOut.CYAN);
 			conn.forward( ApplData.moveForward(duration) );
 		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | doBasicMoves ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | moveForward ERROR:" +  e.getMessage() );
+		}	
+	}
+	public static void moveBackward(String name, Interaction2021 conn, int duration)  {
+		try {
+			ColorsOut.outappl(name + " | moveBackward duration:" + duration,  ColorsOut.CYAN);
+			conn.forward( ApplData.moveBackward(duration) );
+		}catch( Exception e) {
+			ColorsOut.outerr( name +  " | moveForward ERROR:" +  e.getMessage() );
 		}	
 	}
 	
@@ -93,7 +101,7 @@ public class VRobotMoves {
 	}
 	
 	public static void step(String name, Interaction2021 conn) {
-		moveForward( name,conn,300 );	 //se collision non completa		
+		moveForward( name,conn,340 );	 //se collision, non completa		
 	}
 	public static void stepAfterTurn(String name, Interaction2021 conn, int dt) {
  		moveForward( name,conn, dt);	 //se collision non completa		

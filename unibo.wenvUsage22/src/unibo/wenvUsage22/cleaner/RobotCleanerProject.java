@@ -103,6 +103,7 @@ public class RobotCleanerProject extends QakActor22FsmAnnot{
 	
 	
 	@State( name = "endJob" )
+	@Transition( state = "activate",   msgId= SystemData.startSysCmdId  )
 	protected void endJob( IApplMessage msg ) {
 		outInfo("BYE" );
 		VRobotMoves.turnLeft(getName(), conn);

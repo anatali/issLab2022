@@ -17,12 +17,11 @@
 <form action="configure" method="post">   <!-- the form-data is sent to the page specified in the action attribute -->
  <label for="configurespec">Address</label>
  <input type="text" id="configurespec" name="move" value="">
- <input type="submit" value="connect">
+ <input type="submit" value="Configure">
 </form>
 
 <hr/>
-
-<h4>Commands</h4>
+<h4>Commands to the RobotCleaner</h4>
 
 <center>
  <table>
@@ -32,15 +31,17 @@
      <tbody>
      <!-- the form-data is sent to the page specified in the action attribute -->
      <tr>
-      <td > <form action="robotmove" method="post"><button name="move" value="t">start</button></form> </td>
-      <td> <form action="robotmove" method="post"><button name="move" value="stop">stop</button></form> </td>
-      <td> <form action="robotmove" method="post"><button name="move" value="resume">resume</button></form> </td>
+      <td > <form action="robotcmd" method="post"><button name="cmd" value="t">start</button></form> </td>
+      <td> <form action="robotcmd" method="post"><button name="cmd" value="stop">stop</button></form> </td>
+      <td> <form action="robotcmd" method="post"><button name="cmd" value="resume">resume</button></form> </td>
      </tr>
 
     </table>
    </center>
   </td>
    <td>
+
+
     <!-- <h4>Web cam on Rasp</h4>
     <div id="content" align="left" color="yellow">
      <img src="" id="img_src" alt=""  width="320" height="240"><br/>
@@ -51,13 +52,20 @@
    </td>
   </tr>
  </table>
+ </center>
 
-<hr/>
+ <h4>COMMAND-WS AREA</h4>
+<center>
+ <button id="startws" >startWs</button>  &nbsp <button id="stopws" >stopWs</button>
+ &nbsp  <button id="resumews" >resumeWs</button>
+</center>
+
+ <hr/>
 <h3>DISPLAY AREA</h3>
 <div id = "display"></div>
 
 
-
  <script src="wsminimal.js"></script>
+ <!-- <script src="cmdws.js"></script> -->
 </body>
 </html>

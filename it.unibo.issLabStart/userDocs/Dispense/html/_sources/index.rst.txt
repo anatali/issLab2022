@@ -28,8 +28,10 @@ iss22
    VirtualRobot
    Actors22
    RobotCleaner
+   RobotExplorer
    WebApplications
-   WebSockets
+   AttoriCoap
+   OltreTcp
 
 
 Indices and tables

@@ -21,17 +21,17 @@ public class WsConnApplObserver extends WsConnSysObserver{
 		ColorsOut.out("WsConnApplObserver CREATED - ownerActor=" + ownerActor );
 	}
 
-	@Override
-	public void update(Observable source, Object data) {
-		timer.stopTime();	
-		actionDuration = ""+timer.getDuration();
-		//ColorsOut.outappl("WsConnApplObserver update/2 receives:" + data + " duration=" + actionDuration, ColorsOut.WHITE_BACKGROUND);
-		update( data.toString() );		
-	}
+//	@Override
+//	public void update(Observable source, Object data) {
+//		timer.stopTime();	
+//		actionDuration = ""+timer.getDuration();
+//		//ColorsOut.outappl("WsConnApplObserver update/2 receives:" + data + " duration=" + actionDuration, ColorsOut.WHITE_BACKGROUND);
+//		update( data.toString() );		
+//	}
 
 	@Override
 	public void update(String data) {
-		ColorsOut.outappl("WsConnApplObserver update receives:" + data + " duration=" + actionDuration, ColorsOut.BLUE);
+		ColorsOut.outappl("WsConnApplObserver update receives:" + data + " duration=" + actionDuration, ColorsOut.WHITE_BACKGROUND);
 		JSONObject dJson = new JSONObject(""+data);
 		boolean resultMoveOk =  dJson.has("endmove") && dJson.getBoolean("endmove");
 		//ColorsOut.out("WsConnApplObserverrrrr update receives:" + data + " duration=" + actionDuration + " resultMoveOk=" + resultMoveOk, ColorsOut.BLUE);

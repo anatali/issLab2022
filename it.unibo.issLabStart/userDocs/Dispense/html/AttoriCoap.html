@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Attori come risorse CoAP &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Oltre TCP" href="OltreTcp.html" />
+    <link rel="prev" title="WebApplication con SpringBoot" href="WebApplications.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="attori-come-risorse-coap">
+<h1>Attori come risorse CoAP<a class="headerlink" href="#attori-come-risorse-coap" title="Permalink to this headline">¶</a></h1>
+<p>Ogni attore <a class="reference internal" href="Attori.html#actorqak-e-qakactor22"><span class="std std-ref">ActorQak e QakActor22</span></a>  è stato definito in modo da essere anche una <span class="blue">risorsa CoAP osservabile</span>.
+In particolare:</p>
+<ul class="simple">
+<li><p>un QAkactor di nome <code class="docutils literal notranslate"><span class="pre">qa</span></code> che opera in un contesto  <code class="docutils literal notranslate"><span class="pre">ctxqa</span></code> è una risorsa <a class="reference external" href="https://it.frwiki.wiki/wiki/CoAP">CoAP</a> osservabile cui è possibile accedere
+con URI path= <span class="blue">ctxqa/qa</span> nella versione <code class="docutils literal notranslate"><span class="pre">ActorQak</span></code> e, nella
+<span class="remark">con URI path = actors/qa, nella versione QakActor22</span></p></li>
+<li><p>lo stato corrente della risorsa può essere memorizzato come una stringa nella variabile <span class="blue">actorResourceRep</span>,
+utilizzando l’operazione <code class="docutils literal notranslate"><span class="pre">updateResource</span></code>.</p></li>
+</ul>
+<p>Prima di approfondire questa nuova caratteristica, conviene richimare alcuni concetti e supporti di base per <a class="reference external" href="https://it.frwiki.wiki/wiki/CoAP">CoAP</a>.</p>
+<section id="introduzione-a-coap">
+<h2>Introduzione a CoAP<a class="headerlink" href="#introduzione-a-coap" title="Permalink to this headline">¶</a></h2>
+<p>Il protocollo <a class="reference external" href="https://it.frwiki.wiki/wiki/CoAP">CoAP</a> considera le interazioni (client/server) tra componenti come uno scambio di rappresentazioni
+di <strong>risorse</strong> e si pone l’obiettivo di realizzare una infrastruttura di gestione delle risorse  tramite alcune semplici
+funzioni di accesso e interazione come quelle di <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>: <code class="docutils literal notranslate"><span class="pre">PUT,</span> <span class="pre">POST,</span> <span class="pre">GET,</span> <span class="pre">DELETE</span></code>.</p>
+<ul>
+<li><p>Per interagire con una risorsa CoAP si può usare un oggetto di classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapClient</span></code>
+che invia richieste all’<code class="docutils literal notranslate"><span class="pre">URI</span></code> speficato come argomento del costruttore, come ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;coap://&quot;</span><span class="o">+</span><span class="n">hostaddress</span> <span class="o">+</span> <span class="s2">&quot;:5683/&quot;</span><span class="o">+</span> <span class="n">resourcePath</span>
+</pre></div>
+</div>
+</li>
+<li><p>le risorse allocate su un nodo sono istanze della classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapResource</span></code>
+e sono gestite da un server di classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapServer</span></code>. Questo server realizza già
+funzioni analoghe a quelle da <a class="reference internal" href="ContestiContenitori.html#analisi-del-concetto-di-contesto"><span class="std std-ref">IContext</span></a>.</p></li>
+<li><p>La classe <a class="reference internal" href="OltreTcp.html#coapconnection"><span class="std std-ref">CoapConnection</span></a>   implementa <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>
+e quindi realizza il nostro concetto genrale di connessione, tenendo conto delle caratteristiche del protocollo
+CoAP e della libreria <a class="reference external" href="https://www.eclipse.org/californium/">californium</a>.</p></li>
+<li><p>CoAP fornisce un modello di interazione ancora punto-a-punto ma, essendo di tipo <a class="reference external" href="https://it.frwiki.wiki/wiki/Representational_state_transfer">REST</a>, il suo utilizzo
+implica schemi di comunicazione simili a quelli di applicazioni Web basate su <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>, ma schemi organizzativi
+basati su <strong>gerarchie di risorse</strong>;</p></li>
+<li><p>l’uso di CoAP <strong>modifica il modello concettuale</strong> di riferimento per le interazioni, in quanto propone
+l’idea di accesso in lettura (<code class="docutils literal notranslate"><span class="pre">GET</span></code>) o modifica (<code class="docutils literal notranslate"><span class="pre">PUT</span></code>) a <span class="blue">risorse</span> identificate da <code class="docutils literal notranslate"><span class="pre">URI</span></code> attraverso un
+unico server (che <a class="reference external" href="https://www.eclipse.org/californium/">californium</a> offre nella classe <span class="blue">org.eclipse.californium.core.CoapServer</span>).</p>
+<a class="reference internal image-reference" href="_images/CoapResources.png"><img alt="_images/CoapResources.png" class="align-center" src="_images/CoapResources.png" style="width: 40%;" /></a>
+</li>
+<li><p>le risorse CoAP sono organizzate in una gerarchia ad albero, come nell’esempio della figura che segue:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/CoapRadarResources.PNG"><img alt="_images/CoapRadarResources.PNG" class="align-center" src="_images/CoapRadarResources.PNG" style="width: 70%;" /></a>
+</div></blockquote>
+<p>La definizione di una risorsa applicativa può essere definita come specializzazione della classe
+<span class="blue">org.eclipse.californium.core.CoapResource</span> di <a class="reference external" href="https://www.eclipse.org/californium/">californium</a>.</p>
+</li>
+</ul>
+<p>Siamo dunque di fronte a un  modello simile a quanto introdotto in  <a class="reference internal" href="OltreTcp.html#schemaframework"><span class="std std-ref">Schema generale del framework</span></a>, ma con
+una forte forma di <span class="blue">standardizzazione</span> sia a livello di ‘verbi’ di interazione (<code class="docutils literal notranslate"><span class="pre">GET/PUT/...</span></code>) sia a livello di
+organizzazione del codice applicativo (come gerarchia di risorse).</p>
+<p>Per utilizzare il <a class="reference internal" href="OltreTcp.html#schemaframework"><span class="std std-ref">framework iniziale</span></a> con protocollo CoAP non dovremo quindi scrivere molto
+altro codice: si veda <a class="reference internal" href="OltreTcp.html#coapcontextserver"><span class="std std-ref">CoapContextServer</span></a>.</p>
+</section>
+<section id="actor22-coap">
+<h2>Actor22-CoAP<a class="headerlink" href="#actor22-coap" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Un attore <code class="docutils literal notranslate"><span class="pre">QakActor22</span> <span class="pre">extends</span> <span class="pre">it.unibo.kactor.ActorBasic</span></code> ma non vive in <code class="docutils literal notranslate"><span class="pre">it.unibo.kactor.QakContext</span></code>; vive in
+<code class="docutils literal notranslate"><span class="pre">Qak22Context</span></code>.</p></li>
+<li><p>CoapApplServer: Viene creato da <code class="docutils literal notranslate"><span class="pre">Qak22Context.InitCoap</span></code></p></li>
+<li><p>Il metodo <code class="docutils literal notranslate"><span class="pre">setActorAsLocal</span></code> introduce un attore di nome <strong>a</strong> nella gerarchia delle risorse, invocando:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">CoapApplServer.getTheServer().addCoapResource(a,</span> <span class="pre">&quot;actors&quot;);</span></code></p>
+</div></blockquote>
+</li>
+</ul>
+</section>
+<section id="esempio-di-attore-coap">
+<h2>Esempio di Attore-CoAP<a class="headerlink" href="#esempio-di-attore-coap" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>Progetto: <strong>unibo.actor22</strong> code: <em>unibo.actor22.coap.TestCoap</em>.</p>
+</div></blockquote>
+<section id="actorcoapdemo">
+<h3>ActorCoapDemo<a class="headerlink" href="#actorcoapdemo" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ActorCoapDemo</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="nf">ActorCoapDemo</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;init&quot;</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+  <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;s0&quot;</span>   <span class="p">)</span>       <span class="c1">//empty move</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">init</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;s0&quot;</span> <span class="p">)</span>
+  <span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;s1&quot;</span> <span class="p">,</span>  <span class="n">msgId</span> <span class="o">=</span> <span class="n">SystemData</span><span class="p">.</span><span class="na">demoSysId</span>  <span class="p">)</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">s0</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span> <span class="p">);</span>
+    <span class="n">n</span><span class="o">++</span><span class="p">;</span>   <span class="c1">//Uncomment to go in s1</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">updateResourceRep</span><span class="p">(</span><span class="s">&quot;n=&quot;</span><span class="o">+</span><span class="n">n</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">autoMsg</span><span class="p">(</span> <span class="n">SystemData</span><span class="p">.</span><span class="na">demoSysCmd</span><span class="p">(</span> <span class="n">getName</span><span class="p">(),</span><span class="n">getName</span><span class="p">()</span> <span class="p">)</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;s1&quot;</span> <span class="p">)</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">s1</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span> <span class="p">);</span>
+    <span class="c1">//System.exit(0);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="actorobserver-for-actorcoapdemo">
+<h3>ActorObserver for ActorCoapDemo<a class="headerlink" href="#actorobserver-for-actorcoapdemo" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ActorObserver</span> <span class="p">{</span>
+  <span class="kd">private</span> <span class="n">CoapObserveRelation</span> <span class="n">relation</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="kd">private</span> <span class="n">CoapClient</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">ActorObserver</span><span class="p">(){</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CoapClient</span><span class="p">(</span><span class="s">&quot;coap://localhost:8073/actors/a1&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span>  <span class="nf">observe</span><span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">relation</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span>
+        <span class="k">new</span> <span class="n">CoapHandler</span><span class="p">()</span> <span class="p">{</span>
+          <span class="nd">@Override</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onLoad</span><span class="p">(</span><span class="n">CoapResponse</span> <span class="n">response</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="na">getResponseText</span><span class="p">();</span>
+            <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;ActorObserver | value=&quot;</span> <span class="o">+</span> <span class="n">content</span><span class="p">,</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">GREEN</span><span class="p">);</span>
+          <span class="p">}</span>
+          <span class="nd">@Override</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;OBSERVING FAILED (press enter to exit)&quot;</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="maindemocoap">
+<h3>MainDemoCoap<a class="headerlink" href="#maindemocoap" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Context22</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;ctx&quot;</span><span class="p">,</span> <span class="n">host</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="s">&quot;8073&quot;</span><span class="p">)</span>
+<span class="nd">@Actor22</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;a1&quot;</span><span class="p">,</span><span class="n">contextName</span><span class="o">=</span><span class="s">&quot;ctx&quot;</span><span class="p">,</span><span class="n">implement</span> <span class="o">=</span> <span class="n">CoapDemo</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MainDemoCoap</span> <span class="p">{</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="n">CommSystemConfig</span><span class="p">.</span><span class="na">tracing</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="n">sysUtil</span><span class="p">.</span><span class="na">INSTANCE</span><span class="p">.</span><span class="na">setTrace</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="n">Qak22Context</span><span class="p">.</span><span class="na">configureTheSystem</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>  <span class="c1">//Give time to start ...</span>
+    <span class="n">Qak22Context</span><span class="p">.</span><span class="na">showActorNames</span><span class="p">();</span>
+
+    <span class="k">new</span> <span class="n">ActorObserver</span><span class="p">().</span><span class="na">observe</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span>   <span class="p">{</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before start - &quot;</span><span class="p">);</span>
+    <span class="k">new</span> <span class="n">MainDemoCoap</span><span class="p">().</span><span class="na">configure</span><span class="p">();</span>
+      <span class="n">CommUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;At end - &quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Attori come risorse CoAP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduzione-a-coap">Introduzione a CoAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#actor22-coap">Actor22-CoAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#esempio-di-attore-coap">Esempio di Attore-CoAP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#actorcoapdemo">ActorCoapDemo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#actorobserver-for-actorcoapdemo">ActorObserver for ActorCoapDemo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maindemocoap">MainDemoCoap</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="WebApplications.html" title="previous chapter">WebApplication con SpringBoot</a></li>
+      <li>Next: <a href="OltreTcp.html" title="next chapter">Oltre TCP</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/AttoriCoap.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

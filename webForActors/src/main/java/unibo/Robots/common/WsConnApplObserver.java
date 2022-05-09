@@ -31,7 +31,7 @@ public class WsConnApplObserver extends WsConnSysObserver{
 
 	@Override
 	public void update(String data) {
-		//ColorsOut.outappl("WsConnApplObserver update receives:" + data + " duration=" + actionDuration, ColorsOut.BLUE);
+		ColorsOut.outappl("WsConnApplObserver update receives:" + data + " duration=" + actionDuration, ColorsOut.BLUE);
 		JSONObject dJson = new JSONObject(""+data);
 		boolean resultMoveOk =  dJson.has("endmove") && dJson.getBoolean("endmove");
 		//ColorsOut.out("WsConnApplObserverrrrr update receives:" + data + " duration=" + actionDuration + " resultMoveOk=" + resultMoveOk, ColorsOut.BLUE);

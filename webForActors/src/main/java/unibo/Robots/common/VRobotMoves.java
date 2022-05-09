@@ -38,10 +38,18 @@ public class VRobotMoves {
 	
 	public static void moveForward(String name, Interaction2021 conn, int duration)  {
 		try {
-			//ColorsOut.outappl(name + " | moveForward conn:" + conn,  ColorsOut.BLUE);
+			ColorsOut.outappl(name + " | moveForward duration:" + duration,  ColorsOut.CYAN);
 			conn.forward( ApplData.moveForward(duration) );
 		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | doBasicMoves ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | moveForward ERROR:" +  e.getMessage() );
+		}	
+	}
+	public static void moveBackward(String name, Interaction2021 conn, int duration)  {
+		try {
+			ColorsOut.outappl(name + " | moveBackward duration:" + duration,  ColorsOut.CYAN);
+			conn.forward( ApplData.moveBackward(duration) );
+		}catch( Exception e) {
+			ColorsOut.outerr( name +  " | moveForward ERROR:" +  e.getMessage() );
 		}	
 	}
 	
@@ -63,45 +71,41 @@ public class VRobotMoves {
 	public static void turnLeftAndStep(String name, int duration, Interaction2021 conn) {
 		try {
 			turnLeft(name,conn);
-			CommUtils.delay(310);
-			//step( name,conn  );	  		
+			CommUtils.delay(300);  
 			stepAfterTurn(name,conn,duration);     //con dt>300 sta barando ...
  			turnLeft(name,conn);
-			CommUtils.delay(310);
+			CommUtils.delay(300);  
  		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | turnLeft ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | turnLeftAndStep ERROR:" +  e.getMessage() );
 		}	
 	}
 	public static void turnRightAndStep(String name, int duration, Interaction2021 conn) {
 		try {
 			turnRight(name,conn);
-			CommUtils.delay(310);
-			//step( name,conn  );	 //collision?		
+			CommUtils.delay(300);  
 			stepAfterTurn(name,conn,duration);     //con dt>300 sta barando ...
 			turnRight(name,conn);
-			CommUtils.delay(310);
+			CommUtils.delay(300);  
  		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | turnLeft ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | turnRightAndStep ERROR:" +  e.getMessage() );
 		}	
 	}
 	public static void turnLeftAndHome(String name, Interaction2021 conn) {
 		try {
 			turnLeft(name,conn);
-			CommUtils.delay(310);
-			//step( name,conn  );	  		
-			stepAfterTurn(name,conn,2500);
+			CommUtils.delay(300);  
+ 			stepAfterTurn(name,conn,2500);      
   		}catch( Exception e) {
-			ColorsOut.outerr( name +  " | turnLeft ERROR:" +  e.getMessage() );
+			ColorsOut.outerr( name +  " | turnLeftAndHome ERROR:" +  e.getMessage() );
 		}	
 	}
 	
 	public static void step(String name, Interaction2021 conn) {
-		moveForward( name,conn,300 );	 //se collision non completa		
-		//CommUtils.delay(400); 		
+		moveForward( name,conn,340 );	 //se collision, non completa		
 	}
 	public static void stepAfterTurn(String name, Interaction2021 conn, int dt) {
-		moveForward( name,conn,dt );	 //se collision non completa		
-		CommUtils.delay(dt+100); 		
+ 		moveForward( name,conn, dt);	 //se collision non completa		
+		CommUtils.delay(dt+200); 		
 	}
 
 }

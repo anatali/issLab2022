@@ -17,10 +17,14 @@
  <label for="configurespec">address</label>
  <input type="text" id="configurespec" name="move" value="">
  <input type="submit" value="connect">
+ <!-- the form-data is sent to the page specified in the action attribute -->
 </form>
-<!-- the form-data is sent to the page specified in the action attribute -->
-  <form action="robotmove" method="post"><button name="move" value="t">START the robot</button></form>
-<br/><br/>
+
+<center>
+<form action="robotcmd" method="post">
+ <button name="cmd" value="t">START the robot</button>
+</form>
+ </center>
 <hr/>
 
 <h4>Commands</h4>

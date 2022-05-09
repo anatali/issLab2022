@@ -1,0 +1,1269 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Oltre TCP &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Attori come risorse CoAP" href="AttoriCoap.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="oltre-tcp">
+<h1>Oltre TCP<a class="headerlink" href="#oltre-tcp" title="Permalink to this headline">¶</a></h1>
+<p>I primi SPRINT dello sviluppo hanno seguito un processo bottom-up, che ha fatto riferimento
+a TCP come protocollo per le comunicazioni di rete.</p>
+<p>Abbiamo anche costruito un  <span class="xref std std-ref">prototipo</span> di una versione distribuita del sistema,
+la cui architettura è schematizzata nella figura che segue:</p>
+<a class="reference internal image-reference" href="_images/sysDistr1.PNG"><img alt="_images/sysDistr1.PNG" class="align-center" src="_images/sysDistr1.PNG" style="width: 70%;" /></a>
+<p>Con maggior dettaglio, questa architettura si basa sugli elementi costitutivi di figura:</p>
+<a class="reference internal image-reference" href="_images/framework0.PNG"><img alt="_images/framework0.PNG" class="align-center" src="_images/framework0.PNG" style="width: 70%;" /></a>
+<ul class="simple">
+<li><p>Un oggetto (POJO) di interfaccia <code class="docutils literal notranslate"><span class="pre">Ixxx</span></code> che definisce il comportamento di un dispositivo reale o simulato.</p></li>
+<li><p>Un oggetto di interfaccia <a class="reference internal" href="ContestiContenitori.html#iapplintepreteresteso"><span class="std std-ref">IApplIntepreter</span></a> che trasforma messaggi (di comando e richieste
+di informazione)   in chiamate a metodi di <code class="docutils literal notranslate"><span class="pre">Ixxx</span></code>.</p></li>
+<li><p>Un oggetto di interfaccia <a class="reference internal" href="ContestiContenitori.html#iapplmsghandleresteso"><span class="std std-ref">IApplMsgHandler</span></a> che definisce il codice di gestione
+dei messaggi di livello applicativo indirizzati a un particolare dispositivo.</p></li>
+<li><p>Un oggetto di tipo <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a> che realizza un gestore dei sistema dei messaggi
+li reindirizza (dispatching) agli opportuni handler applicativi.</p></li>
+<li><p>Un (unico) <span class="xref std std-ref">TcpContextServer</span> attivato su un nodo di elaborazione <code class="docutils literal notranslate"><span class="pre">A</span></code> (ad esempio un Raspberry) che
+permette a componenti <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">proxy</span></a> allocati su nodi esterni  (ad esempio un PC)
+di interagire con i dispositivi allocati su <code class="docutils literal notranslate"><span class="pre">A</span></code>. Questo componente è un <a class="reference internal" href="RadarSystemSupporti.html#tcpserver"><span class="std std-ref">TcpServer</span></a> che crea un
+<a class="reference internal" href="RadarSystemSupporti.html#tcpapplmessagehandler"><span class="std std-ref">TcpApplMessageHandler</span></a> per ogni connessione, il quale riceve i messaggi e chiama il
+<a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>.</p></li>
+</ul>
+<p>La domanda che ci poniamo ora è se questa organizzazione possa essere riusata nel caso in cui si voglia sostituire
+al protocolllo TCP un altro protocollo, tra quelli indicati in <a class="reference internal" href="RadarSystemAnalisi.html#protocoltype"><span class="std std-ref">Tipi di protocollo</span></a>.</p>
+<ul class="simple">
+<li><p>Il caso <code class="docutils literal notranslate"><span class="pre">UDP</span></code>: la possibilità di sostituire TCP con UDP è  resa possibile dalla libreria  <code class="docutils literal notranslate"><span class="pre">unibonoawtsupports.jar</span></code> sviluppata
+in anni passati. Il compito non si è rivelato troppo difficle, visto la relativa vicinanza operazionale tra le
+librerie dei due protocolli.</p></li>
+<li><p>Il caso <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>: affronteremo l’uso di questo protocollo più avanti, in relazione alla costruzione di un componente
+Web GUI (se veda IssHttpSupport).</p></li>
+</ul>
+<p>Più arduo sembra invece il caso di un protocollo di tipo publish-subscribe come MQTT o di un protocollo REST come CoAP
+che cambiano l’impostazione logica della interazione.</p>
+<p>In ogni caso, dovremo costruire le nostre astrazioni utilizzando le librerie disponibili.</p>
+<section id="liberie-di-riferimento">
+<span id="librerieprotocolli"></span><h2>Liberie di riferimento<a class="headerlink" href="#liberie-di-riferimento" title="Permalink to this headline">¶</a></h2>
+<p>Come librerie di riferimento useremo le seguenti:</p>
+<ul class="simple">
+<li><p>per MQTT: la libreria <a class="reference external" href="https://www.eclipse.org/paho/">paho</a></p></li>
+<li><p>per CoAP: la libreria <a class="reference external" href="https://www.eclipse.org/californium/">californium</a></p></li>
+</ul>
+<p>Come Broker MQTT useremo <a class="reference external" href="https://mosquitto.org/download/">Mosquitto</a> installato su un nostro PC (o su Raspberry) o uno dei Broker disponibili in rete:</p>
+<ul class="simple">
+<li><p>“<a class="reference external" href="tcp://broker.hivemq.com">tcp://broker.hivemq.com</a>”</p></li>
+<li><p>“<a class="reference external" href="tcp://test.mosquitto.org">tcp://test.mosquitto.org</a>”</p></li>
+</ul>
+<p>Poichè dovremo definire un ContextServer per ogni protocollo, facciamo in modo che ciascuno di essi
+rispetti uno stesso contratto, con metodi per attivare/disattivare il server e per
+aggiungere/rimuovere componenti di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>:</p>
+<section id="icontext">
+<h3>IContext<a class="headerlink" href="#icontext" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IContext</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span> <span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deactivate</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Questo contratto è già rispettato da <span class="xref std std-ref">TcpContextServer</span>, così che possiamo estendere la sua definizione come segue:</p>
+<blockquote>
+<div><p>public class TcpContextServer extends TcpServer <strong>implements IContext</strong></p>
+</div></blockquote>
+</section>
+</section>
+<section id="nuovi-supporti-interaction2021">
+<h2>Nuovi supporti <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a><a class="headerlink" href="#nuovi-supporti-interaction2021" title="Permalink to this headline">¶</a></h2>
+<p>Il <a class="reference internal" href="RadarSystemSupporti.html#tcpsupportclient"><span class="std std-ref">TcpClientSupport</span></a> crea l’implemetazione TCP di <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>
+introdotta a suo tempo, come oggetto di classe <a class="reference internal" href="RadarSystemSupporti.html#tcpconnection"><span class="std std-ref">TcpConnection</span></a>.</p>
+<p>La creazione di analoghi supporti per MQTT e CoAP  parte dalle seguenti osservazioni:</p>
+<ul class="simple">
+<li><p>per MQTT si tratta di creare una <strong>connessione fisica</strong> con un broker che media la interazione tra mittente
+e destinatario e una <strong>connessione logica</strong> utilizzando le topic;</p></li>
+<li><p>per CoAP si tratta di utilizzare un oggetto
+di classe <code class="docutils literal notranslate"><span class="pre">CoapClient</span></code> di <a class="reference external" href="https://www.eclipse.org/californium/">californium</a>, che richiede come argomento l’<code class="docutils literal notranslate"><span class="pre">URI</span></code> della risorsa
+a cui ci si vuole connettere.</p></li>
+</ul>
+<section id="mqttconnection-implementa-interaction2021">
+<span id="mqttconnection"></span><h3><code class="docutils literal notranslate"><span class="pre">MqttConnection</span></code> implementa <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a><a class="headerlink" href="#mqttconnection-implementa-interaction2021" title="Permalink to this headline">¶</a></h3>
+<p>Come <a class="reference internal" href="RadarSystemSupporti.html#tcpconnection"><span class="std std-ref">TcpConnection</span></a>, la classe <code class="docutils literal notranslate"><span class="pre">MqttConnection</span></code> implementa <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>
+e quindi realizza il concetto di connessione tenendo conto delle seguenti caratteristiche del protocollo
+MQTT e della libreria <a class="reference external" href="https://www.eclipse.org/paho/">paho</a>:</p>
+<ul class="simple">
+<li><p>non vi è più (come in TCP)  una connessione punto-a-punto con il nodo destinatario ma una connessione punto-a-punto
+con un Broker (il cui indirizzo sarà nel parametro di configurazione <code class="docutils literal notranslate"><span class="pre">RadarSystemConfig.mqttBrokerAddr</span></code>);</p></li>
+<li><p>la connessione col Broker viene effettuata da un client  di classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.paho.client.mqttv3.MqttClient</span></code>
+che deve avere un preciso <code class="docutils literal notranslate"><span class="pre">clientId</span></code> (di tipo <code class="docutils literal notranslate"><span class="pre">String</span></code>). Il Broker accetta una sola connessione per volta
+da un dato <code class="docutils literal notranslate"><span class="pre">clientId</span></code> e dunque la <code class="docutils literal notranslate"><span class="pre">MqttConnection</span></code> è impostata come un singleton.</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MqttConnection</span> <span class="kd">implements</span> <span class="n">Interaction2021</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">topicInput</span> <span class="o">=</span> <span class="s">&quot;topicCtxMqtt&quot;</span><span class="p">;</span>
+<span class="kd">protected</span> <span class="kd">static</span> <span class="n">MqttConnection</span> <span class="n">mqttSup</span> <span class="p">;</span>  <span class="c1">//for singleton</span>
+
+<span class="kd">protected</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span> <span class="o">=</span>
+              <span class="k">new</span> <span class="n">LinkedBlockingDeque</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="kd">protected</span> <span class="n">String</span> <span class="n">clientid</span><span class="p">;</span>
+
+  <span class="c1">//Factory method</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">synchronized</span> <span class="n">MqttConnection</span> <span class="nf">getSupport</span><span class="p">(</span> <span class="p">){</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="c1">//Get the singleton</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">MqttConnection</span> <span class="nf">getSupport</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">mqttSup</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="c1">//Hidden costructor</span>
+  <span class="kd">protected</span> <span class="nf">MqttConnection</span><span class="p">(</span> <span class="n">String</span> <span class="n">clientName</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">connectToBroker</span><span class="p">(</span><span class="n">clientName</span><span class="p">,</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">mqttBrokerAddr</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">connectToBroker</span><span class="p">(</span><span class="n">String</span> <span class="n">clientid</span><span class="p">,</span>  <span class="n">String</span> <span class="n">brokerAddr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="n">client</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">MqttClient</span><span class="p">(</span><span class="n">brokerAddr</span><span class="p">,</span> <span class="n">clientid</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Il costruttore del singleton  <code class="docutils literal notranslate"><span class="pre">MqttConnection</span></code> crea un <code class="docutils literal notranslate"><span class="pre">MqttClient</span></code> con <code class="docutils literal notranslate"><span class="pre">clientId</span></code>,
+il quale si connette al Broker.</p>
+<p>Le operazioni-base di invio e ricezione di messaggi sono correlate alle operazioni <code class="docutils literal notranslate"><span class="pre">publish</span></code> e
+<code class="docutils literal notranslate"><span class="pre">subscribe</span></code> che il client è capace di eseguire.</p>
+<section id="mqttconnection-publish">
+<h4>MqttConnection publish<a class="headerlink" href="#mqttconnection-publish" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">MqttConnection</span></code> realizza l’invio di un messaggio invocando l’operazione <code class="docutils literal notranslate"><span class="pre">publish</span></code> su una topic;</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">publish</span><span class="p">(</span><span class="n">String</span> <span class="n">topic</span><span class="p">,</span> <span class="n">String</span> <span class="n">msg</span><span class="p">,</span> <span class="kt">int</span> <span class="n">qos</span><span class="p">,</span> <span class="kt">boolean</span> <span class="n">retain</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">MqttMessage</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MqttMessage</span><span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">qos</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">qos</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">qos</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//qos=0 fire and forget; qos=1 at least once(default);qos=2 exactly once</span>
+    <span class="n">message</span><span class="p">.</span><span class="na">setQos</span><span class="p">(</span><span class="n">qos</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">message</span><span class="p">.</span><span class="na">setPayload</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">().</span><span class="na">getBytes</span><span class="p">());</span>
+    <span class="n">client</span><span class="p">.</span><span class="na">publish</span><span class="p">(</span><span class="n">topic</span><span class="p">,</span> <span class="n">message</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MqttException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span>  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">publish</span></code> viene usato per la implementazione del motodo <code class="docutils literal notranslate"><span class="pre">forward</span></code> dei messaggi strutturati
+di tipo <a class="reference internal" href="ContestiContenitori.html#applmessage"><span class="std std-ref">ApplMessage</span></a>.</p>
+</section>
+<section id="mqttconnection-forward">
+<h4>MqttConnection forward<a class="headerlink" href="#mqttconnection-forward" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span> <span class="c1">//no exception =&gt; we can publish</span>
+  <span class="n">publish</span><span class="p">(</span><span class="n">topicInput</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mqttconnection-subscribe">
+<h4>MqttConnection subscribe<a class="headerlink" href="#mqttconnection-subscribe" title="Permalink to this headline">¶</a></h4>
+<p>La ricezione di un messaggio si realizza attraverso la <code class="docutils literal notranslate"><span class="pre">subscribe</span></code> ad una topic; i messaggi pubblicati su
+questa topic posssono essere gestiti associando  (col metodo <code class="docutils literal notranslate"><span class="pre">setCallback</span></code>) a <code class="docutils literal notranslate"><span class="pre">client</span></code> un oggetto di classe
+<code class="docutils literal notranslate"><span class="pre">org.eclipse.paho.client.mqttv3.MqttCallback</span></code></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">//To receive and handle a messagge (command or request)</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">subscribe</span> <span class="p">(</span> <span class="n">String</span> <span class="n">topic</span><span class="p">,</span> <span class="n">IApplMsgHandlerMqtt</span> <span class="n">handler</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">subscribe</span><span class="p">(</span><span class="n">clientid</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">handler</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">subscribe</span><span class="p">(</span>
+    <span class="n">String</span> <span class="n">clientid</span><span class="p">,</span> <span class="n">String</span> <span class="n">topic</span><span class="p">,</span> <span class="n">MqttCallback</span> <span class="n">callback</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">client</span><span class="p">.</span><span class="na">setCallback</span><span class="p">(</span> <span class="n">callback</span> <span class="p">);</span>
+    <span class="n">client</span><span class="p">.</span><span class="na">subscribe</span><span class="p">(</span> <span class="n">topic</span> <span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">MqttException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span>   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Poichè la gestione di un messaggio è competenza del livello applicativo, l’handler passato alla
+<code class="docutils literal notranslate"><span class="pre">subscribe</span></code> deve rispettare un contratto imposto sia dal nostro framework sia dalla libreria.
+Questo contratto viene definito da una interfaccia che estende <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">L’interfaccia IApplMsgHandler</span></a>.</p>
+</section>
+<section id="iapplmsghandlermqtt">
+<h4>IApplMsgHandlerMqtt<a class="headerlink" href="#iapplmsghandlermqtt" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplMsgHandlerMqtt</span>
+     <span class="kd">extends</span> <span class="n">IApplMsgHandler</span><span class="p">,</span> <span class="n">org</span><span class="p">.</span><span class="na">eclipse</span><span class="p">.</span><span class="na">paho</span><span class="p">.</span><span class="na">client</span><span class="p">.</span><span class="na">mqttv3</span><span class="p">.</span><span class="na">MqttCallback</span><span class="p">{}</span>
+</pre></div>
+</div>
+</section>
+<section id="connessione-come-coppia-di-topic">
+<span id="connessionecomecoppia"></span><h4>Connessione come coppia di topic<a class="headerlink" href="#connessione-come-coppia-di-topic" title="Permalink to this headline">¶</a></h4>
+<p>Una connessione di tipo <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> viene qui realizzata usando due topic:
+una per ricevere messaggi e una per inviare risposte relative ai messaggi di richiesta.</p>
+<p>Se la topic di ricezione ha nome <code class="docutils literal notranslate"><span class="pre">t1</span></code>, la topic per le risposte deve avere il nome <code class="docutils literal notranslate"><span class="pre">t1CXanswer</span></code>
+ove <code class="docutils literal notranslate"><span class="pre">CX</span></code> è il nome del client che ha inviato una richiesta su <code class="docutils literal notranslate"><span class="pre">t1</span></code>.
+Ad esempio, un proxyclient di nome <code class="docutils literal notranslate"><span class="pre">ledPxy</span></code> che usa la topic <code class="docutils literal notranslate"><span class="pre">ctxEntry</span></code> per inviare comandi e richieste al
+ContextServer,  fa una subscribe su <code class="docutils literal notranslate"><span class="pre">ctxEntryledPxyanswer</span></code> per ricevere le risposte.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">//To receive and handle an answer</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">subscribe</span><span class="p">(</span><span class="n">String</span> <span class="n">clientid</span><span class="p">,</span> <span class="n">String</span> <span class="n">answertopic</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">subscribe</span><span class="p">(</span> <span class="n">clientid</span><span class="p">,</span> <span class="n">answertopic</span><span class="p">,</span>
+    <span class="k">new</span> <span class="n">MqttConnectionCallback</span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="na">getClientId</span><span class="p">(),</span> <span class="n">blockingQueue</span><span class="p">)</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Per permettere al livello applicativo di ricevere una risposta, l’handler di callback associato alla
+answertopic (<code class="docutils literal notranslate"><span class="pre">MqttConnectionCallback</span></code>) provvede a inserire il messaggio nella <code class="docutils literal notranslate"><span class="pre">blockingQueue</span></code> del supporto.</p>
+<section id="mqttconnectioncallback">
+<h5>MqttConnectionCallback<a class="headerlink" href="#mqttconnectioncallback" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MqttConnectionCallback</span> <span class="kd">implements</span> <span class="n">MqttCallback</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">MqttConnectionCallback</span><span class="p">(</span> <span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">blockingQueue</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">blockingQueue</span> <span class="o">=</span> <span class="n">blockingQueue</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">messageArrived</span><span class="p">(</span><span class="n">String</span> <span class="n">topic</span><span class="p">,</span> <span class="n">MqttMessage</span> <span class="n">message</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">blockingQueue</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="n">blockingQueue</span><span class="p">.</span><span class="na">put</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mqttconnection-request">
+<h4>MqttConnection request<a class="headerlink" href="#mqttconnection-request" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">request</span></code> di <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a> viene implementato facendo una <code class="docutils literal notranslate"><span class="pre">publish</span></code> sulla entry-topic
+del nodo destinatario per poi far attendere la risposta a un nuovo client temporaneo appositamente creato per
+sottoscrivversi alla <code class="docutils literal notranslate"><span class="pre">answertopic</span></code>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">//To send a request and wait for the answer</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="n">ApplMessage</span> <span class="n">requestMsg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+
+  <span class="c1">//Preparo per ricevere la risposta</span>
+  <span class="n">String</span> <span class="n">sender</span> <span class="o">=</span> <span class="n">requestMsg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">();</span>
+  <span class="n">String</span> <span class="n">reqid</span>  <span class="o">=</span> <span class="n">requestMsg</span><span class="p">.</span><span class="na">msgId</span><span class="p">();</span>
+  <span class="n">String</span> <span class="n">answerTopicName</span> <span class="o">=</span> <span class="s">&quot;answ_&quot;</span><span class="o">+</span><span class="n">reqid</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="o">+</span><span class="n">sender</span><span class="p">;</span>
+  <span class="n">MqttClient</span> <span class="n">clientAnswer</span> <span class="o">=</span> <span class="n">setupConnectionFroAnswer</span><span class="p">(</span><span class="n">answerTopicName</span><span class="p">);</span>
+
+  <span class="c1">//publish(topicInput, requestMsg.toString(), 2, false); //qos=2 !</span>
+  <span class="n">forward</span><span class="p">(</span> <span class="n">requestMsg</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+              <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">receiveMsg</span><span class="p">();</span>
+              <span class="n">clientAnswer</span><span class="p">.</span><span class="na">disconnect</span><span class="p">();</span>
+              <span class="n">clientAnswer</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il client temporaneo viene disattivato dopo la ricezione della richiesta.</p>
+</section>
+<section id="mqttconnection-receivemsg">
+<h4>MqttConnection receiveMsg<a class="headerlink" href="#mqttconnection-receivemsg" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code> attende un messaggio sulla  <code class="docutils literal notranslate"><span class="pre">blockingQueue</span></code> .</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="n">blockingQueue</span><span class="p">.</span><span class="na">take</span><span class="p">();</span>
+  <span class="n">ApplMessage</span> <span class="n">msgAnswer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">answer</span><span class="p">);</span>
+  <span class="n">answer</span> <span class="o">=</span> <span class="n">msgAnswer</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+  <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mqttconnection-reply">
+<h4>MqttConnection reply<a class="headerlink" href="#mqttconnection-reply" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo reply viene implementato pubblicando un messaggio di risposta su una topic, il cui nome viene costruito
+ai partire dai dati contenuti nel messaggio di richiesta come specificato in <a class="reference internal" href="#connessionecomecoppia"><span class="std std-ref">Connessione come coppia di topic</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">ApplMessage</span> <span class="n">m</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="n">String</span> <span class="n">dest</span>   <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">reqid</span>  <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="na">msgId</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">answerTopicName</span> <span class="o">=</span> <span class="s">&quot;answ_&quot;</span><span class="o">+</span><span class="n">reqid</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="o">+</span><span class="n">dest</span><span class="p">;</span>
+    <span class="n">publish</span><span class="p">(</span><span class="n">answerTopicName</span><span class="p">,</span><span class="n">msg</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="kc">false</span><span class="p">);</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/MqttConn.PNG"><img alt="_images/MqttConn.PNG" class="align-center" src="_images/MqttConn.PNG" style="width: 70%;" /></a>
+</section>
+</section>
+<section id="coapconnection">
+<h3>CoapConnection<a class="headerlink" href="#coapconnection" title="Permalink to this headline">¶</a></h3>
+<p>CoAP considera le interazioni (client/server) tra componenti come uno scambio di rappresentazioni di risorse
+e si pone l’obiettivo di realizzare una infrastruttura di gestione di risorse remote tramite alcune semplici
+funzioni di accesso e interazione come quelle di <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>: <code class="docutils literal notranslate"><span class="pre">PUT,</span> <span class="pre">POST,</span> <span class="pre">GET,</span> <span class="pre">DELETE</span></code>.</p>
+<section id="coapconnection-implementa-interaction2021">
+<h4><code class="docutils literal notranslate"><span class="pre">CoapConnection</span></code> implementa <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a><a class="headerlink" href="#coapconnection-implementa-interaction2021" title="Permalink to this headline">¶</a></h4>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">CoapConnection</span></code>  implementa <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>
+e quindi realizza il ‘nostro’ concetto di connessione, tenendo conto delle seguenti caratteristiche del protocollo
+CoAP e della libreria <a class="reference external" href="https://www.eclipse.org/californium/">californium</a>:</p>
+<ul>
+<li><p>per interagire con una risorsa remota si può usare un oggetto di classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapClient</span></code>
+che invia richieste all’<code class="docutils literal notranslate"><span class="pre">URI</span></code> speficato come argomento del costruttore, come ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;coap://&quot;</span><span class="o">+</span><span class="n">hostaddress</span> <span class="o">+</span> <span class="s2">&quot;:5683/&quot;</span><span class="o">+</span> <span class="n">resourcePath</span>
+</pre></div>
+</div>
+</li>
+<li><p>le risorse allocate su un nodo sono istanze della classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapResource</span></code>
+e sono gestite da un server di classe <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium.core.CoapServer</span></code>. Questo server realizza già
+funzioni analoghe a quelle da <a class="reference internal" href="#icontext"><span class="std std-ref">IContext</span></a>.</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CoapConnection</span> <span class="kd">implements</span> <span class="n">Interaction2021</span>  <span class="p">{</span>
+<span class="kd">private</span> <span class="n">CoapClient</span> <span class="n">client</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">url</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">CoapConnection</span><span class="p">(</span> <span class="n">String</span> <span class="n">address</span><span class="p">,</span> <span class="n">String</span> <span class="n">path</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//&quot;coap://localhost:5683/&quot; + path</span>
+    <span class="n">setCoapClient</span><span class="p">(</span><span class="n">address</span><span class="p">,</span><span class="n">path</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setCoapClient</span><span class="p">(</span><span class="n">String</span> <span class="n">address</span><span class="p">,</span> <span class="n">String</span> <span class="n">path</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">url</span>     <span class="o">=</span> <span class="s">&quot;coap://&quot;</span><span class="o">+</span><span class="n">address</span> <span class="o">+</span> <span class="s">&quot;:5683/&quot;</span><span class="o">+</span> <span class="n">path</span><span class="p">;</span>
+    <span class="n">client</span>  <span class="o">=</span> <span class="k">new</span> <span class="n">CoapClient</span><span class="p">(</span> <span class="n">url</span> <span class="p">);</span>
+    <span class="n">client</span><span class="p">.</span><span class="na">useExecutor</span><span class="p">();</span> <span class="c1">//To be shutdown</span>
+    <span class="n">client</span><span class="p">.</span><span class="na">setTimeout</span><span class="p">(</span> <span class="mi">1000L</span> <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="coapconnection-forward">
+<h4>CoapConnection forward<a class="headerlink" href="#coapconnection-forward" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo di invio di un messaggio si traduce in una operazione PUT effettuata dal CoapClient.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span><span class="n">String</span> <span class="n">msg</span><span class="p">)</span>   <span class="p">{</span>
+  <span class="n">CoapResponse</span> <span class="n">resp</span><span class="o">=</span><span class="n">client</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">MediaTypeRegistry</span><span class="p">.</span><span class="na">TEXT_PLAIN</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="coapconnection-request">
+<h4>CoapConnection request<a class="headerlink" href="#coapconnection-request" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo di invio di una richiesta si traduce in una operazione GET effettuata dal CoapClient.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span> <span class="n">String</span> <span class="n">query</span> <span class="p">)</span>   <span class="p">{</span>
+  <span class="n">String</span> <span class="n">param</span> <span class="o">=</span> <span class="n">query</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">()</span> <span class="o">?</span> <span class="s">&quot;&quot;</span> <span class="p">:</span>  <span class="s">&quot;?q=&quot;</span><span class="o">+</span><span class="n">query</span><span class="p">;</span>
+  <span class="n">client</span><span class="p">.</span><span class="na">setURI</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">param</span><span class="p">);</span>
+  <span class="n">CoapResponse</span> <span class="n">respGet</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="na">get</span><span class="p">(</span>  <span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">respGet</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">respGet</span><span class="p">.</span><span class="na">getResponseText</span><span class="p">();</span>
+  <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s">&quot;0&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="coapconnection-receivemsg">
+<h4>CoapConnection receiveMsg<a class="headerlink" href="#coapconnection-receivemsg" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo di ricezione di un messaggio è già realizzato dalla infrastruutura CoAP fornita da  <a class="reference external" href="https://www.eclipse.org/californium/">californium</a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+<span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | receiveMsg implicit&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="coapconnection-reply">
+<h4>CoapConnection reply<a class="headerlink" href="#coapconnection-reply" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo di invio di una risposta è già realizzato dalla infrastruutura CoAP fornita da <a class="reference external" href="https://www.eclipse.org/californium/">californium</a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">reply</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+<span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | implicit&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>Una volta realizzati i nuovi supporti per <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>, possiamo
+fare in modo che la classe dei Proxy crei un supporto diverso per ogni protocollo, utilizzando
+il tipo appropriato di connessione.</p>
+</section>
+</section>
+</section>
+<section id="estensione-della-classe-proxyasclient">
+<span id="proxyasclientesteso"></span><h2>Estensione della classe <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a><a class="headerlink" href="#estensione-della-classe-proxyasclient" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ProxyAsClient</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="nf">ProxyAsClient</span><span class="p">(</span>
+    <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="p">){</span>
+      <span class="p">...</span>
+      <span class="n">setConnection</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">entry</span><span class="p">,</span> <span class="n">protocol</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setConnection</span></code> invocato dal costruttore crea un supporto diverso per ogni protocollo, utilizzando
+il tipo appropriato di connessione che implementa <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setConnection</span><span class="p">(</span> <span class="n">String</span> <span class="n">host</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span><span class="p">,</span>
+              <span class="n">ProtocolType</span> <span class="n">protocol</span>  <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="k">switch</span><span class="p">(</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="n">tcp</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">port</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">entry</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">numOfAttempts</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">TcpClientSupport</span><span class="p">.</span><span class="na">connect</span><span class="p">(</span><span class="n">host</span><span class="p">,</span><span class="n">port</span><span class="p">,</span><span class="n">numOfAttempts</span><span class="p">);</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">case</span> <span class="n">coap</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CoapConnection</span><span class="p">(</span> <span class="n">host</span><span class="p">,</span><span class="n">entry</span> <span class="p">);</span><span class="c1">//entry is uri path</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">case</span> <span class="n">mqtt</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">MqttConnection</span><span class="p">.</span><span class="na">getSupport</span><span class="p">();</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">default</span> <span class="p">:{</span>
+    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; | Protocol unknown&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="i-contextserver">
+<h2>I ContextServer<a class="headerlink" href="#i-contextserver" title="Permalink to this headline">¶</a></h2>
+<p>Dobbiamo ora introdurre un ContextServer per MQTT (che denominiamo <a class="reference internal" href="#mqttcontextserver"><span class="std std-ref">MqttContextServer</span></a>)
+e per CoAP (che denominiamo <a class="reference internal" href="#coapcontextserver"><span class="std std-ref">CoapContextServer</span></a>).</p>
+<p>Al solito, è opportuno definire  una Factory per la creazione di un ContextServer in funzione del protocolllo:</p>
+<section id="context2021">
+<h3>Context2021<a class="headerlink" href="#context2021" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Context2021</span> <span class="p">{</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">IContext</span> <span class="nf">create</span><span class="p">(</span><span class="n">String</span> <span class="n">id</span><span class="p">,</span> <span class="n">String</span> <span class="n">entry</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">IContext</span> <span class="n">ctx</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="n">ProtocolType</span> <span class="n">protocol</span> <span class="o">=</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">protcolType</span><span class="p">;</span>
+    <span class="k">switch</span><span class="p">(</span> <span class="n">protocol</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">tcp</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="n">ctx</span><span class="o">=</span><span class="k">new</span> <span class="n">TcpContextServer</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">entry</span><span class="p">);</span>
+      <span class="n">ctx</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">case</span> <span class="n">mqtt</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="n">ctx</span><span class="o">=</span> <span class="k">new</span> <span class="n">MqttContextServer</span><span class="p">(</span> <span class="n">id</span><span class="p">,</span> <span class="n">entry</span><span class="p">);</span>
+      <span class="n">ctx</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">case</span> <span class="n">coap</span> <span class="p">:</span> <span class="p">{</span>
+      <span class="n">ctx</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CoapContextServer</span><span class="p">(</span> <span class="p">);</span>
+      <span class="n">ctx</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">default</span><span class="p">:</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">ctx</span><span class="p">;</span>
+  <span class="p">}</span><span class="c1">//create</span>
+</pre></div>
+</div>
+<p>I parametri <code class="docutils literal notranslate"><span class="pre">id</span></code> ed <code class="docutils literal notranslate"><span class="pre">entry</span></code> da specificare nel costruttore nei vari casi sono:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Server</p></td>
+<td><p>id</p></td>
+<td><p>entry</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="xref std std-ref">TcpContextServer</span></p></td>
+<td><p>nome dell’host</p></td>
+<td><p>port</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#mqttcontextserver"><span class="std std-ref">MqttContextServer</span></a></p></td>
+<td><p>id del client</p></td>
+<td><p>nome di una topic</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#coapcontextserver"><span class="std std-ref">CoapContextServer</span></a></p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Il <a class="reference internal" href="#coapcontextserver"><span class="std std-ref">CoapContextServer</span></a> non ha bisogno di parametri in quanto coorelato al
+<code class="docutils literal notranslate"><span class="pre">CoapServer</span></code> di <code class="docutils literal notranslate"><span class="pre">org.eclipse.californium</span></code>.</p>
+</section>
+<section id="icontextmsghandler">
+<h3>IContextMsgHandler<a class="headerlink" href="#icontextmsghandler" title="Permalink to this headline">¶</a></h3>
+<p>Il ContextServer relativo ad un protocollo, si avvale di un gestore di sistema dei messaggi  come il
+<a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>.</p>
+<p>Introduciamo anche per questo gestore un contratto che imponga la implementazione di metodi per
+aggiungere/rimuovere oggetti applicativi di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>
+(cosa che <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a> fa già).</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IContextMsgHandler</span> <span class="kd">extends</span> <span class="n">IApplMsgHandler</span><span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">);</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span> <span class="p">);</span>
+  <span class="kd">public</span> <span class="n">IApplMsgHandler</span> <span class="nf">getHandler</span><span class="p">(</span> <span class="n">String</span> <span class="n">name</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>L’operazione <code class="docutils literal notranslate"><span class="pre">getHandler</span></code> (che va ora aggiunta a <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>)
+permette di ottenere il riferimento a un oggetto applicativo ‘registrato’ nel contesto,
+dato il nome dell’oggetto.</p>
+<section id="schema-generale-del-framework">
+<span id="schemaframework"></span><h4>Schema generale del framework<a class="headerlink" href="#schema-generale-del-framework" title="Permalink to this headline">¶</a></h4>
+<p>La situazione, generalizzata con le interfacce, si presenta ora come segue:</p>
+<a class="reference internal image-reference" href="_images/framework1.PNG"><img alt="_images/framework1.PNG" class="align-center" src="_images/framework1.PNG" style="width: 70%;" /></a>
+<p>Osserviamo che stiamo costruendo un framework che:</p>
+<p><span class="remark">realizza una infrastruttura di comunicazione</span></p>
+<p><span class="remark">fornisce ai componenti applicativi la capacità di intergire in rete</span></p>
+<p><span class="remark">impone che ogni componente applicativo abbia un nome univoco</span></p>
+<p>Abbiamo già introdotto <span class="xref std std-ref">TcpContextServer</span> come implementazione di <a class="reference internal" href="#icontext"><span class="std std-ref">IContext</span></a>
+che utilizza librerie per la gestione di <em>Socket</em>.
+La realizzazione di analoghi ContextServer per MQTT e CoAP si basa sulle citate nuove
+<a class="reference internal" href="#librerieprotocolli"><span class="std std-ref">librerie</span></a>.</p>
+</section>
+</section>
+<section id="mqttcontextserver">
+<h3>MqttContextServer<a class="headerlink" href="#mqttcontextserver" title="Permalink to this headline">¶</a></h3>
+<p>Il ContextServer per MQTT riceve nel costruttore due argomenti:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">clientId</span></code>: rappresenta l’indentificativo del client che si connetterà al Broker;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">String</span> <span class="pre">topic</span></code>: rappresenta la ‘porta di ingresso’ (entry-topic) per i messaggi inviati al server.</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MqttContextServer</span> <span class="kd">implements</span> <span class="n">IContext</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">MqttConnection</span> <span class="n">mqtt</span> <span class="p">;</span> <span class="c1">//Singleton</span>
+<span class="kd">private</span> <span class="n">IContextMsgHandlerMqtt</span> <span class="n">ctxMsgHandler</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">clientId</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">topic</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">MqttContextServer</span><span class="p">(</span><span class="n">String</span> <span class="n">clientId</span><span class="p">,</span> <span class="n">String</span> <span class="n">topic</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">clientId</span> <span class="o">=</span> <span class="n">clientId</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">topic</span>    <span class="o">=</span> <span class="n">topic</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Al momento della attivazione il server crea:</p>
+<ul class="simple">
+<li><p>un oggetto (<code class="docutils literal notranslate"><span class="pre">mqtt</span></code>) di tipo <a class="reference internal" href="#mqttconnection"><span class="std std-ref">MqttConnection</span></a>  per le comunicazioni, che viene
+subito utilizzato per connettersi al Broker;</p></li>
+<li><p>un oggetto (<code class="docutils literal notranslate"><span class="pre">ctxMsgHandler</span></code>) di tipo  <a class="reference internal" href="#contextmqttmsghandler"><span class="std std-ref">ContextMqttMsgHandler</span></a> per la gestione di sistema dei messaggi.</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">ctxMsgHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ContextMqttMsgHandler</span><span class="p">(</span><span class="s">&quot;ctxH&quot;</span><span class="p">);</span>
+  <span class="n">mqtt</span> <span class="o">=</span> <span class="n">MqttConnection</span><span class="p">.</span><span class="na">createSupport</span><span class="p">(</span> <span class="n">clientId</span><span class="p">,</span> <span class="n">topic</span> <span class="p">);</span>
+  <span class="n">mqtt</span><span class="p">.</span><span class="na">connectToBroker</span><span class="p">(</span><span class="n">clientId</span><span class="p">,</span>  <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">mqttBrokerAddr</span><span class="p">);</span>
+  <span class="n">mqtt</span><span class="p">.</span><span class="na">subscribe</span><span class="p">(</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ctxMsgHandler</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComponent</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ctxMsgHandler</span><span class="p">.</span><span class="na">addComponent</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">h</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Come <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>, il gestore <code class="docutils literal notranslate"><span class="pre">ctxMsgHandler</span></code> memorizza i (riferimenti ai) componenti di
+gestione applicativa dei messaggi (di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>).</p>
+<a class="reference internal image-reference" href="_images/frameworkMqtt.PNG"><img alt="_images/frameworkMqtt.PNG" class="align-center" src="_images/frameworkMqtt.PNG" style="width: 70%;" /></a>
+<p>A differenza di <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>, il gestore <code class="docutils literal notranslate"><span class="pre">ctxMsgHandler</span></code> funge anche da callback
+utilizzato dal supporto <code class="docutils literal notranslate"><span class="pre">mqtt</span></code> quando viene ricevuto un messaggio pubblicato sulla entry-topic.</p>
+<p>Notiamo infatti che il gestore <code class="docutils literal notranslate"><span class="pre">ctxMsgHandler</span></code> implementa l’interfaccia
+<a class="reference internal" href="#icontextmsghandlermqtt"><span class="std std-ref">IContextMsgHandlerMqtt</span></a> che estende <a class="reference internal" href="#icontextmsghandler"><span class="std std-ref">IContextMsgHandler</span></a> con <a class="reference internal" href="#iapplmsghandlermqtt"><span class="std std-ref">IApplMsgHandlerMqtt</span></a>:</p>
+<section id="icontextmsghandlermqtt">
+<h4>IContextMsgHandlerMqtt<a class="headerlink" href="#icontextmsghandlermqtt" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IContextMsgHandlerMqtt</span>
+      <span class="kd">extends</span> <span class="n">IContextMsgHandler</span><span class="p">,</span> <span class="n">IApplMsgHandlerMqtt</span><span class="p">{}</span>
+</pre></div>
+</div>
+</section>
+<section id="contextmqttmsghandler">
+<h4>ContextMqttMsgHandler<a class="headerlink" href="#contextmqttmsghandler" title="Permalink to this headline">¶</a></h4>
+<p>La rappresentazione in forma di String di un messaggio (di tipo <code class="docutils literal notranslate"><span class="pre">org.eclipse.paho.client.mqttv3.MqttMessage</span></code>)
+ricevuto sulla entry-topic deve avere la struttura introdotta in <a class="reference internal" href="ContestiContenitori.html#msgapplicativi"><span class="std std-ref">Struttura dei messaggi applicativi</span></a>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span><span class="p">(</span><span class="n">MSGID</span><span class="p">,</span><span class="n">MSGTYPE</span><span class="p">,</span><span class="n">SENDER</span><span class="p">,</span><span class="n">RECEIVER</span><span class="p">,</span><span class="n">CONTENT</span><span class="p">,</span><span class="n">SEQNUM</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Pertanto deve essere possibile eseguire il mapping della stringa in un oggetto di tipo <a class="reference internal" href="ContestiContenitori.html#applmessage"><span class="std std-ref">ApplMessage</span></a>,
+senza generare eccezioni.
+Il gestore di sistema dei messaggi  realizza questo mapping nel  metodo <code class="docutils literal notranslate"><span class="pre">messageArrived</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContextMqttMsgHandler</span> <span class="kd">extends</span> <span class="n">ApplMsgHandler</span>
+                            <span class="kd">implements</span> <span class="n">IContextMsgHandlerMqtt</span><span class="p">{</span>
+  <span class="nd">@Override</span>  <span class="c1">//from MqttCallback</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">messageArrived</span><span class="p">(</span><span class="n">String</span> <span class="n">topic</span><span class="p">,</span> <span class="n">MqttMessage</span> <span class="n">message</span><span class="p">)</span>   <span class="p">{</span>
+    <span class="n">ApplMessage</span> <span class="n">msgInput</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">message</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+    <span class="n">elaborate</span><span class="p">(</span><span class="n">msgInput</span><span class="p">,</span> <span class="n">MqttConnection</span><span class="p">.</span><span class="na">getSupport</span><span class="p">());</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>L’elaborazione di sistema consiste, come nel caso di <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a>, nella invocazione
+del gestore applicativo che corrisponde al nome del destinatario :</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span> <span class="n">ApplMessage</span> <span class="n">msg</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">dest</span>          <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgReceiver</span><span class="p">();</span>
+  <span class="n">IApplMsgHandler</span>  <span class="n">h</span>   <span class="o">=</span> <span class="n">handlerMap</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">dest</span><span class="p">);</span>
+  <span class="n">h</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">msg</span> <span class="p">,</span> <span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">elaborate</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">,</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ApplMessage</span> <span class="n">msg</span>      <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+  <span class="n">elaborate</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">toString</span><span class="p">(),</span> <span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">addComponent</span><span class="p">(</span> <span class="n">String</span> <span class="n">devName</span><span class="p">,</span> <span class="n">IApplMsgHandler</span> <span class="n">h</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="coapcontextserver">
+<h3>CoapContextServer<a class="headerlink" href="#coapcontextserver" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>CoAP fornisce un modello di interazione ancora punto-a-punto ma, essendo di tipo <code class="docutils literal notranslate"><span class="pre">REST</span></code>, il suo utilizzo
+implica schemi architetturali e di progettazione molto simili a quelli di applicazioni Web basate su <code class="docutils literal notranslate"><span class="pre">HTTP</span></code>;</p></li>
+<li><p>l’uso di CoAP modifica il modello concettuale di riferimento per le interazioni, in quanto propone
+l’idea di accesso in lettura (GET) o modifica (PUT) a <span class="blue">risorse</span> identificate da <code class="docutils literal notranslate"><span class="pre">URI</span></code> attraverso un
+unico server (che <a class="reference external" href="https://www.eclipse.org/californium/">californium</a> offre nella classe <span class="blue">org.eclipse.californium.core.CoapServer</span>).</p>
+<a class="reference internal image-reference" href="_images/CoapResources.png"><img alt="_images/CoapResources.png" class="align-center" src="_images/CoapResources.png" style="width: 40%;" /></a>
+</li>
+</ul>
+<p>Il ContextServer del nostro framework potrà quindi essere introdotto come una specializzazione del <code class="docutils literal notranslate"><span class="pre">CoapServer</span></code>:</p>
+<blockquote>
+<div><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CoapApplServer</span> <span class="kd">extends</span> <span class="n">CoapServer</span> <span class="kd">implements</span> <span class="n">IContext</span><span class="p">{</span>
+   <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p>le risorse CoAP sono organizzate in una gerarchia ad albero, come nell’esempio della figura che segue:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/CoapRadarResources.PNG"><img alt="_images/CoapRadarResources.PNG" class="align-center" src="_images/CoapRadarResources.PNG" style="width: 70%;" /></a>
+</div></blockquote>
+<p>La definizione di una risorsa applicativa può essere definita come specializzazione della classe
+<span class="blue">org.eclipse.californium.core.CoapResource</span> di <a class="reference external" href="https://www.eclipse.org/californium/">californium</a>, così che noi possiamo introdurre
+componenti-CoAP compatibili col framework introducendo una classe astratta che specializza <code class="docutils literal notranslate"><span class="pre">CoapResource</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ApplResourceCoap</span>
+        <span class="kd">extends</span> <span class="n">CoapResource</span> <span class="kd">implements</span> <span class="n">IApplMsgHandler</span><span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Siamo dunque di fronte a un  modello simile allo  <a class="reference internal" href="#schemaframework"><span class="std std-ref">Schema generale del framework</span></a>, ma con
+una forte forma di <span class="blue">standardizzazione</span> sia a livello di ‘verbi’ di interazione (GET/PUT/…) sia a livello di
+organizzazione del codice applicativo (come gerarchia di risorse).</p>
+<p>Per utilizzare il framework con protocollo CoAP non dovremo quindi scrivere molto altro codice.</p>
+<section id="coapapplserver">
+<h4>CoapApplServer<a class="headerlink" href="#coapapplserver" title="Permalink to this headline">¶</a></h4>
+<p>Il server <code class="docutils literal notranslate"><span class="pre">CoapApplServer</span></code> viene defiito come una estensione di <code class="docutils literal notranslate"><span class="pre">CoapServer</span></code>
+che realizza un <strong>singleton</strong> capace di registare nuove risorse del dominio, ciascuna
+intesa come un dispositivo, o di input o di output.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">CoapApplServer</span> <span class="kd">extends</span> <span class="n">CoapServer</span><span class="p">{</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">outputDeviceUri</span> <span class="o">=</span> <span class="s">&quot;devices/output&quot;</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">lightsDeviceUri</span> <span class="o">=</span> <span class="n">outputDeviceUri</span><span class="o">+</span><span class="s">&quot;/lights&quot;</span><span class="p">;</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">inputDeviceUri</span>  <span class="o">=</span> <span class="s">&quot;devices/input&quot;</span><span class="p">;</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">CoapResource</span> <span class="n">root</span>      <span class="o">=</span> <span class="k">new</span> <span class="n">CoapResource</span><span class="p">(</span><span class="s">&quot;devices&quot;</span><span class="p">);</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">CoapApplServer</span> <span class="n">server</span>  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">CoapApplServer</span> <span class="nf">getServer</span><span class="p">()</span> <span class="p">{</span>
+     <span class="k">if</span><span class="p">(</span> <span class="n">server</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="n">server</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CoapApplServer</span><span class="p">();</span>
+     <span class="k">return</span> <span class="n">server</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">stopTheServer</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="c1">//Hidden constructor</span>
+<span class="kd">private</span> <span class="nf">CoapApplServer</span><span class="p">(){</span>
+  <span class="n">CoapResource</span> <span class="n">outputRes</span><span class="o">=</span> <span class="k">new</span> <span class="n">CoapResource</span><span class="p">(</span><span class="s">&quot;output&quot;</span><span class="p">);</span>
+  <span class="n">outputRes</span><span class="p">.</span><span class="na">add</span><span class="p">(</span> <span class="k">new</span> <span class="n">CoapResource</span><span class="p">(</span><span class="s">&quot;lights&quot;</span><span class="p">));</span>
+  <span class="n">root</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">outputRes</span><span class="p">);</span>
+  <span class="n">root</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span> <span class="n">CoapResource</span><span class="p">(</span><span class="s">&quot;input&quot;</span><span class="p">));</span>
+  <span class="n">add</span><span class="p">(</span> <span class="n">root</span> <span class="p">);</span>
+  <span class="n">start</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo statico <code class="docutils literal notranslate"><span class="pre">getServer</span></code> è un factory method che restituisce il singleton, creandolo ed
+attivandolo, se già non lo fosse.</p>
+<p>Il metodo per aggiungere risorse è così definito:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span>  <span class="kt">void</span> <span class="nf">addCoapResource</span><span class="p">(</span><span class="n">CoapResource</span> <span class="n">resource</span><span class="p">,</span> <span class="n">String</span> <span class="n">fatherUri</span><span class="p">){</span>
+ <span class="n">Resource</span> <span class="n">res</span> <span class="o">=</span> <span class="n">getResource</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="o">+</span><span class="n">fatherUri</span><span class="p">);</span>
+ <span class="k">if</span><span class="p">(</span> <span class="n">res</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="n">res</span><span class="p">.</span><span class="na">add</span><span class="p">(</span> <span class="n">resource</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo statico <code class="docutils literal notranslate"><span class="pre">getResource</span></code> restituisce (il riferimento a) una risorsa, dato il suo <code class="docutils literal notranslate"><span class="pre">URI</span></code>,
+avvalendosi di una ricerca <em>depth-first</em> nell’albero delle risorse:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">Resource</span> <span class="nf">getResource</span><span class="p">(</span> <span class="n">String</span> <span class="n">uri</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">getResource</span><span class="p">(</span> <span class="n">root</span><span class="p">,</span> <span class="n">uri</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="n">Resource</span> <span class="nf">getResource</span><span class="p">(</span><span class="n">Resource</span> <span class="n">root</span><span class="p">,</span> <span class="n">String</span> <span class="n">uri</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">root</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">Collection</span><span class="o">&lt;</span><span class="n">Resource</span><span class="o">&gt;</span> <span class="n">rootChilds</span> <span class="o">=</span> <span class="n">root</span><span class="p">.</span><span class="na">getChildren</span><span class="p">();</span>
+    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Resource</span><span class="o">&gt;</span> <span class="n">iter</span>         <span class="o">=</span> <span class="n">rootChilds</span><span class="p">.</span><span class="na">iterator</span><span class="p">();</span>
+        <span class="k">while</span><span class="p">(</span> <span class="n">iter</span><span class="p">.</span><span class="na">hasNext</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="n">Resource</span> <span class="n">curRes</span> <span class="o">=</span> <span class="n">iter</span><span class="p">.</span><span class="na">next</span><span class="p">();</span>
+            <span class="n">String</span> <span class="n">curUri</span>   <span class="o">=</span> <span class="n">curRes</span><span class="p">.</span><span class="na">getURI</span><span class="p">();</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">curUri</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> <span class="p">){</span> <span class="k">return</span>  <span class="n">curRes</span><span class="p">;</span>
+            <span class="p">}</span><span class="k">else</span> <span class="p">{</span>  <span class="c1">//explore sons</span>
+                <span class="n">Resource</span> <span class="n">subRes</span> <span class="o">=</span> <span class="n">getResource</span><span class="p">(</span><span class="n">curRes</span><span class="p">,</span><span class="n">uri</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span> <span class="n">subRes</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">return</span> <span class="n">subRes</span><span class="p">;</span>
+             <span class="p">}</span>
+        <span class="p">}</span><span class="c1">//while</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="applresourcecoap">
+<h4>ApplResourceCoap<a class="headerlink" href="#applresourcecoap" title="Permalink to this headline">¶</a></h4>
+<p>La classe astratta <code class="docutils literal notranslate"><span class="pre">ApplResourceCoap</span></code> è una  <code class="docutils literal notranslate"><span class="pre">CoapResource</span></code> che realizza la gestione delle richieste GET e PUT
+demandandole rispettivamente ai metodi <code class="docutils literal notranslate"><span class="pre">elaborateGet</span></code> ed  <code class="docutils literal notranslate"><span class="pre">elaboratePut</span></code> di classi specializzate.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">ApplResourceCoap</span>
+                  <span class="kd">extends</span> <span class="n">CoapResource</span> <span class="kd">implements</span> <span class="n">IApplMsgHandler</span> <span class="p">{</span>
+<span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">String</span> <span class="nf">elaborateGet</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">);</span>
+<span class="kd">protected</span> <span class="kd">abstract</span> <span class="n">String</span> <span class="nf">elaborateGet</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">,</span> <span class="n">InetAddress</span> <span class="n">callerAddr</span><span class="p">);</span>
+<span class="kd">protected</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">elaboratePut</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">);</span>
+<span class="kd">protected</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">elaboratePut</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">,</span> <span class="n">InetAddress</span> <span class="n">callerAddr</span><span class="p">);</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleGET</span><span class="p">(</span><span class="n">CoapExchange</span> <span class="n">exchange</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">query</span> <span class="o">=</span> <span class="n">exchange</span><span class="p">.</span><span class="na">getQueryParameter</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">);</span>
+    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">query</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span> <span class="c1">//per observer</span>
+      <span class="n">answer</span> <span class="o">=</span> <span class="n">elaborateGet</span><span class="p">(</span>
+        <span class="n">exchange</span><span class="p">.</span><span class="na">getRequestText</span><span class="p">(),</span><span class="n">exchange</span><span class="p">.</span><span class="na">getSourceAddress</span><span class="p">());</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>  <span class="c1">//query != null</span>
+      <span class="n">answer</span> <span class="o">=</span> <span class="n">elaborateGet</span><span class="p">(</span>
+          <span class="n">exchange</span><span class="p">.</span><span class="na">getQueryParameter</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">),</span> <span class="n">exchange</span><span class="p">.</span><span class="na">getSourceAddress</span><span class="p">()</span> <span class="p">);</span>
+     <span class="p">}</span>
+    <span class="n">exchange</span><span class="p">.</span><span class="na">respond</span><span class="p">(</span><span class="n">answer</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handlePUT</span><span class="p">(</span><span class="n">CoapExchange</span> <span class="n">exchange</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">arg</span> <span class="o">=</span> <span class="n">exchange</span><span class="p">.</span><span class="na">getRequestText</span><span class="p">()</span> <span class="p">;</span>
+    <span class="n">elaboratePut</span><span class="p">(</span> <span class="n">arg</span><span class="p">,</span> <span class="n">exchange</span><span class="p">.</span><span class="na">getSourceAddress</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">changed</span><span class="p">();</span>  <span class="c1">//IMPORTANT to notify the observers</span>
+    <span class="n">exchange</span><span class="p">.</span><span class="na">respond</span><span class="p">(</span><span class="n">CHANGED</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleDELETE</span><span class="p">(</span><span class="n">CoapExchange</span> <span class="n">exchange</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">delete</span><span class="p">();</span>
+     <span class="n">exchange</span><span class="p">.</span><span class="na">respond</span><span class="p">(</span><span class="n">DELETED</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handlePOST</span><span class="p">(</span><span class="n">CoapExchange</span> <span class="n">exchange</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La risorsa viene creata come <span class="blue">risorsa osservabile</span> da un costruttore che provvede ad
+aggiungerla al <a class="reference internal" href="#coapapplserver"><span class="std std-ref">ServerCoap</span></a>, attivandolo - se già non lo fosse.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="c1">//COSTRUTTORE  }</span>
+<span class="kd">public</span> <span class="nf">ApplResourceCoap</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">DeviceType</span> <span class="n">dtype</span><span class="p">)</span>  <span class="p">{</span>
+  <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+  <span class="n">setObservable</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span> <span class="c1">//La risorsa è osservabile</span>
+  <span class="n">CoapApplServer</span> <span class="n">coapServer</span> <span class="o">=</span> <span class="n">CoapApplServer</span><span class="p">.</span><span class="na">getServer</span><span class="p">();</span> <span class="c1">//SINGLETION</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">dtype</span><span class="o">==</span><span class="n">DeviceType</span><span class="p">.</span><span class="na">input</span> <span class="p">)</span>
+    <span class="n">coapServer</span><span class="p">.</span><span class="na">addCoapResource</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">CoapApplServer</span><span class="p">.</span><span class="na">inputDeviceUri</span><span class="p">);</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">dtype</span><span class="o">==</span><span class="n">DeviceType</span><span class="p">.</span><span class="na">output</span> <span class="p">)</span>
+    <span class="n">coapServer</span><span class="p">.</span><span class="na">addCoapResource</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="n">CoapApplServer</span><span class="p">.</span><span class="na">outputDeviceUri</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="una-risorsa-per-il-led">
+<span id="ledresourcecoap"></span><h4>Una risorsa per il Led<a class="headerlink" href="#una-risorsa-per-il-led" title="Permalink to this headline">¶</a></h4>
+<p>La risorsa CoAP  per il Led è una specializzazione di <a class="reference internal" href="#applresourcecoap">ApplResourceCoap</a> che
+incorpora un interpreter per il Led e ridirige a le richieste GET di lettura dello stato e i comandi
+PUT di attivazione/disativazione.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedResourceCoap</span> <span class="kd">extends</span> <span class="n">ApplResourceCoap</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">curDistance</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="p">;</span>  <span class="c1">//Initial state</span>
+<span class="kd">private</span> <span class="n">IApplInterpreter</span> <span class="n">ledInterpr</span><span class="p">;</span>
+
+  <span class="kd">public</span> <span class="nf">LedResourceCoap</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">IApplInterpreter</span> <span class="n">ledInterpr</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">DeviceType</span><span class="p">.</span><span class="na">output</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">ledInterpr</span> <span class="o">=</span> <span class="n">ledInterpr</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="n">String</span> <span class="nf">elaborateGet</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">){</span> <span class="k">return</span> <span class="n">elaborateGet</span><span class="p">(</span><span class="n">req</span><span class="p">);}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="n">String</span> <span class="nf">elaborateGet</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+  <span class="k">try</span> <span class="p">{</span>
+                      <span class="n">ApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span> <span class="n">req</span> <span class="p">);</span>
+                      <span class="n">answer</span> <span class="o">=</span> <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">msg</span>  <span class="p">);</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="c1">//Unstructured req</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">req</span>  <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">return</span>  <span class="n">answer</span><span class="p">;</span>
+      <span class="p">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elaboratePut</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">ApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span> <span class="n">req</span> <span class="p">);</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">msg</span>  <span class="p">);</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="c1">//Unstructured req</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">ledInterpr</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">req</span>  <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="una-risorsa-per-il-sonar">
+<span id="sonarresourcecoap"></span><h4>Una risorsa per il Sonar<a class="headerlink" href="#una-risorsa-per-il-sonar" title="Permalink to this headline">¶</a></h4>
+<p>La risorsa CoAP  per il Sonar è una specializzazione di <a class="reference internal" href="#applresourcecoap">ApplResourceCoap</a> che
+incorpora un Sonar, a cui ridirige le richieste GET di lettura dello stato e del valore
+corrente di didatnza e i comandi PUT di attivazione/disativazione.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarResourceCoap</span> <span class="kd">extends</span> <span class="n">ApplResourceCoap</span>  <span class="p">{</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">curDistance</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="p">;</span>  <span class="c1">//Initial state</span>
+<span class="kd">private</span> <span class="n">IApplInterpreter</span> <span class="n">sonarIntrprt</span><span class="p">;</span>
+
+   <span class="kd">public</span> <span class="nf">SonarResourceCoap</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span> <span class="n">IApplInterpreter</span> <span class="n">sonarIntrprt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">DeviceType</span><span class="p">.</span><span class="na">input</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">sonarIntrprt</span> <span class="o">=</span> <span class="n">sonarIntrprt</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="n">String</span> <span class="nf">elaborateGet</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">req</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">req</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">()</span> <span class="p">){</span><span class="c1">//query by observers</span>
+      <span class="n">answer</span> <span class="o">=</span> <span class="n">curDistance</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="n">ApplMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ApplMessage</span><span class="p">(</span> <span class="n">req</span> <span class="p">);</span>
+      <span class="n">answer</span> <span class="o">=</span> <span class="n">sonarIntrprt</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">msg</span>  <span class="p">);</span>
+    <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//Unstructured req</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">sonarIntrprt</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span> <span class="n">req</span>  <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elaboratePut</span><span class="p">(</span><span class="n">String</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">sonarIntrprt</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span><span class="n">arg</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">result</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;activate_done&quot;</span><span class="p">))</span> <span class="n">getSonarValues</span><span class="p">();</span><span class="c1">//per CoAP observers</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elaboratePut</span><span class="p">(</span><span class="n">String</span> <span class="n">req</span><span class="p">,</span> <span class="n">InetAddress</span> <span class="n">callerAddr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">elaboratePut</span><span class="p">(</span><span class="n">req</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In quanto produttore di dati, il Sonar modifica (metodo <code class="docutils literal notranslate"><span class="pre">elaborateAndNotify</span></code>) il valore corrente
+<code class="docutils literal notranslate"><span class="pre">curDistance</span></code> della distanza misurata e notifica tutti gli observer.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">getSonarValues</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span> <span class="n">sonarActive</span><span class="p">())</span> <span class="n">sonarIntrprt</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span><span class="s">&quot;activate&quot;</span><span class="p">);</span>
+      <span class="k">while</span><span class="p">(</span> <span class="n">sonarActive</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">v</span> <span class="o">=</span> <span class="n">sonarIntrprt</span><span class="p">.</span><span class="na">elaborate</span><span class="p">(</span><span class="s">&quot;getDistance&quot;</span><span class="p">);</span>
+        <span class="n">elaborateAndNotify</span><span class="p">(</span>  <span class="n">v</span> <span class="p">);</span>
+        <span class="n">Utils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elaborateAndNotify</span><span class="p">(</span><span class="n">String</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">curDistance</span> <span class="o">=</span>  <span class="n">arg</span><span class="p">;</span>
+  <span class="n">changed</span><span class="p">();</span>  <span class="c1">// notify all CoAP observers</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="testing-del-framework">
+<h2>Testing del framework<a class="headerlink" href="#testing-del-framework" title="Permalink to this headline">¶</a></h2>
+<p>Per eseguire le prime prove di funzionamento del framwework, lavoriamo utilizzando il solo PC
+con due programmi:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainDevsOnPc</span></code>: crea un Led e un Sonar simulati e li rende accessibili tramite uno dei protocolli
+supportati dal framework (TCP, MQTT,CoAP).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainUasgeOnPc</span></code>: utlizza il Led e il Sonar attraverso <a class="reference internal" href="#proxyasclientesteso"><span class="std std-ref">Proxy clients</span></a>.</p></li>
+</ul>
+<p>Di questi programmi riportiamo qui solo le fasi di configurazione, per evidenziare come un application designer
+possa costruire l’architettura del sistema.</p>
+<section id="radarsystemmaindevsonpc">
+<h3>RadarSystemMainDevsOnPc<a class="headerlink" href="#radarsystemmaindevsonpc" title="Permalink to this headline">¶</a></h3>
+<p>Definiamo una <a class="reference internal" href="RadarSystemProgetto.html#iapplication"><span class="std std-ref">IApplication</span></a> che:</p>
+<ol class="arabic simple">
+<li><p>Crea i dispostivi simulati: un Sonar (osservabile) e un Led.</p></li>
+<li><p>Crea il ContxtServer.</p></li>
+<li><p>Crea i gestori applicativi dei messaggi rivolti ai dispositivi.</p></li>
+<li><p>Aggiunge i dispositivi al ContxtServer dando a ciascuno un precisono <span class="blue">nome</span>.</p></li>
+<li><p>Attiva l’applicazione nel monento in cui crea il ContxtServer</p></li>
+</ol>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemMainDevsOnPc</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">ILed</span>  <span class="n">led</span> <span class="p">;</span>
+<span class="kd">private</span> <span class="n">IContext</span> <span class="n">ctx</span><span class="p">;</span>
+
+  <span class="p">...</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">//1) CREAZIONE DEI DISPOSITIVI</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">sonarObservable</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">sonar</span> <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createSonarObservable</span><span class="p">();</span>
+      <span class="c1">//Introduzione opzionale di un observer locale per il Sonar</span>
+      <span class="c1">//IObserver sonarObs  = new SonarObserver( &quot;sonarObs&quot; ) ;</span>
+      <span class="c1">//((ISonarObservable)sonar).register( sonarObs );</span>
+    <span class="p">}</span><span class="k">else</span> <span class="n">sonar</span>  <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createSonar</span><span class="p">();</span>
+
+    <span class="n">led</span> <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createLed</span><span class="p">();</span>
+
+  <span class="c1">//2) CREAZIONE DEL ContxtServer</span>
+    <span class="n">String</span> <span class="n">id</span>          <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="n">String</span> <span class="n">entry</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">switch</span><span class="p">(</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">protcolType</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="n">tcp</span> <span class="p">:</span>  <span class="p">{</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;rasp&quot;</span><span class="p">;</span>
+                    <span class="n">entry</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">ctxServerPort</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span>
+      <span class="k">case</span> <span class="n">coap</span> <span class="p">:</span> <span class="p">{</span>  <span class="k">break</span><span class="p">;</span> <span class="p">}</span>
+      <span class="k">case</span> <span class="n">mqtt</span> <span class="p">:</span> <span class="p">{</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;rasp&quot;</span><span class="p">;</span>
+                    <span class="n">entry</span><span class="o">=</span><span class="n">MqttConnection</span><span class="p">.</span><span class="na">topicInput</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span>
+      <span class="k">default</span><span class="p">:</span>
+    <span class="p">};</span>
+    <span class="n">ctx</span>  <span class="o">=</span> <span class="n">Context2021</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="n">entry</span><span class="p">);</span>
+
+    <span class="c1">//3) CREAZIONE DEI GESTORI APPLICATIVI</span>
+    <span class="n">IApplMsgHandler</span> <span class="n">sonarHandler</span> <span class="o">=</span> <span class="n">SonarApplHandler</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;sonarH&quot;</span><span class="p">,</span><span class="n">sonar</span><span class="p">);</span>
+    <span class="n">IApplMsgHandler</span> <span class="n">ledHandler</span>   <span class="o">=</span> <span class="n">LedApplHandler</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;ledH&quot;</span><span class="p">,</span><span class="n">led</span><span class="p">);</span>
+
+    <span class="c1">//4) AGGIUNTA DEI DISPOSITIVI AL CONTESTO</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="na">addComponent</span><span class="p">(</span><span class="s">&quot;sonar&quot;</span><span class="p">,</span> <span class="n">sonarHandler</span><span class="p">);</span>  <span class="c1">//sonar NAME mandatory</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="na">addComponent</span><span class="p">(</span><span class="s">&quot;led&quot;</span><span class="p">,</span>   <span class="n">ledHandler</span><span class="p">);</span>  <span class="c1">//led NAME mandatory</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+    <span class="k">new</span> <span class="n">RadarSystemMainDevsOnPc</span><span class="p">().</span><span class="na">doJob</span><span class="p">(</span> <span class="kc">null</span> <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="radarsystemmainusageonpc">
+<h3>RadarSystemMainUsageOnPc<a class="headerlink" href="#radarsystemmainusageonpc" title="Permalink to this headline">¶</a></h3>
+<p>Definiamo una <a class="reference internal" href="RadarSystemProgetto.html#iapplication"><span class="std std-ref">IApplication</span></a> che:</p>
+<ol class="arabic simple">
+<li><p>Crea un <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">ProxyAsClient</span></a> per il Led e per il Sonar tenendo conto del protocollo.</p></li>
+<li><p>Crea (opzionalmente) un Controller per l’applicazione <a class="reference internal" href="RadarSystem.html#radarsystem"><span class="std std-ref">RadarSystem</span></a>.</p></li>
+<li><p>Crea (opzionalmente, nel caso di CoAP)  un CoAP-observer della risorsa Sonar che potrebbe realizzare le funzioni
+del Controller in modo data-driven</p></li>
+<li><p>Attiva l’applicazione attivando il Sonar oppure attivando il Controller (che attiva il Sonar)</p></li>
+</ol>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemMainUasgeOnPc</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">ILed</span>  <span class="n">led</span> <span class="p">;</span>
+<span class="kd">private</span> <span class="n">Controller</span> <span class="n">controller</span><span class="p">;</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">Utils</span><span class="p">.</span><span class="na">isCoap</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">serverHost</span>       <span class="o">=</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">raspHostAddr</span><span class="p">;</span>
+      <span class="n">String</span> <span class="n">ledPath</span>   <span class="o">=</span> <span class="n">CoapApplServer</span><span class="p">.</span><span class="na">lightsDeviceUri</span><span class="o">+</span><span class="s">&quot;/led&quot;</span><span class="p">;</span>
+      <span class="n">String</span> <span class="n">sonarPath</span> <span class="o">=</span> <span class="n">CoapApplServer</span><span class="p">.</span><span class="na">inputDeviceUri</span><span class="o">+</span><span class="s">&quot;/sonar&quot;</span><span class="p">;</span>
+
+      <span class="c1">//CREAZIONE DEI PROXY per CoAP</span>
+      <span class="n">led</span>   <span class="o">=</span> <span class="k">new</span> <span class="n">LedProxyAsClient</span><span class="p">(</span><span class="s">&quot;ledPxy&quot;</span><span class="p">,</span> <span class="n">serverHost</span><span class="p">,</span> <span class="n">ledPath</span> <span class="p">);</span>
+      <span class="n">sonar</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SonarProxyAsClient</span><span class="p">(</span><span class="s">&quot;sonarPxy&quot;</span><span class="p">,</span>  <span class="n">serverHost</span><span class="p">,</span> <span class="n">sonarPath</span>  <span class="p">);</span>
+
+      <span class="c1">//Introduzione di un observer CoAP per il Sonar</span>
+      <span class="n">CoapClient</span>  <span class="n">client</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CoapClient</span><span class="p">(</span>
+          <span class="s">&quot;coap://localhost:5683/&quot;</span><span class="o">+</span><span class="n">CoapApplServer</span><span class="p">.</span><span class="na">inputDeviceUri</span><span class="o">+</span><span class="s">&quot;/sonar&quot;</span> <span class="p">);</span>
+      <span class="c1">//CoapObserveRelation obsrelation =</span>
+          <span class="n">client</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span> <span class="k">new</span> <span class="n">SonarObserverCoap</span><span class="p">(</span><span class="s">&quot;sonarObs&quot;</span><span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span> <span class="c1">//MQTT o TCP</span>
+      <span class="n">String</span> <span class="n">serverEntry</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">Utils</span><span class="p">.</span><span class="na">isTcp</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">serverHost</span>  <span class="o">=</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">raspHostAddr</span><span class="p">;</span>
+        <span class="n">serverEntry</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="o">+</span><span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">ctxServerPort</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">Utils</span><span class="p">.</span><span class="na">isMqtt</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">MqttConnection</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">MqttConnection</span><span class="p">.</span><span class="na">createSupport</span><span class="p">(</span> <span class="n">mqttCurClient</span> <span class="p">);</span>
+        <span class="n">conn</span><span class="p">.</span><span class="na">subscribe</span><span class="p">(</span> <span class="n">mqttCurClient</span><span class="p">,</span> <span class="n">mqttAnswerTopic</span> <span class="p">);</span>
+        <span class="n">serverHost</span>  <span class="o">=</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">mqttBrokerAddr</span><span class="p">;</span>  <span class="c1">//dont&#39;care</span>
+        <span class="n">serverEntry</span> <span class="o">=</span> <span class="n">mqttAnswerTopic</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="c1">//CREAZIONE DEI PROXY per TCP o MQTT</span>
+      <span class="n">led</span>   <span class="o">=</span> <span class="k">new</span> <span class="n">LedProxyAsClient</span><span class="p">(</span><span class="s">&quot;ledPxy&quot;</span><span class="p">,</span>      <span class="n">serverHost</span><span class="p">,</span> <span class="n">serverEntry</span> <span class="p">);</span>
+      <span class="n">sonar</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SonarProxyAsClient</span><span class="p">(</span><span class="s">&quot;sonarPxy&quot;</span><span class="p">,</span>  <span class="n">serverHost</span><span class="p">,</span> <span class="n">serverEntry</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//CREAZIONE DI UN Controller</span>
+    <span class="n">controller</span>        <span class="o">=</span> <span class="n">Controller</span><span class="p">.</span><span class="na">create</span><span class="p">(</span> <span class="n">led</span><span class="p">,</span> <span class="n">sonar</span> <span class="p">);</span>
+
+    <span class="c1">//ATTIVAZIONE DEL SISTEMA</span>
+    <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> <span class="n">terminate</span><span class="p">();</span> <span class="p">};</span>
+    <span class="n">controller</span><span class="p">.</span><span class="na">start</span><span class="p">(</span><span class="n">endFun</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="esecuzione-del-sistema">
+<h3>Esecuzione del sistema<a class="headerlink" href="#esecuzione-del-sistema" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Si pone <code class="docutils literal notranslate"><span class="pre">RadarSystemConfig.tracing</span> <span class="pre">=</span> <span class="pre">true;</span></code> volendo avere dettagli sul comportamento interno.</p></li>
+<li><p>Si seleziona uno stesso protocollo in ciascuna delle due applicazioni</p></li>
+<li><p>Si lancia <code class="docutils literal notranslate"><span class="pre">RadarSystemMainDevsOnPc</span></code> che attiva il ContextServer</p></li>
+<li><p>Si lancia <code class="docutils literal notranslate"><span class="pre">RadarSystemMainUasgeOnPc</span></code> che si collega al ContextServer ed opera</p></li>
+</ol>
+</section>
+</section>
+<section id="il-sistema-distribuito">
+<h2>Il sistema distribuito<a class="headerlink" href="#il-sistema-distribuito" title="Permalink to this headline">¶</a></h2>
+<section id="radarsystemmaindevsonrasp">
+<h3>RadarSystemMainDevsOnRasp<a class="headerlink" href="#radarsystemmaindevsonrasp" title="Permalink to this headline">¶</a></h3>
+<p>Definiamo una <a class="reference internal" href="RadarSystemProgetto.html#iapplication"><span class="std std-ref">IApplication</span></a> che:</p>
+<ol class="arabic simple">
+<li><p>Crea i dispostivi reali sul RaspberryPi: un Sonar (osservabile) e un Led.</p></li>
+<li><p>Crea il ContextServer.</p></li>
+<li><p>Crea i gestori applicativi dei messaggi rivolti ai dispositivi.</p></li>
+<li><p>Aggiunge i dispositivi al ContextServer, dando a ciascuno un precisono <span class="blue">nome</span>.</p></li>
+<li><p>Attiva l’applicazione nel monento in cui crea il ContextServer</p></li>
+</ol>
+<p>Questa applicazione è del tutto identica a <a class="reference internal" href="#radarsystemmaindevsonpc"><span class="std std-ref">RadarSystemMainDevsOnPc</span></a>: basta fare riferimento
+a un file di configurazione <code class="docutils literal notranslate"><span class="pre">RadarSystemConfig</span></code>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="p">(</span><span class="n">String</span> <span class="n">configFile</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">configFile</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span>
+    <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">configFile</span><span class="p">);</span>
+  <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">//Configurazione cabalata nel programma</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//Come in RadarSystemMainDevsOnPc</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span> <span class="n">String</span> <span class="n">configFileName</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">setUp</span><span class="p">(</span> <span class="n">configFileName</span> <span class="p">);</span>
+  <span class="n">configure</span><span class="p">();</span>
+  <span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="k">new</span> <span class="n">RadarSystemMainDevsOnRasp</span><span class="p">().</span><span class="na">doJob</span><span class="p">(</span> <span class="s">&quot;RadarSystemConfig.json&quot;</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="file-di-configurazione-per-il-raspberrypi">
+<h4>File di configurazione per il RaspberryPi<a class="headerlink" href="#file-di-configurazione-per-il-raspberrypi" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;simulation&quot;</span>       <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;pcHostAddr&quot;</span>       <span class="p">:</span> <span class="s2">&quot;192.168.1.xxx&quot;</span><span class="p">,</span>
+<span class="s2">&quot;raspHostAddr&quot;</span>     <span class="p">:</span> <span class="s2">&quot;192.168.1.yyy&quot;</span><span class="p">,</span>
+<span class="s2">&quot;mqttBrokerAddr&quot;</span>   <span class="p">:</span> <span class="s2">&quot;tcp://broker.hivemq.com&quot;</span><span class="p">,</span><span class="o">//</span><span class="s2">&quot;tcp://test.mosquitto.org&quot;</span>
+<span class="s2">&quot;withContext&quot;</span>      <span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="s2">&quot;radarGuiPort&quot;</span>     <span class="p">:</span> <span class="s2">&quot;8014&quot;</span><span class="p">,</span>
+<span class="s2">&quot;ledPort&quot;</span>          <span class="p">:</span> <span class="s2">&quot;8010&quot;</span><span class="p">,</span>
+<span class="s2">&quot;ctxServerPort&quot;</span>    <span class="p">:</span> <span class="s2">&quot;8018&quot;</span><span class="p">,</span>
+<span class="s2">&quot;sonarDelay&quot;</span>       <span class="p">:</span> <span class="s2">&quot;500&quot;</span><span class="p">,</span>
+<span class="s2">&quot;sonarDistanceMax&quot;</span> <span class="p">:</span> <span class="s2">&quot;150&quot;</span><span class="p">,</span>
+<span class="s2">&quot;DLIMIT&quot;</span>           <span class="p">:</span> <span class="s2">&quot;40&quot;</span><span class="p">,</span>
+<span class="s2">&quot;tracing&quot;</span>          <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;serverTimeOut&quot;</span>    <span class="p">:</span> <span class="s2">&quot;600000&quot;</span><span class="p">,</span>
+
+<span class="s2">&quot;ControllerRemote&quot;</span> <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;LedRemote&quot;</span>        <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;SonareRemote&quot;</span>     <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;RadarGuiRemote&quot;</span>   <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;protocolType&quot;</span>     <span class="p">:</span> <span class="s2">&quot;coap&quot;</span><span class="p">,</span>
+<span class="s2">&quot;ledGui&quot;</span>           <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;sonarPort&quot;</span>        <span class="p">:</span> <span class="s2">&quot;8012&quot;</span><span class="p">,</span>
+<span class="s2">&quot;sonarObservable&quot;</span>  <span class="p">:</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span>
+<span class="s2">&quot;serverTimeOut&quot;</span>    <span class="p">:</span> <span class="s2">&quot;600000&quot;</span><span class="p">,</span>
+<span class="s2">&quot;controllerPort&quot;</span>   <span class="p">:</span> <span class="s2">&quot;8016&quot;</span><span class="p">,</span>
+<span class="s2">&quot;applStartdelay&quot;</span>   <span class="p">:</span> <span class="s2">&quot;3000&quot;</span><span class="p">,</span>
+<span class="s2">&quot;webCam&quot;</span>           <span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="s2">&quot;testing&quot;</span>          <span class="p">:</span> <span class="s2">&quot;false&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A questa applicazione possiamo fare corrispondere su PC</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainUasgeOnPc</span></code> : una aplicazione che agisce sui dispositivi remoti usando i Proxy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RadarSystemMainEntryOnPc</span></code> : una applicazione che verrà usata come componente di dominio in una
+applicazione Spring (si veda <span class="xref std std-doc">RadarSystemWebgui</span>).</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Oltre TCP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#liberie-di-riferimento">Liberie di riferimento</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#icontext">IContext</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#nuovi-supporti-interaction2021">Nuovi supporti <span class="xref std std-ref">Interaction2021</span></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mqttconnection-implementa-interaction2021"><code class="docutils literal notranslate"><span class="pre">MqttConnection</span></code> implementa <span class="xref std std-ref">Interaction2021</span></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mqttconnection-publish">MqttConnection publish</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mqttconnection-forward">MqttConnection forward</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mqttconnection-subscribe">MqttConnection subscribe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iapplmsghandlermqtt">IApplMsgHandlerMqtt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connessione-come-coppia-di-topic">Connessione come coppia di topic</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#mqttconnectioncallback">MqttConnectionCallback</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#mqttconnection-request">MqttConnection request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mqttconnection-receivemsg">MqttConnection receiveMsg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mqttconnection-reply">MqttConnection reply</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#coapconnection">CoapConnection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#coapconnection-implementa-interaction2021"><code class="docutils literal notranslate"><span class="pre">CoapConnection</span></code> implementa <span class="xref std std-ref">Interaction2021</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#coapconnection-forward">CoapConnection forward</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#coapconnection-request">CoapConnection request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#coapconnection-receivemsg">CoapConnection receiveMsg</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#coapconnection-reply">CoapConnection reply</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#estensione-della-classe-proxyasclient">Estensione della classe <span class="xref std std-ref">ProxyAsClient</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-contextserver">I ContextServer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#context2021">Context2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#icontextmsghandler">IContextMsgHandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#schema-generale-del-framework">Schema generale del framework</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mqttcontextserver">MqttContextServer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#icontextmsghandlermqtt">IContextMsgHandlerMqtt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#contextmqttmsghandler">ContextMqttMsgHandler</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#coapcontextserver">CoapContextServer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#coapapplserver">CoapApplServer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#applresourcecoap">ApplResourceCoap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#una-risorsa-per-il-led">Una risorsa per il Led</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#una-risorsa-per-il-sonar">Una risorsa per il Sonar</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-del-framework">Testing del framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#radarsystemmaindevsonpc">RadarSystemMainDevsOnPc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#radarsystemmainusageonpc">RadarSystemMainUsageOnPc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#esecuzione-del-sistema">Esecuzione del sistema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#il-sistema-distribuito">Il sistema distribuito</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#radarsystemmaindevsonrasp">RadarSystemMainDevsOnRasp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#file-di-configurazione-per-il-raspberrypi">File di configurazione per il RaspberryPi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="AttoriCoap.html" title="previous chapter">Attori come risorse CoAP</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/OltreTcp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

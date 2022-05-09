@@ -1,6 +1,6 @@
 package unibo.Robots.basic;
 
-import unibo.Robots.common.ActorObserver;
+import unibo.Robots.common.RobotCleanaerObserver;
 import unibo.actor22.Qak22Context;
 import unibo.actor22.annotations.Actor22;
 import unibo.actor22.annotations.Context22;
@@ -19,7 +19,7 @@ public class MainBasicRobot {
 		Qak22Context.configureTheSystem(this);
 		Qak22Context.showActorNames();
 
-		ActorObserver obs = new ActorObserver("8083",myName);
+		RobotCleanaerObserver obs = new RobotCleanaerObserver("8083",myName);
 		obs.setWebSocketHandler(WebSocketConfiguration.wshandler);
   		//Qak22Util.sendAMsg( SystemData.startSysCmd("main",myName) );
 	};

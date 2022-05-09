@@ -12,8 +12,7 @@ public abstract class ConnQakBase  {
         if( protocol == ProtocolType.tcp ){
             currQakConn = new ConnQakTcp( );
             return currQakConn;
-           //.createConnection("localhost");
-        }
+         }
         else return null;
     }
 
@@ -21,12 +20,7 @@ public abstract class ConnQakBase  {
     public abstract void forward(String msg);
     public abstract void request(String msg);
     public abstract void emit(String msg);
-    /*
-    abstract fun createConnection(   )
-    abstract fun forward( msg : ApplMessage )
-    abstract fun request( msg : ApplMessage )
-    abstract fun emit( msg : ApplMessage )
-*/
+
 
 
 }
