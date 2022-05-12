@@ -18,9 +18,9 @@ wsminimal.js
     }
 
     function addMessageToWindow(message) {
-        //messageWindow.innerHTML += `<div>${message}</div>`
-        var output = message.replaceAll("\n","<br/>")
-        messageWindow.innerHTML = `<tt>${output}</tt>`
+         var output = message.replaceAll("\n","<br/>")
+          //messageWindow.innerHTML += `<div>${output}</div>`
+         messageWindow.innerHTML = `<tt>${output}</tt>`
     }
 
     //var socket = connect();

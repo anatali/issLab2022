@@ -10,6 +10,7 @@ import unibo.actor22comm.interfaces.IObserver;
 import unibo.actor22comm.interfaces.Interaction2021;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.ws.WsConnection;
+import unibo.kotlin.planner22Util;
 import unibo.wenvUsage22.basicRobot.prototype0.WsConnApplObserver;
 import unibo.wenvUsage22.common.VRobotMoves;
 
@@ -17,7 +18,7 @@ public class SpiralWalker extends QakActor22FsmAnnot{
 	private Interaction2021 conn;
 	private int stepCounter;
 	private String CurrentPlannedMove = "";
-	private int  maxNumSteps          = 6;
+	private int  maxNumSteps          = 4;
 	
 	public SpiralWalker(String name) {
 		super(name);
@@ -33,10 +34,10 @@ public class SpiralWalker extends QakActor22FsmAnnot{
 	
 	protected void initPlanner() {
 		try {
-			itunibo.planner.plannerUtil.initAI();
+			planner22Util.initAI();
 	     	ColorsOut.outappl("INITIAL MAP", ColorsOut.CYAN);
-	 		itunibo.planner.plannerUtil.showMap();
-			itunibo.planner.plannerUtil.startTimer();  		
+	 		planner22Util.showMap();
+			planner22Util.startTimer();  		
 	     	//VRobotMoves.step(getName(), conn );
 		} catch (Exception e) {
 			ColorsOut.outerr(getName() + " in start ERROR:"+e.getMessage());
@@ -62,14 +63,14 @@ public class SpiralWalker extends QakActor22FsmAnnot{
 	protected void exploreStep( IApplMessage msg ) {
 		outInfo(""+msg);
 		stepCounter++;
-		itunibo.planner.plannerUtil.planForGoal(""+stepCounter,""+stepCounter);		
+		planner22Util.planForGoal(""+stepCounter,""+stepCounter);		
 	}
 	
 	@State( name = "execPlannedMoves" )
 	@Transition( state = "doMove")
 	protected void execPlannedMoves( IApplMessage msg ) {
 		outInfo(""+msg);
-		//CurrentPlannedMove = itunibo.planner.plannerUtil.getNextPlannedMove();
+		//CurrentPlannedMove = planner22Util.getNextPlannedMove();
  	}
 	
 	@State( name = "doMove" )
@@ -78,21 +79,21 @@ public class SpiralWalker extends QakActor22FsmAnnot{
 	@Transition( state = "testIfAtHome",  msgId="endMoveOk", guard="noOtherMoves"  )
 	protected void doMove( IApplMessage msg ) {
 		outInfo(""+msg);
-		CurrentPlannedMove = itunibo.planner.plannerUtil.getNextPlannedMove();
+		CurrentPlannedMove = planner22Util.getNextPlannedMove();
 		outInfo("CurrentPlannedMove ==== "+CurrentPlannedMove);
 		if( CurrentPlannedMove.equals( "w" ) ){
-			itunibo.planner.plannerUtil.updateMap( "w", "doing w" );
+			planner22Util.updateMap( "w", "doing w" );
 			VRobotMoves.step(getName(), conn );
 		}else if( CurrentPlannedMove.equals( "l" )  ){
-			itunibo.planner.plannerUtil.updateMap( "l", "doing l" );
+			planner22Util.updateMap( "l", "doing l" );
 			VRobotMoves.turnLeft(getName(), conn );
 		}else if(  CurrentPlannedMove.equals( "r" )  ){
-			itunibo.planner.plannerUtil.updateMap( "r", "doing r" );
+			planner22Util.updateMap( "r", "doing r" );
 			VRobotMoves.turnRight(getName(), conn );
 		}else {
 			ColorsOut.outappl("doMove terminated", ColorsOut.MAGENTA);	
 			VRobotMoves.turnLeft(getName(), conn );
-			itunibo.planner.plannerUtil.updateMap( "l", "doing l" );
+			planner22Util.updateMap( "l", "doing l" );
 		}
 	}
 	
@@ -113,7 +114,7 @@ public class SpiralWalker extends QakActor22FsmAnnot{
 	@State( name = "backToHome" )
 	@Transition( state = "execPlannedMoves"  )	
 	protected void backToHome( IApplMessage msg ) {
-		itunibo.planner.plannerUtil.planForGoal("0","0");
+		planner22Util.planForGoal("0","0");
 	}	
 	
 	@State( name = "continueJob" )
@@ -121,8 +122,8 @@ public class SpiralWalker extends QakActor22FsmAnnot{
 	@Transition( state = "endOfJob",   guard="noOtherSteps"  )	
 	protected void continueJob( IApplMessage msg ) {
 		outInfo( "MAP AFTER BACK TO HOME " + stepCounter);
-		itunibo.planner.plannerUtil.showMap();		
-		//itunibo.planner.plannerUtil.saveRoomMap(mapname)		
+		planner22Util.showMap();		
+		//planner22Util.saveRoomMap(mapname)		
 	}	
 
 	@State( name = "endOfJob" ) 
@@ -145,13 +146,13 @@ public class SpiralWalker extends QakActor22FsmAnnot{
 	
 	@TransitionGuard
 	protected boolean atHome() {
-		ColorsOut.outappl("atHome:"+itunibo.planner.plannerUtil.atHome(), ColorsOut.GREEN);	
-		return itunibo.planner.plannerUtil.atHome();
+		ColorsOut.outappl("atHome:"+planner22Util.atHome(), ColorsOut.GREEN);	
+		return planner22Util.atHome();
 	}	
 	
 	@TransitionGuard
 	protected boolean notAtHome() {
-		return ! itunibo.planner.plannerUtil.atHome();
+		return ! planner22Util.atHome();
 	}	
 
 	@TransitionGuard

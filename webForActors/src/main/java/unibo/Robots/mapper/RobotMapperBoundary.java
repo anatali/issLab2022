@@ -14,7 +14,7 @@ import unibo.actor22comm.interfaces.Interaction2021;
 import unibo.actor22comm.utils.ColorsOut;
 import unibo.actor22comm.utils.CommUtils;
 import unibo.actor22comm.ws.WsConnection;
-
+import unibo.kotlin.planner22Util;
 
 
 /*
@@ -40,10 +40,10 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
 	
 	protected void initPlanner() {
 		try {
-			itunibo.planner.plannerUtil.initAI();
+			planner22Util.initAI();
 	     	ColorsOut.outappl("INITIAL MAP", ColorsOut.CYAN);
-	 		itunibo.planner.plannerUtil.showMap();
-			itunibo.planner.plannerUtil.startTimer();  		
+	 		planner22Util.showMap();
+			planner22Util.startTimer();  		
  		} catch (Exception e) {
 			ColorsOut.outerr(getName() + " in start ERROR:"+e.getMessage());
  		}		
@@ -61,7 +61,7 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
  	protected void robotStart( IApplMessage msg ) {
 		initPlanner();
 		NumStep++ ;
-		itunibo.planner.plannerUtil.showCurrentRobotState();
+		planner22Util.showCurrentRobotState();
 	}
  /*
 	@State( name = "detectBoundary" )
@@ -83,7 +83,7 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
 	@Transition( state = "doAheadMove"  )
   	protected void stepDone( IApplMessage msg ) {
 		outInfo(""+msg);
-		itunibo.planner.plannerUtil.updateMap(  "w", "stepDone" );
+		planner22Util.updateMap(  "w", "stepDone" );
 		CommUtils.delay(500);
 	}
 	@State( name = "stepFailed" )
@@ -91,12 +91,12 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
 	//@Transition( state = "endWork",     guard="roundCompleted"   )
   	protected void stepFailed( IApplMessage msg ) {
 		outInfo(""+msg  );
-		ColorsOut.outappl("FOUND A WALL - atHome="+itunibo.planner.plannerUtil.atHome(), ColorsOut.MAGENTA);
-		//itunibo.planner.plannerUtil.showMap();
-		String map = itunibo.planner.plannerUtil.getMap();
+		ColorsOut.outappl("FOUND A WALL - atHome="+planner22Util.atHome(), ColorsOut.MAGENTA);
+		//planner22Util.showMap();
+		String map = planner22Util.getMap();
 		ColorsOut.outappl(map, ColorsOut.GREEN);
 		updateResourceRep( map  );
-		//if( ! itunibo.planner.plannerUtil.atHome() ) {
+		//if( ! planner22Util.atHome() ) {
 			JSONObject json = new JSONObject(msg.msgContent().replace("'", ""));
 			int duration = json.getInt("duration") ;  //TODO
 			if( duration > 100 ) duration = duration -50;  //TUNING ....
@@ -111,14 +111,15 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
 	protected void backPosDone( IApplMessage msg ) {
 		outInfo(""+msg);
 		NumStep++ ;
-		itunibo.planner.plannerUtil.updateMap(  "l","turn" );
+		planner22Util.updateMap(  "l","turn" );
 		VRobotMoves.turnLeft(getName(), conn);
 	}	
 	
  	
  	@State( name = "endWork" )
  	protected void endWork( IApplMessage msg ) {
- 		itunibo.planner.plannerUtil.showMap();
+ 		planner22Util.showMap();
+		planner22Util.saveRoomMap("mapRoomEmpty");
 		outInfo("BYE" );	
  		//System.exit(0);
  	}

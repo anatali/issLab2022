@@ -1,0 +1,156 @@
+/*
+ * pathexecutor.qak
+ * This MODEL defines the interaction and the behaviour of an ActorFsm component
+ * that has the responsibility to execute a given path and to handle alarm events.
+ * 
+ * The components uses the kotlinCode.pathexecutil that provides the following operations
+ *  - memoCurPath :
+ *  - nextMove : 
+ *  - doMove :  send a command to move the robot by using CallRestWithApacheHTTP
+ *              and send to the caller a dispatch (moveok|movefail) related to the answer
+ *  -
+ */  
+System -msglog boundarywalkerqak
+
+Dispatch start    : start( ARG ) 
+Dispatch moveok   : move( MOVESHORT )
+Dispatch pathfail : pathdone( P )
+//Dispatch movefail : move( MOVESHORT )
+Dispatch mapDone  : mapDone( FNAME ) 
+Event alarm     : alarm(X)
+
+
+Context ctxBoundaryWalker  ip [host="localhost" port=8032]
+     
+/* 
+ * ------------------------------------------------------------------
+ *  boundarywalker 
+ * ------------------------------------------------------------------
+*/     
+QActor boundarywalker context ctxBoundaryWalker{         
+[#
+val mapname     = "roomBoundary"  		 
+var NumStep     = 0
+var Myself      = myself    
+#] 
+	State s0 initial {	 
+		println("&&&  boundarywalker ACTIVE ...") 
+		//[# kotlinCode.pathexecutil.register(myself) #]
+		//[# kotlinCode.pathexecutil.createSonarObserver(scope) #] 		
+		//run unibo.kotlin.planner22Util.loadRoomMap("parkingMap") 
+   	} 
+   	Transition t0 whenMsg start -> work
+
+  	State work{  		  
+   		[# NumStep = 0   #] 
+    	run unibo.kotlin.planner22Util.initAI()
+		run unibo.kotlin.planner22Util.showCurrentRobotState()
+  	}
+    Goto detectBoundary  
+     
+    State detectBoundary{     
+    	[# NumStep++ #]
+    	println("boundarywalker detectBoundary $NumStep")
+    	run unibo.kotlin.planner22Util.showCurrentRobotState()
+    	updateResource [# "detectBoundary step=$NumStep" #]
+     }  
+    Goto doAheadMove if [# (NumStep<5) #] else boundaryFound
+  
+ 	State doAheadMove{ 
+ 		delay 300 //to avoid too rapid changes
+   		//[# kotlinCode.pathexecutil.doMove(myself, "p") #]
+   		//run kotlinCode.pathexecutil.doMove(Myself, "p" )  
+   		qrun pathexecutil.doMove(myself, "p" )  
+   		updateResource [# "moving" #]
+	}   
+	Transition t0   whenEvent alarm  -> handleAlarm 
+					whenMsg moveok   -> stepDone   
+					whenMsg pathfail -> stepFailed  
+	 
+ 	State stepDone{  
+ 		updateResource [# unibo.kotlin.planner22Util.getMap() #]
+ 		run unibo.kotlin.planner22Util.updateMap(  "w" )
+ 		updateResource [# "stepDone" # ]
+  	} 
+	Goto doAheadMove		//alarm perceived ?? ...
+	//Transition t0 whenTime 10     ->  doAheadMove  //give time to perceive alarms
+	//              whenEvent alarm -> handleAlarmAfterStep
+	                    
+	State stepFailed{  //has found an obstacle (a wall)
+ 		//println("boundarywalker | FOUND A WALL")
+ 		updateResource [# "stepFailed" # ]
+ 		//[# kotlinCode.pathexecutil.waitUser("onwall_$NumStep") #] 
+ 	 		if [# ! unibo.kotlin.planner22Util.atHome() #]{
+	 			run unibo.kotlin.planner22Util.wallFound() 
+		 		//updateResource [# "found a wall" #]
+		 		//[# kotlinCode.pathexecutil.doMove(myself, "l") #]
+		 		qrun pathexecutil.doMove(myself, "l")
+				run unibo.kotlin.planner22Util.updateMap(  "l" )
+				run unibo.kotlin.planner22Util.showCurrentRobotState()
+  	 		}else{
+  	 			//[# kotlinCode.pathexecutil.doMove("l",myself) #]
+  	 			qrun pathexecutil.doMove(myself, "l")
+  	 			run unibo.kotlin.planner22Util.updateMap(  "l" )
+  	 		}		 	      
+ 	}   
+    Transition t0 whenEvent alarm  -> handleAlarm  //handleAlarmStepFailed
+                  whenMsg moveok   -> detectBoundary  
+ 
+ 	State boundaryFound{
+		run unibo.kotlin.planner22Util.saveRoomMap(mapname)
+		println("robotmapper | FINAL MAP")   
+ 		run unibo.kotlin.planner22Util.showCurrentRobotState()	
+ 		//updateResource [#  unibo.kotlin.planner22Util.getMap() #]
+   		[# println(unibo.kotlin.planner22Util.showMap()) #] 
+   		
+   		forward testboundary -m mapDone : mapDone(mapname)
+  	}
+  	
+  	State handleAlarm {
+		println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA $ActorResourceRep")
+		printCurrentMessage
+		println("----------------------------------------------------------------") 		
+  	}
+  	Transition t0   whenMsg moveok  and [# ActorResourceRep == "stepFailed" #] -> detectBoundary   
+  		            whenMsg moveok  and [# ActorResourceRep == "moving" #]     -> stepDone   
+					whenMsg pathfail -> stepFailed 
+   	
+  	State handleAlarmAfterStep{
+		println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP $ActorResourceRep")
+		printCurrentMessage
+		println("----------------------------------------------------------------") 		
+  	}
+  	Goto doAheadMove
+  	
+}	
+     
+
+    
+     
+/*
+ *  main 
+*/   
+QActor testboundary context ctxBoundaryWalker{
+	[# val doboundary = true #]
+	State s0 initial{  
+	}
+	Goto boundarywalk if [# doboundary #] else endTest
+	 
+	State boundarywalk{
+		forward boundarywalker -m start : start(  any   )
+		  
+		delay 1000
+		//emit alarm : alarm(fire)		 
+		/* 
+		delay 2000
+		emit alarm : alarm(tsunami)		
+		delay 1000
+		emit alarm : alarm(covid)	 */	
+	}
+	Transition t0 whenMsg mapDone -> endTest //reachAPoint
+	
+	State endTest{
+		println("END OF JOB")
+	}
+				   
+ } 

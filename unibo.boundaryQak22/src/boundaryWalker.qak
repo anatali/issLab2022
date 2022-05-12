@@ -1,0 +1,111 @@
+/*
+ * 
+ */
+System -msglog boundarywalkerqak
+
+Dispatch start       : start( ARG ) 
+Dispatch endMoveOk   : endMoveOk( V )
+Dispatch endMoveKo   : endMoveKo( V )
+ 
+Dispatch mapDone  : mapDone( FNAME ) 
+Event alarm     : alarm(X)
+
+
+Context ctxBoundaryWalker  ip [host="localhost" port=8032]
+
+/* 
+ * ------------------------------------------------------------------
+ *  boundarywalker 
+ * ------------------------------------------------------------------
+*/     
+QActor boundarywalker context ctxBoundaryWalker{    
+[#
+val mapname     = "roomBoundary"  		 
+var NumStep     = 0
+var Myself      = myself    
+
+var robotMoveObserver : unibo.actor22comm.interfaces.IObserver
+lateinit  var conn    : unibo.actor22comm.interfaces.Interaction2021  
+
+var goingDown = true
+var numIter   = 0
+var turnStep  = 800;   //350 => ok
+
+/* 
+fun init(){
+	conn = unibo.actor22comm.ws.WsConnection.create("localhost:8091" )  
+	robotMoveObserver = unibo.Robots.common.WsConnApplObserver(getName(), true)
+	unibo.actor22comm.utils.ColorsOut.outappl(  "${getName()} | ws connected $conn" ,  unibo.actor22comm.utils.ColorsOut.BLUE)
+	((unibo.actor22comm.ws.WsConnection) conn).addObserver(robotMoveObserver)
+}
+*/
+#]  
+
+	State activate initial {
+		printCurrentMessage
+		[#  conn=unibo.Robots.common.RobotUtils.connectWithVirtualRobot(getName())
+			numIter++ #
+		]
+	}
+	Goto start
+	
+	
+	State start{  		  
+   		printCurrentMessage
+   		[# unibo.Robots.common.VRobotMoves.step(getName(), conn ) #] 
+	}
+	Transition t0 whenMsg endMoveOk -> coverColumn
+	              whenMsg endMoveKo -> turn
+
+
+	State coverColumn{  		  
+   		printCurrentMessage
+   		[# unibo.Robots.common.VRobotMoves.step(getName(), conn ) #] 
+	}
+	Transition t0 whenMsg endMoveOk -> coverColumn
+	              whenMsg endMoveKo -> turn
+
+	State turn{  		  
+   		printCurrentMessage
+   		[#
+   			if( goingDown ) unibo.Robots.common.VRobotMoves.turnLeftAndStep(getName(), turnStep, conn);
+   			else unibo.Robots.common.VRobotMoves.turnRightAndStep(getName(), turnStep, conn);
+   			goingDown = ! goingDown;
+   		#]
+	}	
+	Transition t0 whenMsg endMoveOk -> coverColumn
+	              whenMsg endMoveKo -> lastColumn
+
+
+	State lastColumn{  		  
+   		printCurrentMessage
+	}
+}
+
+
+/*
+ *  main 
+   
+QActor mainwalk context ctxBoundaryWalker{
+	[# val doboundary = true #]
+	State s0 initial{  
+	}
+	Goto boundarywalk if [# doboundary #] else endTest
+	 
+	State boundarywalk{
+		forward boundarywalker -m start : start(  any   )		  
+		delay 1000
+		//emit alarm : alarm(fire)		 
+		  
+		delay 2000
+		emit alarm : alarm(tsunami)		
+		delay 1000
+		emit alarm : alarm(covid)	  	
+	}
+	Transition t0 whenMsg mapDone -> endTest  
+	
+	State endTest{
+		println("END OF JOB")
+	}
+				   
+ } */

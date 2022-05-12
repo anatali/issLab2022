@@ -1,6 +1,6 @@
 package unibo.wenvUsage22.mapper;
 
-import org.json.JSONObject;
+ 
 
 import it.unibo.kactor.IApplMessage;
 import unibo.actor22.QakActor22FsmAnnot;
@@ -15,6 +15,7 @@ import unibo.actor22comm.utils.CommUtils;
 import unibo.actor22comm.ws.WsConnection;
 import unibo.wenvUsage22.common.VRobotMoves;
 import unibo.wenvUsage22.basicRobot.prototype0.WsConnApplObserver;
+import unibo.kotlin.planner22Util;
 
 public class RobotMapperPlans extends QakActor22FsmAnnot  {
 	private Interaction2021 conn;	
@@ -36,10 +37,10 @@ public class RobotMapperPlans extends QakActor22FsmAnnot  {
 	
 	protected void initPlanner() {
 		try {
-			itunibo.planner.plannerUtil.initAI();
+			planner22Util.initAI();
 	     	ColorsOut.outappl("INITIAL MAP", ColorsOut.CYAN);
-	 		itunibo.planner.plannerUtil.showMap();
-			itunibo.planner.plannerUtil.startTimer();  		
+	 		planner22Util.showMap();
+			planner22Util.startTimer();  		
  		} catch (Exception e) {
 			ColorsOut.outerr(getName() + " in start ERROR:"+e.getMessage());
  		}		
@@ -56,7 +57,7 @@ public class RobotMapperPlans extends QakActor22FsmAnnot  {
 	@Transition( state = "doMove"  )
  	protected void robotStart( IApplMessage msg ) {
 		initPlanner();
-		itunibo.planner.plannerUtil.planForGoal(""+lastX,""+lastY);		
+		planner22Util.planForGoal(""+lastX,""+lastY);		
 	}
  
 
@@ -69,21 +70,21 @@ public class RobotMapperPlans extends QakActor22FsmAnnot  {
  	@Transition( state = "backToHome",  guard="noOtherMoves"  )
 	protected void doMove( IApplMessage msg ) {
 		outInfo(""+msg);
-		CurrentPlannedMove = itunibo.planner.plannerUtil.getNextPlannedMove();
+		CurrentPlannedMove = planner22Util.getNextPlannedMove();
 		outInfo("CurrentPlannedMove ==== "+CurrentPlannedMove);
 		if( CurrentPlannedMove.equals( "w" ) ){
-			itunibo.planner.plannerUtil.updateMap( "w", "doing w" );
+			planner22Util.updateMap( "w", "doing w" );
 			VRobotMoves.step(getName(), conn );
 		}else if( CurrentPlannedMove.equals( "l" )  ){
-			itunibo.planner.plannerUtil.updateMap( "l", "doing l" );
+			planner22Util.updateMap( "l", "doing l" );
 			VRobotMoves.turnLeft(getName(), conn );
 		}else if(  CurrentPlannedMove.equals( "r" )  ){
-			itunibo.planner.plannerUtil.updateMap( "r", "doing r" );
+			planner22Util.updateMap( "r", "doing r" );
 			VRobotMoves.turnRight(getName(), conn );
 		}else {
 			ColorsOut.outappl("doMove terminated", ColorsOut.MAGENTA);	
-			//itunibo.planner.plannerUtil.showMap();
-			itunibo.planner.plannerUtil.showCurrentRobotState();
+			//planner22Util.showMap();
+			planner22Util.showCurrentRobotState();
 		}
 		CommUtils.delay(500);
 	}
@@ -103,9 +104,9 @@ public class RobotMapperPlans extends QakActor22FsmAnnot  {
 	@Transition( state = "doMove",  guard="notAtHome"  )
 	@Transition( state = "endWork", guard="atHome"  )
 	protected void backToHome( IApplMessage msg ) {
-		boolean alreadyAtHome = itunibo.planner.plannerUtil.atHome();
+		boolean alreadyAtHome = planner22Util.atHome();
 		outInfo("alreadyAtHome="+alreadyAtHome);
-		if( ! alreadyAtHome ) itunibo.planner.plannerUtil.planForGoal("0" ,"0" );	
+		if( ! alreadyAtHome ) planner22Util.planForGoal("0" ,"0" );	
 		//CommUtils.waitTheUser("going to home");
 	}	
 	
@@ -133,13 +134,13 @@ public class RobotMapperPlans extends QakActor22FsmAnnot  {
  		
  		@TransitionGuard
  		protected boolean atHome() {
- 			ColorsOut.outappl("atHome:"+itunibo.planner.plannerUtil.atHome(), ColorsOut.GREEN);	
- 			return itunibo.planner.plannerUtil.atHome();
+ 			ColorsOut.outappl("atHome:"+planner22Util.atHome(), ColorsOut.GREEN);	
+ 			return planner22Util.atHome();
  		}	
  		
  		@TransitionGuard
  		protected boolean notAtHome() {
- 			return ! itunibo.planner.plannerUtil.atHome();
+ 			return ! planner22Util.atHome();
  		}	
 
 }

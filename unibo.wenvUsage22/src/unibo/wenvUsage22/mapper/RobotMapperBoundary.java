@@ -10,9 +10,11 @@ import unibo.actor22comm.SystemData;
 import unibo.actor22comm.interfaces.IObserver;
 import unibo.actor22comm.interfaces.Interaction2021;
 import unibo.actor22comm.utils.ColorsOut;
+import unibo.actor22comm.utils.CommUtils;
 import unibo.actor22comm.ws.WsConnection;
-import unibo.wenvUsage22.common.VRobotMoves;
 import unibo.wenvUsage22.basicRobot.prototype0.WsConnApplObserver;
+import unibo.wenvUsage22.common.VRobotMoves;
+import unibo.kotlin.planner22Util;
 
 
 /*
@@ -38,10 +40,10 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
 	
 	protected void initPlanner() {
 		try {
-			itunibo.planner.plannerUtil.initAI();
+			planner22Util.initAI();
 	     	ColorsOut.outappl("INITIAL MAP", ColorsOut.CYAN);
-	 		itunibo.planner.plannerUtil.showMap();
-			itunibo.planner.plannerUtil.startTimer();  		
+	 		planner22Util.showMap();
+			planner22Util.startTimer();  		
  		} catch (Exception e) {
 			ColorsOut.outerr(getName() + " in start ERROR:"+e.getMessage());
  		}		
@@ -55,21 +57,13 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
  	}
 	
 	@State( name = "robotStart" )
-	@Transition( state = "detectBoundary"  )
+	@Transition( state = "doAheadMove"  ) //detectBoundary
  	protected void robotStart( IApplMessage msg ) {
 		initPlanner();
-		//itunibo.planner.plannerUtil.planForGoal(""+lastX,""+lastY);		
-		itunibo.planner.plannerUtil.showCurrentRobotState();
+		NumStep++ ;
+		planner22Util.showCurrentRobotState();
 	}
  
-	@State( name = "detectBoundary" )
-	@Transition( state = "doAheadMove", guard="roundNotCompleted"    )
-	@Transition( state = "endWork",     guard="roundCompleted"    )
-	protected void detectBoundary( IApplMessage msg ) {
- 		outInfo(""+  msg);
- 		NumStep++ ;
- 	}
-	
 	@State( name = "doAheadMove" )
 	@Transition( state = "stepDone",   msgId="endMoveOk"     )
 	@Transition( state = "stepFailed", msgId="endMoveKo"     )
@@ -81,46 +75,57 @@ public class RobotMapperBoundary extends QakActor22FsmAnnot  {
 	@Transition( state = "doAheadMove"  )
   	protected void stepDone( IApplMessage msg ) {
 		outInfo(""+msg);
-		itunibo.planner.plannerUtil.updateMap(  "w", "stepDone" );
+		planner22Util.updateMap(  "w", "stepDone" );
+		CommUtils.delay(500);
 	}
 	@State( name = "stepFailed" )
-	@Transition( state = "backPosDone", msgId="endMoveOk"   )
+	@Transition( state = "backPosDone", msgId="endMoveOk"  )
+	//@Transition( state = "endWork",     guard="roundCompleted"   )
   	protected void stepFailed( IApplMessage msg ) {
-		outInfo(""+msg);
-		ColorsOut.outappl("FOUND A WALL" , ColorsOut.MAGENTA);	
-		itunibo.planner.plannerUtil.showMap();
-		JSONObject json = new JSONObject(msg.msgContent().replace("'", ""));
-		int duration = json.getInt("duration") ;
-		ColorsOut.outappl("duration="+duration, ColorsOut.YELLOW);		
- 		VRobotMoves.moveBackward( getName(), conn, duration);
+		outInfo(""+msg  );
+		ColorsOut.outappl("FOUND A WALL - atHome="+planner22Util.atHome(), ColorsOut.MAGENTA);
+		//planner22Util.showMap();
+		String map = planner22Util.getMap();
+		ColorsOut.outappl(map, ColorsOut.GREEN);
+		updateResourceRep( map  );
+		//if( ! planner22Util.atHome() ) {
+			JSONObject json = new JSONObject(msg.msgContent().replace("'", ""));
+			int duration = json.getInt("duration") ;  //TODO
+			if( duration > 100 ) duration = duration -50;  //TUNING ....
+			ColorsOut.outappl("duration=" + duration, ColorsOut.YELLOW);
+			VRobotMoves.moveBackward(getName(), conn, duration);
+		//}
 	}
 	
 	@State( name = "backPosDone" )
-	@Transition( state = "detectBoundary",  msgId="endMoveOk"  )
+	@Transition( state = "doAheadMove",  msgId="endMoveOk", guard="roundNotCompleted"   ) //"detectBoundary"
+	@Transition( state = "endWork",     guard="roundCompleted"   )
 	protected void backPosDone( IApplMessage msg ) {
 		outInfo(""+msg);
-		itunibo.planner.plannerUtil.updateMap(  "l","???" );
+		NumStep++ ;
+		planner22Util.updateMap(  "l","turn" );
 		VRobotMoves.turnLeft(getName(), conn);
 	}	
 	
  	
  	@State( name = "endWork" )
  	protected void endWork( IApplMessage msg ) {
- 		itunibo.planner.plannerUtil.showMap();
+ 		planner22Util.showMap();
+ 		planner22Util.saveRoomMap("mapRoomEmpty");
 		outInfo("BYE" );	
- 		System.exit(0);
+ 		//System.exit(0);
  	}
 
 //----------------------------------------------
  
 		@TransitionGuard
 		protected boolean roundNotCompleted() {
-			outInfo( "roundNotCompleted  " + NumStep);
+			outInfo( "roundNotCompleted  " + (NumStep < 5) );
 			return NumStep < 5;
 		}	
 		@TransitionGuard
 		protected boolean roundCompleted() {
-			outInfo( "roundCompleted  " + NumStep);
+			outInfo( "roundCompleted  " + (NumStep == 5) );
 			return NumStep == 5;
 		}	
  	 

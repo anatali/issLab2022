@@ -12,8 +12,9 @@ import unibo.actor22comm.utils.CommUtils;
 
 
 @Context22(name = "pcCtx", host = "localhost", port = "8075")
-@Actor22(name = MainRobotMapper.robotName, contextName = "pcCtx", implement = RobotMapperBoundary.class)
+//@Actor22(name = MainRobotMapper.robotName, contextName = "pcCtx", implement = RobotMapperBoundary.class)
 //@Actor22(name = MainRobotMapper.robotName, contextName = "pcCtx", implement = RobotMapperPlans.class)
+@Actor22(name = MainRobotMapper.robotName, contextName = "pcCtx", implement = RobotUsingMap.class)
 public class MainRobotMapper {
 	
 	public static final String robotName = "mapper";
