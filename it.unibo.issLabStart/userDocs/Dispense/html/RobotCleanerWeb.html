@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>RobotCleanerWeb &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RobotExplorer" href="RobotExplorer.html" />
+    <link rel="prev" title="RobotCleaner" href="RobotCleaner.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="robotcleanerweb">
+<h1>RobotCleanerWeb<a class="headerlink" href="#robotcleanerweb" title="Permalink to this headline">¶</a></h1>
+<p>Ci poniniamo l’obiettivo di creare una <a class="reference internal" href="WebApplications.html#webapplication-con-springboot"><span class="std std-ref">WebApplication con SpringBoot</span></a> che mostri agli utenti una pagina  HTML come quella di figura:</p>
+<a class="reference internal image-reference" href="_images/RobotCleanerGui.PNG"><img alt="_images/RobotCleanerGui.PNG" class="align-center" src="_images/RobotCleanerGui.PNG" style="width: 80%;" /></a>
+<p><span class="remark">La business logic è nel prototipo RobotCleaner</span></p>
+<ul class="simple">
+<li><p>Obiettivo della applicazione Spring è solo quello di offrire una GUI. Tutta la logica applicativa è già stata realizzata
+(e testata) e può essere resa disponibile mediante un file <code class="docutils literal notranslate"><span class="pre">jar</span></code>.</p></li>
+</ul>
+<section id="una-webconsole-per-il-robotcleaner">
+<h2>Una WebConsole per il RobotCleaner<a class="headerlink" href="#una-webconsole-per-il-robotcleaner" title="Permalink to this headline">¶</a></h2>
+<p id="modicreazione"><span class="remark">Chi crea il componente applicativo?</span></p>
+<p>Vi sono due modi principali:</p>
+<ol class="arabic simple">
+<li><p><em>Modo remoto</em>: Il componente applicativo viene allocato su un nodo diverso da quello che ospita l’applicazione Spring</p></li>
+<li><p><em>Modo locale</em>: Il componente applicativo viene creato dalla applicazione Spring stessa</p></li>
+</ol>
+<p><span class="worktodo">WORKTODO: discutere i pro/contro dei due modi</span></p>
+<p>In questa sezione continueremo ad usare il progetto denominato <strong>webForActors</strong> introdotto in <a class="reference internal" href="WebApplications.html#primi-passi-con-springboot"><span class="std std-ref">Primi passi con SpringBoot</span></a>.</p>
+<section id="robotcleanergui-html">
+<h3>RobotCleanerGui.html<a class="headerlink" href="#robotcleanergui-html" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Inseriamo il file <code class="docutils literal notranslate"><span class="pre">RobotCleanerGui.html</span></code> nella directory <strong>templates</strong>.</p></li>
+</ul>
+<p>Qyesto file definisce la struttura della pagina HTML, suddivisa in due zone:</p>
+<ul>
+<li><p>area <strong>Condigurazione e comandi</strong>: questa zona realizza un dispositivo  di input, con cui l’utente può inviare comandi al server</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;h4&gt;Commands to the RobotCleaner&lt;/h4&gt;
+ ...
+  &lt;table&gt;
+   &lt;table style=&quot;width:50%&quot;&gt;
+   &lt;tbody&gt;
+   &lt;!-- the form-data is sent to the page specified in the action attribute --&gt;
+   &lt;tr&gt;
+   &lt;td &gt; &lt;form action=&quot;robotcmd&quot; method=&quot;post&quot;&gt;&lt;button name=&quot;cmd&quot; value=&quot;t&quot;&gt;start&lt;/button&gt;&lt;/form&gt;&lt;/td&gt;
+   &lt;td&gt; &lt;form action=&quot;robotcmd&quot; method=&quot;post&quot;&gt;&lt;button name=&quot;cmd&quot; value=&quot;stop&quot;&gt;stop&lt;/button&gt;&lt;/form&gt;&lt;/td&gt;
+   &lt;td&gt; &lt;form action=&quot;robotcmd&quot; method=&quot;post&quot;&gt;&lt;button name=&quot;cmd&quot; value=&quot;resume&quot;&gt;resume&lt;/button&gt;&lt;/form&gt;&lt;/td&gt;
+   &lt;/tr&gt;
+   &lt;/table&gt;
+   &lt;/center&gt;
+&lt;/td&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p><strong>Display Area</strong>: questa zona realizza un dispositivo di output, in cui visualizzare informazioni di stato (mediante
+una <a class="reference internal" href="WebApplications.html#websocket-in-springboot-versione-base"><span class="std std-ref">WebSocket</span></a>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="n">DISPLAY</span> <span class="n">AREA</span><span class="o">&lt;/</span><span class="n">h3</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">div</span> <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;display&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>L’aggiornamento della DisplayArea verrà realizzato da codice JavScript (si veda più avanti: <a class="reference internal" href="#wsminimal-js"><span class="std std-ref">wsminimal.js</span></a>).</p>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="un-controller-per-la-robotcleaner-appl">
+<h3>Un controller per la RobotCleaner Appl<a class="headerlink" href="#un-controller-per-la-robotcleaner-appl" title="Permalink to this headline">¶</a></h3>
+<p>Commentiamo l’annotazione <code class="docutils literal notranslate"><span class="pre">&#64;Controller</span></code> in <code class="docutils literal notranslate"><span class="pre">HIControllerDemo</span></code> e inseriamo un nuovo controller <code class="docutils literal notranslate"><span class="pre">HIController</span></code></p>
+<div class="highlight-Java notranslate" id="hicontroller"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">it.unibo.webspring.demo</span><span class="p">;</span>
+<span class="kn">import</span> <span class="nn">...</span>
+
+<span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HIController</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">robotCmdId</span> <span class="o">=</span> <span class="s">&quot;move&quot;</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kd">static</span>  <span class="n">String</span> <span class="n">robotName</span>       <span class="o">=</span> <span class="s">&quot;cleaner&quot;</span><span class="p">;</span>
+
+<span class="kd">private</span> <span class="n">String</span> <span class="n">mainPage</span> <span class="o">=</span> <span class="s">&quot;RobotCleanerGui&quot;</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">HIController</span><span class="p">(){</span>   <span class="p">}</span>
+</pre></div>
+</div>
+<p>Il  controller <code class="docutils literal notranslate"><span class="pre">HIController</span></code>  gestisce:</p>
+<ul>
+<li><p>le richieste (HTTP-GET) di apertura della pagina:</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@GetMapping</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">homePage</span><span class="p">(</span><span class="n">Model</span> <span class="n">model</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">model</span><span class="p">.</span><span class="na">addAttribute</span><span class="p">(</span><span class="s">&quot;arg&quot;</span><span class="p">,</span> <span class="n">appName</span><span class="p">);</span>
+   <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>le informazioni di configurazione inviate con metodi HTTP-POST, quando l’utente (umano) preme il pulsante <strong>Configure</strong></p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="c1">//Dopo click sul pulsante Configure</span>
+<span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/configure&quot;</span><span class="p">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">configure</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+         <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">move</span><span class="p">,</span> <span class="n">String</span> <span class="n">addr</span> <span class="p">){</span>
+   <span class="n">createRobotCleaner</span><span class="p">();</span>  <span class="c1">//Modo locale per la Business logic:</span>
+   <span class="n">ConnQakBase</span> <span class="n">connToRobot</span> <span class="o">=</span>
+         <span class="n">ConnQakBase</span><span class="p">.</span><span class="na">create</span><span class="p">(</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="p">);</span>
+   <span class="n">conn</span> <span class="o">=</span> <span class="n">connToRobot</span><span class="p">.</span><span class="na">createConnection</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">8083</span><span class="p">);</span>
+   <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">ConnQakBase</span></code> è una utility per creare connessioni al Robot con un dato protocollo.</p>
+<a class="reference internal image-reference" href="_images/RobotCleanerFsmStartStopProject.PNG"><img alt="_images/RobotCleanerFsmStartStopProject.PNG" class="align-center" src="_images/RobotCleanerFsmStartStopProject.PNG" style="width: 80%;" /></a>
+</div></blockquote>
+</li>
+<li><p>i comandi inviati con metodi HTTP-POST, quando l’utente (umano) preme i pulsanti <strong>start / stop / resume</strong></p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="c1">//Dopo click sul pulsante start/stop/resume</span>
+<span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/robotcmd&quot;</span><span class="p">)</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">doMove</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">cmd</span><span class="p">){</span>
+   <span class="k">if</span><span class="p">(</span> <span class="n">cmd</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;t&quot;</span><span class="p">)){</span>  <span class="c1">//Start</span>
+         <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">SystemData</span><span class="p">.</span><span class="na">startSysCmd</span><span class="p">(</span><span class="s">&quot;hicontroller&quot;</span><span class="p">,</span><span class="n">robotName</span><span class="p">)</span> <span class="p">);</span>
+   <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+         <span class="k">try</span> <span class="p">{</span>
+            <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">moveAril</span><span class="p">(</span><span class="n">cmd</span><span class="p">).</span><span class="na">toString</span><span class="p">();</span>
+            <span class="n">conn</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+         <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{...</span> <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notiamo che:</p>
+<ul>
+<li><p>il pulsante  <strong>start</strong>   invia un comando (<code class="docutils literal notranslate"><span class="pre">cmd</span></code>)  con valore  <strong>t</strong>,  a fronte della form HTML</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">form</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;robotcmd&quot;</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">button</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cmd&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="o">&gt;</span><span class="n">start</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">form</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p>i pulsanti  <strong>stop/resume</strong>   inviano un comando (<code class="docutils literal notranslate"><span class="pre">move</span></code>)  con valore uguale al nome del pulsante:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">form</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;robotcmd&quot;</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;post&quot;</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">button</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;cmd&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;stop&quot;</span><span class="o">&gt;</span><span class="n">stop</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">form</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
+</section>
+<section id="robotcleaner-display-area">
+<h2>RobotCleaner:  display area<a class="headerlink" href="#robotcleaner-display-area" title="Permalink to this headline">¶</a></h2>
+<p>Affrontiamo ora un nuovo requisito:</p>
+<ul class="simple">
+<li><p><strong>DisplayaAreaUpdate</strong>: Il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> deve fornire informazioni di stato che la pagina Web deve visualizzare nella DisplayArea.</p></li>
+</ul>
+<section id="displayarea-analisi-del-problema">
+<h3>DisplayArea: analisi del problema<a class="headerlink" href="#displayarea-analisi-del-problema" title="Permalink to this headline">¶</a></h3>
+<p>La nostra analsisi parte tenendo conto dei seguenti vincoli (<strong>requisiti non funzionali</strong>):</p>
+<ol class="arabic simple">
+<li><p>Per i principi delle  <a class="reference external" href="https://clevercoder.net/2018/09/08/clean-architecture-summary-review">CleanArchitecture</a>, il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> non deve avere conoscenza di questo nuovo requisito e non deve avere alcuna
+dipendenza verso la parte Web.</p></li>
+<li><p>L’aggiornamernto della pagina Web dovrebbe avvenire in modo asincrono, senza ricorso al polling.</p></li>
+</ol>
+<p>Questi due vincoli, presi insieme, implicano che:</p>
+<ul class="simple">
+<li><p>il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> non deve rispondere a richieste volte a conoscere  il proprio stato. Piuttosto deve essere un ente <strong>osservabile</strong>, cioè
+capace di emettere informazioni utili per componenti software interessati, anche <strong>‘alieni’</strong>, cioè non-attori;</p></li>
+<li><p>il WebServer, responsabile dell’aggiornamento della pagina Web, dovrebbe operare come un ‘alieno’, osservatore del  <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code>;</p></li>
+<li><p>in quanto osservatore interessato alle informazioni emesse dal <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code>, il WebServer non deve essere vincolato a risiedere
+sullo stesso nodo di elaborazione  del <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code></p></li>
+<li><p>la pagina Web deve essere aggiornata usando le <a class="reference external" href="https://it.wikipedia.org/wiki/WebSocket">WebSocket</a></p></li>
+</ul>
+</section>
+<section id="displayarea-architettura">
+<h3>DisplayArea: architettura<a class="headerlink" href="#displayarea-architettura" title="Permalink to this headline">¶</a></h3>
+<p>L’architettura logica di riferimento può essere rappresentata come nella figura che segue:</p>
+<a class="reference internal image-reference" href="_images/RobotCleanerGuiArch.PNG"><img alt="_images/RobotCleanerGuiArch.PNG" class="align-center" src="_images/RobotCleanerGuiArch.PNG" style="width: 60%;" /></a>
+<p>Il componente <a class="reference internal" href="WebApplications.html#il-gestore-websockethandler"><span class="std std-ref">WebSocketHandler</span></a> nasce da quanto esposto in
+<a class="reference internal" href="WebApplications.html#configurazione-con-websocketconfigurer"><span class="std std-ref">Configurazione con WebSocketConfigurer</span></a> (si veda <a class="reference internal" href="#configurazione-lato-server"><span class="std std-ref">Configurazione lato Server</span></a> ).</p>
+</section>
+<section id="displayarea-piano-di-lavoro">
+<h3>DisplayArea: piano di lavoro<a class="headerlink" href="#displayarea-piano-di-lavoro" title="Permalink to this headline">¶</a></h3>
+<p>Al termine della analisi, riteniamo opportuno proporre il seguente piano di lavoro:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SPRINT1(ws)</span></code>: impostare il WebServer in modo da utilizzare connessioni mediante WebSocket con i client collegati, mediante
+il framework SpringBoot (a tal fine si veda <a class="reference internal" href="WebApplications.html#websocket-in-springboot-versione-base"><span class="std std-ref">WebSockets in SpringBoot</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SPRINT2(udapte)</span></code>: realizzare il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> come emettitore di eventi percepibli dal WebServer.</p></li>
+</ol>
+<p>Gli obiettivi (<em>Goals</em>) di ciascun SPRINT, possono essere definiti come segue:</p>
+<ul class="simple">
+<li><p>nello <code class="docutils literal notranslate"><span class="pre">SPRINT1(ws)</span></code>: realizzare il file <code class="docutils literal notranslate"><span class="pre">wsminimal.js</span></code>, il componente <code class="docutils literal notranslate"><span class="pre">WebSocketHandler</span></code> e verificare che il
+WebServer sia in grado di inviare informazioni sulla DisplayArea;</p></li>
+<li><p>nello <code class="docutils literal notranslate"><span class="pre">SPRINT2(update)</span></code>: realizzare un meccanismo/supporto che permetta all’attore <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> di emettere
+informazioni che possano essere ricevute dal WebServer (in particolare dal <code class="docutils literal notranslate"><span class="pre">WebSocketHandler</span></code>) in modo
+che possano essere visualizzate nella DisplayArea. Nella figura della architettura, questo meccanismo è
+relativo alla freccia tratteggiata.</p></li>
+</ul>
+<p>La <span class="blue">valutazione di complessità</span> ci porta a indicare lo  <code class="docutils literal notranslate"><span class="pre">SPRINT2(update)</span></code> come più rischioso e difficile, in quanto
+richiede progettazione ad hoc, mentre lo <code class="docutils literal notranslate"><span class="pre">SPRINT1(ws)</span></code> richiede ‘solo’ lo studio delle
+<a class="reference internal" href="WebApplications.html#websocket-in-springboot-versione-base"><span class="std std-ref">WebSockets in SpringBoot</span></a>.</p>
+</section>
+<section id="sprint1-ws">
+<h3>SPRINT1(ws)<a class="headerlink" href="#sprint1-ws" title="Permalink to this headline">¶</a></h3>
+<p>Per gestire le due aree (di input/output) introdotte in <a class="reference internal" href="#robotcleanergui-html"><span class="std std-ref">RobotCleanerGui.html</span></a>, la pagina si avvale di <a class="reference external" href="https://www.w3schools.com/jquery/default.asp">jquery</a>
+e del codice JavaScript defnito nel file <em>wsminimal.js</em>
+con cui la pagina si connette a una WebSocket su <code class="docutils literal notranslate"><span class="pre">localhost:8085</span></code> e riceve dati (metodo  <code class="docutils literal notranslate"><span class="pre">onmessage</span></code>)
+che visualizza nella <em>Display Area</em>.</p>
+<section id="wsminimal-js">
+<h4>wsminimal.js<a class="headerlink" href="#wsminimal-js" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>const messageWindow   = document.getElementById(&quot;display&quot;);
+
+function sendMessage(message) {
+   var jsonMsg = JSON.stringify( {&#39;name&#39;: message});
+   socket.send(jsonMsg);
+   addMessageToWindow(&quot;Sent Message: &quot; + jsonMsg);
+ }
+
+function addMessageToWindow(message) {
+   //messageWindow.innerHTML += `&lt;div&gt;${message}&lt;/div&gt;` //add
+   messageWindow.innerHTML = `&lt;div&gt;${message}&lt;/div&gt;`  //set
+}
+
+function connect(){
+   var host       =  &quot;localhost:8085&quot;; //document.location.host;
+   var pathname =  &quot;/&quot;//document.location.pathname;
+   var addr     = &quot;ws://&quot; +host  + pathname + &quot;socket&quot;  ;
+   // Assicura che sia aperta un unica connessione
+   if(socket !== undefined &amp;&amp; socket.readyState !== WebSocket.CLOSED){
+      alert(&quot;WARNING: Connessione WebSocket già stabilita&quot;);
+   }
+   var socket = new WebSocket(addr);
+   socket.onopen = function (event) {
+      addMessageToWindow(&quot;Connected to &quot; + addr);
+   };
+
+   socket.onmessage = function (event) {
+      addMessageToWindow(&quot;&quot;+`${event.data}`);
+   };
+   return socket;
+}//connect
+
+connect()
+</pre></div>
+</div>
+</section>
+<section id="configurazione-lato-server">
+<h4>Configurazione lato Server<a class="headerlink" href="#configurazione-lato-server" title="Permalink to this headline">¶</a></h4>
+<p>Sul lato del WebServer, SpringBoot impone una <a class="reference internal" href="WebApplications.html#configurazione-con-websocketconfigurer"><span class="std std-ref">Configurazione con WebSocketConfigurer</span></a> che richiede la implementazione
+dell’interfaccia <code class="docutils literal notranslate"><span class="pre">WebSocketConfigurer</span></code> e la registrazione di un gestore che estende la casse <code class="docutils literal notranslate"><span class="pre">AbstractWebSocketHandler</span></code>.</p>
+<p>La nostra versione della classe <code class="docutils literal notranslate"><span class="pre">WebSocketConfiguration</span></code> che implementa <code class="docutils literal notranslate"><span class="pre">WebSocketConfigurer</span></code>,
+offre un metodo static che restituisce il gestore registrato e il wspath:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">WebSocketHandler</span> <span class="n">wshandler</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WebSocketHandler</span><span class="p">();</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">wspath</span>              <span class="o">=</span> <span class="s">&quot;socket&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In base a questa configurazione, il server risponderà a richieste inviate sulla WebSocket al seguente indirizzo:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nl">ws:</span><span class="c1">//&lt;serverIP&gt;:8085/socket</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="iwshandler-e-websockethandler">
+<h3>IWsHandler e WebSocketHandler<a class="headerlink" href="#iwshandler-e-websockethandler" title="Permalink to this headline">¶</a></h3>
+<p>Il nostro gestore è simile  a quanto introdotto <a class="reference internal" href="WebApplications.html#il-gestore-websockethandler"><span class="std std-ref">Il gestore WebSocketHandler</span></a>; in più implementa la interfaccia:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IWsHandler</span> <span class="p">{</span>
+   <span class="kt">void</span> <span class="nf">sendToAll</span><span class="p">(</span><span class="n">String</span> <span class="n">message</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">sendToAll</span></code> permette di inviare informazioni a tutti i client collegati attraverso la WebSocket.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebSocketHandler</span> <span class="kd">extends</span> <span class="n">AbstractWebSocketHandler</span> <span class="kd">implements</span> <span class="n">IWsHandler</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">WebSocketSession</span><span class="o">&gt;</span> <span class="n">sessions</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CopyOnWriteArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+ <span class="p">...</span>
+   <span class="nd">@Override</span>
+   <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleTextMessage</span><span class="p">(</span><span class="n">WebSocketSession</span> <span class="n">session</span><span class="p">,</span> <span class="n">TextMessage</span> <span class="n">message</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="p">{</span>
+      <span class="n">sendToAll</span><span class="p">(</span><span class="s">&quot;echo:&quot;</span><span class="o">+</span><span class="n">message</span><span class="p">.</span><span class="na">toString</span><span class="p">());</span>
+   <span class="p">}</span>
+
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sendToAll</span><span class="p">(</span><span class="n">TextMessage</span> <span class="n">message</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="p">{</span>
+     <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">WebSocketSession</span><span class="o">&gt;</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">sessions</span><span class="p">.</span><span class="na">iterator</span><span class="p">();</span>
+     <span class="k">while</span><span class="p">(</span> <span class="n">iter</span><span class="p">.</span><span class="na">hasNext</span><span class="p">()</span> <span class="p">){</span>
+         <span class="n">iter</span><span class="p">.</span><span class="na">next</span><span class="p">().</span><span class="na">sendMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Per propagare un messaggio a tutti i client connessi attraverso la WebSocket,  <a class="reference internal" href="WebApplications.html#il-gestore-websockethandler"><span class="std std-ref">Il gestore WebSocketHandler</span></a> tiene traccia
+delle sessioni in una struttura dati (<em>sessions</em>).</p>
+<section id="displayarea-testing">
+<h4>DisplayArea testing<a class="headerlink" href="#displayarea-testing" title="Permalink to this headline">¶</a></h4>
+<p>Una prima verifica della soluzione proposta si articola su diverse situazioni:</p>
+<ul>
+<li><p>in <strong>locale</strong> (entro la pagina): si visualizza un messaggio di avvenuta connessione col server tramite la WebSocket;</p></li>
+<li><p>in <strong>remoto</strong> (informazioni da WebServer): si invia un messaggio di avvenuta configurazione
+da parte di <a class="reference internal" href="WebApplications.html#configurazione-con-websocketconfigurer"><span class="std std-ref">Configurazione con WebSocketConfigurer</span></a>;</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Configuration</span>
+<span class="nd">@EnableWebSocket</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">WebSocketConfiguration</span> <span class="kd">implements</span> <span class="n">WebSocketConfigurer</span> <span class="p">{</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">WebSocketHandler</span> <span class="n">wshandler</span><span class="o">=</span><span class="k">new</span> <span class="n">WebSocketHandler</span><span class="p">();</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">wspath</span>             <span class="o">=</span> <span class="s">&quot;socket&quot;</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">WebSocketConfiguration</span><span class="p">(){</span>
+ <span class="k">new</span> <span class="n">Thread</span><span class="p">(){</span> <span class="c1">//To test ws-connection</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">(){</span>
+       <span class="n">wshandler</span><span class="p">.</span><span class="na">sendToAll</span><span class="p">(</span><span class="s">&quot;WebSocketConfiguration created&quot;</span> <span class="p">);</span>
+    <span class="p">}</span>
+ <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>da <strong>programma</strong> (connessioni su Ws): si crea un programma Java che utilizza <a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a>
+(la implementazione osservabile di  <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">L’interfaccia Interaction2021</span></a> sulle ws) per inviare comandi al WebServer.</p>
+<p>In modo simile al <code class="docutils literal notranslate"><span class="pre">ClientUsingWs</span></code> introdotto in  <a class="reference internal" href="VirtualRobot.html#esempi-di-uso-di-httpconnection-e-wsconnection"><span class="std std-ref">Esempi di uso di HttpConnection e WsConnection</span></a>,
+definiamo un client che invia al WebServer la stringa “Hello from remote client”.
+Vedremo ricomparire la stringa come echo nella DisplayArea.</p>
+<p>Progetto: <strong>webForActors</strong> code: <em>unibo.webForActors.ClientUsingWs</em>.</p>
+</li>
+</ul>
+</section>
+</section>
+<section id="sprint2-update">
+<h3>SPRINT2(update)<a class="headerlink" href="#sprint2-update" title="Permalink to this headline">¶</a></h3>
+<p>Dal punto di vista logico, il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> è stato modellato come un emettitore di <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a>,
+ma il sistema si presenta come
+<strong>eterogeneo</strong>: infatti non tutti i componenti del sistema seguono il modello ad <a class="reference internal" href="Attori.html#attori"><span class="std std-ref">Attori</span></a>. In particolare:</p>
+<p><span class="remark">il WebServer è progettato e costruito ‘al di fuori’ del modello ad  Attori</span></p>
+<section id="una-soluzione-sbagliata">
+<h4>Una soluzione sbagliata<a class="headerlink" href="#una-soluzione-sbagliata" title="Permalink to this headline">¶</a></h4>
+<p>Nel caso in cui il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> sia attivato in <em>Modo locale</em> (si veda <a class="reference internal" href="#modicreazione">modiCreazione</a>), una soluzione
+possibile sarebbe introdurre codice supplementare nell’attore. Ad esempio:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotCleanerProject</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
+ <span class="p">...</span>
+ <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;coverColumn&quot;</span> <span class="p">)</span>
+ <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">coverColumn</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="n">WebSocketConfiguration</span><span class="p">.</span><span class="na">wshandler</span><span class="p">.</span><span class="na">sendToAll</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="remark">Questa soluzione funziona ma è errata</span></p>
+<p>Infatti crea una dipendenza dell’attore dalla tecnolgia usata per l’aggiornamento delle pagine Web.</p>
+</section>
+<section id="emettere-e-percepire-informazione-eventi">
+<h4>Emettere e percepire informazione (eventi)<a class="headerlink" href="#emettere-e-percepire-informazione-eventi" title="Permalink to this headline">¶</a></h4>
+<p>Per evitare che <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> subisca modifiche indebite, potremmo affrontare il problema
+dell’osservabilità in tre modi:</p>
+<ol class="arabic simple">
+<li><p>Rendere <em>‘componenti alieni’</em> capaci di percepire eventi emessi da attori <a class="reference internal" href="Attori.html#actorqak-e-qakactor22"><span class="std std-ref">ActorQak e QakActor22</span></a>.</p></li>
+<li><p>Realizzare l’emissione di un evento da parte dell’attore <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> utilizzando un <span class="blue">protocollo  publish-subscribe</span>  come MQTT.
+Il WebServer potrebbe iscriversi (<strong>subscribe</strong>) alla topic su cui l’attiore pubblica le informazioni.</p></li>
+<li><p>Rendere l’attore <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> una <span class="blue">risorsa CoAP osservabile</span>. Il WebServer potrebbe utlizzare
+un <span class="blue">CoAP client</span> per ricevere le informazioni di stato quando sono emeesse.</p></li>
+</ol>
+<p>La infrastruttura degli attori <code class="docutils literal notranslate"><span class="pre">QakActor22</span></code> è definita in modo da rendere possibili enatrambe le ultime due strade.
+La infrastruttura degli attori <code class="docutils literal notranslate"><span class="pre">ActorQak</span></code> rende possibile anche la prima.</p>
+<p>In questa sede, ci concentriamo sulla strada meno convenzionale, che
+considera le interazioni  tra componenti distribuiti come uno scambio di <strong>rappresentazioni di risorse</strong>
+accessibili in stile <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>.</p>
+<p>Il compito è agevolato dal fatto che ogni attore <a class="reference internal" href="Attori.html#actorqak-e-qakactor22"><span class="std std-ref">ActorQak e QakActor22</span></a> è stato definito in modo da essere
+anche una <span class="blue">risorsa CoAP osservabile</span> come descritto in <a class="reference internal" href="AttoriCoap.html#attori-come-risorse-coap"><span class="std std-ref">Attori come risorse CoAP</span></a>.</p>
+</section>
+</section>
+<section id="robotcleaner-come-risorsa-coap">
+<h3>RobotCleaner come risorsa CoAP<a class="headerlink" href="#robotcleaner-come-risorsa-coap" title="Permalink to this headline">¶</a></h3>
+<p>L’attore che realizza il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> costituisce una <a class="reference internal" href="AttoriCoap.html#attori-come-risorse-coap"><span class="std std-ref">risorsa CoAP-osservabile</span></a> , che viene
+aggiornata usando il metodo  <code class="docutils literal notranslate"><span class="pre">updateResourceRep</span></code>. La dipendenza indebita si prima viene così superata come segue:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotCleanerProject</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
+ <span class="p">...</span>
+ <span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;coverColumn&quot;</span> <span class="p">)</span>
+ <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">coverColumn</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="c1">//WebSocketConfiguration.wshandler.sendToAll(&quot;&quot;+msg);</span>
+    <span class="n">updateResourceRep</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’invocazione di <code class="docutils literal notranslate"><span class="pre">updateResourceRep(M)</span></code> provoca l’invio della stringa M a tutti i CoAP client connessi
+alla risorsa.</p>
+<section id="il-configuratore-mainrobotcleaner">
+<h4>Il configuratore MainRobotCleaner<a class="headerlink" href="#il-configuratore-mainrobotcleaner" title="Permalink to this headline">¶</a></h4>
+<p>La fase di configurazione sul WebServer che permette l’uso (in <em>modo locale</em> o in <em>modo remoto</em>)
+del <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> deve ora  creare un <a class="reference internal" href="#robotcleanerobserver"><span class="std std-ref">RobotCleanerObserver</span></a>
+che riceve un riferimento
+al <a class="reference internal" href="#iwshandler-e-websockethandler"><span class="std std-ref">WebSocketHandler</span></a> memorizzato in <code class="docutils literal notranslate"><span class="pre">WebSocketConfiguration.wshandler</span></code>.</p>
+<p>Introdurremo la  creazione del <a class="reference internal" href="#robotcleanerobserver"><span class="std std-ref">RobotCleanerObserver</span></a> nel metodo di configurazione di <a class="reference internal" href="#hicontroller">HIController</a>:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="c1">//Dopo click sul pulsante Configure</span>
+<span class="nd">@PostMapping</span><span class="p">(</span><span class="s">&quot;/configure&quot;</span><span class="p">)</span>
+   <span class="kd">public</span> <span class="n">String</span> <span class="nf">configure</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span>
+            <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">move</span><span class="p">,</span> <span class="n">String</span> <span class="n">addr</span> <span class="p">){</span>
+      <span class="n">createRobotCleaner</span><span class="p">();</span>  <span class="c1">//Modo locale per la Business logic:</span>
+      <span class="n">ConnQakBase</span> <span class="n">connToRobot</span> <span class="o">=</span>
+            <span class="n">ConnQakBase</span><span class="p">.</span><span class="na">create</span><span class="p">(</span> <span class="n">ProtocolType</span><span class="p">.</span><span class="na">tcp</span> <span class="p">);</span>
+      <span class="n">conn</span> <span class="o">=</span> <span class="n">connToRobot</span><span class="p">.</span><span class="na">createConnection</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">8083</span><span class="p">);</span>
+
+      <span class="n">RobotCleanaerObserver</span> <span class="n">obs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RobotCleanaerObserver</span><span class="p">(</span><span class="s">&quot;8083&quot;</span><span class="p">,</span><span class="n">robotName</span><span class="p">);</span>
+      <span class="n">obs</span><span class="p">.</span><span class="na">setWebSocketHandler</span><span class="p">(</span><span class="n">WebSocketConfiguration</span><span class="p">.</span><span class="na">wshandler</span><span class="p">);</span>
+
+      <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
+   <span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><span class="remark">Il RobotCleaner non dipende in alcun modo dalla WebApplication</span></p></li>
+</ul>
+<p>Inoltre:</p>
+<ul class="simple">
+<li><p><span class="remark">E’ il RobotCleaner che decide quali informazioni rendere visibili</span></p></li>
+</ul>
+</section>
+</section>
+<section id="robotcleanerobserver">
+<h3>RobotCleanerObserver<a class="headerlink" href="#robotcleanerobserver" title="Permalink to this headline">¶</a></h3>
+<p>Il compito dell’osservatore del  <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> è di creare un CoAP-client capace di ricevere le informazioni sui cambiamenti di stato
+‘emesse’ dal <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code>
+(in quanto  CoAP-resource) e invocare il metodo <code class="docutils literal notranslate"><span class="pre">sendToAll</span></code> del <a class="reference internal" href="#iwshandler-e-websockethandler"><span class="std std-ref">WebSocketHandler</span></a> che
+aggiorna la DisplayArea di tutti i client collegati.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RobotCleanaerObserver</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">CoapObserveRelation</span> <span class="n">relation</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">CoapClient</span> <span class="n">client</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">IWsHandler</span> <span class="n">wsh</span> <span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">RobotCleanaerObserver</span><span class="p">(</span><span class="n">String</span> <span class="n">port</span><span class="p">,</span> <span class="n">String</span> <span class="n">actorName</span><span class="p">){</span>
+ <span class="n">client</span><span class="o">=</span><span class="k">new</span> <span class="n">CoapClient</span><span class="p">(</span><span class="s">&quot;coap://localhost:&quot;</span><span class="o">+</span><span class="n">port</span><span class="o">+</span><span class="s">&quot;/actors/&quot;</span><span class="o">+</span><span class="n">actorName</span><span class="p">);</span>
+ <span class="n">observe</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setWebSocketHandler</span><span class="p">(</span><span class="n">IWsHandler</span> <span class="n">h</span><span class="p">){</span>
+   <span class="n">wsh</span> <span class="o">=</span> <span class="n">h</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">public</span> <span class="kt">void</span>  <span class="nf">observe</span><span class="p">(</span> <span class="p">)</span> <span class="p">{</span>
+   <span class="n">relation</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="na">observe</span><span class="p">(</span>
+      <span class="k">new</span> <span class="n">CoapHandler</span><span class="p">()</span> <span class="p">{</span>
+         <span class="nd">@Override</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onLoad</span><span class="p">(</span><span class="n">CoapResponse</span> <span class="n">response</span><span class="p">)</span> <span class="p">{</span>
+         <span class="n">String</span> <span class="n">content</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="na">getResponseText</span><span class="p">();</span>
+         <span class="k">if</span><span class="p">(</span> <span class="n">wsh</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="n">wsh</span><span class="p">.</span><span class="na">sendToAll</span><span class="p">(</span><span class="n">content</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nd">@Override</span> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="p">()</span> <span class="p">{</span>
+         <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;OBSERVING FAILED (press enter to exit)&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+   <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="permanenza-delle-info-nella-displayarea">
+<h3>Permanenza delle info nella DisplayArea<a class="headerlink" href="#permanenza-delle-info-nella-displayarea" title="Permalink to this headline">¶</a></h3>
+<p>Purtroppo le informazioni inviate sulla WS <strong>non permangono visibili</strong> in quanto la pagina viene aggiornata dopo ogni comando.
+Per superare questo problema, possiamo inviare i comandi sulla WS stessa, invece che con HTTP-POST, realizzando di fatto una
+forma di Machine-to-machine (M2M) interaction.</p>
+<p>Si provi ad esempio ad inserire nella pagina <a class="reference internal" href="#robotcleanergui-html">RobotCleanerGui.html</a> una nuova area-comandi:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">h4</span><span class="o">&gt;</span><span class="n">COMMAND</span><span class="o">-</span><span class="n">WS</span> <span class="n">AREA</span><span class="o">&lt;/</span><span class="n">h4</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">button</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;startws&quot;</span> <span class="o">&gt;</span><span class="n">startWs</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">button</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;stopws&quot;</span> <span class="o">&gt;</span><span class="n">stopWs</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">button</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;resumews&quot;</span> <span class="o">&gt;</span><span class="n">resumeWs</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/RobotCleanerGuiPlus.PNG"><img alt="_images/RobotCleanerGuiPlus.PNG" class="align-center" src="_images/RobotCleanerGuiPlus.PNG" style="width: 40%;" /></a>
+<p>Il file <a class="reference internal" href="#wsminimal-js">wsminimal.js</a>  vine arricchito con codice <a class="reference external" href="https://www.w3schools.com/jquery/default.asp">jQuery</a> che invia comandi sulla WebSocket:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(function () { //short-hand for $(document).ready(function() {...});
+   $( &quot;#startws&quot; ).click(function() { socket.send(&quot;start&quot;);    })
+   $( &quot;#stopws&quot; ).click(function() { socket.send(&quot;stop&quot;);  })
+   $( &quot;#resumews&quot; ).click(function() { socket.send(&quot;resume&quot;);  })
+});
+</pre></div>
+</div>
+<p>Premendo sui nuovi pulsanti, si vedranno comparire (come echo) i comandi,
+ritrasmessi ai client dal metodo <code class="docutils literal notranslate"><span class="pre">handleTextMessage</span></code> di <a class="reference internal" href="#iwshandler-e-websockethandler"><span class="std std-ref">WebSocketHandler</span></a>.</p>
+<p><span class="worktodo">WORKTODO: realizzare i comandiWs</span></p>
+<ul class="simple">
+<li><p>estendere il codice di <code class="docutils literal notranslate"><span class="pre">handleTextMessage</span></code> di <a class="reference internal" href="#iwshandler-e-websockethandler"><span class="std std-ref">WebSocketHandler</span></a> in modo da inviare
+gli opportuni messaggi  al <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code>.</p></li>
+</ul>
+</section>
+<section id="nuove-opportunita">
+<h3>Nuove opportunità<a class="headerlink" href="#nuove-opportunita" title="Permalink to this headline">¶</a></h3>
+<p>Notiamo che, lanciando il programma <code class="docutils literal notranslate"><span class="pre">unibo.webForActors.ClientUsingWs</span></code>, questo visualizzerà tutte le informazioni emesse da
+<code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code>.
+Cio ci induce ad asserire che:</p>
+<ul class="simple">
+<li><p><span class="remark">Abbiamo un meccanismo utile per il testing automatizzato</span></p></li>
+</ul>
+<p><span class="worktodo">WORKTODO: aggiornare un log file delle variazioni di stato del RobotCleaner</span></p>
+<ul class="simple">
+<li><p>Scrivere un programma Java (etserno alla WebApplication) che crea un Observer della CoAP-resource <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code> che aggiorna
+un file di log di tutte  le informazioni emesse dal robot.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RobotCleanerWeb</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#una-webconsole-per-il-robotcleaner">Una WebConsole per il RobotCleaner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#robotcleanergui-html">RobotCleanerGui.html</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#un-controller-per-la-robotcleaner-appl">Un controller per la RobotCleaner Appl</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcleaner-display-area">RobotCleaner:  display area</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#displayarea-analisi-del-problema">DisplayArea: analisi del problema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#displayarea-architettura">DisplayArea: architettura</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#displayarea-piano-di-lavoro">DisplayArea: piano di lavoro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sprint1-ws">SPRINT1(ws)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wsminimal-js">wsminimal.js</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configurazione-lato-server">Configurazione lato Server</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#iwshandler-e-websockethandler">IWsHandler e WebSocketHandler</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#displayarea-testing">DisplayArea testing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sprint2-update">SPRINT2(update)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#una-soluzione-sbagliata">Una soluzione sbagliata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#emettere-e-percepire-informazione-eventi">Emettere e percepire informazione (eventi)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#robotcleaner-come-risorsa-coap">RobotCleaner come risorsa CoAP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#il-configuratore-mainrobotcleaner">Il configuratore MainRobotCleaner</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#robotcleanerobserver">RobotCleanerObserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#permanenza-delle-info-nella-displayarea">Permanenza delle info nella DisplayArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nuove-opportunita">Nuove opportunità</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="RobotCleaner.html" title="previous chapter">RobotCleaner</a></li>
+      <li>Next: <a href="RobotExplorer.html" title="next chapter">RobotExplorer</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/RobotCleanerWeb.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

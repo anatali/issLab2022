@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Uso di un planner &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="uso-di-un-planner">
+<h1>Uso di un planner<a class="headerlink" href="#uso-di-un-planner" title="Permalink to this headline">¶</a></h1>
+<section id="robotcleaner-back-to-home">
+<h2>RobotCleaner: back to HOME<a class="headerlink" href="#robotcleaner-back-to-home" title="Permalink to this headline">¶</a></h2>
+<p>La parte proattiva di un robot consiste spesso nella esecuzione di una sequenza di movimenti che portano il robot
+in un posizione voluta dello spazio di lavoro.</p>
+<p>La sequenza di movimenti può venire ‘cablata’ nel codice di controllo del robot o può essere
+costruita dinamicamente, per tenere conto dello stato delrobot e dell’ambiente circostante.</p>
+<p>Un modo per costruire dinamicamente la sequenza di mosse utile a raggiungere un dato obiettivo è
+l’utilizzo di un pianificatore, come quello introdotto in <a class="reference external" href="../../../../../it.unibo.planner20/userDocs/LabPlanner.html">UniboPlanner</a></p>
+<p>Pensiamo al caso del <a class="reference internal" href="RobotCleaner.html#robotcleaner"><span class="std std-ref">RobotCleaner</span></a> che deve interrompere la sua parte proattiva per eseguire
+un comando diverso dal un semplice <a class="reference internal" href="RobotCleaner.html#robotcleaner-reattivo-a-comandi"><span class="std std-ref">stop&amp;resume</span></a>,
+quale, ad esempio,  un comando di <code class="docutils literal notranslate"><span class="pre">BacktoToHome</span></code>.</p>
+</section>
+<section id="backtohome-analisi-del-requisito-e-del-problema">
+<h2>BackToHome: analisi del requisito e del problema<a class="headerlink" href="#backtohome-analisi-del-requisito-e-del-problema" title="Permalink to this headline">¶</a></h2>
+<p>Un comando di ritorno in HOME senza ulteriori indicazioni, potrebbe essere eseguito in modo semplice,
+avvaledosi del fatto che il robot potrebbe proseguire lungo la direzione corrente fino a incontrare:</p>
+<ul class="simple">
+<li><p><em>wallUp</em> : in questo caso il robot si gira sinistra e percorre il borso superiore</p></li>
+<li><p><em>wallDown</em> :  in questo caso il robot si gira a destra e percorre prima il borso inferiore e poi il bordo sinistro.</p></li>
+</ul>
+<p>In altre parole esiste una strategia di soluzione che <strong>non richiede conoscenza</strong> della
+posizione corrente del robot e/o il percorso svolto fino a quel punto.</p>
+<p>In geenerale però, la <span class="blue">conoscenza del persorso e della posizione</span> potrebbe essere importante e necessaria.
+Si pensi ad esempio al caso in cui il committente precisi il requisito nel modo che segue:</p>
+<ul class="simple">
+<li><p><strong>BackToHomeFast</strong>: al comando <code class="docutils literal notranslate"><span class="pre">returnToHome</span></code>, il robot deve tornare in HOME seguendo il percorso più breve (o, in alternativa,
+con il numero minimo di spostamenti)</p></li>
+</ul>
+<p>Oppure</p>
+<ul class="simple">
+<li><p><strong>BackToHomeClean</strong>: al comando <code class="docutils literal notranslate"><span class="pre">returnToHome</span></code>, il robot deve tornare in HOME limitando al minimo di ripercorrere il percorso già fatto
+(il pavimento pulito) o limtando.</p></li>
+</ul>
+<p>In generale poi, le applicazioni che richiedono il controllo di un robot mobile (tra cui il <code class="docutils literal notranslate"><span class="pre">RobotCleaner</span></code>) raramente
+si svolgono in una stanza vuota; di solito sono presenti vari ostacoli fissi all’interno della stanza.
+In questo caso, ammesso che tali ostacoli siano stati opportunamente evitati durante la fase di pulizia,
+la strategia di ritono potrebbe complicarsi.</p>
+</section>
+<section id="robotmapperboundary">
+<h2>RobotMapperBoundary<a class="headerlink" href="#robotmapperboundary" title="Permalink to this headline">¶</a></h2>
+<p>Progetto: <strong>webForActors</strong> code:<em>unibo.Robots.mapper.RobotMapperBoundary</em>.</p>
+<p>Un robot che percorre i bordi della stanza (come il <a class="reference internal" href="Actors22.html#boundarywalkerannot"><span class="std std-ref">BoundaryWalker</span></a>) e che</p>
+<ul class="simple">
+<li><p>utilizza le features  del pianificatore <a class="reference external" href="../../../../../it.unibo.planner20/userDocs/LabPlanner.html">UniboPlanner</a> per creare una mappa della stanza come matrice di celle quadrate di lunghezza
+pari a una <a class="reference internal" href="RobotCleaner.html#il-robot-come-unita-di-misura"><span class="std std-ref">unità robotica</span></a>.</p></li>
+<li><p>ha un  comportamento definito come un <a class="reference internal" href="Actors22.html#un-primo-automa-a-stati-finiti"><span class="std std-ref">FSM</span></a> che utilizza le guardie ‘versione Lenzi’</p></li>
+<li><p>rende visibile una rappresentazione corrente della mappa  ad ogni cambio di direzione</p></li>
+</ul>
+<p>Per questa applicazione, il WebServer offre la pagina definita in <code class="docutils literal notranslate"><span class="pre">RobotNaiveGui.html</span></code>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/UsoPlanner.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
