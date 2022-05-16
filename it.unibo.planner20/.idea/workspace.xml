@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fae9ee14-ca03-4931-90de-9d0c7f016bfa" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../it.unibo.issLabStart/userDocs/fff.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.issLabStart/userDocs/fff.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/itunibo/planner/model/Box.java" beforeDir="false" afterPath="$PROJECT_DIR$/resources/itunibo/planner/model/Box.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/ctxresumablewalker/MainCtxresumablewalker.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/insensitivewalker/Insensitivewalker.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/resumablewalker/Resumablewalker.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resumablewalker.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/resumablewalker.qakt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/.project" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/.project" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/roomBoundary.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/roomBoundary.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/roomBoundary.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/roomBoundary.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/boundarywalker.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/src/boundarywalker.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/boundarywalker/Boundarywalker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/boundarywalker/Boundarywalker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/ctxSysExample/MainCtxSysExample.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/ctxWalkerSonar/MainCtxWalkerSonar.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/qa0/Qa0.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/testboundary/Testboundary.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/testboundary/Testboundary.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/it/unibo/walkersonar/Walkersonar.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/kotlinCode/CallRestWithApacheHTTP.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/backup/kotlinCode/CallRestWithApacheHTTP.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/kotlinCode/CallRobotUsingWs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/backup/kotlinCode/CallRobotUsingWs.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/kotlinCode/SonarObserver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/backup/kotlinCode/SonarObserver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/kotlinCode/demo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/backup/kotlinCode/demo.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/kotlinCode/pathexecutil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/backup/kotlinCode/pathexecutil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/kotlinCode/qacoded.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/backup/kotlinCode/qacoded.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/kotlinCode/walkerutil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/backup/kotlinCode/walkerutil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/src/walkersonar.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/src/walkersonar.qakt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.qakDemo/userDocs/LabQakDemo2021.html" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.qakDemo/userDocs/LabQakDemo2021.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../it.unibo.virtualRobot2020/node/WEnv/WebGLScene/sceneConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/../it.unibo.virtualRobot2020/node/WEnv/WebGLScene/sceneConfig.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../webspring.demo/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../webspring.demo/src/main/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1sDNGTuEC1N9vv4xnjDmi3PI4EB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fae9ee14-ca03-4931-90de-9d0c7f016bfa" name="Default Changelist" comment="" />
+      <created>1620403105908</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1620403105908</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>
