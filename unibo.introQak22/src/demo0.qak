@@ -1,0 +1,88 @@
+//https://dl.bintray.com/jetbrains/kotlin/eclipse-plugin/0.8.19/
+
+System demo0    
+//mqttBroker "localhost" : 1883 eventTopic "demo0/events"
+//mqttBroker "broker.hivemq.com" : 1883 eventTopic "demo0/events"
+ 
+Dispatch msg1 : msg1(ARG)
+Dispatch msg2 : msg2(ARG) 
+  
+Event alarm   : alarm( KIND )    
+ 
+Context ctxdemo0 ip [host="localhost" port=8095]
+
+  
+QActor demo0 context ctxdemo0{
+	State s0 initial { 	    
+		discardMsg On
+		//[# sysUtil.logMsgs=true #]
+ 	}     
+ 	Goto s1  
+ 	
+ 	State s1{
+  		printCurrentMessage 
+ 	}
+ 	Transition t0 whenMsg msg1 -> s2
+ 				  whenMsg msg2 -> s3 
+
+ 	State s2{ 
+ 		printCurrentMessage
+ 		onMsg( msg1:msg1(ARG) ){
+ 			println("s2:msg1:msg1(${payloadArg(0)})")
+ 			delay 1000  
+ 		}
+   	} 
+ 	Transition t0 whenMsg msg2 -> s3
+
+ 	State s3{ 
+ 		printCurrentMessage 	//msg is received but not elaborated
+ 		onMsg( msg2:msg2(1) ){ 
+ 			println("s3:msg2:msg2(${payloadArg(0)})")
+ 		} 
+   	}
+    Goto s1      
+ 
+}    
+   
+QActor perceiver context ctxdemo0{
+	State s0 initial { 	
+		println("perceiver waits ..")
+	}
+	Transition t0 whenEvent alarm -> s1
+	
+	State s1{
+		printCurrentMessage
+	}
+	Transition t0 whenTime 100 -> s2  
+				  whenEvent alarm -> s1
+	
+	State s2{
+		printCurrentMessage
+		println("BYE")
+	}
+	
+} 
+
+   
+QActor sender context ctxdemo0{
+	[# var emitEvents = true #]
+	State s0 initial { 	
+ 		 forward demo0 -m msg1 : msg1(1)
+		 delay 300
+		 forward demo0 -m msg1 : msg1(2)
+//		 delay 300
+//		 forward demo0 -m msg1 : msg1(3)
+		 delay 300
+		 forward demo0 -m msg2 : msg2(1)		  
+//		 delay 300
+//		 forward demo0 -m msg2 : msg2(2)		  
+	 
+		 if [# emitEvents #] { emit alarm : alarm( fire )   }
+//		 delay 1200 
+//		 emit alarm : alarm( tsunami )
+//		 delay 1000
+		 //terminate 0 
+	} 
+	 
+}
+   

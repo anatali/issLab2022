@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>BasicRobot22 &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="QActor (meta)model" href="QakIntro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="basicrobot22">
+<h1>BasicRobot22<a class="headerlink" href="#basicrobot22" title="Permalink to this headline">¶</a></h1>
+<p>Progetto: <strong>unibo.basicrobot22</strong> code: <em>…</em>.</p>
+<p><span class="remark">Introduzione all’uso di Kotlin</span></p>
+<ul class="simple">
+<li><p>si veda anche <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html">kotlinUnibo</a></p></li>
+</ul>
+<p>Introduciamo un componente che esegue comandi di spostamento di un DDR-robot in ‘modo indipendente dalla tecnologia’,
+rispetto alla natura del robot (virtuale o reale).</p>
+<p>Questo obiettivo viene raggiunto introducendo un insieme di diversi supporti di basso livello e una fase di configurazione
+che seleziona il supporto appropriato per il tipo di robot specificato in un file di configurazione del robot.</p>
+<section id="basicrobotconfig-json">
+<h2>basicrobotConfig.json<a class="headerlink" href="#basicrobotconfig-json" title="Permalink to this headline">¶</a></h2>
+<p>Il file di configurazione <code class="docutils literal notranslate"><span class="pre">basicrobotConfig.json</span></code> attualmente distingue tre diversi tipi di robot: due reali e uno virtuale.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;8090&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span><span class="p">}</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realnano&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;8020&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;dontcare&quot;</span><span class="p">}</span>
+<span class="o">//</span><span class="n">Arduino</span> <span class="n">connesso</span> <span class="n">al</span> <span class="n">Raspberry</span><span class="p">:</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realmbot&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;/dev/ttyUSB0&quot;</span><span class="p">,</span> <span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;-&quot;</span><span class="p">}</span>
+<span class="o">//</span><span class="n">Arduino</span> <span class="n">connesso</span> <span class="n">al</span> <span class="n">PC</span><span class="p">:</span>
+<span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;realmbot&quot;</span><span class="p">,</span><span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;COM6&quot;</span><span class="p">,</span><span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;dontcare&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a></p></li>
+<li><p><a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html">Mbot</a> (realmbot)</p></li>
+<li><p><a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/userDocs/LabNanoRobot.html">NanoRobot</a> (realnano)</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/basicrobotComponent.PNG"><img alt="_images/basicrobotComponent.PNG" class="align-center" src="_images/basicrobotComponent.PNG" style="width: 60%;" /></a>
+<section id="basicrobot22-comandi">
+<h3>BasicRobot22: comandi<a class="headerlink" href="#basicrobot22-comandi" title="Permalink to this headline">¶</a></h3>
+<p>L’interazione con il robot è definita, in termini di operazioni di message-passing, come segue
+(si veda <a class="reference internal" href="#basicrobot22-il-modello-basicrobot-qak"><span class="std std-ref">BasicRobot22: il modello basicrobot.qak</span></a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dispatch</span>  <span class="n">cmd</span> <span class="p">:</span> <span class="n">cmd</span><span class="p">(</span><span class="n">MOVE</span><span class="p">)</span>
+
+<span class="n">Request</span>   <span class="n">step</span> <span class="p">(</span> <span class="n">TIME</span> <span class="p">)</span>
+<span class="n">Reply</span>     <span class="n">stepdone</span> <span class="p">:</span> <span class="n">stepdone</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">Reply</span>     <span class="n">stepfail</span> <span class="p">:</span> <span class="n">stepfail</span><span class="p">(</span><span class="n">DT</span><span class="p">,</span> <span class="n">REASON</span><span class="p">)</span>
+
+<span class="n">Event</span>  <span class="n">sonar</span>        <span class="p">:</span> <span class="n">sonar</span><span class="p">(</span><span class="n">DISTANCE</span><span class="p">,</span><span class="n">NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Più specificatamente, <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code>:</p>
+<ul>
+<li><p>è in grado di eseguire comandi-base  <strong>cmd</strong> di spostamento, con argomento <span class="blue">MOVE = w | s | l | r | h</span></p></li>
+<li><p>è in grado di rispondere alla richiesta di effettuare uno <strong>step</strong> in avanti per il tempo <span class="blue">TIME</span> specificato
+nell’argomento, fornendo una risposta che può essere:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>stepdone</strong> se lo <em>step</em> è stato eseguito con successo</p></li>
+<li><p><strong>stepfail</strong> se lo <em>step</em> è fallito dopo il tempo <span class="blue">DT</span> (<code class="docutils literal notranslate"><span class="pre">DT&lt;TIME</span></code>) per una qualche ragione <span class="blue">REASON</span>.
+In questo caso, <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> effettua uno spostamento all’indietro <strong>‘di riposizionamenmto’</strong> con durate (approssimativa)
+<span class="blue">DT</span>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>è in grado di percepire come eventi le informazioni proveniente dall’ambiente, grazie alla feature <a class="reference internal" href="QakIntro.html#actors-as-streams"><span class="std std-ref">Actors as streams</span></a>.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/sonarpipenano.png"><img alt="_images/sonarpipenano.png" class="align-center" src="_images/sonarpipenano.png" style="width: 75%;" /></a>
+</div></blockquote>
+</li>
+<li><p>è una risorsa CoAP-osservabile che mantiene le informazioni sul suo stato funzionale corrente (<code class="docutils literal notranslate"><span class="pre">RObState</span></code>):</p>
+<ul class="simple">
+<li><p><em>basicrobot(start)</em>, when the basicrobot is activated.</p></li>
+<li><p><em>moveactivated(M)</em>, when the basicrobot has activated a non-step move M.</p></li>
+<li><p><em>step(ST)</em>, when the basicrobot has activated a step with time ST.</p></li>
+<li><p><em>stepDone(ST)</em>, when the basicrobot has terminated with success a step with time ST.</p></li>
+<li><p><em>stepFail(D)</em>, when the basicrobot has failed a step after time D&lt;ST.</p></li>
+<li><p><em>obstacle(M)</em>, when the basicrobot hits an obstacle while executing the move M.</p></li>
+<li><p><em>basicrobot(end)</em>, when the basicrobot terminates.</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/userDocs/basicrobot2021.html">BasicRobot2021</a></p></li>
+</ul>
+</section>
+<section id="avvertenze">
+<h3>Avvertenze<a class="headerlink" href="#avvertenze" title="Permalink to this headline">¶</a></h3>
+<p><span class="remark">Sulla durata dei comandi-base</span></p>
+<ul class="simple">
+<li><p>Per muovere un robot reale occorre inviare comendi ai motori. La esecuzione di uno step di durata <code class="docutils literal notranslate"><span class="pre">DT</span></code>
+implica l’invio di due comandi (<span class="blue">w</span> e <span class="blue">h</span>), intervallati da <code class="docutils literal notranslate"><span class="pre">DT</span></code>.</p></li>
+<li><p>Per muovere un VirtualRobot si inviano comandi che specificano già la durata del movimento.
+Al fine di usare il VirtualRobot in modo del tutto analogo al robot reale, si definisce una durata
+adeguatamente ‘lunga’ del comando <span class="blue">w</span> (ad esempio 1000 msec)</p></li>
+</ul>
+</section>
+</section>
+<section id="console-di-comando">
+<h2>Console di comando<a class="headerlink" href="#console-di-comando" title="Permalink to this headline">¶</a></h2>
+<p>Per inviare comandi al <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> si può usare una console GUI come quella di figura</p>
+<a class="reference internal image-reference" href="_images/consoleTcpSmall.PNG"><img alt="_images/consoleTcpSmall.PNG" class="align-center" src="_images/consoleTcpSmall.PNG" style="width: 20%;" /></a>
+<p>La console  <code class="docutils literal notranslate"><span class="pre">consoleGuiSimple</span> <span class="pre">``</span> <span class="pre">può</span> <span class="pre">connettersi</span> <span class="pre">al</span> <span class="pre">``BasicRobot22</span></code> usando uno dei seguenti protocolli,
+secondo quanto definito nel file <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/resources/connQak/connQak.sysConnKb.kt">connQak.sysConnKb.kt</a></p>
+<ul class="simple">
+<li><p>TCP</p></li>
+<li><p>HTTP</p></li>
+<li><p>CoAP</p></li>
+<li><p>MQTT</p></li>
+</ul>
+<p>Il pulsante <strong>p</strong> invia una richiesta di <em>step</em> con <code class="docutils literal notranslate"><span class="pre">TIME=350</span></code>.</p>
+<p><span class="remark">La console invia i comandi mediante dispatch</span></p>
+<p>Sono anche disponibili file <strong>Jupyter</strong>, nella directory <code class="docutils literal notranslate"><span class="pre">resources/jupiter</span></code>.</p>
+<section id="esperimenti-di-uso">
+<h3>Esperimenti di uso<a class="headerlink" href="#esperimenti-di-uso" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li><p>Attivare <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> eseguendo <code class="docutils literal notranslate"><span class="pre">it.unibo.ctxbasicrobot.MainCtxbasicrobot.kt</span></code></p></li>
+<li><p>Atiivare una console eseguendo  <code class="docutils literal notranslate"><span class="pre">consoles.consoleGuiSimple.kt</span></code></p></li>
+<li><p>Attivare un CoapObserver eseguendo <code class="docutils literal notranslate"><span class="pre">basicrobotCoapObserver</span></code></p></li>
+<li><p>Attivare una ulteriore console con protocollo CaAP</p></li>
+</ol>
+<p>Per provocare interazioni usando MQTT, occorre</p>
+<ul>
+<li><p>(in <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/src/basicrobot.qak">basicrobotqak</a>) togliere il commento</p>
+<p><code class="docutils literal notranslate"><span class="pre">mqttBroker</span> <span class="pre">&quot;broker.hivemq.com&quot;</span> <span class="pre">:</span> <span class="pre">1883</span> <span class="pre">eventTopic</span> <span class="pre">&quot;unibo/basicrobot&quot;</span></code></p>
+</li>
+<li><p>Attivare una console con protocollo MQTT oppure <code class="docutils literal notranslate"><span class="pre">qakbasicrobotcallerMQTT.ipynb</span></code> in <code class="docutils literal notranslate"><span class="pre">it.unibo.issLabStart/resources/jupyter/</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="basicrobot22-architettura">
+<h2>BasicRobot22: architettura<a class="headerlink" href="#basicrobot22-architettura" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/basicrobotproject.PNG"><img alt="_images/basicrobotproject.PNG" class="align-center" src="_images/basicrobotproject.PNG" style="width: 50%;" /></a>
+<section id="basicrobot22-supporti">
+<h3>BasicRobot22: Supporti<a class="headerlink" href="#basicrobot22-supporti" title="Permalink to this headline">¶</a></h3>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 70%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/wenvscene1.PNG"><img alt="_images/wenvscene1.PNG" class="align-center" src="_images/wenvscene1.PNG" style="width: 90%;" /></a>
+</td>
+<td><p>per il VirtualRobot: <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/resources/robotVirtual/virtualrobotSupport2021.kt">virtualrobotSupport</a></p></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal image-reference" href="_images/robotsUnibo.jpg"><img alt="_images/robotsUnibo.jpg" class="align-center" src="_images/robotsUnibo.jpg" style="width: 90%;" /></a>
+</td>
+<td><p>per il  NanoRObot. <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/resources/robotNano/nanoSupport.kt">nanoSupport</a>, <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/resources/robotNano/Motors.c">motors</a></p></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/mbot.PNG"><img alt="_images/mbot.PNG" class="align-center" src="_images/mbot.PNG" style="width: 90%;" /></a>
+</td>
+<td><p>per il  NanoRObot. <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/resources/robotNano/nanoSupport.kt">mbotSupport</a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="basicrobot22-il-modello-basicrobot-qak">
+<h3>BasicRobot22: il modello basicrobot.qak<a class="headerlink" href="#basicrobot22-il-modello-basicrobot-qak" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Si veda  <a class="reference external" href="../../../../../it.unibo.qak21.basicrobot/src/basicrobot.qak">basicrobotqak</a></p>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">BasicRobot22</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basicrobotconfig-json">basicrobotConfig.json</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basicrobot22-comandi">BasicRobot22: comandi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#avvertenze">Avvertenze</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#console-di-comando">Console di comando</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#esperimenti-di-uso">Esperimenti di uso</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#basicrobot22-architettura">BasicRobot22: architettura</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basicrobot22-supporti">BasicRobot22: Supporti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basicrobot22-il-modello-basicrobot-qak">BasicRobot22: il modello basicrobot.qak</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="QakIntro.html" title="previous chapter">QActor (meta)model</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/BasicRobot22.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
