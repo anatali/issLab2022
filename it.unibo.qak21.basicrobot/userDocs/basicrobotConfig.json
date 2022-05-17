@@ -1,0 +1,4 @@
+
+{"type":"realmbot", "port":"/dev/ttyUSB0", "ipvirtualrobot":"192.168.1.62"}
+{"_comment": "", "type":"realmbot", "port":"/dev/ttyUSB0", "ipvirtualrobot":"localhost"}
+{"_comment": "", "type":"realmbot", "port":"/dev/ttyAMA0 COM6", "ipvirtualrobot":"localhost"}

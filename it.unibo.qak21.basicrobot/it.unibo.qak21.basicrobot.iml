@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="it.unibo.qak21.basicrobot" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.1.0/20274ba816d8938fdb4d7a3806719691db60fa1e/kotlinx-coroutines-core-1.1.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-common/1.1.0/d81cc72afd6e49f5270db24bae935f9bfcfd859e/kotlinx-coroutines-core-common-1.1.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scream3r/jssc/2.8.0/7e8d93052a8743a7937a6d46854057ac1ce876c1/jssc-2.8.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.paho/org.eclipse.paho.client.mqttv3/1.2.1/a0932397520960d23566d1d9d09075f28bc8164/org.eclipse.paho.client.mqttv3-1.2.1.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20160810/aca5eb39e2a12fddd6c472b240afe9ebea3a6733/json-20160810.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.californium/californium-proxy/2.0.0-M12/fd089cbf97a2f89e15ad6ba965ff7a196ece2219/californium-proxy-2.0.0-M12.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.californium/californium-core/2.0.0-M12/5b61477cf0f3634bbdf786b265178b7a50a07ae3/californium-core-2.0.0-M12.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-log4j12/1.7.25/110cefe2df103412849d72ef7a67e4e91e4266b4/slf4j-log4j12-1.7.25.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../unibolibs/uniboInterfaces.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../unibolibs/2p301.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../unibolibs/it.unibo.qakactor-2.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../unibolibs/unibonoawtsupports.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/../unibolibs/IssActorKotlinRobotSupport-2.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.aima-java/aima-core/3.0.0/fd46a9bdd8ea9d9988adcd296c3af02af267df8a/aima-core-3.0.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.4.32/3302f9ec8a5c1ed220781dbd37770072549bd333/kotlin-stdlib-jdk8-1.4.32.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.0/8e17601d3bdc8cf57902c154de021931d2c27c1/okhttp-4.9.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.andreapivetta.kolor/kolor/1.0.0/9656a40347df87bc6eb118ff878265742a8c6dd2/kolor-1.0.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpasyncclient/4.1.2/95aa3e6fb520191a0970a73cf09f62948ee614be/httpasyncclient-4.1.2.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.6/815893df5f31da2ece4040fe0a12fd44b577afaf/commons-io-2.6.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.4.32/3546900a3ebff0c43f31190baf87a9220e37b7ea/kotlin-stdlib-jdk7-1.4.32.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/2.8.0/49b64e09d81c0cc84b267edd0c2fd7df5a64c78c/okio-jvm-2.8.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.4.32/461367948840adbb0839c51d91ed74ef4a9ccb52/kotlin-stdlib-1.4.32.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.4.32/ef50bfa2c0491a11dcc35d9822edbfd6170e1ea2/kotlin-stdlib-common-1.4.32.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.californium/element-connector/2.0.0-M12/11cc8c08be9d2d975e7a9d34f46e8fb9f03234ba/element-connector-2.0.0-M12.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/da76ca59f6a57ee3102f8f9bd9cee742973efa8a/slf4j-api-1.7.25.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/15.0/ed727a8d9f247e2050281cb083f1c77b09dcb5cd/guava-15.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore-nio/4.4.5/f4be009e7505f6ceddf21e7960c759f413f15056/httpcore-nio-4.4.5.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.5/e7501a1b34325abb00d17dde96150604a0658b54/httpcore-4.4.5.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.17/5af35056b4d257e4b64b9e8069c0746e8b08629f/log4j-1.2.17.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.9/9ce04e34240f674bc72680f8b843b1457383161a/commons-codec-1.9.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar!/" />
+    <libelement value="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar!/" />
+    <conelement value="org.jetbrains.kotlin.core.KOTLIN_CONTAINER" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+      <src_folder value="file://$MODULE_DIR$/resources" expected_position="1" />
+    </src_description>
+  </component>
+</module>
