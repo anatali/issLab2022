@@ -17,6 +17,8 @@ import it.unibo.kactor.ActorBasicFsm
 import org.json.JSONObject
 import java.io.File
 import it.unibo.kactor.MsgUtil
+import it.unibo.kactor.QakContext
+import kotlinx.coroutines.runBlocking
 //import robotMbot.robotDataSourceArduino
  
 @kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -76,5 +78,22 @@ object robotSupport{
 			else         -> println( "		--- robotSupport | robot unknown")
 		}		
 		
+	}
+	
+	fun createSonarPipe(robotsonar: ActorBasic?){
+ 		if( robotsonar != null ){ 
+			runBlocking{
+				//ACTIVATE THE DATA SOURCE  
+				//MsgUtil.sendMsg("robotSupport", "sonarstart", "sonarstart(do)", robotsonar)
+		 		//SET THE PIPE  
+		 		robotsonar.
+		 			subscribeLocalActor("datacleaner").
+		 			subscribeLocalActor("distancefilter").
+		 			subscribeLocalActor("basicrobot")		//in order to perceive obstacle
+				println("robotSupport | SONAR PIPE DONE") 
+			}
+	 	}else{
+	 		println("robotSupport | WARNING: sonar NOT FOUND")
+	 	}		
 	}
 }

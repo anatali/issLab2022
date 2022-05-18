@@ -68,7 +68,7 @@ companion object {
                             }
                             "collision" -> {
  								val m1 = "sonar( 5 )"
-                                val event = MsgUtil.buildEvent( name,"sonarRobot",m1)
+                                val event = MsgUtil.buildEvent( name,"sonar",m1)
                                 emitLocalStreamEvent( event )		//not propagated to remote actors
                               }
                         }

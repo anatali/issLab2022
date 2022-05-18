@@ -21,7 +21,7 @@ class WsSupportObserver( val owner:String) : WsConnSysObserver( owner) {
 
 	
 	override fun update( data : String ) {
- 		ColorsOut.out("WsConnSysObserver update receives:$data $actionDuration", ColorsOut.BLUE);
+ 		//ColorsOut.outappl("WsConnSysObserver update receives:$data $actionDuration", ColorsOut.GREEN);
         val msgJson = JSONObject(data)
         //println("       &&& WsSupportObserver  | update msgJson=$msgJson" ) //${ aboutThreads()}
 		val ownerActor = sysUtil.getActor(owner)
@@ -29,26 +29,12 @@ class WsSupportObserver( val owner:String) : WsConnSysObserver( owner) {
 			val ev = Qak22Util.buildEvent( "wsconn", SystemData.wsEventId, data  );
             println("       &&& WsSupportObserver  | ownerActor null ev=$ev" ) 
 		}
-		if( msgJson.has("collision")){
+		if( msgJson.has("target")){
 				runBlocking {
-					ownerActor!!.emit("obstacle","obstacle(virtual)")
+					var target = msgJson.getString("target")
+					ownerActor!!.emit("obstacle","obstacle($target)")
 				}
 		}
-		/*		
- 		if( msgJson.has("endmove") && msgJson.getBoolean("endmove") ) {
-			if( msgJson.getString("move").equals("moveForward") ){
-				println("WsSupportObserver update send $stepok")
-				runBlocking {
-					ownerActor.autoMsg(stepok)
-				}
-				//ownerActor.autoMsg(stepok)
-			}else{
-				//println("WsSupportObserver TODO ${msgJson.getBoolean("endmove") }" )
-				
-			}
-		}
-		*/
-
 	}
 	
 

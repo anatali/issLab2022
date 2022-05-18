@@ -61,17 +61,15 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 				//WsHttpConnection.trace = true
             	support21    = WsHttpConnection.createForHttp( "$hostNameStr:$portStr" ) ///api/move built-in
 				support21ws  = WsConnection.create( "$hostNameStr:8091" )    
-            	println("		--- virtualrobotSupport2021 |  created (ws) $hostNameStr:$portStr $support21 $support21ws")	
+            	//println("		--- virtualrobotSupport2021 |  created (ws) $hostNameStr:$portStr $support21 $support21ws")	
 				//support21ws.wsconnect( doafterConn )  //2021
 //2022 Il POJO it.unibo.qak21.basicrobot informa basicrobot di una collisione				 
 				val obs  = WsSupportObserver( owner.getName() )
-				(support21ws as WsConnection).addObserver(obs) 
- 
-			  
+				(support21ws as WsConnection).addObserver(obs) 			  
 //				//ACTIVATE the robotsonar as the beginning of a pipe
 				robotsonar = virtualrobotSonarSupportActor("robotsonar", null)
 				owner.context!!.addInternalActor(robotsonar)  
-			  	println("		--- virtualrobotSupport | has created the robotsonar")	
+			  	println("		--- virtualrobotSupport2021 | has created the robotsonar")	
 			 }catch( e:Exception ){
                  println("		--- virtualrobotSupport2021 | ERROR $e")
              }	

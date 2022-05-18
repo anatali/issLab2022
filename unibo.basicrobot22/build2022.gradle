@@ -1,12 +1,12 @@
 /*
 ================================================================================
-build2021
+build2022
 GENERATED ONLY ONCE
 USAGE:	 
-  	gradle  -b build2021.gradle eclipse		//to set the dependency on the library
-	gradle  -b build2021.gradle distZip
-	gradle  -b build2021.gradle -q tasks --all
-	gradle  -b build2021.gradle cleanDistDir	//to clean the src directory
+  	gradle  -b build2022.gradle eclipse		//to set the dependency on the library
+	gradle  -b build2022.gradle distZip
+	gradle  -b build2022.gradle -q tasks --all
+	gradle  -b build2022.gradle cleanDistDir	//to clean the src directory
 ================================================================================
 */
 plugins {
@@ -110,7 +110,7 @@ eclipse {
     }	
  }
  
-mainClassName = 'it.unibo.ctxbasicrobot.MainCtxbasicrobotKt'
+mainClassName = 'it.unibo.ctxbasicrobot.MainCtxbasicrobotKt'  //Since Kotlin produces Java
 
 jar {
     println("building jar")
