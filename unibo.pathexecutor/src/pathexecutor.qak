@@ -16,11 +16,8 @@ System   pathexecutor   //-trace -msglog
 Request  dopath   : dopath( PATH, OWNER )
 Reply dopathdone  : dopathdone( ARG )
 Reply dopathfail  : dopathfail( ARG )
-Dispatch pathdone : pathdone( P )
-Dispatch pathfail : pathdone( P )
  
 Dispatch cmd       	: cmd(MOVE)     
-//Dispatch end       	: end(ARG)  
  
 Request step       : step( TIME )	
 Reply   stepdone   : stepdone(V)  
@@ -51,8 +48,7 @@ QActor pathexec context ctxPathexecutor{
 		onMsg ( dopath : dopath(P,C)){
 			[# val path = payloadArg(0); println(path) #]
 			[# pathut.setPath(path) #]
-		}
-		 
+		}		 
 		println("pathexec pathTodo = ${pathut.getPathTodo()}") 
  	}
 	Goto nextMove    
