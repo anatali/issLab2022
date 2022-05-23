@@ -1,0 +1,111 @@
+/*
+ * 
+ */
+System cleanerqak22 //-msglog 
+Dispatch cmd       : cmd(MOVE)     
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V)  
+Reply   stepfail   : stepfail(DURATION, CAUSE)
+Event alarm     : alarm(X)
+
+Context ctxbasicrobot     ip [host="127.0.0.1" port=8020]   
+Context ctxcleanerqak22  ip [host="localhost" port=8032]
+
+ExternalQActor basicrobot context ctxbasicrobot  
+
+/*  
+ * ------------------------------------------------------------------
+ *  cleanerqak22
+ * ------------------------------------------------------------------
+*/     
+QActor cleanerqak22 context ctxcleanerqak22{    
+[#
+val MaxNumStep  = 6
+var NumStep     = 0
+var GoingDown = true
+#]  
+
+	State activate initial {
+		//printCurrentMessage
+		[# NumStep     = 0;
+          GoingDown = true 
+          unibo.kotlin.planner22Util.initAI()
+        #] 
+ 	}
+	Goto coverNextColumn
+
+	State coverNextColumn{  		  
+   		//printCurrentMessage
+   		request basicrobot -m step : step(350)	
+	}
+	Transition t0  whenReply stepdone -> coverColumn
+				   whenReply stepfail -> fatal
+				   
+	State coverColumn{  		  
+   		printCurrentMessage
+   		delay 500 //give some time ...
+   		[# unibo.kotlin.planner22Util.updateMap(  "w", "" ) 
+   			unibo.kotlin.planner22Util.showMap()  			
+   		#]
+   		request basicrobot -m step : step(350)
+ 	}
+	Transition t0  whenReply stepdone -> coverColumn
+	               whenReply stepfail and [# NumStep <  MaxNumStep #] -> turn
+	               whenReply stepfail and [# NumStep == MaxNumStep #] -> lastColumn
+ 
+	State turn{  		  
+   		//printCurrentMessage
+   		println("turn while GoingDown=$GoingDown")
+   		if[# GoingDown #] { 
+   			forward basicrobot -m cmd : cmd(l)
+   			[#  unibo.kotlin.planner22Util.updateMap(  "l", "" )  #] 
+   		}
+   		else{ 
+   			forward basicrobot -m cmd : cmd(r)
+   			[#  unibo.kotlin.planner22Util.updateMap(  "r", "" )  #]
+   		}
+   		delay 300 //give time to turn
+   		request basicrobot -m step : step(350)  //step laterale
+	}	
+	Transition t0  whenReply stepdone -> doingTurn
+	               whenReply stepfail -> lastColumn
+ 
+	State doingTurn{
+    	println("doingTurn while GoingDown=$GoingDown")
+   		if[# GoingDown #] { 
+   			forward basicrobot -m cmd : cmd(l)
+			[#  unibo.kotlin.planner22Util.updateMap(  "l", "" )  #]   			
+   		}
+   		else{ 
+   			forward basicrobot -m cmd : cmd(r)
+			[#  unibo.kotlin.planner22Util.updateMap(  "r", "" )  #]   			
+   		}
+   		delay 300 //give time to turn
+   		[#  GoingDown = ! GoingDown 
+   			NumStep  = NumStep + 1   			
+   			unibo.kotlin.planner22Util.updateMap(  "w", "" )  //step laterale
+   		#]   	
+   		request basicrobot -m step : step(350)			  //step inversione
+	} 
+ 	Transition t0  whenReply stepdone -> turnDone
+ 	               whenReply stepfail -> fatal
+ 
+ 	State turnDone{
+     	[# unibo.kotlin.planner22Util.updateMap(  "w", "" )  //step inversione
+     	   unibo.kotlin.planner22Util.showMap()   		
+     	#]  		
+ 	}
+ 	Goto coverNextColumn
+ 	
+	State lastColumn{  		  
+   		printCurrentMessage
+		[#  //unibo.kotlin.planner22Util.updateMap(  "l", "" ) 
+			unibo.kotlin.planner22Util.showMap()		 
+		#]  	
+	}
+	
+	State fatal{  		  
+   		printCurrentMessage
+	}	
+}
+

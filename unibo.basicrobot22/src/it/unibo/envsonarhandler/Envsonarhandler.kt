@@ -13,8 +13,6 @@ class Envsonarhandler ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 	override fun getInitialState() : String{
 		return "s0"
 	}
-	@kotlinx.coroutines.ObsoleteCoroutinesApi
-	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State

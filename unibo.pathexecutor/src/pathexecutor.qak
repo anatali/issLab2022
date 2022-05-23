@@ -1,0 +1,136 @@
+/*
+ * pathexecutor.qak
+ * This MODEL defines the interaction and the behaviour of an ActorFsm component
+ * that has the responsibility to execute a given path and to handle alarm events.
+ * 
+ * The components uses the kotlinCode.pathexecutil that provides the following operations
+ *  - memoCurPath :
+ *  - nextMove : 
+ *  - doMove :  send a command to move the robot by using CallRestWithApacheHTTP
+ *              and send to the caller a dispatch (moveok|movefail) related to the answer
+ *  -
+ */
+System   pathexecutor   //-trace -msglog
+
+//Dispatch start    : start( ARG )
+Request  dopath   : dopath( PATH, OWNER )
+Reply dopathdone  : dopathdone( ARG )
+Reply dopathfail  : dopathfail( ARG )
+Dispatch pathdone : pathdone( P )
+Dispatch pathfail : pathdone( P )
+ 
+Dispatch cmd       	: cmd(MOVE)     
+//Dispatch end       	: end(ARG)  
+ 
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V)  
+Reply   stepfail   : stepfail(DURATION, CAUSE)
+
+Event alarm     : alarm(X) 
+ 
+
+Context ctxbasicrobot    ip [host="127.0.0.1" port=8020]   //FIRST
+Context ctxPathexecutor  ip [host="localhost" port=8062]                        
+
+ExternalQActor basicrobot context ctxbasicrobot
+
+QActor pathexec context ctxPathexecutor{
+[# var CurMoveTodo = "" #]   //Upcase, since var to be used in guards
+	State s0 initial{  	
+		//printCurrentMessage
+		[#  CurMoveTodo = "" #] 
+		println("pathexec starts (testing robot moves ...)") 
+		forward basicrobot -m cmd : cmd(a) 
+		forward basicrobot -m cmd : cmd(d) 
+	}	
+	Transition t0 whenRequest dopath -> doThePath
+	//Goto testRobotCommands
+	
+	State doThePath{
+		printCurrentMessage
+		onMsg ( dopath : dopath(P,C)){
+			[# val path = payloadArg(0); println(path) #]
+			[# pathut.setPath(path) #]
+		}
+		 
+		println("pathexec pathTodo = ${pathut.getPathTodo()}") 
+ 	}
+	Goto nextMove    
+	
+	
+	State nextMove{ 
+		[# CurMoveTodo = pathut.nextMove() #]	
+		println("pathexec curMoveTodo= $CurMoveTodo" )
+	} 
+	Goto endWorkOk if [# CurMoveTodo.length == 0 #] else doMove
+	
+	State doMove{
+		printCurrentMessage
+		//println("pathexec avoid too fast ..." )
+ 		delay 300  //avoid too fast ...
+ 	}
+	Goto doMoveW if [# CurMoveTodo == "w" #] else doMoveTurn
+	
+	State doMoveTurn{
+		forward basicrobot -m cmd : cmd($CurMoveTodo) //asynch !!!		
+	}
+	Transition t0 whenTime 300 ->  nextMove  //wait for move done ...
+	
+	State doMoveW{
+		request basicrobot -m step : step( 350 )
+	}	
+	Transition t0 whenEvent alarm  ->  handleAlarm
+				  whenReply stepdone  -> nextMove  
+	              whenReply stepfail  -> endWorkKo
+	              
+	State handleAlarm{ 
+		printCurrentMessage
+		[# var PathTodo = pathut.getPathTodo() #]
+		println("pathexec handleAlarm ... pathTodo=$PathTodo")
+	}	
+	//Goto s0              
+	              
+	State endWorkOk{
+		printCurrentMessage
+		println("PATH DONE - BYE")
+		replyTo dopath with dopathdone : dopathdone( ok )
+	}
+	Goto s0 
+
+	State endWorkKo{
+		printCurrentMessage
+		[# var PathStillTodo = pathut.getPathTodo() #]
+		println("PATH FAILURE - SORRY. PathStillTodo=$PathStillTodo")
+		replyTo dopath with dopathfail : dopathfail( $PathStillTodo )
+	}	
+	//Goto s0
+	Transition t0 whenEvent alarm  ->  handleAlarm
+
+} 
+     
+ 
+QActor pathcaller context ctxPathexecutor{
+ 	State s0 initial{  
+	}
+	Goto  doPath
+  				  
+	State doPath{
+		[# val PathTodo =  "wwlwlwwlwl"  #]
+		println("doexplore starts $PathTodo")   
+		request pathexec -m dopath : dopath( $PathTodo, pathcaller )
+	}
+	Transition t0 whenReply dopathdone -> end
+				  whenReply dopathfail -> handelPathFailure
+
+	
+     
+    State handelPathFailure{
+    	printCurrentMessage
+ 		emit alarm : alarm(obstacle) 		
+	}
+    State end{
+    	println("BYE")
+    }
+   
+}
+ 

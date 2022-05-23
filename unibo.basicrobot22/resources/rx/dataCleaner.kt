@@ -13,8 +13,8 @@ import it.unibo.kactor.IApplMessage
 class dataCleaner (name : String ) : ActorBasic( name ) {
 val LimitLow  = 2	
 val LimitHigh = 150
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
+
     override suspend fun actorBody(msg: IApplMessage) {
   		//println("$tt $name |  msg = $msg ")		
 		if( msg.msgId() != "sonarRobot" ) return //AVOID to handle other events
@@ -22,8 +22,8 @@ val LimitHigh = 150
  	}
 
  	
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
+
 	  suspend fun elabData( msg: IApplMessage ){ //OPTIMISTIC		 
  		val data  = (Term.createTerm( msg.msgContent() ) as Struct).getArg(0).toString()
   		//println("$tt $name |  data = $data ")		

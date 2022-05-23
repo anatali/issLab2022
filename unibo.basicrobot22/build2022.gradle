@@ -1,101 +1,85 @@
 /*
 ================================================================================
-build2022
+build_ctxbasicrobot.gradle
 GENERATED ONLY ONCE
-USAGE:	 
-  	gradle  -b build2022.gradle eclipse		//to set the dependency on the library
-	gradle  -b build2022.gradle distZip
-	gradle  -b build2022.gradle -q tasks --all
-	gradle  -b build2022.gradle cleanDistDir	//to clean the src directory
 ================================================================================
 */
 plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
     id 'java'
     id 'eclipse'
-    id 'application'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
+
+    // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
 }
 
 version '1.0'
-
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 repositories {
+    // Use Maven Central for resolving dependencies.
     mavenCentral()
-    jcenter()
     flatDir {   dirs '../unibolibs'	 }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-//COROUTINE
-    compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-common', version: '1.1.0'
-    compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '1.1.0'
-//ARDUINO
-    // https://mvnrepository.com/artifact/org.scream3r/jssc
-    compile group: 'org.scream3r', name: 'jssc', version: '2.8.0'
-//MQTT
-// https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
-    compile group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.1'
-//JSON
+    // Align versions of all Kotlin components
+    implementation platform('org.jetbrains.kotlin:kotlin-bom')
+
+    // Use the Kotlin JDK 8 standard library.
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:30.1.1-jre'
+
+    // Use the Kotlin test library.
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+
+    // Use the Kotlin JUnit integration.
+    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit'
+
+    /* COROUTINES ********************************************************************************************************** */
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: "$kotlinVersion", ext: 'pom'
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm
+    implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "$kotlinVersion"
+
+    /*  MQTT *************************************************************************************************************** */
+    // https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
+    implementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.5'
+
+    /* JSON **************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.json/json
-    compile group: 'org.json', name: 'json', version: '20160810'
-//COAP
-	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-core
-	compile group: 'org.eclipse.californium', name: 'californium-core', version: '2.0.0-M12'
-	// https://mvnrepository.com/artifact/org.eclipse.californium/californium-proxy
-	compile group: 'org.eclipse.californium', name: 'californium-proxy', version: '2.0.0-M12'
-//LOG4j	
-	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25' 
-//MONGO
-	// https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver
-	//compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.8.2'
+    implementation group: 'org.json', name: 'json', version: '20220320'
 
-//OkHttp library for websockets with Kotlin
-    implementation( "com.squareup.okhttp3:okhttp:4.9.0" )
-//COLORS
-	// https://mvnrepository.com/artifact/com.andreapivetta.kolor/kolor
-	implementation group: 'com.andreapivetta.kolor', name: 'kolor', version: '1.0.0'	
+    /* COAP **************************************************************************************************************** */
+    // https://mvnrepository.com/artifact/org.eclipse.californium/californium-core
+    implementation group: 'org.eclipse.californium', name: 'californium-core', version: '3.5.0'
+    // https://mvnrepository.com/artifact/org.eclipse.californium/californium-proxy2
+    implementation group: 'org.eclipse.californium', name: 'californium-proxy2', version: '3.5.0'
 
-//HTTP CLIENT
+    /* LOG4J *************************************************************************************************************** */
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j
+    implementation group: 'org.slf4j', name: 'slf4j-reload4j', version: '2.0.0-alpha7'
+
+    /* HTTP **************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
-    implementation ("org.apache.httpcomponents:httpclient:4.5")
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     // https://mvnrepository.com/artifact/commons-io/commons-io
-    implementation ("commons-io:commons-io:2.6")
+    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
-//CUSTOM 
-    compile name: 'uniboInterfaces'
-    compile name: '2p301'
-    compile name: 'it.unibo.qakactor-2.7'
-    compile name: 'unibonoawtsupports'  //required by the old infrastructure
-	//compile name: 'IssActorKotlinRobotSupport-2.0'
+    /* UNIBO *************************************************************************************************************** */
+    implementation name: 'uniboInterfaces'
+    implementation name: '2p301'
+    implementation name: 'it.unibo.qakactor-2.7'
+    implementation name: 'unibonoawtsupports'  //required by the old infrastructure
 	implementation name: 'unibo.actor22-1.1'
-	
-	//compile name: 'app-2.0'
-	//BLS
-	//compile name: 'it.unibo.bls19Local-1.0'
-	
-	//RADAR
-	//compile name: 'radarPojo'
-	//RADAR GUI
-	// https://mvnrepository.com/artifact/org.pushingpixels/trident
-	//compile group: 'org.pushingpixels', name: 'trident', version: '1.3'
-	//ROBOT nano (SAM)
-    //compile name: 'labbaseRobotSam'
-	//compile mame: 'pi4j-core' //2-12 SNAPSHOT non in gradle
- 	
- 	//PLANNER FROM IssActorKotlinRobotSupport-2.0
-    //compile name: 'it.unibo.planner20-1.0'
- 	// https://mvnrepository.com/artifact/com.googlecode.aima-java/aima-core
-	compile group: 'com.googlecode.aima-java', name: 'aima-core', version: '3.0.0'
-}
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8" //"1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8" //"1.8"  
+    /* AIMA **************************************************************************************************************** */
+    // https://mvnrepository.com/artifact/com.googlecode.aima-java/aima-core
+    implementation group: 'com.googlecode.aima-java', name: 'aima-core', version: '3.0.0'
+
 }
 
 sourceSets {
@@ -103,20 +87,24 @@ sourceSets {
     main.java.srcDirs += 'resources'
     test.java.srcDirs += 'test'		//test is specific
 }
+  
 
 eclipse {
     classpath {
         sourceSets -= [sourceSets.main, sourceSets.test]	
     }	
  }
- 
-mainClassName = 'it.unibo.ctxbasicrobot.MainCtxbasicrobotKt'  //Since Kotlin produces Java
 
-jar {
+
+application {
+    // Define the main class for the application.
+    mainClass = 'it.unibo.ctxbasicrobot.MainCtxbasicrobotKt'
+}
+
+ jar {
     println("building jar")
     from sourceSets.main.allSource
     manifest {
         attributes 'Main-Class': "$mainClassName"
     }
 }
- 

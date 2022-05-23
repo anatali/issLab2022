@@ -1,0 +1,129 @@
+/*
+ * Percorro una colonna tenendo conto del numero di stepok
+ * Al primo ostacolo mi giro e torno su di stepok passi
+ * 
+ * docker cp sceneConfig.js 87c9eb2e0989:/home/node/WEnv/WebGLScene/sceneConfig.js
+ */
+System mapqak22 //-msglog 
+Dispatch cmd       : cmd(MOVE)     
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V)  
+Reply   stepfail   : stepfail(DURATION, CAUSE)
+Event alarm        : alarm(X)
+
+Request  dopath   : dopath( PATH, OWNER )
+Reply dopathdone  : dopathdone( ARG )
+Reply dopathfail  : dopathfail( ARG )
+
+
+Context ctxbasicrobot  ip [host="127.0.0.1" port=8020]   
+Context ctxmapqak22    ip [host="localhost" port=8032]
+
+ExternalQActor basicrobot context ctxbasicrobot  
+
+/*  
+ * ------------------------------------------------------------------
+ * mapqak22
+ * ASSUNZIONE: bordo superiore libero
+ * ------------------------------------------------------------------
+*/     
+QActor mapqak22 context ctxmapqak22{    
+[#
+val MaxNumStep  = 6
+var NumStep     = 0
+var stepok      = 0
+#]  
+
+	State activate initial {
+		//printCurrentMessage
+		[# NumStep     = 0;
+           unibo.kotlin.planner22Util.initAI()
+        #] 
+ 	}
+	Goto coverNextColumn
+
+	State coverNextColumn{  		  
+   		request basicrobot -m step : step(350)	
+	}
+	Transition t0  whenReply stepdone -> coverColumn   
+				   whenReply stepfail -> backHome
+	  			   
+	State coverColumn{  		   
+   		//printCurrentMessage
+   		[# stepok = stepok + 1
+   		   unibo.kotlin.planner22Util.updateMap(  "w", "" ) 		
+   		#]
+   		println("coverColumn stepok=$stepok NumStep=$NumStep")
+     	delay 700 
+   		request basicrobot -m step : step(340)
+ 	}
+	Transition t0  whenReply stepdone -> coverColumn
+ 	               whenReply stepfail and [# NumStep <  MaxNumStep #] -> backHome
+ 
+	State backHome{  	
+		printCurrentMessage	   
+		[#  unibo.kotlin.planner22Util.updateMapObstacleOnCurrentDirection()
+ 		#]   		
+		println("backHome")
+   			forward basicrobot -m cmd : cmd(l)
+			[#  unibo.kotlin.planner22Util.updateMap(  "l", "" )  #]   			
+   			delay 700 
+   			forward basicrobot -m cmd : cmd(l)
+			[#  unibo.kotlin.planner22Util.updateMap(  "l", "" )  #]   			
+   			delay 700  
+    			
+    		[# unibo.kotlin.planner22Util.showCurrentRobotState() #]
+    		request basicrobot -m step : step(340)   
+	}	
+   	Transition t0  whenReply stepdone -> gotoHome
+// 	               whenReply stepfail -> endOfWork
+
+/*
+ * Il ritorno a home può provocare un hit su wallup
+ */ 
+ 	State gotoHome{
+ 		[# unibo.kotlin.planner22Util.updateMap(  "w", "" ) 
+ 		   stepok = stepok - 1 
+ 		#]
+ 		println("gotoHome stepok=$stepok")	
+ 		delay 700 
+ 		request basicrobot -m step : step(340)  
+ 	}
+// 	Goto gotoHome if [# stepok > 0 #] else turnAndStep  //WRONG
+  	Transition t0  whenReply stepdone and [# stepok > 0 #]  -> gotoHome
+  	               whenReply stepdone and [# stepok == 0 #] -> turnAndStep
+  				   whenReply stepfail -> turnAndStep
+
+ 	
+ 	State turnAndStep{
+   		forward basicrobot -m cmd : cmd(r)
+		[#  unibo.kotlin.planner22Util.updateMap(  "r", "" )  #]   			
+   		delay 700 			
+   		request basicrobot -m step : step(340)  //step laterale
+ 	}
+  	Transition t0  whenReply stepdone -> posForNextColumn
+  				   whenReply stepfail -> endOfWork
+ 	
+ 	State posForNextColumn{
+ 		[# unibo.kotlin.planner22Util.updateMap(  "w", "" ) #]
+   		forward basicrobot -m cmd : cmd(r)
+		[#  unibo.kotlin.planner22Util.updateMap(  "r", "" )  #]   	
+		println("posForNextColumn stepok=$stepok")		
+   		[# unibo.kotlin.planner22Util.showCurrentRobotState() #]		
+ 		//[# unibo.actor22comm.utils.CommUtils.waitTheUser("posForNextColumn")	 #]
+   		delay 1700 		 
+	}
+ 	Goto coverNextColumn
+ 	
+ 	
+	State endOfWork{  		  
+   		printCurrentMessage
+   		[#  //unibo.kotlin.planner22Util.updateMapObstacleOnCurrentDirection() 
+   			unibo.kotlin.planner22Util.showMap()
+   			unibo.kotlin.planner22Util.saveRoomMap("map2019")
+   		#]
+	}	
+}
+
+
+ 

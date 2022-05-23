@@ -21,8 +21,8 @@ import it.unibo.kactor.QakContext
 import kotlinx.coroutines.runBlocking
 //import robotMbot.robotDataSourceArduino
  
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
+
 object robotSupport{
 	lateinit var robotKind  :  String
 	var endPipehandler      :  ActorBasic? = null 
@@ -57,8 +57,8 @@ object robotSupport{
 		return obj
 	}
 	 
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
+
 	fun move( cmd : String ){ //cmd = w | a | s | d | h
  		//println("robotSupport move cmd=$cmd robotKind=$robotKind" ) 
 		when( robotKind ){
