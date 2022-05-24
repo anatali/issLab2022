@@ -1,7 +1,7 @@
 package rx
 
  
-import it.unibo.kactor.ApplMessage
+import it.unibo.kactor.*
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import java.io.PrintWriter
@@ -18,14 +18,13 @@ class dataLogger(name : String) : ActorBasic(name){
 		pw = PrintWriter( FileWriter(name+".txt") )
  	}
     
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
-	override suspend fun actorBody(msg: ApplMessage) {
+ 
+	override suspend fun actorBody(msg: IApplMessage) {
   		elabData( msg )
 		emitLocalStreamEvent(msg)	//propagate ... 
 	}
  
- 	protected suspend fun elabData( msg: ApplMessage ){
+ 	protected suspend fun elabData( msg: IApplMessage ){
  		val data  = (Term.createTerm( msg.msgContent() ) as Struct).getArg(0).toString()
 		println("	-------------------------------------------- $name data=$data")
    		pw.append( "$data\n " )

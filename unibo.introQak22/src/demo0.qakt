@@ -1,0 +1,82 @@
+//https://dl.bintray.com/jetbrains/kotlin/eclipse-plugin/0.8.19/
+
+System demo0    
+//mqttBroker "localhost" : 1883 eventTopic "demo0/events"
+//mqttBroker "broker.hivemq.com" : 1883 eventTopic "demo0/events"
+ 
+Dispatch msg1 : msg1(ARG)
+Dispatch msg2 : msg2(ARG) 
+  
+Event alarm   : alarm( KIND )    
+ 
+Context ctxdemo0 ip [host="localhost" port=8095]
+
+  
+QActor demo context ctxdemo0{
+	State s0 initial { 	    
+		discardMsg Off
+		//[# sysUtil.logMsgs=true #]
+ 	}     
+ 	Goto s1  
+ 	
+ 	State s1{
+  		println("demo in s1") 
+ 		//printCurrentMessage 
+ 	}
+ 	Transition t0 whenMsg msg1 -> s2
+ 				  whenMsg msg2 -> s3 
+
+ 	State s2{ 
+ 		printCurrentMessage
+ 		onMsg( msg1:msg1(ARG) ){
+ 			println("demo in s2 since msg1:msg1(${payloadArg(0)})")
+ 			delay 1000  
+ 		}
+   	} 
+ 	Transition t0 whenMsg msg2 -> s3
+
+ 	State s3{ 
+ 		printCurrentMessage 	//msg is received but not elaborated
+ 		onMsg( msg2:msg2(1) ){ 
+ 			println("demo in s3 since msg2:msg2(${payloadArg(0)})")
+ 		} 
+   	}
+    Goto s1      
+ 
+}    
+   
+QActor perceiver context ctxdemo0{
+	State s0 initial { 	
+		println("perceiver waits ..")
+	}
+	Transition t0 whenEvent alarm -> handleAlarm
+	
+	State  handleAlarm{
+		printCurrentMessage
+	}
+	Goto s0
+	
+} 
+
+/*  
+QActor sender context ctxdemo0{
+	State s0 initial { 	
+ 		 forward demo -m msg1 : msg1(1)
+		 delay 300
+		 forward demo -m msg1 : msg1(2)
+//		 delay 300
+//		 forward demo -m msg1 : msg1(3)
+		 delay 300
+		 forward demo -m msg2 : msg2(1)		  
+//		 delay 300
+//		 forward demo -m msg2 : msg2(2)		  
+	 
+//		 emit alarm : alarm( fire )  
+//		 delay 1200 
+//		 emit alarm : alarm( tsunami )
+//		 delay 1000
+//		 terminate 0 
+	} 
+	 
+}
+  */ 

@@ -2,15 +2,15 @@ System -msglog streamsdemo
 
 Dispatch start       : start(V)
 Event    sonarRobot  : sonar(V)
-Event    obstacle    : obstacle(V)
-
+Event    obstacle    : obstacle(V) 
+  
 Context ctxstreamsdemo ip [host="localhost" port=8045]
-
+ 
 CodedQActor sonarsimulator context ctxstreamsdemo className "rx.sonarSimulator"
 CodedQActor datalogger     context ctxstreamsdemo className "rx.dataLogger"
 CodedQActor datacleaner    context ctxstreamsdemo className "rx.dataCleaner"
 CodedQActor distancefilter context ctxstreamsdemo className "rx.distanceFilter"
- 
+  
 QActor qasink context ctxstreamsdemo{ 
 [#     
    lateinit var firstActorInPipe : ActorBasic 

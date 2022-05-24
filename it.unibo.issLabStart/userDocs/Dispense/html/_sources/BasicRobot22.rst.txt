@@ -248,7 +248,16 @@ potrebbe interagire con il robot con uno dei seguenti protocolli:
 Osserviamo che la :ref:`Qak infrastructure<The QActor software factory>` supporta già interazioni 
 via TCP, CoAP, MQTT. 
 
-  
+++++++++++++++++++++++++++++++++++++++++
+Modello dell'analisi
+++++++++++++++++++++++++++++++++++++++++
+
+:worktodo:`WORKTODO: costruire un modello eseguibile del sistema`
+
+- Per meglio interagire con il committente è opportuno definire un modello eseguibile del sistema
+  che imposti le interazioni-base tra console e ``BasicRobot22`` senza introdurre alcun robot virtuale o reale.
+
+
 -------------------------------------
 BasicRobot22: Progetto  
 -------------------------------------  
@@ -423,12 +432,84 @@ Per provocare interazioni usando MQTT, occorre
   
 .. 2022: il progetto it.unibo.qak21.robots è stato incluso in it.unibo.qak21.basicrobot
 
+
 ----------------------------
-Sviluppi futuri
+Distribuzione
 ----------------------------
 
- :worktodo:`WORKTODO: usiamo Qak`
++++++++++++++++++++++++++++++++++
+BasicRobot22: Dockerfile
++++++++++++++++++++++++++++++++++
 
-- impostare il modello QAk di un sistema che opera come il :ref:`RobotMapperBoundary`
-- impostare il modello QAk di un sistema che comanda ``BasicRobot22`` realizzando la sequenza di mosse 
-  proposta da un :ref:`pianificatore<Uso di un pianificatore>`
+.. code::
+
+  FROM openjdk:12.0.2
+  EXPOSE 8020
+  ## ADD extracts the tar
+  ADD ./build/distributions/it.unibo.basicrobot-1.0.tar /
+  WORKDIR /it.unibo.basicrobot-1.0/bin
+  COPY ./*.pl ./
+  COPY ./*.json ./
+
+  ##  docker build -t basicrobot22:1.0 . 
+  ##  docker run -it --rm --name basicrobot22 -p8020:8020/tcp --privileged basicrobot22  /bin/bash
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Tagging and register on Dockerhub
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.. code::
+
+  docker tag basicrobot22:1.0 natbodocker/basicrobot22:1.0
+  //Logging on Dockerhub
+  type docker_password.txt | docker login --username natbodocker --password-stdin
+  //Register
+  docker push natbodocker/basicrobot22:1.0
+   
++++++++++++++++++++++++++++++++++
+basicrobot22.yaml
++++++++++++++++++++++++++++++++++
+
+.. code::
+
+  version: '3'
+  services:
+    wenv:
+      #image: docker.io/natbodocker/virtualrobotdisi:4.0
+      image: virtualrobotdisi:4.0
+      ports:
+        - 8090:8090
+        - 8091:8091
+    robot:
+      ##image: docker.io/natbodocker/basicrobot21:1.0
+      image: basicrobot22
+      ports:
+        - 8020:8020/tcp
+        - 8020:8020/udp
+      depends_on:
+        - wenv
+
+  ## -------------------------------------------------------------
+  ## TODO See https://docs.docker.com/compose/startup-order/
+  ## -------------------------------------------------------------
+  ## docker-compose -f basicrobot22.yaml  up
+  ## docker-compose -f basicrobot22.yaml run --service-ports wenv
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Revisione del file di configurazione
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+La costruzione all'interno della macchina virtuale di un :ref:`VirtualRobot` come servizio 
+da cui dipende ``BasicRobot22`` richiede una 
+
+:remark:`Modifica alla specifiche di configurazione`
+
+- L'indirizzo ip deve assumere ora il nome del servizio (**wenv**):
+
+.. code::
+
+  {"type":"virtual", "port":"8090", "ipvirtualrobot":"wenv"}
+
+
+.. docker inspect -f \'{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \

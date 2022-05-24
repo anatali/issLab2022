@@ -21,8 +21,8 @@ object actorQakCoapObserver {
  	private val destactor   = "actorcoap"
 //	private val msgId       = "cmd"
 
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+ 
+
 	 fun activate( owner: ActorBasic? = null){ 
        val uriStr = "coap://$ipaddr/$context/$destactor"
 	   println("actortQakCoapObserver | START uriStr: $uriStr")
@@ -45,8 +45,8 @@ object actorQakCoapObserver {
  }
 
  
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+ 
+
 fun main( ) {
 		actorQakCoapObserver.activate()
 		System.`in`.read()   //to avoid exit

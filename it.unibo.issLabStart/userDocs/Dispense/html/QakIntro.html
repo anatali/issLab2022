@@ -244,40 +244,62 @@ together with the related guard (if any) is true.</p></li>
 </ul>
 </section>
 </section>
-<section id="startup">
-<h2>StartUp<a class="headerlink" href="#startup" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li><p>Scarica <a class="reference external" href="https://www.eclipse.org/Xtext/download.html">Eclipse Xtext</a>   e installa il <strong>plug-in Eclipse per Kotlin</strong>.</p></li>
-<li><dl class="simple">
-<dt>Imposta (tramite <strong>Windows-&gt;Preferences</strong> )</dt><dd><p>il <em>compilatore Java</em> alla <code class="docutils literal notranslate"><span class="pre">versione</span> <span class="pre">1.8</span></code> e il jre a <code class="docutils literal notranslate"><span class="pre">jre1.8.0_</span> <span class="pre">...</span></code></p>
-</dd>
-</dl>
+<section id="startup-versione-valastro-marchegiani">
+<h2>StartUp (versione Valastro-Marchegiani)<a class="headerlink" href="#startup-versione-valastro-marchegiani" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Scarica gradle (versione usata qui: <span class="blue">Gradle 7.4.2</span>)</p></li>
+<li><p>Scarica <a class="reference external" href="https://www.eclipse.org/Xtext/download.html">Eclipse Xtext</a>   (versione usata qui: <span class="blue">Eclipse  2022-03 (4.23.0)</span>)</p>
+<ul class="simple">
+<li><p>Java compiler compliance level:  <span class="blue">11</span></p></li>
+<li><p>Installed JRE: <span class="blue">jdk 11.08 (default)</span></p></li>
+</ul>
 </li>
-<li><dl class="simple">
-<dt>Copia nella directory <strong>dropins</strong> di Eclipse i file che costituiscono il supporto al metamodello-qak:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">it.unibo.Qactork_1.2.4.jar</span></code>, <code class="docutils literal notranslate"><span class="pre">it.unibo.Qactork.ui_1.2.4.jar</span></code>, <code class="docutils literal notranslate"><span class="pre">it.unibo.Qactork.ide_1.2.4.jar</span></code>.</p>
-</dd>
-</dl>
+<li><p>Copia nella directory <strong>dropins</strong> di Eclipse i file che costituiscono il supporto al metamodello-qak:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="blue">it.unibo.Qactork_1.2.5.jar</span></p></li>
+<li><p><span class="blue">it.unibo.Qactork.ui_1.2.5.jar</span></p></li>
+<li><p><span class="blue">it.unibo.Qactork.ide_1.2.5.jar</span></p></li>
+</ul>
+</div></blockquote>
 </li>
 </ol>
 <section id="creazione-di-un-nuovo-progetto">
 <h3>Creazione di un nuovo progetto<a class="headerlink" href="#creazione-di-un-nuovo-progetto" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p>In <strong>un’area di lavoro vuota</strong>, crea un nuovo progetto Java</p></li>
-<li><p>Copiare il gradle build file <a class="reference external" href="./_static/build2022.gradle">build2022.gradle</a></p></li>
-<li><p>Eseguire</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span>  <span class="o">-</span><span class="n">b</span> <span class="n">build2022</span><span class="o">.</span><span class="n">gradle</span> <span class="n">eclipse</span>
+<li><p>In <strong>un’area di lavoro vuota</strong>, crea un nuovo progetto Java  utilizzando</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">init</span>
+   <span class="n">selezionare</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">default</span>
 </pre></div>
 </div>
 </li>
-<li><p>In <code class="docutils literal notranslate"><span class="pre">src</span></code> , crea un file con estensione <code class="docutils literal notranslate"><span class="pre">qak</span></code>
-A questo punto Eclipse dovrebbe presentare una finestra come la seguente:</p>
+<li><p>Copiare nell’area di lavoro la directory <span class="blue">unibolibs</span> con le librerie</p></li>
+<li><p>Importare il progetto in Eclipse come <strong>Existing Gradle project</strong></p></li>
+<li><p>Aggiungere la <strong>natura Java</strong> al progetto</p></li>
+<li><p>Aggiungere due <strong>source folder</strong>: di nome <span class="blue">src</span> e di nome  <span class="blue">resources</span></p></li>
+<li><p>Creare in <strong>src</strong> un file <span class="blue">qak</span> e aggiungere la <strong>natura Xtext</strong></p>
+<p>A questo punto Eclipse dovrebbe presentare una finestra come la seguente:</p>
 <a class="reference internal image-reference" href="_images/qakStarting.png"><img alt="_images/qakStarting.png" class="align-center" src="_images/qakStarting.png" style="width: 50%;" /></a>
 </li>
-<li><p>Aggiungere la <strong>natura Kotlin</strong> al progetto</p></li>
+<li><p>Scrivere il contenuto del file <strong>qak</strong> e salvare. I plugin <em>Qactork</em>:</p>
+<ul class="simple">
+<li><p>creano il file  <a class="reference external" href="./_static/build2022.gradle">build2022.gradle</a></p></li>
+<li><p>creano i files <code class="docutils literal notranslate"><span class="pre">sysRules.pl</span></code> e <code class="docutils literal notranslate"><span class="pre">sysXXX.pl</span></code> essendo <code class="docutils literal notranslate"><span class="pre">sysXXX</span></code> il nome del <strong>System</strong> nel modello</p></li>
+</ul>
+</li>
+<li><p>Copiare il contenuto del  file <a class="reference external" href="./_static/build2022.gradle">build2022.gradle</a> nel file <span class="blue">build.gradle</span>
+( o eliminare questo e ridenomicare il precedente. Il file <a class="reference external" href="./_static/build2022.gradle">build2022.gradle</a> verrà rigenerato al prossimo
+salvataggio del modello)</p></li>
+<li><p>Inserire codice Kotlin di utilità usato nel modello entro la directory <span class="blue">resources</span></p></li>
+<li><p>Eseguire:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradlew</span> <span class="n">run</span>
+</pre></div>
+</div>
+</li>
 </ol>
+<p>Ricordamo che:</p>
 <blockquote>
-<div><p>Ricordamo che:</p>
-<p><span class="remark">Un file qak include la definizione (testuale) di un modello</span></p>
+<div><p><span class="remark">Un file qak include la definizione (testuale) di un modello</span></p>
 <ul class="simple">
 <li><p>che definisce <span class="blue">struttura, interazione e comportamento</span> di un sistema distribuito.</p></li>
 </ul>
@@ -475,15 +497,11 @@ emessa come evento.</p>
     <span class="p">}</span>
   <span class="p">}</span>
 
-  <span class="nd">@kotlinx</span><span class="o">.</span><span class="n">coroutines</span><span class="o">.</span><span class="n">ObsoleteCoroutinesApi</span>
-  <span class="nd">@kotlinx</span><span class="o">.</span><span class="n">coroutines</span><span class="o">.</span><span class="n">ExperimentalCoroutinesApi</span>
-    <span class="n">override</span> <span class="n">suspend</span> <span class="n">fun</span> <span class="n">actorBody</span><span class="p">(</span><span class="n">msg</span> <span class="p">:</span> <span class="n">IApplMessage</span><span class="p">){</span>
+  <span class="n">override</span> <span class="n">suspend</span> <span class="n">fun</span> <span class="n">actorBody</span><span class="p">(</span><span class="n">msg</span> <span class="p">:</span> <span class="n">IApplMessage</span><span class="p">){</span>
     <span class="n">println</span><span class="p">(</span><span class="s2">&quot;$tt $name | received  $msg &quot;</span>  <span class="p">)</span>
     <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="o">.</span><span class="n">msgId</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;start&quot;</span><span class="p">)</span> <span class="n">startDataReadSimulation</span><span class="p">(</span>   <span class="p">)</span>
-    <span class="p">}</span>
+  <span class="p">}</span>
 
-<span class="nd">@kotlinx</span><span class="o">.</span><span class="n">coroutines</span><span class="o">.</span><span class="n">ObsoleteCoroutinesApi</span>
-<span class="nd">@kotlinx</span><span class="o">.</span><span class="n">coroutines</span><span class="o">.</span><span class="n">ExperimentalCoroutinesApi</span>
   <span class="n">suspend</span> <span class="n">fun</span> <span class="n">startDataReadSimulation</span><span class="p">(</span>    <span class="p">){</span>
         <span class="n">var</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
       <span class="k">while</span><span class="p">(</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="p">){</span>
@@ -886,8 +904,10 @@ computazionali diversi. Ad esempio, per la configurazione di figura:</p>
 </div>
 <p>Per eseguire il sistema è ora necessario invocare due diversi Main:</p>
 <ul class="simple">
-<li><p>MainCtxcalled.kt che attiva gli attori allocati sul contesto ctxcalled di host=127.0.0.1 (l’attore qacalled)</p></li>
-<li><p>MainCtxcallers.kt che attiva gli attori allocati sul contesto ctxcalled di host=localhost (callerqa1 e callerqa2)</p></li>
+<li><p><strong>it.unibo.ctxcalled.MainCtxcalledKt</strong> che attiva gli attori allocati sul contesto ctxcalled di <code class="docutils literal notranslate"><span class="pre">host=127.0.0.1</span></code>
+(l’attore <em>qacalled</em>)</p></li>
+<li><p><strong>it.unibo.ctxcallers.MainCtxcallersKt</strong> che attiva gli attori allocati sul contesto ctxcalled di
+<code class="docutils literal notranslate"><span class="pre">host=localhost</span></code> (<em>callerqa1</em> e <em>callerqa2</em>)</p></li>
 </ul>
 <p>Si deve ovviamente verificare che le risposte del sistema <strong>non devono cambiare dal punto di vista logico</strong>.</p>
 <p><span class="remark">Start-up di un sistema distribuito</span></p>
@@ -919,8 +939,9 @@ computazionali diversi</p></li>
 <h2>ExternalQActor<a class="headerlink" href="#externalqactor" title="Permalink to this headline">¶</a></h2>
 <p>Nell’esempio <a class="reference internal" href="#demorequest-a-distribuito"><span class="std std-ref">demorequest_a distribuito</span></a> abbiamo concepito un sistema software come un organismo che comincia ad
 operare solo quando tutte le sue parti sono state costruite ed attivate.</p>
-<p>Vi sono però situazioni in cui un sistema si configura e si costruisce ‘icrementalmente’, partendo da un nucleo iniziale
+<p>Vi sono però situazioni in cui un sistema si configura e si costruisce ‘incrementalmente’, partendo da un nucleo iniziale
 e poi aggiungendo parti (che interagiscono con il nucleo e tra loro sempre mediante scambio di messaggi).</p>
+<p><strong>Progetto</strong>: <em>it.unibo.resourcecore</em></p>
 <section id="resourcecore">
 <h3>resourcecore<a class="headerlink" href="#resourcecore" title="Permalink to this headline">¶</a></h3>
 <p>Supponiamo ad esempio di introdurre come ‘nucleo di base’ una risorsa modellata come segue.</p>
@@ -968,6 +989,7 @@ QActor resourcecore context ctxresourcecore{
 </section>
 <section id="external-caller1">
 <h3>External caller1<a class="headerlink" href="#external-caller1" title="Permalink to this headline">¶</a></h3>
+<p><strong>Progetto</strong>: <em>it.unibo.corecallers</em></p>
 <p>Supponiamo ora che un ulteriore componente QakActor software voglia ‘fare sistema’ con <a class="reference internal" href="#resourcecore"><span class="std std-ref">resourcecore</span></a>, inviando una richiesta
 alla risorsa.</p>
 <a class="reference internal image-reference" href="_images/corecaller.png"><img alt="_images/corecaller.png" class="align-center" src="_images/corecaller.png" style="width: 60%;" /></a>
@@ -1164,7 +1186,7 @@ emette l’evento</p>
 <li class="toctree-l3"><a class="reference internal" href="#transitions-and-guards-in-qak">Transitions and guards in Qak</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#startup">StartUp</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#startup-versione-valastro-marchegiani">StartUp (versione Valastro-Marchegiani)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#creazione-di-un-nuovo-progetto">Creazione di un nuovo progetto</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#qak-specification-template">Qak specification template</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-qak-syntax">The Qak syntax</a><ul>
@@ -1219,6 +1241,7 @@ emette l’evento</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
 </ul>
 
 <div class="relations">

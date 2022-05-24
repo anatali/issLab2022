@@ -1,0 +1,26 @@
+System /*-trace*/ democodedqactor 
+Dispatch start   : start( ARG )
+Event sonarrobot : sonar( DATA )   
+ 
+Context ctxdemocodedqactor ip [host="localhost" port=8065]
+
+  CodedQActor sonargen  context ctxdemocodedqactor className "codedActor.sonarDataGen"
+  
+  QActor datahandler context ctxdemocodedqactor{
+     State s0 initial { 	  
+ 		printCurrentMessage
+ 		forward sonargen -m start : start(do)
+    }   
+    Transition t0 whenEvent sonarrobot -> handleSonarevent
+    
+    
+    State handleSonarevent { 
+    	printCurrentMessage
+    }
+    Transition t0 whenTime 1000 -> end 
+    			 whenEvent sonarrobot -> handleSonarevent
+    			 
+    State end{
+    	println("BYE")
+    }
+  }  

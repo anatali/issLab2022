@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Applicazioni 2022 &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="BasicRobot22" href="BasicRobot22.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="applicazioni-2022">
+<h1>Applicazioni 2022<a class="headerlink" href="#applicazioni-2022" title="Permalink to this headline">¶</a></h1>
+<p>Il <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">QActor (meta)model</span></a> è stato introdotto come supporto a <em>metodi agili di sviluppo</em> (<a class="reference external" href="https://en.wikipedia.org/wiki/Agile_software_development">Agile software development</a>)
+di <em>sistemi software distribuiti ed eterogenei</em>.</p>
+<p>In particolare, la possibilità di eseguire un <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">modello QAk</span></a> di un sistema
+già al terminae della fase di analisi del problema può essere molto utile per:</p>
+<ul>
+<li><p>un’interazione più produttiva con il cliente al fine di comprendere meglio i requisiti</p></li>
+<li><p>definire una <a class="reference internal" href="CostruireSoftware.html#l-architettura-logica"><span class="std std-ref">archittetura logica</span></a> di riferimento per il sistema da produrre
+e per la definizione del Product Goal</p></li>
+<li><p>definire un piano di lavoro e impostare il primo  <a class="reference external" href="https://www.scrum.org/resources/what-is-a-sprint-in-scrum">SPRINT</a> definendone:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>il  <a class="reference external" href="https://www.scrum.org/resources/what-is-a-product-backlog">Product Backlog</a></p></li>
+<li><p>un insieme significativo di test funzionali (piani di testing) già espressi in modo formale come programmi.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Per dare esempi di questo modo di procedere,  svilupperemo i segeunti progetti applicativi di ‘ispirazione <a class="reference external" href="https://en.wikipedia.org/wiki/Internet_of_things">IOT</a>’  :</p>
+<ul>
+<li><dl class="simple">
+<dt>Premessa operativa:</dt><dd><ul class="simple">
+<li><p>si veda <a class="reference internal" href="QakIntro.html#startup-versione-valastro-marchegiani"><span class="std std-ref">StartUp (versione Valastro-Marchegiani)</span></a></p></li>
+<li><p>si esperimenti il sistema distribuito <a class="reference internal" href="QakIntro.html#resourcecore"><span class="std std-ref">resourcecore</span></a> e <a class="reference internal" href="QakIntro.html#external-caller1"><span class="std std-ref">External caller1</span></a>
+(tratto da <a class="reference internal" href="QakIntro.html#demorequest-qak"><span class="std std-ref">demorequest.qak</span></a>)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><a class="reference external" href="../../../../../unibo.basicrobot22">unibo.basicRobot22</a>: il progetto è descritto in <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e realizza la risorsa di base per le
+applicazioni che seguono. Il sistema deployed su DockerHub comprende anche un DDR robot virtuale e mostra anche
+l’uso di</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="QakIntro.html#codedqactors"><span class="std std-ref">CodedQActors</span></a></p></li>
+<li><p><a class="reference internal" href="QakIntro.html#externalqactor"><span class="std std-ref">ExternalQActor</span></a></p></li>
+<li><p><a class="reference internal" href="QakIntro.html#actors-as-streams"><span class="std std-ref">Actors as streams</span></a></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><a class="reference external" href="../../../../../unibo.mapperQak22">unibo.mapperQak22</a>: utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un-planner"><span class="std std-ref">UniboPlanner</span></a> per creare
+(e salvare) la mappa di una stanza rettangolare secondo la politica <em>BoundaryWalker</em>.
+E’ utile confrontare il modello con:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="Actors22.html#actorwithobserverusingwenv"><span class="std std-ref">ActorWithObserverUsingWEnv</span></a></p></li>
+<li><p><a class="reference internal" href="Actors22.html#un-primo-automa-a-stati-finiti"><span class="std std-ref">Un primo automa a stati finiti</span></a></p></li>
+<li><p><a class="reference internal" href="Actors22.html#boundarywalkerannot"><span class="std std-ref">BoundaryWalkerAnnot</span></a></p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><a class="reference external" href="../../../../../unibo.cleanerQak22">unibo.cleanerQak22</a>: utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un-planner"><span class="std std-ref">UniboPlanner</span></a> per creare
+(e salvare) la mappa di una stanza rettangolare che contiene <strong>ostacoli fissi</strong></p></li>
+<li><p><a class="reference external" href="../../../../../unibo.pathexecutor">unibo.pathexecutor</a>: utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> per eseguire la richiesta di esecuzione di un path dato
+con possibile successo o fallimento. Nel caso di fallimento fornisce il path ancora da compiere</p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Applicazioni 2022</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="BasicRobot22.html" title="previous chapter">BasicRobot22</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Applicazioni22.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

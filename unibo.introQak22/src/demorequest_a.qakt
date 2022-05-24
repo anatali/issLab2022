@@ -1,0 +1,77 @@
+System  /* -trace */ -msglog demorequest_a
+ 	//"tcp://mqtt.eclipse.org:1883"
+	//mqtt.eclipse.org
+	//tcp://test.mosquitto.org
+	//mqtt.fluux.io
+	//"tcp://broker.hivemq.com" 
+ 
+//mqttBroker "broker.hivemq.com" : 1883
+
+Request r1 : r1(X)  
+Reply   a1 : a1(X)    //answer 
+
+//Context ctxddemorequest_a ip [host="localhost" port=8010]   //for first run (debug)
+Context ctxcallers ip [host="localhost" port=8072]  
+Context ctxcalled  ip [host="127.0.0.1" port=8074]  
+
+QActor callerqa1 context ctxcallers { //ctxddemorequest_a
+	State init initial {
+		println("	callera1 starts")
+		request qacalled -m r1 : r1(data(10))
+ 		delay 500 
+		request qacalled -m r1 : r1(data(20))
+	} 
+	Goto work 
+	
+	State work{
+       //printCurrentMessage
+	}
+	Transition t0 whenReply   a1 -> handleReply
+	
+	State handleReply{
+		printCurrentMessage
+ 	}
+	Goto work	
+} 
+ 
+
+QActor callerqa2 context ctxcallers { //ctxddemorequest_a
+	State init initial {
+		println("	callera2 starts")
+		request qacalled -m r1 : r1(val(100))
+ 		delay 500
+		request qacalled -m r1 : r1(val(200))
+	}
+	Goto work 
+	
+	State work{
+		//printCurrentMessage
+	}
+	Transition t0 
+		whenReply   a1 -> handleReply
+	
+	State handleReply{
+		printCurrentMessage
+ 	}
+	Goto work	
+}  
+
+QActor qacalled context ctxcalled {
+ 
+	State init initial {
+ 		//println("qacalled waits ...") 
+	}
+	Transition t0  
+		whenRequest r1 -> handleRequest
+ 
+	State handleRequest{  
+		printCurrentMessage		 
+ 		onMsg( r1 : r1(X) ){  
+ 			[# val Answer = "${currentMsg.msgSender()}_${payloadArg(0)}" 
+ 			   ut.outMsg( "${getName()} | answer=$Answer" )
+ 			#]
+ 			replyTo r1 with a1 : a1( $Answer )  
+ 		} 
+	} 
+	Goto init   
+}   

@@ -13,8 +13,6 @@ class Qasink ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, sco
 	override fun getInitialState() : String{
 		return "s0"
 	}
-	@kotlinx.coroutines.ObsoleteCoroutinesApi
-	@kotlinx.coroutines.ExperimentalCoroutinesApi			
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		     
 		   lateinit var firstActorInPipe : ActorBasic 

@@ -15,6 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Applicazioni 2022" href="Applicazioni22.html" />
     <link rel="prev" title="QActor (meta)model" href="QakIntro.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -347,16 +348,72 @@ in <code class="docutils literal notranslate"><span class="pre">it.unibo.issLabS
 </ul>
 </section>
 </section>
-<section id="sviluppi-futuri">
-<h2>Sviluppi futuri<a class="headerlink" href="#sviluppi-futuri" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p><span class="worktodo">WORKTODO: usiamo Qak</span></p>
-</div></blockquote>
+<section id="distribuzione">
+<h2>Distribuzione<a class="headerlink" href="#distribuzione" title="Permalink to this headline">¶</a></h2>
+<section id="basicrobot22-dockerfile">
+<h3>BasicRobot22: Dockerfile<a class="headerlink" href="#basicrobot22-dockerfile" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">openjdk</span><span class="p">:</span><span class="mf">12.0</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">EXPOSE</span> <span class="mi">8020</span>
+<span class="c1">## ADD extracts the tar</span>
+<span class="n">ADD</span> <span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">distributions</span><span class="o">/</span><span class="n">it</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">basicrobot</span><span class="o">-</span><span class="mf">1.0</span><span class="o">.</span><span class="n">tar</span> <span class="o">/</span>
+<span class="n">WORKDIR</span> <span class="o">/</span><span class="n">it</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">basicrobot</span><span class="o">-</span><span class="mf">1.0</span><span class="o">/</span><span class="nb">bin</span>
+<span class="n">COPY</span> <span class="o">./*.</span><span class="n">pl</span> <span class="o">./</span>
+<span class="n">COPY</span> <span class="o">./*.</span><span class="n">json</span> <span class="o">./</span>
+
+<span class="c1">##  docker build -t basicrobot22:1.0 .</span>
+<span class="c1">##  docker run -it --rm --name basicrobot22 -p8020:8020/tcp --privileged basicrobot22  /bin/bash</span>
+</pre></div>
+</div>
+<section id="tagging-and-register-on-dockerhub">
+<h4>Tagging and register on Dockerhub<a class="headerlink" href="#tagging-and-register-on-dockerhub" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">tag</span> <span class="n">basicrobot22</span><span class="p">:</span><span class="mf">1.0</span> <span class="n">natbodocker</span><span class="o">/</span><span class="n">basicrobot22</span><span class="p">:</span><span class="mf">1.0</span>
+<span class="o">//</span><span class="n">Logging</span> <span class="n">on</span> <span class="n">Dockerhub</span>
+<span class="nb">type</span> <span class="n">docker_password</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span> <span class="n">docker</span> <span class="n">login</span> <span class="o">--</span><span class="n">username</span> <span class="n">natbodocker</span> <span class="o">--</span><span class="n">password</span><span class="o">-</span><span class="n">stdin</span>
+<span class="o">//</span><span class="n">Register</span>
+<span class="n">docker</span> <span class="n">push</span> <span class="n">natbodocker</span><span class="o">/</span><span class="n">basicrobot22</span><span class="p">:</span><span class="mf">1.0</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="basicrobot22-yaml">
+<h3>basicrobot22.yaml<a class="headerlink" href="#basicrobot22-yaml" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span>
+<span class="n">services</span><span class="p">:</span>
+  <span class="n">wenv</span><span class="p">:</span>
+    <span class="c1">#image: docker.io/natbodocker/virtualrobotdisi:4.0</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">virtualrobotdisi</span><span class="p">:</span><span class="mf">4.0</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8090</span><span class="p">:</span><span class="mi">8090</span>
+      <span class="o">-</span> <span class="mi">8091</span><span class="p">:</span><span class="mi">8091</span>
+  <span class="n">robot</span><span class="p">:</span>
+    <span class="c1">##image: docker.io/natbodocker/basicrobot21:1.0</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">basicrobot22</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="mi">8020</span><span class="p">:</span><span class="mi">8020</span><span class="o">/</span><span class="n">tcp</span>
+      <span class="o">-</span> <span class="mi">8020</span><span class="p">:</span><span class="mi">8020</span><span class="o">/</span><span class="n">udp</span>
+    <span class="n">depends_on</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">wenv</span>
+
+<span class="c1">## -------------------------------------------------------------</span>
+<span class="c1">## TODO See https://docs.docker.com/compose/startup-order/</span>
+<span class="c1">## -------------------------------------------------------------</span>
+<span class="c1">## docker-compose -f basicrobot22.yaml  up</span>
+<span class="c1">## docker-compose -f basicrobot22.yaml run --service-ports wenv</span>
+</pre></div>
+</div>
+<section id="revisione-del-file-di-configurazione">
+<h4>Revisione del file di configurazione<a class="headerlink" href="#revisione-del-file-di-configurazione" title="Permalink to this headline">¶</a></h4>
+<p>La costruzione all’interno della macchina virtuale di un <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a> come servizio
+da cui dipende <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> richiede una</p>
+<p><span class="remark">Modifica alla specifiche di configurazione</span></p>
 <ul class="simple">
-<li><p>impostare il modello QAk di un sistema che opera come il <a class="reference internal" href="UsoDiunPlanner.html#robotmapperboundary"><span class="std std-ref">RobotMapperBoundary</span></a></p></li>
-<li><p>impostare il modello QAk di un sistema che comanda <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> realizzando la sequenza di mosse
-proposta da un <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un-pianificatore"><span class="std std-ref">pianificatore</span></a></p></li>
+<li><p>L’indirizzo ip deve assumere ora il nome del servizio (<strong>wenv</strong>):</p></li>
 </ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;virtual&quot;</span><span class="p">,</span> <span class="s2">&quot;port&quot;</span><span class="p">:</span><span class="s2">&quot;8090&quot;</span><span class="p">,</span> <span class="s2">&quot;ipvirtualrobot&quot;</span><span class="p">:</span><span class="s2">&quot;wenv&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 </section>
 
@@ -452,9 +509,20 @@ proposta da un <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un
 <li class="toctree-l3"><a class="reference internal" href="#esperimenti-di-uso">Esperimenti di uso</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#sviluppi-futuri">Sviluppi futuri</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#distribuzione">Distribuzione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basicrobot22-dockerfile">BasicRobot22: Dockerfile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tagging-and-register-on-dockerhub">Tagging and register on Dockerhub</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#basicrobot22-yaml">basicrobot22.yaml</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#revisione-del-file-di-configurazione">Revisione del file di configurazione</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
 </ul>
 
 <div class="relations">
@@ -462,6 +530,7 @@ proposta da un <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="QakIntro.html" title="previous chapter">QActor (meta)model</a></li>
+      <li>Next: <a href="Applicazioni22.html" title="next chapter">Applicazioni 2022</a></li>
   </ul></li>
 </ul>
 </div>
