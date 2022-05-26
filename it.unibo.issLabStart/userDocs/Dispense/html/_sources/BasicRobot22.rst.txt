@@ -257,6 +257,92 @@ Modello dell'analisi
 - Per meglio interagire con il committente è opportuno definire un modello eseguibile del sistema
   che imposti le interazioni-base tra console e ``BasicRobot22`` senza introdurre alcun robot virtuale o reale.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Modello sviluppato in Lab2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Tenendo conto della :ref:`Impostazione del modello` possiamo dire che:
+
+- il modello dell'architettura logica include due componenti: 
+  un attore  ``basicrobot``  che rappresenta il ``BasicRobot22`` e un attore ``mockconsole`` che simula la console.
+
+.. code::
+
+  System basicrobotanalisi   
+
+  Dispatch cmd 	  : cmd( MOVE )   
+  Request  step 	: step( TIME )          
+  Reply	 stepdone : stepdone( V )
+  Reply	 stepfail : stepfail( DT, REASON )
+  Event 	 sonar	: sonar( DISTANCE, NAME )
+
+  Context ctxbasicrobot ip [host='localhost' port=8020]
+  Context ctxMockConsole ip [host='127.0.0.1' port=8033]
+
+  QActor basicrobot context ctxbasicrobot { ... }
+  QActor mockconsole context ctxbasicrobot {  ... }
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Modello del basicrobot
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Il punto rilevante dell'analisi è che il ``BasicRobot22`` esegue sempre con successo i comandi inviati con il
+*Dispatch* ``cmd``, mentre può dare risposte diverse a un comando inivato con la *Request* ``step``.
+
+.. code::
+
+  QActor basicrobot context ctxbasicrobot {
+    State s0 initial{
+    }
+    Transition t0 whenMsg cmd    -> handleCmd
+                whenRequest step -> handleStep
+    
+    State handleCmd {
+      onMsg( cmd:cmd(ARG) ){
+        println("handleCmd SIMULO IL COMANDO cmd(${payloadArg(0)})")
+      }
+    }
+    
+    State handleStep {
+      println("handleStep Simulo comportamento step andato a buon fine")
+      replyTo step with stepdone : stepdone(OK)
+      //println("Simulo comportamento step andato male")
+      //...
+    }
+   }
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Modello della console
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Introduco un mock actor che simula la console, invio una request ``step`` al ``basicrobot`` e verifico di ricevere come
+risposta ``stepdone``
+
+.. code::
+  QActor mockconsole context ctxMockConsole {
+    State s0 initial {
+      println("sending request")
+      request basicrobot -m step : step(300)
+      delay 300
+    }    
+    Transition t0 whenReply stepdone -> handleStepDone
+                  whenReply stepfail -> handleStepFail
+    
+    State handleStepDone {
+      println("TEST OK")
+    }
+    
+    State handleStepFail {
+       println("TEST KO")
+    }   
+  }
+
+:worktodo:`WORKTODO: impostare un TestPlan automatizzato sia per cmd sia per step`
+
+- *Suggerimento*: gli attori QAk sono :ref:`risorse CoAP-osservabili<Attori come risorse CoAP>` 
+  che possono emettere informazioni sulle azioni che stanno compiendo e sul proprio stato.
+
+
 
 -------------------------------------
 BasicRobot22: Progetto  

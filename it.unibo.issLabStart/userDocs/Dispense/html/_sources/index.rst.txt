@@ -37,6 +37,7 @@ iss22
    QakIntro
    BasicRobot22
    Applicazioni22
+   KotlinNotes
 
 
 Indices and tables

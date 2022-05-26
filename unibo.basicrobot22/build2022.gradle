@@ -1,6 +1,6 @@
 /*
 ================================================================================
-build_ctxbasicrobot.gradle
+build.gradle
 GENERATED ONLY ONCE
 ================================================================================
 */
@@ -59,6 +59,12 @@ dependencies {
     // https://mvnrepository.com/artifact/org.eclipse.californium/californium-proxy2
     implementation group: 'org.eclipse.californium', name: 'californium-proxy2', version: '3.5.0'
 
+//OkHttp library for websockets with Kotlin
+	//implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.14.0'    
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3' 
+	// https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
+	testImplementation group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '4.9.3'
+
     /* LOG4J *************************************************************************************************************** */
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j
     implementation group: 'org.slf4j', name: 'slf4j-reload4j', version: '2.0.0-alpha7'
@@ -77,6 +83,8 @@ dependencies {
 	implementation name: 'unibo.actor22-1.1'
 
     /* AIMA **************************************************************************************************************** */
+ 	//PLANNER  
+    implementation name: 'unibo.planner22-1.0'
     // https://mvnrepository.com/artifact/com.googlecode.aima-java/aima-core
     implementation group: 'com.googlecode.aima-java', name: 'aima-core', version: '3.0.0'
 

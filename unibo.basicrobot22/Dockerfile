@@ -18,5 +18,5 @@ COPY ./*.json ./
 CMD ["bash", "it.unibo.basicrobot"]
 
 
-##  docker build -t basicrobot22 . 
-##  docker run -it --rm --name basicrobot22 -p8020:8020/tcp --privileged basicrobot22  /bin/bash
+##  docker build -t basicrobot22:1.0 .
+##  docker run -it --rm --name basicrobot22:1.0 -p8020:8020/tcp --privileged basicrobot22:1.0  /bin/bash

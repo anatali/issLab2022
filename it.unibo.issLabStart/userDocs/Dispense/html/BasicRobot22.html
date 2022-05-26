@@ -204,6 +204,65 @@ via TCP, CoAP, MQTT.</p>
 <li><p>Per meglio interagire con il committente è opportuno definire un modello eseguibile del sistema
 che imposti le interazioni-base tra console e <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> senza introdurre alcun robot virtuale o reale.</p></li>
 </ul>
+<section id="modello-sviluppato-in-lab2">
+<h4>Modello sviluppato in Lab2<a class="headerlink" href="#modello-sviluppato-in-lab2" title="Permalink to this headline">¶</a></h4>
+<p>Tenendo conto della <a class="reference internal" href="#impostazione-del-modello"><span class="std std-ref">Impostazione del modello</span></a> possiamo dire che:</p>
+<ul class="simple">
+<li><p>il modello dell’architettura logica include due componenti:
+un attore  <code class="docutils literal notranslate"><span class="pre">basicrobot</span></code>  che rappresenta il <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> e un attore <code class="docutils literal notranslate"><span class="pre">mockconsole</span></code> che simula la console.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">basicrobotanalisi</span>
+
+<span class="n">Dispatch</span> <span class="n">cmd</span>    <span class="p">:</span> <span class="n">cmd</span><span class="p">(</span> <span class="n">MOVE</span> <span class="p">)</span>
+<span class="n">Request</span>  <span class="n">step</span>         <span class="p">:</span> <span class="n">step</span><span class="p">(</span> <span class="n">TIME</span> <span class="p">)</span>
+<span class="n">Reply</span>  <span class="n">stepdone</span> <span class="p">:</span> <span class="n">stepdone</span><span class="p">(</span> <span class="n">V</span> <span class="p">)</span>
+<span class="n">Reply</span>  <span class="n">stepfail</span> <span class="p">:</span> <span class="n">stepfail</span><span class="p">(</span> <span class="n">DT</span><span class="p">,</span> <span class="n">REASON</span> <span class="p">)</span>
+<span class="n">Event</span>          <span class="n">sonar</span>  <span class="p">:</span> <span class="n">sonar</span><span class="p">(</span> <span class="n">DISTANCE</span><span class="p">,</span> <span class="n">NAME</span> <span class="p">)</span>
+
+<span class="n">Context</span> <span class="n">ctxbasicrobot</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8020</span><span class="p">]</span>
+<span class="n">Context</span> <span class="n">ctxMockConsole</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8033</span><span class="p">]</span>
+
+<span class="n">QActor</span> <span class="n">basicrobot</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="n">QActor</span> <span class="n">mockconsole</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span> <span class="p">{</span>  <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<section id="modello-del-basicrobot">
+<h5>Modello del basicrobot<a class="headerlink" href="#modello-del-basicrobot" title="Permalink to this headline">¶</a></h5>
+<p>Il punto rilevante dell’analisi è che il <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> esegue sempre con successo i comandi inviati con il
+<em>Dispatch</em> <code class="docutils literal notranslate"><span class="pre">cmd</span></code>, mentre può dare risposte diverse a un comando inivato con la <em>Request</em> <code class="docutils literal notranslate"><span class="pre">step</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">basicrobot</span> <span class="n">context</span> <span class="n">ctxbasicrobot</span> <span class="p">{</span>
+  <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{</span>
+  <span class="p">}</span>
+  <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenMsg</span> <span class="n">cmd</span>    <span class="o">-&gt;</span> <span class="n">handleCmd</span>
+              <span class="n">whenRequest</span> <span class="n">step</span> <span class="o">-&gt;</span> <span class="n">handleStep</span>
+
+  <span class="n">State</span> <span class="n">handleCmd</span> <span class="p">{</span>
+    <span class="n">onMsg</span><span class="p">(</span> <span class="n">cmd</span><span class="p">:</span><span class="n">cmd</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span> <span class="p">){</span>
+      <span class="n">println</span><span class="p">(</span><span class="s2">&quot;handleCmd SIMULO IL COMANDO cmd(${payloadArg(0)})&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">State</span> <span class="n">handleStep</span> <span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;handleStep Simulo comportamento step andato a buon fine&quot;</span><span class="p">)</span>
+    <span class="n">replyTo</span> <span class="n">step</span> <span class="k">with</span> <span class="n">stepdone</span> <span class="p">:</span> <span class="n">stepdone</span><span class="p">(</span><span class="n">OK</span><span class="p">)</span>
+    <span class="o">//</span><span class="n">println</span><span class="p">(</span><span class="s2">&quot;Simulo comportamento step andato male&quot;</span><span class="p">)</span>
+    <span class="o">//...</span>
+  <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="modello-della-console">
+<h5>Modello della console<a class="headerlink" href="#modello-della-console" title="Permalink to this headline">¶</a></h5>
+<p>Introduco un mock actor che simula la console, invio una request <code class="docutils literal notranslate"><span class="pre">step</span></code> al <code class="docutils literal notranslate"><span class="pre">basicrobot</span></code> e verifico di ricevere come
+risposta <code class="docutils literal notranslate"><span class="pre">stepdone</span></code></p>
+<p><span class="worktodo">WORKTODO: impostare un TestPlan automatizzato sia per cmd sia per step</span></p>
+<ul class="simple">
+<li><p><em>Suggerimento</em>: gli attori QAk sono <a class="reference internal" href="AttoriCoap.html#attori-come-risorse-coap"><span class="std std-ref">risorse CoAP-osservabili</span></a>
+che possono emettere informazioni sulle azioni che stanno compiendo e sul proprio stato.</p></li>
+</ul>
+</section>
+</section>
 </section>
 </section>
 <section id="basicrobot22-progetto">
@@ -494,7 +553,14 @@ da cui dipende <code class="docutils literal notranslate"><span class="pre">Basi
 <li class="toctree-l4"><a class="reference internal" href="#il-requisito-cmdconsole">Il requisito <em>cmdconsole</em></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#modello-dell-analisi">Modello dell’analisi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#modello-dell-analisi">Modello dell’analisi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modello-sviluppato-in-lab2">Modello sviluppato in Lab2</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#modello-del-basicrobot">Modello del basicrobot</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#modello-della-console">Modello della console</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#basicrobot22-progetto">BasicRobot22: Progetto</a><ul>
@@ -523,6 +589,7 @@ da cui dipende <code class="docutils literal notranslate"><span class="pre">Basi
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
 </ul>
 
 <div class="relations">

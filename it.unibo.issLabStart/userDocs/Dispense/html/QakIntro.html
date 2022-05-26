@@ -945,7 +945,7 @@ e poi aggiungendo parti (che interagiscono con il nucleo e tra loro sempre media
 <section id="resourcecore">
 <h3>resourcecore<a class="headerlink" href="#resourcecore" title="Permalink to this headline">¶</a></h3>
 <p>Supponiamo ad esempio di introdurre come ‘nucleo di base’ una risorsa modellata come segue.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>System ctxresourcecore
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>System resourcecore
 Request cmd                 : cmd(X) // X =  w | s | a | d | h
 Reply   replytocmd  : replytocmd(X)
 Event    alarm      : alarm(V)
@@ -1008,8 +1008,8 @@ dichiarati in  <a class="reference internal" href="#resourcecore"><span class="s
 </div>
 <p>Agli occhi del nuovoco attore, la  <a class="reference internal" href="#resourcecore"><span class="std std-ref">resourcecore</span></a> è un componente ‘esterno’ che deve essere solo
 dichiarato come tale, dando informazioni sul suo contesto.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxcorecaller1</span>   <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>   <span class="n">port</span><span class="o">=</span> <span class="mi">8038</span> <span class="p">]</span>
-<span class="n">Context</span> <span class="n">ctxresourcecore</span>  <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>   <span class="n">port</span><span class="o">=</span> <span class="mi">8045</span> <span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Context</span> <span class="n">ctxcorecaller1</span>   <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>   <span class="n">port</span><span class="o">=</span> <span class="mi">8038</span> <span class="p">]</span>
+<span class="n">Context</span> <span class="n">ctxresourcecore</span>  <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>   <span class="n">port</span><span class="o">=</span> <span class="mi">8045</span> <span class="p">]</span>
 
 <span class="n">ExternalQActor</span> <span class="n">resourcecore</span> <span class="n">context</span> <span class="n">ctxresourcecore</span>
 
@@ -1242,6 +1242,7 @@ emette l’evento</p>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
 </ul>
 
 <div class="relations">

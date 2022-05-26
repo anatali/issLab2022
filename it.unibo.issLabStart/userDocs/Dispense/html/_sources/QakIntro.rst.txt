@@ -1125,7 +1125,7 @@ Supponiamo ad esempio di introdurre come 'nucleo di base' una risorsa modellata 
 
 .. code::
 
-    System ctxresourcecore
+    System resourcecore
     Request cmd 		: cmd(X) // X =  w | s | a | d | h
     Reply   replytocmd  : replytocmd(X)
     Event    alarm      : alarm(V)
@@ -1207,8 +1207,8 @@ dichiarato come tale, dando informazioni sul suo contesto.
 
 .. code::
 
-  Context ctxcorecaller1   ip [host= "127.0.0.1"   port= 8038 ]
-  Context ctxresourcecore  ip [host= "localhost"   port= 8045 ]  
+  Context ctxcorecaller1   ip [host= "localhost"   port= 8038 ]
+  Context ctxresourcecore  ip [host= "127.0.0.1"   port= 8045 ]  
   
   ExternalQActor resourcecore context ctxresourcecore  
 

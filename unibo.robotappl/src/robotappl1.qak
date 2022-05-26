@@ -1,0 +1,52 @@
+System robotappl1
+
+Request  dopath   : dopath( PATH, OWNER )
+Reply dopathdone  : dopathdone( ARG ) 
+Reply dopathfail  : dopathfail( ARG )
+
+Context ctxbasicrobot  ip [host="127.0.0.1" port=8020]  
+Context ctxrobotappl   ip [host="localhost" port=8078]
+
+ExternalQActor pathexec context ctxbasicrobot  
+
+QActor robotappl1 context ctxrobotappl{
+	[# val inmapname   = "map2019"  
+	   var PathTodo    =  ""  
+	#]
+	State activate initial {
+ 		run unibo.kotlin.planner22Util.loadRoomMap( inmapname )	  
+ 		run unibo.kotlin.planner22Util.initAI() 
+ 		run unibo.kotlin.planner22Util.updateMap(  "l", "" )
+ 		println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
+ 		run unibo.kotlin.planner22Util.showMap()
+ 		//run unibo.kotlin.planner22Util.showCurrentRobotState()
+	}
+	//Goto work
+	
+	State work{
+		run unibo.kotlin.planner22Util.setGoal(5,3)
+		[# PathTodo = unibo.kotlin.planner22Util.doPlan().toString() 
+		   //PathTodo = PathTodo.replace("[","").replace("]","").replace(", ",",")	
+		   //PathTodo = PathTodo.replace(", ",",")
+		#] //List<aima.core.agent.Action> 
+		println("Azioni pianificate: $PathTodo")
+ 		request pathexec -m dopath : dopath( $PathTodo, pathcaller )
+	}
+	Transition t0 whenReply dopathdone -> pathok
+				  whenReply dopathfail -> pathko
+  	
+	State pathok{
+		printCurrentMessage
+	}
+	
+    State pathko{
+		printCurrentMessage
+		run unibo.kotlin.planner22Util.showMap()
+		run unibo.kotlin.planner22Util.showCurrentRobotState()
+ 		//emit alarm : alarm(obstacle) 		
+ 	}
+
+    State end{
+    	println("BYE")
+    }
+} 
