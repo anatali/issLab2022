@@ -29,7 +29,7 @@ suspend fun CoroutineScope.massiveRun( action: suspend () -> Unit ) {
 }
 
 //@kotlinx.coroutines.ObsoleteCoroutinesApi
-//@kotlinx.coroutines.ExperimentalCoroutinesApi
+//
 fun main() = runBlocking{
     println("BEGINS CPU=$cpus ${curThread()}")
  

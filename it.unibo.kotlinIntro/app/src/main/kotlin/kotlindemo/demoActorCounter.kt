@@ -27,7 +27,7 @@ class CounterMsg(
 }
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun createCounter(scope : CoroutineScope):SendChannel<CounterMsg>{
  val counterActor = scope.actor<CounterMsg> {
 	var k = 0 	//actor state
@@ -75,7 +75,7 @@ suspend fun sendManyMessages( scope : CoroutineScope,
 }
 */
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun main() {
 	println("BEGINS CPU=$cpus ${curThread()}")
 	runBlocking {

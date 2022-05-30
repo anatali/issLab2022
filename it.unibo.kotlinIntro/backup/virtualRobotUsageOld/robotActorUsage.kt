@@ -11,14 +11,14 @@ val moveBackwardMsg = AppMsg.create("move","main","robotactor","s")
 val haltRobotMsg    = AppMsg.create("move","main","robotactor","h") 
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 suspend fun forward(  msg : AppMsg ){
 	if( msg.MSGTYPE  == AppMsgType.dispatch.toString() )
 		robotActor.send( msg.toString()  )
 }
  
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 suspend fun sendCommands(   ) {
 	virtualRobotSupport.setRobotTarget( robotActor  ) //Configure - Inject
 
@@ -38,7 +38,7 @@ suspend fun sendCommands(   ) {
 }
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun main( ) = runBlocking {
     println("==============================================")
     println("PLEASE, ACTIVATE WENV ")

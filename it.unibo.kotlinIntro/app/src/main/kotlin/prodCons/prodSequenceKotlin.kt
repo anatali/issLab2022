@@ -7,7 +7,7 @@ import kotlinx.coroutines.channels.consume
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 val prodContext = newSingleThreadContext("myThread")
 
@@ -35,7 +35,7 @@ val seqProd  = sequence{
     yieldAll( generateSequence(2) { println("generate $it"); it * 2  } )
 }
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 suspend fun seqcons1( scope : CoroutineScope){
     println("seqcons1 STARTS")

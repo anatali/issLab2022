@@ -256,6 +256,25 @@ un attore  <code class="docutils literal notranslate"><span class="pre">basicrob
 <h5>Modello della console<a class="headerlink" href="#modello-della-console" title="Permalink to this headline">¶</a></h5>
 <p>Introduco un mock actor che simula la console, invio una request <code class="docutils literal notranslate"><span class="pre">step</span></code> al <code class="docutils literal notranslate"><span class="pre">basicrobot</span></code> e verifico di ricevere come
 risposta <code class="docutils literal notranslate"><span class="pre">stepdone</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">mockconsole</span> <span class="n">context</span> <span class="n">ctxMockConsole</span> <span class="p">{</span>
+  <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span> <span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;sending request&quot;</span><span class="p">)</span>
+    <span class="n">request</span> <span class="n">basicrobot</span> <span class="o">-</span><span class="n">m</span> <span class="n">step</span> <span class="p">:</span> <span class="n">step</span><span class="p">(</span><span class="mi">300</span><span class="p">)</span>
+    <span class="n">delay</span> <span class="mi">300</span>
+  <span class="p">}</span>
+  <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenReply</span> <span class="n">stepdone</span> <span class="o">-&gt;</span> <span class="n">handleStepDone</span>
+                <span class="n">whenReply</span> <span class="n">stepfail</span> <span class="o">-&gt;</span> <span class="n">handleStepFail</span>
+
+  <span class="n">State</span> <span class="n">handleStepDone</span> <span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;TEST OK&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="n">State</span> <span class="n">handleStepFail</span> <span class="p">{</span>
+     <span class="n">println</span><span class="p">(</span><span class="s2">&quot;TEST KO&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p><span class="worktodo">WORKTODO: impostare un TestPlan automatizzato sia per cmd sia per step</span></p>
 <ul class="simple">
 <li><p><em>Suggerimento</em>: gli attori QAk sono <a class="reference internal" href="AttoriCoap.html#attori-come-risorse-coap"><span class="std std-ref">risorse CoAP-osservabili</span></a>
@@ -292,11 +311,11 @@ il compito di occuparsi dei dettagli tecnologici relativi ai diversi <a class="r
 </tr>
 <tr class="row-even"><td><a class="reference internal image-reference" href="_images/robotsUnibo.jpg"><img alt="_images/robotsUnibo.jpg" class="align-center" src="_images/robotsUnibo.jpg" style="width: 90%;" /></a>
 </td>
-<td><p>per il  NanoRObot. <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt">nanoSupport</a>, <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/Motors.c">motors</a></p></td>
+<td><p>per il  NanoRobot: <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt">nanoSupport</a>, <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/Motors.c">motors</a></p></td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal image-reference" href="_images/mbot.PNG"><img alt="_images/mbot.PNG" class="align-center" src="_images/mbot.PNG" style="width: 90%;" /></a>
 </td>
-<td><p>per il  NanoRObot. <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt">mbotSupport</a></p></td>
+<td><p>per Mbot: <a class="reference external" href="../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt">mbotSupport</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -453,10 +472,9 @@ in <code class="docutils literal notranslate"><span class="pre">it.unibo.issLabS
     <span class="n">depends_on</span><span class="p">:</span>
       <span class="o">-</span> <span class="n">wenv</span>
 
-<span class="c1">## -------------------------------------------------------------</span>
-<span class="c1">## TODO See https://docs.docker.com/compose/startup-order/</span>
-<span class="c1">## -------------------------------------------------------------</span>
+
 <span class="c1">## docker-compose -f basicrobot22.yaml  up</span>
+<span class="c1">## PER ATTIVARE SOLO Wenv:</span>
 <span class="c1">## docker-compose -f basicrobot22.yaml run --service-ports wenv</span>
 </pre></div>
 </div>

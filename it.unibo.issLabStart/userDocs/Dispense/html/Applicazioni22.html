@@ -15,6 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="KotlinNotes" href="KotlinNotes.html" />
     <link rel="prev" title="BasicRobot22" href="BasicRobot22.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -51,20 +52,26 @@ e per la definizione del Product Goal</p></li>
 </div></blockquote>
 </li>
 </ul>
-<p>Per dare esempi di questo modo di procedere,  svilupperemo i segeunti progetti applicativi di ‘ispirazione <a class="reference external" href="https://en.wikipedia.org/wiki/Internet_of_things">IOT</a>’  :</p>
-<ul>
-<li><dl class="simple">
-<dt>Premessa operativa:</dt><dd><ul class="simple">
+<p>Per dare esempi di questo modo di procedere,  svilupperemo un insieme di progetti applicativi di ‘ispirazione <a class="reference external" href="https://en.wikipedia.org/wiki/Internet_of_things">IOT</a>’
+a complessità crescente.</p>
+<section id="premessa-operativa">
+<h2>Premessa operativa<a class="headerlink" href="#premessa-operativa" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
 <li><p>si veda <a class="reference internal" href="QakIntro.html#startup-versione-valastro-marchegiani"><span class="std std-ref">StartUp (versione Valastro-Marchegiani)</span></a></p></li>
 <li><p>si esperimenti il sistema distribuito <a class="reference internal" href="QakIntro.html#resourcecore"><span class="std std-ref">resourcecore</span></a> e <a class="reference internal" href="QakIntro.html#external-caller1"><span class="std std-ref">External caller1</span></a>
 (tratto da <a class="reference internal" href="QakIntro.html#demorequest-qak"><span class="std std-ref">demorequest.qak</span></a>)</p></li>
 </ul>
-</dd>
-</dl>
-</li>
-<li><p><a class="reference external" href="../../../../../unibo.basicrobot22">unibo.basicRobot22</a>: il progetto è descritto in <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e realizza la risorsa di base per le
-applicazioni che seguono. Il sistema deployed su DockerHub comprende anche un DDR robot virtuale e mostra anche
-l’uso di</p>
+</section>
+<section id="id1">
+<h2>unibo.basicRobot22<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p><span class="remark">Goal di basicRobot22</span></p>
+<ul class="simple">
+<li><p>Costruire un robot ‘astratto’ capace di gestire diversi tipi di robot concreti e capace di eseguire
+<a class="reference internal" href="RobotCleaner.html#linguaggio-di-comando-da-cril-a-aril"><span class="std std-ref">comandi aril</span></a></p></li>
+</ul>
+<p>Il progetto <a class="reference external" href="../../../../../unibo.basicrobot22">unibo.basicRobot22</a> , descritto in <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a>, propone il modello <a class="reference external" href="../../../../../unibo.basicrobot22/src/basicrobot.qak">basicRobot.qak</a>
+che definisce l’attore <span class="blue">basicrobot</span>, il quale
+realizza la <strong>risorsa di base</strong> per tutte le applicazioni che seguono. Questa risorsa utilizza:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><a class="reference internal" href="QakIntro.html#codedqactors"><span class="std std-ref">CodedQActors</span></a></p></li>
@@ -72,10 +79,59 @@ l’uso di</p>
 <li><p><a class="reference internal" href="QakIntro.html#actors-as-streams"><span class="std std-ref">Actors as streams</span></a></p></li>
 </ul>
 </div></blockquote>
-</li>
-<li><p><a class="reference external" href="../../../../../unibo.mapperQak22">unibo.mapperQak22</a>: utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un-planner"><span class="std std-ref">UniboPlanner</span></a> per creare
-(e salvare) la mappa di una stanza rettangolare secondo la politica <em>BoundaryWalker</em>.
-E’ utile confrontare il modello con:</p>
+<section id="pathexec">
+<h3>pathexec<a class="headerlink" href="#pathexec" title="Permalink to this headline">¶</a></h3>
+<p>Il modello <a class="reference external" href="../../../../../unibo.basicrobot22/src/basicrobot.qak">basicRobot.qak</a> include anche la definizione dell’attore <span class="blue">pathexec</span> dapprima definito nel progetto
+<a class="reference internal" href="#id2"><span class="std std-ref">unibo.pathexecutor</span></a>.</p>
+<section id="id2">
+<h4>unibo.pathexecutor<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>Il progetto <a class="reference external" href="../../../../../unibo.pathexecutor">unibo.pathexecutor</a> propone il modello <a class="reference external" href="../../../../../unibo.pathexecutor/src/pathexecutor.qak">pathexecutor.qak</a> che definisve
+l’attore <span class="blue">pathexec</span>, il quale utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a>
+per eseguire la richiesta di esecuzione
+di un path dato,  con possibile successo o fallimento. Nel caso di fallimento, la risposta
+fornisce il path ancora da compiere.</p>
+</section>
+</section>
+<section id="attivazione-di-basicrobot22">
+<h3>Attivazione di basicRobot22<a class="headerlink" href="#attivazione-di-basicrobot22" title="Permalink to this headline">¶</a></h3>
+<p>Il <em>sistema basicrobot</em> può essere attivato usando <a class="reference external" href="../../../../../unibo.basicrobot22/basicRobot22.yaml">basicRobot22.yaml</a> col comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">basicrobot22</span><span class="o">.</span><span class="n">yaml</span>  <span class="n">up</span>
+<span class="o">//</span><span class="n">per</span> <span class="n">attivare</span> <span class="n">solo</span> <span class="n">wenv</span><span class="p">:</span>
+<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="o">-</span><span class="n">f</span> <span class="n">basicrobot22</span><span class="o">.</span><span class="n">yaml</span> <span class="n">run</span> <span class="o">--</span><span class="n">service</span><span class="o">-</span><span class="n">ports</span> <span class="n">wenv</span>
+</pre></div>
+</div>
+<p>I files di configurazione sono:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="../../../../../unibo.basicrobot22/basicrobotConfig.json">basicrobotConfig.json</a></p></li>
+<li><p><a class="reference external" href="../../../../../unibo.basicrobot22/stepTimeConfig.json">stepTimeConfig.json</a></p></li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="id3">
+<h2>webForActors<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p><span class="remark">Goal di webForActors</span></p>
+<ul class="simple">
+<li><p>Costruire una WebGUI per il robot <a class="reference internal" href="#id1"><span class="std std-ref">unibo.basicRobot22</span></a> capace di visualizzare l’esito dei comandi</p></li>
+</ul>
+<p>Il progetto <a class="reference external" href="../../../../../webForActors">webForActors</a>, introdotto in <a class="reference internal" href="WebApplications.html#primi-passi-con-springboot"><span class="std std-ref">Primi passi con SpringBoot</span></a>,
+è stato modificato in modo da definire una GUI per il sistema
+<a class="reference internal" href="#id1"><span class="std std-ref">unibo.basicRobot22</span></a></p>
+<a class="reference internal image-reference" href="_images/basicRobotCmdGui.png"><img alt="_images/basicRobotCmdGui.png" class="align-center" src="_images/basicRobotCmdGui.png" style="width: 70%;" /></a>
+</section>
+<section id="id4">
+<h2>unibo.mapperQak22<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p><span class="remark">Goal di mapperQak22</span></p>
+<ul class="simple">
+<li><p>Utilizzare <a class="reference internal" href="#id1"><span class="std std-ref">unibo.basicRobot22</span></a> per creare la mappa della stanza</p></li>
+</ul>
+<p>Il progetto <a class="reference external" href="../../../../../unibo.mapperQak22">unibo.mapperQak22</a> contiene due modelli:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p><a class="reference external" href="../../../../../unibo.mapperQak22/userDocs/mapemptyroom22.qakt">mapemptyroom22.qak</a> : utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un-planner"><span class="std std-ref">UniboPlanner</span></a> per creare
+(e salvare) la mappa di una stanza rettangolare vuota (almeno sui bordi) secondo la politica <em>BoundaryWalker</em>.
+E’ utile confrontare questo modello con:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><a class="reference internal" href="Actors22.html#actorwithobserverusingwenv"><span class="std std-ref">ActorWithObserverUsingWEnv</span></a></p></li>
@@ -84,11 +140,20 @@ E’ utile confrontare il modello con:</p>
 </ul>
 </div></blockquote>
 </li>
-<li><p><a class="reference external" href="../../../../../unibo.cleanerQak22">unibo.cleanerQak22</a>: utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un-planner"><span class="std std-ref">UniboPlanner</span></a> per creare
+<li><p><a class="reference external" href="../../../../../unibo.mapperQak22/userDocs/mapwithobstqak22.qakt">mapwithobstqak22.qak</a> :  utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e <a class="reference internal" href="UsoDiunPlanner.html#uso-di-un-planner"><span class="std std-ref">UniboPlanner</span></a> per creare
 (e salvare) la mappa di una stanza rettangolare che contiene <strong>ostacoli fissi</strong></p></li>
-<li><p><a class="reference external" href="../../../../../unibo.pathexecutor">unibo.pathexecutor</a>: utilizza <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> per eseguire la richiesta di esecuzione di un path dato
-con possibile successo o fallimento. Nel caso di fallimento fornisce il path ancora da compiere</p></li>
+</ol>
+</div></blockquote>
+</section>
+<section id="id5">
+<h2>unibo.robotappl<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p><span class="remark">Goal di mapperQak22</span></p>
+<ul class="simple">
+<li><p>Utilizzare <a class="reference internal" href="#id1"><span class="std std-ref">unibo.basicRobot22</span></a> e <a class="reference internal" href="#pathexec"><span class="std std-ref">pathexec</span></a> per creare una applicazione.</p></li>
 </ul>
+<p>Il progetto  <a class="reference external" href="../../../../../unibo.robotappl">unibo.robotappl</a>:  utilizza <a class="reference internal" href="#pathexec"><span class="std std-ref">pathexec</span></a> per spostare il robot in un dato punto della stanza,
+nota la mappa.</p>
+</section>
 </section>
 
 
@@ -143,7 +208,22 @@ con possibile successo o fallimento. Nel caso di fallimento fornisce il path anc
 <li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Applicazioni 2022</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Applicazioni 2022</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#premessa-operativa">Premessa operativa</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">unibo.basicRobot22</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pathexec">pathexec</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">unibo.pathexecutor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#attivazione-di-basicrobot22">Attivazione di basicRobot22</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">webForActors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">unibo.mapperQak22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">unibo.robotappl</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
 </ul>
 
 <div class="relations">
@@ -151,6 +231,7 @@ con possibile successo o fallimento. Nel caso di fallimento fornisce il path anc
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="BasicRobot22.html" title="previous chapter">BasicRobot22</a></li>
+      <li>Next: <a href="KotlinNotes.html" title="next chapter">KotlinNotes</a></li>
   </ul></li>
 </ul>
 </div>

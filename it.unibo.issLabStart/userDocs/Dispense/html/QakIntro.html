@@ -423,9 +423,14 @@ in una directory <span class="blue">resource</span>) è bene sia scritta in Kotl
 <p><span class="remark">Per usare codice Java, fare ricorso a file jar</span></p>
 </section>
 </section>
+<section id="run">
+<h3>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<p>L’operazione built-in <code class="docutils literal notranslate"><span class="pre">run</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em> <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>.</p>
+</section>
 <section id="qrun">
 <h3>qrun<a class="headerlink" href="#qrun" title="Permalink to this headline">¶</a></h3>
-<p>L’operazione built-in <code class="docutils literal notranslate"><span class="pre">qrun</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo static <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>.</p>
+<p>L’operazione built-in <code class="docutils literal notranslate"><span class="pre">qrun</span> <span class="pre">ccc.xxx()</span></code>  invoca  il metodo <em>static</em>  <code class="docutils literal notranslate"><span class="pre">xxx</span></code> della classe <code class="docutils literal notranslate"><span class="pre">ccc</span></code>. Il
+metodo deve avere come primo argomento un riferimento all’attore corrente (ad esempio <strong>myself</strong>).</p>
 </section>
 </section>
 <section id="codedqactors">
@@ -1199,6 +1204,7 @@ emette l’evento</p>
 <li class="toctree-l4"><a class="reference internal" href="#demobetter-qak">demobetter.qak</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#run">run</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#qrun">qrun</a></li>
 </ul>
 </li>

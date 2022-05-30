@@ -319,6 +319,7 @@ Introduco un mock actor che simula la console, invio una request ``step`` al ``b
 risposta ``stepdone``
 
 .. code::
+
   QActor mockconsole context ctxMockConsole {
     State s0 initial {
       println("sending request")
@@ -385,12 +386,12 @@ BasicRobot22: supporti
       .. image::  ./_static/img/Robot22/robotsUnibo.jpg 
            :align: center 
            :width: 90%
-    - per il  NanoRObot. `nanoSupport`_, `motors`_
+    - per il  NanoRobot: `nanoSupport`_, `motors`_
   * -
       .. image::  ./_static/img/Robot22/mbot.PNG 
            :align: center 
            :width: 90%
-    - per il  NanoRObot. `mbotSupport`_
+    - per Mbot: `mbotSupport`_
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 File di configurazione
@@ -575,10 +576,9 @@ basicrobot22.yaml
       depends_on:
         - wenv
 
-  ## -------------------------------------------------------------
-  ## TODO See https://docs.docker.com/compose/startup-order/
-  ## -------------------------------------------------------------
+ 
   ## docker-compose -f basicrobot22.yaml  up
+  ## PER ATTIVARE SOLO Wenv:
   ## docker-compose -f basicrobot22.yaml run --service-ports wenv
 
 

@@ -14,7 +14,7 @@ produce coroutine builder : can send items to a ReceiveChannel
 val dispatcher  = newSingleThreadContext("myThread") //Dispatchers.IO //
 //var simpleProducer : ReceiveChannel<Int>? = null
 lateinit var simpleProducer : ReceiveChannel<Int>
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 fun startProducer( scope: CoroutineScope ) {
     simpleProducer = scope.produce(dispatcher, capacity=2){ //capacity=1
@@ -27,7 +27,7 @@ fun startProducer( scope: CoroutineScope ) {
     }
 }
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 suspend fun consume( ){
     val v = simpleProducer.receive()  //the first
@@ -39,7 +39,7 @@ suspend fun consume( ){
     }
 }
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 fun startProducer1( scope: CoroutineScope ) : ReceiveChannel<Int> {
     return scope.produce(dispatcher, capacity=0){ //capacity=1
@@ -50,7 +50,7 @@ fun startProducer1( scope: CoroutineScope ) : ReceiveChannel<Int> {
         }//for
     }
 }
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 suspend fun consume1( scope: CoroutineScope ){
     startProducer1(scope).consumeEach {
@@ -58,7 +58,7 @@ suspend fun consume1( scope: CoroutineScope ){
     }
 }
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 fun main() {
     println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")

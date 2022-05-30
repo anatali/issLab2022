@@ -27,11 +27,15 @@ object robotSupport{
 	lateinit var robotKind  :  String
 	var endPipehandler      :  ActorBasic? = null 
 	
+	fun readStepTime(   ) : String{  
+ 		val config = File("stepTimeConfig.json").readText(Charsets.UTF_8)
+		val jsonObject   = JSONObject( config )
+		return jsonObject.getString("step") 
+	}
+	
 	fun create( owner: ActorBasic, configFileName: String, endPipe: ActorBasic? = null ){
 		endPipehandler      =  endPipe
-		
-		//read Confif.json file
-		val config = File("${configFileName}").readText(Charsets.UTF_8)
+ 		val config = File("${configFileName}").readText(Charsets.UTF_8)
 		val jsonObject   = JSONObject( config )
 		val hostAddr     = jsonObject.getString("ipvirtualrobot") 
 		robotKind        = jsonObject.getString("type") 

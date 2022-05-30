@@ -14,7 +14,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.channels.Channel
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun testDispatchers(n : Int, scope: CoroutineScope) {
         if( n== 0 ){
              scope.launch {
@@ -102,7 +102,7 @@ fun testDispatchers(n : Int, scope: CoroutineScope) {
 }
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun main(){
     println("BEGINS CPU=$cpus ${curThread()}")
     runBlocking {

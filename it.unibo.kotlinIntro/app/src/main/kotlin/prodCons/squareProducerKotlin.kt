@@ -36,7 +36,7 @@ fun consumeSquares( squares: ReceiveChannel<Int> ){
 
 
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 fun main() {
     println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")

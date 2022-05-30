@@ -16,7 +16,7 @@ class CounterMsgNoDeferred(
 }
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun createCounterNoDeferred(scope : CoroutineScope):SendChannel<CounterMsgNoDeferred>{
  val counterActor = scope.actor<CounterMsgNoDeferred> {
 	var k = 0 	//actor state
@@ -42,7 +42,7 @@ suspend fun showValueNoDeferred(counterActor: SendChannel<CounterMsgNoDeferred>)
 }
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun main() {
 	println("BEGINS CPU=$cpus ${curThread()}")
 	runBlocking {

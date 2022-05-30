@@ -1,48 +1,75 @@
 System robotappl1
 
-Request  dopath   : dopath( PATH, OWNER )
+Request  dopath   : dopath( PATH  )
 Reply dopathdone  : dopathdone( ARG ) 
 Reply dopathfail  : dopathfail( ARG )
 
+Dispatch setMap   : setMap (MapStr ) 
+
 Context ctxbasicrobot  ip [host="127.0.0.1" port=8020]  
+//Context ctxPathexecutor  ip [host="127.0.0.1" port=8062]
 Context ctxrobotappl   ip [host="localhost" port=8078]
 
 ExternalQActor pathexec context ctxbasicrobot  
 
 QActor robotappl1 context ctxrobotappl{
-	[# val inmapname   = "map2019"  
+	[# val Inmapname   = "xxx" //"map2019"  
 	   var PathTodo    =  ""  
+	   var CurGoalX    = 3
+	   var CurGoalY    = 3 
 	#]
-	State activate initial {
- 		run unibo.kotlin.planner22Util.loadRoomMap( inmapname )	  
- 		run unibo.kotlin.planner22Util.initAI() 
- 		run unibo.kotlin.planner22Util.updateMap(  "l", "" )
- 		println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
- 		run unibo.kotlin.planner22Util.showMap()
- 		//run unibo.kotlin.planner22Util.showCurrentRobotState()
+	State activate initial {  
+ 		//run unibo.kotlin.planner22Util.loadRoomMap( Inmapname )	
+ 		run unibo.kotlin.planner22Util.createRoomMapFromTextfile( "$Inmapname.txt" )	  
+   		run unibo.kotlin.planner22Util.initAI() 
+  		run unibo.kotlin.planner22Util.showCurrentRobotState()
+// 		forward pathexec -m setMap :  map( $MapStr )  //no more
 	}
-	//Goto work
-	
+	Goto work
+	   
 	State work{
-		run unibo.kotlin.planner22Util.setGoal(5,3)
-		[# PathTodo = unibo.kotlin.planner22Util.doPlan().toString() 
-		   //PathTodo = PathTodo.replace("[","").replace("]","").replace(", ",",")	
-		   //PathTodo = PathTodo.replace(", ",",")
-		#] //List<aima.core.agent.Action> 
+		run unibo.kotlin.planner22Util.setGoal(CurGoalX,CurGoalY)  //---x--->
+		[# PathTodo = unibo.kotlin.planner22Util.doPlan().toString()  //List<aima.core.agent.Action>  [w, w, l, w] 
+			.replace(" ","")
+			.replace(",","")
+			.replace("[","")
+			.replace("]","")
+		#]  
 		println("Azioni pianificate: $PathTodo")
- 		request pathexec -m dopath : dopath( $PathTodo, pathcaller )
-	}
-	Transition t0 whenReply dopathdone -> pathok
+ 		if [# PathTodo.length == 0 #] {
+ 			println("WARNING: nessuna azione pianificata. Il piano vuoto viene comunque eseguito")
+ 		}
+ 		request pathexec -m dopath : dopath( $PathTodo )  
+	} 
+	Transition t0 whenReply dopathdone -> pathok 
 				  whenReply dopathfail -> pathko
   	
-	State pathok{
+	State pathok{ 
 		printCurrentMessage
+		//Aggiorno la mappa con PathToDo
+		run  unibo.kotlin.planner22Util.updateMapWithPath( PathTodo )
+		run  unibo.kotlin.planner22Util.showCurrentRobotState()
+		run unibo.kotlin.planner22Util.saveRoomMap("xxx")
 	}
 	
     State pathko{
 		printCurrentMessage
-		run unibo.kotlin.planner22Util.showMap()
+		onMsg ( dopathfail : dopathfail( P ) ){
+			[#  val planStillTodo = payloadArg(0) 
+				var p =""
+				if( planStillTodo=="none"){ //l'ultimo w ha provocato il fail
+					p = PathTodo.dropLast(1)
+				}else{
+					p = PathTodo.dropLast( planStillTodo.length+1 ) //un w ha provocato il fail
+				}
+				println("planStillTodo:$planStillTodo over $PathTodo done: $p")
+			#]
+			run unibo.kotlin.planner22Util.updateMapWithPath( p )
+			run unibo.kotlin.planner22Util.updateMapObstacleOnCurrentDirection()
+		}
+		//run unibo.kotlin.planner22Util.showMap()
 		run unibo.kotlin.planner22Util.showCurrentRobotState()
+		run unibo.kotlin.planner22Util.saveRoomMap("xxx")
  		//emit alarm : alarm(obstacle) 		
  	}
 

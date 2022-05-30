@@ -45,15 +45,19 @@ public class HIController {
     public String homePage(Model model) {
         model.addAttribute("arg", appName);
         if(cleanerAppl)  mainPage = "RobotCleanerGui"; //"RobotCmdGuiWs";//
-        else mainPage = "RobotNaiveGui";
+        else //mainPage = "RobotNaiveGui";
+        mainPage   = "BasicRobotCmdGui";
         return mainPage;
     }
 
     //Dopo click sul pulsante Configure
     @PostMapping("/configure")
-    public String configure(Model viewmodel  , @RequestParam String move, String addr ){
+    public String configure(Model viewmodel, @RequestParam String move, String addr ){
         ColorsOut.outappl("HIController | configure:" + move, ColorsOut.BLUE);
-
+        //Uso basicrobto22 sulla porta 8020
+        robotName  = "basicrobot";
+        RobotUtils.connectWithRobot(addr);
+ /*
         //modo locale di creazione del componente applicativo
         if(cleanerAppl){
             RobotUtils.createRobotCleaner();
@@ -69,7 +73,7 @@ public class HIController {
 
         RobotCleanaerObserver obs = new RobotCleanaerObserver(""+RobotUtils.robotPort,robotName);
         obs.setWebSocketHandler(WebSocketConfiguration.wshandler);
-
+*/
         //To allow ... todo
         //Qak22Context.setActorAsRemote(robotName, "8083", "localhost", ProtocolType.tcp);
         return mainPage;
@@ -77,23 +81,31 @@ public class HIController {
 
     //Dopo click sul pulsante start/stop/resume
     @PostMapping("/robotcmd")
-    public String doMove(Model viewmodel  , @RequestParam String cmd ){
+    public String doCmd(Model viewmodel  , @RequestParam String cmd ){
                      //String @RequestParam(name="move", required=false, defaultValue="h")robotmove  )  {
         //sysUtil.colorPrint("HIController | param-move:$robotmove ", Color.RED)
-        ColorsOut.outappl("HIController | doMove:" + cmd + " robotName=" + robotName, ColorsOut.BLUE);
+        ColorsOut.outappl("HIController | doCmd:" + cmd + " robotName=" + robotName, ColorsOut.BLUE);
         WebSocketConfiguration.wshandler.sendToAll("HIController | doMove:" + cmd); //disappears
         if( cmd.equals("t")){  //Start
             RobotUtils.startRobot("hicontroller",robotName);
             //Qak22Util.sendAMsg( SystemData.startSysCmd("hicontroller",robotName) );
         }else{ RobotUtils.sendMsg(robotName,cmd);
-        /*
-            try {
-                String msg = RobotUtils.moveAril(robotName,cmd).toString();
-                ColorsOut.outappl("HIController | doMove msg:" + msg , ColorsOut.BLUE);
-                conn.forward( msg );
-            } catch (Exception e) {
-                ColorsOut.outerr("HIController | doMove ERROR:"+e.getMessage());
-            }*/
+        }
+        return mainPage;
+    }
+
+    //Dopo click sul pulsante start/stop/resume
+    @PostMapping("/robotmove")
+    public String doMove(Model viewmodel  , @RequestParam String move ){
+        ColorsOut.outappl("HIController | doMove:" + move + " robotName=" + robotName, ColorsOut.BLUE);
+        WebSocketConfiguration.wshandler.sendToAll("HIController | doMove:" + move); //disappears
+        try {
+            //String msg = RobotUtils.moveAril(robotName,move).toString();
+            //ColorsOut.outappl("HIController | doMove msg:" + msg , ColorsOut.BLUE);
+            //conn.forward( msg );
+            RobotUtils.sendMsg(robotName,move);
+        } catch (Exception e) {
+            ColorsOut.outerr("HIController | doMove ERROR:"+e.getMessage());
         }
         return mainPage;
     }

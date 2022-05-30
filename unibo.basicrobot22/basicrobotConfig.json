@@ -1,4 +1,4 @@
-{"type":"virtual", "port":"8090", "ipvirtualrobot":"localhost"}
+{"type":"virtual", "port":"8090", "ipvirtualrobot":"wenv"}
 {"_comment": "","virtual", "port":"8090", "ipvirtualrobot":"wenv/localhost"}
 {"_comment": "", "type":"mockrobot", "port":"", "ipvirtualrobot":"localhost"}
 {"_comment": "", "type":"realmbot", "port":"COM6", "ipvirtualrobot":"localhost"}

@@ -16,7 +16,7 @@ import kotlinx.coroutines.delay
  //A support for using the virtual robot
  
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 object virtualRobotSupport {
         private var hostName = "localhost"
         private var port     = 8999
@@ -95,7 +95,7 @@ suspend private fun forward( msgContent : String ){
 	
 	
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
         private fun startSensorObserver( clientSocket : Socket ) {
 		val inFromServer = BufferedReader(InputStreamReader(clientSocket.getInputStream()))
 		val scope : CoroutineScope = CoroutineScope( Dispatchers.Default )

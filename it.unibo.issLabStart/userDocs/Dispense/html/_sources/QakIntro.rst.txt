@@ -506,10 +506,18 @@ in una directory :blue:`resource`) è bene sia scritta in Kotlin. Ad esempio:
 :remark:`Per usare codice Java, fare ricorso a file jar`
 
 +++++++++++++++++++++++++
+run
++++++++++++++++++++++++++
+
+L'operazione built-in ``run ccc.xxx()``  invoca  il metodo *static* ``xxx`` della classe ``ccc``.
+
++++++++++++++++++++++++++
 qrun
 +++++++++++++++++++++++++
 
-L'operazione built-in ``qrun ccc.xxx()``  invoca  il metodo static ``xxx`` della classe ``ccc``.
+L'operazione built-in ``qrun ccc.xxx()``  invoca  il metodo *static*  ``xxx`` della classe ``ccc``. Il 
+metodo deve avere come primo argomento un riferimento all'attore corrente (ad esempio **myself**).
+
 
 
 --------------------------------------

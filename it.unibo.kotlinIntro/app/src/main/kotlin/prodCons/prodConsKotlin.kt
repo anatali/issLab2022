@@ -11,12 +11,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.CoroutineScope
 
  
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 val context  = newSingleThreadContext("myThread")
 lateinit var producer : ReceiveChannel<Any>
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 fun createProducer(scope : CoroutineScope ){
     producer =
@@ -28,7 +28,7 @@ fun createProducer(scope : CoroutineScope ){
 		send(100)
 		println( "producer sent 100 in ${curThread()}")    }
 }
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 suspend fun doconsume(){
     val v = producer.receive()	//the first item
@@ -37,7 +37,7 @@ suspend fun doconsume(){
 }
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 fun main() {
     println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")
     runBlocking {

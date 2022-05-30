@@ -1,17 +1,6 @@
 /* 
  * ================================================================================
  * basicrobot.qak
- * VERSION June 8, 2021
- * The basicrobot emits the event  obstacle : obstacle(ID)
- * The envsonarhandler  emits the event polar : polar( D,A )
- *  		(without giving this responsibility to the basicrobot)
- * 
- * You can command the robot by using 
- * 		resources\consolepython\basicrobotconsole.py
- * or 	resources\consolegui\consoleGuiCoap.kt (look at sysConnKb.kt)
- * 
- * External MQTT sites: 
- * 	"mqtt.eclipse.org:  mosquitto.org mqtt.fluux.io  broker.hivemq.com
  * ================================================================================
  */ 
   
@@ -31,11 +20,10 @@ Event   info       : info( ARG ) 	    //for external components, not coap-observ
 Event  sonar       : sonar( DISTANCE )			//emitted by distancefilter
 Event alarm        : alarm(X) 
 
-Request  dopath    : dopath( PATH, OWNER )
+Request  dopath    : dopath( PATH  )
 Reply dopathdone   : dopathdone( ARG )
 Reply dopathfail   : dopathfail( ARG )
-Dispatch pathreset : pathreset( ARG )
-
+ 
 Context ctxbasicrobot ip [host="localhost" port=8020]  
 
 CodedQActor datacleaner    context ctxbasicrobot className "rx.dataCleaner"
@@ -152,23 +140,7 @@ QActor basicrobot context ctxbasicrobot{
 		updateResource [# "basicrobot(end)" #]	 		
  		terminate 1
 	}   
-	
-	
-  	/* StepTime expires but also an obstacle is found */
-  	/* 
- 	State stepPerhapsDone{ 
- 		run unibo.robot.robotSupport.move( "h" )  //stop the (real) robot
-		println("basicrobottttttttttttttttttttttttttttttt | $StepTime  ")  
-		//printCurrentMessage
- 		/ 
-		onMsg( local_sonar : sonar(D,T)){ //for the real robot
-			println("basicrobottxxxxxxxxxxxxxxxx | after a step emit polar(${payloadArg(0)}, 180) ")
-			emit polar : polar( $payloadArg(0), 90 )		//perceived via mqtt			
- 		}/
-  	}
- 	Transition t0 whenTimeVar StepTime  -> stepDone  //StepTime is the first checked
- 				  whenMsg obstacle      -> stepFail   //Detected near end of step
-	*/ 
+ 
 }
 
 QActor envsonarhandler context ctxbasicrobot{
@@ -199,21 +171,24 @@ QActor envsonarhandler context ctxbasicrobot{
 
  */
  
-QActor pathexec context ctxbasicrobot{
-[# var CurMoveTodo = "" #]   //Upcase, since var to be used in guards
+QActor pathexec context ctxbasicrobot{ 
+[# var CurMoveTodo = ""    //Upcase, since var to be used in guards
+   var StepTime    = "300"
+#]
 	State s0 initial{  	
 		//printCurrentMessage
-		[#  CurMoveTodo = "" #] 
-		println("pathexec ready ...") 
+		[#  CurMoveTodo = "" 
+			StepTime = unibo.robot.robotSupport.readStepTime()
+		#]
+		println("pathexec ready. StepTime=$StepTime") 
 	}	
 	Transition t0 whenRequest dopath -> doThePath
-	              whenMsg pathreset -> s0
-	
+  	
 	State doThePath{
-		printCurrentMessage
-		onMsg ( dopath : dopath(P,C)){
-			[# val path = payloadArg(0); println(path) #]
-			[# pathut.setPath(path) #]
+		printCurrentMessage 
+		//[# prinln( currentMsg ) #]
+		onMsg ( dopath : dopath( PATH )){
+			run pathut.setPath( payloadArg(0) )  //se payloadArg fallisce non da eccezione! (ma non fa nulla)
 		}		 
 		println("pathexec pathTodo = ${pathut.getPathTodo()}") 
  	}
@@ -222,40 +197,33 @@ QActor pathexec context ctxbasicrobot{
 	
 	State nextMove{ 
 		[# CurMoveTodo = pathut.nextMove() #]	
-		println("pathexec curMoveTodo= $CurMoveTodo" )
+		//println("pathexec curMoveTodo=$CurMoveTodo" )
 	} 
 	Goto endWorkOk if [# CurMoveTodo.length == 0 #] else doMove
 	
 	State doMove{
-		printCurrentMessage
-		//println("pathexec avoid too fast ..." )
- 		delay 300  //avoid too fast ...
+		//printCurrentMessage
+ 		//delay 300  //avoid too fast ...
  	}
 	Goto doMoveW if [# CurMoveTodo == "w" #] else doMoveTurn
 	
 	State doMoveTurn{
+		//printCurrentMessage
 		forward basicrobot -m cmd : cmd($CurMoveTodo) //asynch !!!		
 	}
 	Transition t0 whenTime 300 ->  nextMove  //wait for move done ...
-				  whenMsg pathreset -> s0
-	State doMoveW{
-		request basicrobot -m step : step( 350 )
+  
+ 	State doMoveW{
+		//printCurrentMessage
+		request basicrobot -m step : step( $StepTime )
 	}	
 	Transition t0 whenEvent alarm     -> endWorkKo
-	              whenMsg pathreset   -> s0
-				  whenReply stepdone  -> nextMove  
-	              whenReply stepfail  -> endWorkKo
-	              
-	State handleAlarm{ 
-		printCurrentMessage
-		[# var PathTodo = pathut.getPathTodo() #]
-		println("pathexec handleAlarm ... pathTodo=$PathTodo")
-	}	
-	//Goto s0              
+ 				  whenReply stepdone  -> nextMove  
+	              whenReply stepfail  -> endWorkKo                       
 	              
 	State endWorkOk{
-		printCurrentMessage
-		println("PATH DONE - BYE")
+		//printCurrentMessage
+		println("endWorkOk: PATH DONE - BYE")
 		replyTo dopath with dopathdone : dopathdone( ok )
 	}
 	Goto s0 

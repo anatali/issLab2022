@@ -9,7 +9,7 @@ import kotlinx.coroutines.delay
   
 //Actor that includes the business logic; the behavior is message-driven 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 val robotActor  : SendChannel<String>	= CoroutineScope( Dispatchers.Default ).actor {
 	var state    = "working"
 	

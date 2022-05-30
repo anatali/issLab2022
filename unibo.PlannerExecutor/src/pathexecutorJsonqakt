@@ -1,0 +1,274 @@
+/*
+ * pathexecutor.qak
+ * This MODEL defines the interaction and the behaviour of an ActorFsm component
+ * that has the responsibility to execute a given path and to handle alarm events.
+ * 
+ * The components uses the kotlinCode.pathexecutil that provides the following operations
+ *  - memoCurPath :
+ *  - nextMove : 
+ *  - doMove :  send a command to move the robot by using CallRestWithApacheHTTP
+ *              and send to the caller a dispatch (moveok|movefail) related to the answer
+ *  -
+ */
+System   pathexecutor   //-trace -msglog
+
+Dispatch start    : start( ARG )
+Request  dopath   : dopath( PATH, OWNER )
+Reply dopathdone  : dopathdone( ARG )
+Reply dopathfail  : dopathfail( ARG )
+Dispatch pathdone : pathdone( P )
+Dispatch pathfail : pathdone( P )
+Dispatch moveok   : move( MOVESHORT )
+Dispatch movefail : move( MOVESHORT )
+Dispatch mapDone  : mapDone( FNAME )
+
+
+Dispatch cmd       	: cmd(MOVE)     
+Dispatch end       	: end(ARG)  
+ 
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V)  
+Reply   stepfail   : stepfail(DURATION, CAUSE)
+
+ 
+Event alarm     : alarm(X) 
+Event sonar     : distance(X)
+
+Context ctxbasicrobot    ip [host="127.0.0.1" port=8020]   
+Context ctxPathexecutor  ip [host="localhost" port=8062]                        
+
+ExternalQActor basicrobot context ctxbasicrobot
+
+QActor pathexec context ctxPathexecutor{
+[# var CurMoveTodo = "" #]   //Upcase, since var to be used in guards
+	State s0 initial{  	
+		printCurrentMessage
+		[#  CurMoveTodo = "" #] 
+		println("pathexec starts") 
+	}	
+	Transition t0 whenRequest dopath -> doThePath
+	//Goto testRobotCommands
+	
+	State doThePath{
+		printCurrentMessage
+		[# pathut.setPathFromRequest(currentMsg) #]
+		println("pathTodo = ${pathut.getPathTodo()}") 
+ 	}
+	Goto nextMove    
+	
+	
+	State nextMove{ 
+		[# CurMoveTodo = pathut.nextMove() #]	
+		println("curMoveTodo= $CurMoveTodo" )
+	} 
+	Goto endWorkOk if [# CurMoveTodo.length == 0 #] else doMove
+	
+	State doMove{
+		printCurrentMessage
+		println("avoid too fast ..." )
+ 		delay 500  //avoid too fast ...
+ 	}
+	Goto doMoveW if [# CurMoveTodo == "w" #] else doMoveTurn
+	
+	State doMoveTurn{
+		forward basicrobot -m cmd : cmd($CurMoveTodo) //asynch !!!		
+	}
+	Transition t0 whenTime 300 ->  nextMove  //wait for move execution ...
+	
+	State doMoveW{
+		request basicrobot -m step : step( 350 )
+	}	
+	Transition t0 whenEvent alarm  ->  handleAlarm
+				  whenReply stepdone  -> nextMove  
+	              whenReply stepfail  -> endWorkKo
+	              
+	State handleAlarm{ 
+		printCurrentMessage
+		[# var pathTodo = pathut.getPathTodo() #]
+		println("handleAlarm ... pathTodo=$pathTodo")
+		//[# var CurMoveTodo = "" #] 
+	}	
+	Goto s0              
+	              
+	State endWorkOk{
+		printCurrentMessage
+		println("PATH DONE - BYE")
+		//[# var CurMoveTodo = "" #] 
+	}
+	Goto s0
+
+	State endWorkKo{
+		printCurrentMessage
+		[# var pathTodo = pathut.getPathTodo() #]
+		println("PATH FAILURE - SORRY. pathTodo=$pathTodo")
+		//[# var CurMoveTodo = "" #] 
+	}	
+	Goto s0
+	
+/* 	
+	Transition t0 whenEvent alarm  ->  handleAlarm  //first
+				  whenMsg pathdone ->  pathcompleted 
+				  whenMsg pathfail ->  pathfailure		  
+				  whenMsg moveok   ->  nextMove  
+*/				   
+/* 	  
+	State handleAlarm{ 
+		printCurrentMessage
+		//[# val Pathtodo = kotlinCode.pathexecutil.getCurrentPath() #]
+//		println(" AAAA | Pathtodo= $Pathtodo ...")
+	}
+	Transition t0 whenEvent alarm  ->  handleAlarm      //first 
+				  whenMsg pathdone ->  pathcompleted 	//manage pending messages
+				  whenMsg moveok   ->  nextMove  
+				  whenMsg movefail ->  pathfailure 
+		
+	State pathfailure{
+		printCurrentMessage		
+		//[# val Pathtodo = kotlinCode.pathexecutil.getCurrentPath().replace("p","w") #]
+		println("pathexec | END FAIL ")    
+		//forward spiralwalker -m  pathfail : pathfail( $Pathtodo ) //better to use request-response
+		//replyTo dopath with dopathfail : dopathfail( $Pathtodo )
+	}	  
+	Transition t0 whenRequest dopath -> doThePath //DO ANOTHER PATH
+	 
+	State pathcompleted{ 
+		printCurrentMessage
+		//[# val Pathtodo = kotlinCode.pathexecutil.getCurrentPath().replace("p","w") #]
+//		println("pathexec | END  Pathtodo= $Pathtodo ") 
+		//forward spiralwalker -m pathdone : pathdone(ok)  //better to use request-response
+//		replyTo dopath with dopathdone : dopathdone( ok )  //$Pathtodo
+	} 
+	Transition t0 whenRequest dopath -> doThePath //DO ANOTHER PATH
+  
+ */ 
+  
+//====================================================================================
+
+//Check the interaction with the basic robot
+	State testRobotCommands{
+		printCurrentMessage
+		//forward basicrobot -m cmd : cmd(a) 
+		//forward basicrobot -m cmd : cmd(d) 
+		request basicrobot -m step : step( 350 )
+	}
+	Transition t0 whenTime 500 -> again
+	
+	
+	State again{
+		printCurrentMessage
+	}
+	Transition t0 whenReply stepdone -> testRobotCommands
+	              whenReply stepfail -> endWorkKo
+	
+	
+
+} 
+
+/*
+ * spiralwalker
+*/
+
+/*  
+QActor spiralwalker context ctxPathexecutor{     
+[#  var stepCounter        = 1 
+	var CurrentPlannedMove = "" 
+	val mapname            = "roomMap"
+	val maxNumSteps        = 5	  
+	//val MYSELF             = myself	     
+#]	    
+	State s0 initial {	 
+		println("&&&  spiralwalker ACTIVE ...")    
+ 	} 
+	Transition t0 whenMsg start -> work
+	
+	State work{
+		println("&&&  spiralwalker STARTED")
+		run itunibo.planner.plannerUtil.initAI()
+		println("INITIAL MAP") 
+ 		run itunibo.planner.plannerUtil.showMap() 
+		run itunibo.planner.plannerUtil.startTimer()  		
+	}
+	Goto  exploreStep   
+	
+	State exploreStep{
+		[# val PathTodo = kotlinCode.walkerutil.doPlan("${stepCounter}","${stepCounter}" ); stepCounter++ #]
+		request pathexec -m dopath : dopath(  $PathTodo   ) 
+ 	} 
+ 	Transition t0   whenReply dopathdone -> backToHomeok
+ 					whenReply dopathfail -> backToHomeKO
+ 	
+	State backToHomeok{
+		println("backToHomeok ... ")
+		run kotlinCode.walkerutil.updateMapOk()
+		[# val PathTodo = kotlinCode.walkerutil.doPlan("0","0") #]
+		//forward pathexec -m dopath : dopath(  $PathTodo   ) 		
+		request pathexec -m dopath : dopath(  $PathTodo   ) 	
+	} 
+ 	Transition t0 whenReply dopathdone -> continueJob
+ 	 
+ 	 
+ 	State backToHomeKO{
+		println("backToHomeKO ... ")	
+		run kotlinCode.walkerutil.updateMapKO(mapname) 	
+ 		[# val PathTodo = kotlinCode.walkerutil.doPlan("0","0") #]
+		//forward pathexec -m dopath : dopath(  $PathTodo   ) 
+		request pathexec -m dopath : dopath(  $PathTodo   )		
+ 	}
+ 	Transition t0 whenReply dopathdone -> continueJob
+ 	 
+	State continueJob{ 
+		println("MAP AFTER BACK TO HOME nextstep=$stepCounter")
+		run kotlinCode.walkerutil.updateMapOk(mapname) 
+		//[# kotlinCode.pathexecutil.waitUser("another step $stepCounter") #]	
+	} 
+ 	Goto exploreStep if[# stepCounter < maxNumSteps #] else endOfJob 
+  	
+	State endOfJob{
+		run itunibo.planner.plannerUtil.getDuration() 
+		//forward testpatheexec -m mapDone : mapDone( mapname )
+	}
+ 	
+}//spiralwalker
+     
+*/      
+     
+/*
+ *  main
+*/   
+/* 
+QActor testpatheexec context ctxPathexecutor{
+ 	State s0 initial{  
+	}
+	Goto  explorewalk
+  				  
+	State explorewalk{
+		[# val PathTodo = "{\"path\":\"wwlw\" , \"owner\":\"spiralwalker\"}" #]
+		//The RESULT of path execution should be sent to the owner
+		println("doexplore starts")   
+		forward spiralwalker -m start : start(  any   )
+		//delay  1000
+		//emit alarm : alarm(fire) 		
+	}
+	Transition t0 whenMsg mapDone -> reachAPoint
+	
+	State reachAPoint{
+		[# kotlinCode.pathexecutil.waitUser("reachAPoint")  
+		   val PathTodo = kotlinCode.walkerutil.doPlan("3","2") #]  
+		//forward pathexec -m dopath : dopath(  $PathTodo   ) 		
+		request pathexec -m dopath : dopath(  $PathTodo   )  
+	}
+ 	Transition t0 whenReply  dopathdone -> reachAPointDone
+ 	    		  whenReply  dopathfail -> reachAPointFailure
+		    
+    State reachAPointDone{
+    	 run kotlinCode.walkerutil.updateMapOk("pointOkMap") 
+    	 [# println(itunibo.planner.plannerUtil.showMap()) #]
+    }
+    State reachAPointFailure{
+    	run kotlinCode.walkerutil.updateMapKO("pointFaiMap") 
+    	[# println(itunibo.planner.plannerUtil.showMap()) #]
+    	println("WARNING: point or path not free")
+    }
+   
+}
+*/

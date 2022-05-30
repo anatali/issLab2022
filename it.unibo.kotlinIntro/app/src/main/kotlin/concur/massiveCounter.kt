@@ -37,7 +37,7 @@ class CounterMsg(
   val response:CompletableDeferred<Int>?=null){
 }
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 //fun  counterActor()  =  GlobalScope.actor<CounterMsg> {
 val  counter  =  GlobalScope.actor<CounterMsg> {
@@ -52,7 +52,7 @@ val  counter  =  GlobalScope.actor<CounterMsg> {
         }    }
 }
 
-@kotlinx.coroutines.ExperimentalCoroutinesApi
+
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 fun main() = runBlocking{
     val cpus = Runtime.getRuntime().availableProcessors();

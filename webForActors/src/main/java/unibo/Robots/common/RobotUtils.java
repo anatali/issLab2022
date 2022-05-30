@@ -14,9 +14,10 @@ import unibo.actor22comm.utils.CommSystemConfig;
 import unibo.actor22comm.utils.CommUtils;
 
 public class RobotUtils {
-    public static final String robotCmdId   = "move";
-    public static final int robotPort       = 8083;
-    public static final String robotPortStr = "8083";
+    public static final String robotCmdId       = "move";
+    public static final String basicrobotCmdId  = "cmd";
+    public static final int robotPort       = 8020; //8083 is the cleaner robot
+    public static final String robotPortStr = ""+robotPort;
     private static Interaction2021 conn;
 
     public static void createRobotCleaner(){
@@ -42,17 +43,18 @@ public class RobotUtils {
     }
     public static void connectWithRobot(String addr){
         ConnQakBase connToRobot = ConnQakBase.create( ProtocolType.tcp );
-        conn = connToRobot.createConnection(addr, RobotUtils.robotPort);  //8083 is the cleaner robot
+        conn = connToRobot.createConnection(addr, RobotUtils.robotPort);
     }
 
     public static  IApplMessage moveAril(String robotName, String cmd  ) {
         //ColorsOut.outappl("HIController | moveAril cmd:" + cmd , ColorsOut.BLUE);
         switch( cmd ) {
-            case "w" : return CommUtils.buildDispatch("webgui", robotCmdId, "w", robotName);
-            case "s" : return CommUtils.buildDispatch("webgui", robotCmdId, "s", robotName);
-            case "a" : return CommUtils.buildDispatch("webgui", robotCmdId, "a", robotName);
-            case "d" : return CommUtils.buildDispatch("webgui", robotCmdId, "d", robotName);
-            case "h" : return CommUtils.buildDispatch("webgui", robotCmdId, "h", robotName);
+            case "w" : return CommUtils.buildDispatch("webgui", basicrobotCmdId, "cmd(w)", robotName);
+            case "s" : return CommUtils.buildDispatch("webgui", basicrobotCmdId, "cmd(s)", robotName);
+            case "l" : return CommUtils.buildDispatch("webgui", basicrobotCmdId, "cmd(a)", robotName);
+            case "r" : return CommUtils.buildDispatch("webgui", basicrobotCmdId, "cmd(d)", robotName);
+            case "h" : return CommUtils.buildDispatch("webgui", basicrobotCmdId, "cmd(h)", robotName);
+            case "p" : return CommUtils.buildRequest("webgui", "step", "step(345)", robotName);
 
             case "start"  : return CommUtils.buildDispatch("webgui", robotCmdId, "start",  robotName);
             case "stop"   : return CommUtils.buildDispatch("webgui", "stop", "do",   robotName);

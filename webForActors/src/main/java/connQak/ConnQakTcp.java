@@ -3,6 +3,7 @@ package connQak;
 import unibo.actor22comm.interfaces.Interaction2021;
 import unibo.actor22comm.tcp.TcpClientSupport;
 import unibo.actor22comm.utils.ColorsOut;
+import unibo.webForActors.WebSocketConfiguration;
 
 public class ConnQakTcp extends ConnQakBase{
     private Interaction2021 conn;
@@ -51,13 +52,13 @@ public class ConnQakTcp extends ConnQakBase{
                     while( true ) {
                         //ColorsOut.out(name + " | waits for message  ...");
                         String msg = conn.receiveMsg();
-                        ColorsOut.outappl("  | createInpurReader received:" + msg, ColorsOut.YELLOW );
+                        ColorsOut.outappl("ConnQakTcp InpurReader received:" + msg, ColorsOut.YELLOW );
                         if( msg == null ) {
                             conn.close();
                             break;
                         } else{
-                            //IApplMessage m = new ApplMessage(msg);
-                            //handler.elaborate( m, conn ); //chiama  ctxH
+                            //Siamo a livello di supporto: cleanArch ok
+                            WebSocketConfiguration.wshandler.sendToAll(msg);
                         }
                     }
                     ColorsOut.out("TcpApplMessageHandler  |  BYE", ColorsOut.BLUE   );
