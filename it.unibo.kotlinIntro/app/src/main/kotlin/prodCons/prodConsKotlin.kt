@@ -36,14 +36,16 @@ suspend fun doconsume(){
     producer.consumeEach { println( "doconsume receives2 $it in ${curThread()}") }
 }
 
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-
-fun main() {
-    println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")
+fun manyTypeProducerOnChannel(){
     runBlocking {
         createProducer(this);
         doconsume()
         println("ENDS runBlocking ${kotlindemo.curThread()}")
     }
+}
+
+fun main() {
+    println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")
+    manyTypeProducerOnChannel()
     println("ENDS main ${kotlindemo.curThread()}")
 }

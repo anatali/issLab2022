@@ -67,12 +67,19 @@ suspend fun channelTestMany( scope : CoroutineScope ){
     }
 }
 
-fun main() {
-    println("BEGINS CPU=$cpus ${curThread()}")
+
+fun doDemoChannelTestOneSenderOneReceiver(){
     runBlocking {
         channelTest(this)
-        //channelTestMany(this)
-        println("ENDS runBockig ${curThread()}")
-     }
+    }
+}
+fun doDemoChannelTestMany(){
+    runBlocking {
+        channelTestMany(this)
+    }
+}
+fun main() {
+    println("BEGINS CPU=$cpus ${curThread()}")
+    doDemoChannelTestMany()
     println("ENDS main ${curThread()}")
 }

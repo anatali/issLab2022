@@ -35,14 +35,16 @@ fun consumer2(scope: CoroutineScope){
     }
 }
 
+fun manyConsumers(){
+    runBlocking {
+        consumer1(this)
+        consumer2(this)
+    }
+}
 
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 fun main() {
     println("BEGINS CPU=${kotlindemo.cpus} ${kotlindemo.curThread()}")
-    runBlocking {
-        consumer1(this)
-        consumer2(this)
-        println("ENDS runBlocking ${kotlindemo.curThread()}")
-    }
+    manyConsumers()
     println("ENDS main ${kotlindemo.curThread()}")
 }

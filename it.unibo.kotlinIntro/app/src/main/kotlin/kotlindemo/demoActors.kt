@@ -46,14 +46,15 @@ fun startSender( ){
  	}
 }
 
-@kotlinx.coroutines.ObsoleteCoroutinesApi
-
-fun main() {
-	println("BEGINS CPU=$cpus ${curThread()}")
+fun actorsSenderReceiver(){
 	runBlocking {
 		startReceiver(this)	//first
 		startSender()
-		println("ENDS runBlocking ${curThread()}")
 	}
+}
+
+fun main() {
+	println("BEGINS CPU=$cpus ${curThread()}")
+	actorsSenderReceiver();
 	println("ENDS main ${curThread()}")
 }
