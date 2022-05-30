@@ -75,73 +75,266 @@ all’interno dei <a class="reference internal" href="QakIntro.html#qak-specific
 tenendo conto di un percorso logico che distingue (al solito) una parte
 relativa alla <em>organizzazione strutturale</em> dei programmi, una parte relativa alla
 <em>esecuzione</em> (concorrente) di attività e una parte relativa alla <em>interazione</em> tra attività.</p>
-<section id="la-parte-strutturale">
-<h3>La parte strutturale<a class="headerlink" href="#la-parte-strutturale" title="Permalink to this headline">¶</a></h3>
+<section id="learning-by-examples">
+<h3>Learning by examples<a class="headerlink" href="#learning-by-examples" title="Permalink to this headline">¶</a></h3>
+<p>Funzioni, coroutines attori</p>
 <ol class="arabic simple">
-<li><p>Kotlin intende promuovere l’idea della <a class="reference external" href="https://it.wikipedia.org/wiki/Programmazione_funzionale">Programmazione funzionale</a> e per cui le <span class="blue">funzioni</span> sono gli elementi di base di
-qualsiasi computazione.</p>
-<ul class="simple">
-<li><p>Un <span class="blue">dato</span> è concettualmente un valore prodotto da una funzione, il cui tipo viene <strong>inferito</strong>
-(si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#data">Data, Types and Variables</a>)</p></li>
-<li><p>Le funzioni sono <em>oggetti di prima classe</em> che hanno un tipo, possono essere assegnati a variabili e
-usati come argomenti di funzioni o come valori di ritorno. (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#fun">Functions</a>)</p></li>
-</ul>
-</li>
-<li><p>Kotlin supporta Object Oriented Programming (OOP)  e fornisce funzionalità come astrazione, incapsulamento, ereditarietà
-ma in modo diverso da Java  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#classes">Classes and Objects in Kotlin</a>). di particolare rilevanza:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinObject">Kotlin Object</a></p></li>
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinclass">Kotlin Class</a></p></li>
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#ill">About initializazion</a></p></li>
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#sealedclass">Sealed clsss</a></p></li>
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#companionobj">Companion object</a></p></li>
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#inheritance">Inheritance</a></p></li>
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#propdeleg">Property delegation</a> ( <a class="reference external" href="https://kotlinlang.org/docs/delegated-properties.html">Delegated properties</a> )</p></li>
-<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#enumclass">Enum classes</a>  ( <a class="reference external" href="https://kotlinlang.org/docs/enum-classes.html">Enum class</a> )</p></li>
-</ul>
-</li>
+<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoBasic.kt">demoBasic.kt</a>: introduzione alle nuove notazioni e alla nuova possibile impostazione dei programmi</p></li>
+<li><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoLambda.kt">demoLambda.kt</a>: shortcut per le lambda</p></li>
 </ol>
 </section>
+</section>
+<section id="la-parte-strutturale">
+<h2>La parte strutturale<a class="headerlink" href="#la-parte-strutturale" title="Permalink to this headline">¶</a></h2>
+<section id="dati-e-tipi">
+<h3>Dati e tipi<a class="headerlink" href="#dati-e-tipi" title="Permalink to this headline">¶</a></h3>
+<p>Kotlin intende promuovere l’idea della <a class="reference external" href="https://it.wikipedia.org/wiki/Programmazione_funzionale">Programmazione funzionale</a>, per cui <a class="reference internal" href="#le-funzioni"><span class="std std-ref">Le funzioni</span></a> sono
+gli elementi di base di  qualsiasi computazione (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#data">Data, Types and Variables</a> ).</p>
+<p>Un <span class="blue">dato</span> è concettualmente un valore prodotto da una funzione, il cui tipo viene <strong>inferito</strong></p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoBasic.kt">demoBasic.kt</a></p></td>
+<td><p><cite>var, val, Type, Any, Unit, NullaleType, Smart/Explicit cast (as operator), ==, ===, Range, ArrayOf, Property</cite></p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="oggetti-e-classi">
+<h3>Oggetti e classi<a class="headerlink" href="#oggetti-e-classi" title="Permalink to this headline">¶</a></h3>
+<p>Kotlin supporta <em>Object Oriented Programming</em> (<strong>OOP</strong>)  e fornisce funzionalità come astrazione, incapsulamento, ereditarietà
+ma in modo diverso da Java  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#classes">Classes and Objects in Kotlin</a>).</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoClasses.kt">demoClasses.kt</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SingleCounter</span></code>
+<code class="docutils literal notranslate"><span class="pre">Person</span></code>
+<code class="docutils literal notranslate"><span class="pre">PersonILL</span></code>
+<code class="docutils literal notranslate"><span class="pre">Expr</span></code>
+<code class="docutils literal notranslate"><span class="pre">PersonCo</span></code>
+<code class="docutils literal notranslate"><span class="pre">Student</span></code>
+<code class="docutils literal notranslate"><span class="pre">Delegate</span></code>
+<code class="docutils literal notranslate"><span class="pre">Color</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinObject">Kotlin Object</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SingleCounter</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinclass">Kotlin Class</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Person</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#ill">About initializazion</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PersonILL,</span> <span class="pre">lateinit,</span> <span class="pre">lazy</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#sealedclass">Sealed clsss</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Expr</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#companionobj">Companion object</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PersonCo</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#inheritance">Inheritance</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Student</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#propdeleg">Property delegation</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Delegate</span></code>,  see <a class="reference external" href="https://kotlinlang.org/docs/delegated-properties.html">Delegated properties</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#enumclass">Enum classes</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Color</span></code>,  see <a class="reference external" href="https://kotlinlang.org/docs/enum-classes.html">Enum class</a></p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="le-funzioni">
+<h3>Le funzioni<a class="headerlink" href="#le-funzioni" title="Permalink to this headline">¶</a></h3>
+<p>Le funzioni sono <em>oggetti di prima classe</em> che hanno un tipo, possono essere assegnati a variabili e
+usati come argomenti di funzioni o come valori di ritorno.</p>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoFun.kt">demoFun.kt</a></p></td>
+<td><p><cite>Top-level fun, One-line fun, FunctionType, Lambda Exp Literal, Anonymous fun</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#funs">Functions</a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoLambda.kt">demoLambda.kt</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Lambda</span> <span class="pre">syntax</span> <span class="pre">shortcut</span></code>, <code class="docutils literal notranslate"><span class="pre">Function</span> <span class="pre">reference</span></code>, <code class="docutils literal notranslate"><span class="pre">let,</span> <span class="pre">run,</span> <span class="pre">it</span></code> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#lambda">Using Lambda</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoCps.kt">demoCps.kt</a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Lexical</span> <span class="pre">Closures</span></code>, <code class="docutils literal notranslate"><span class="pre">Callbacks</span></code>, <code class="docutils literal notranslate"><span class="pre">Continuation</span> <span class="pre">Passing</span> <span class="pre">Style</span></code> (<strong>CPS</strong>)  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#clos">Closures, Callbacks and CPS</a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoCpsAsynch.kt">demoCpsAsynch.kt</a></p></td>
+<td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CPS</span> <span class="pre">in</span> <span class="pre">Asynchronous</span> <span class="pre">programming</span></code>, <code class="docutils literal notranslate"><span class="pre">Single</span> <span class="pre">Abstract</span> <span class="pre">Method</span> <span class="pre">converstoion</span></code> (<strong>SAM</strong>)</dt><dd><p>(si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#async">Towards Asynchronous Programming</a>)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Una lettura interessante: <a class="reference external" href="https://www.baeldung.com/kotlin/inline-functions">Inline Functions</a>:</p>
+<blockquote>
+<div><p>In this tutorial, first we’re going to enumerate two seemingly unrelated issues about lambdas and generics and then,
+after introducing <span class="blue">Inline Functions</span>, we’ll see how they can address both of those concerns.</p>
+</div></blockquote>
+</section>
+</section>
 <section id="la-parte-concorrente">
-<h3>La parte concorrente<a class="headerlink" href="#la-parte-concorrente" title="Permalink to this headline">¶</a></h3>
-<ol class="arabic">
+<h2>La parte concorrente<a class="headerlink" href="#la-parte-concorrente" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
 <li><p>Il runtime Kotlin/Native <strong>non incoraggia</strong> un classico modello di concorrenza orientato ai thread
 con blocchi di codice che si escludono a vicenda e variabili condizionali, poiché questo modello
 è noto per essere soggetto a errori e inaffidabile.</p></li>
-<li><p>Invece dei thread, il runtime Kotlin/Native offre il concetto di <span class="blue">Worker</span>:
-flussi di flusso di controllo eseguiti contemporaneamente con una coda di richiesta associata.
-I Worker sono molto simili agli attori nell’<a class="reference external" href="https://en.wikipedia.org/wiki/Actor_model">Actor Model</a>.</p>
-<ul class="simple">
-<li><p>un <a class="reference external" href="https://kotlinlang.org/docs/native-immutability.html#workers">Kotlin Worker</a> può scambiare oggetti Kotlin con un altro Worker. L’oggetto o è immutabile
-o, se modificabile, è proprietà di un singolo Worker, in modo da garantire un singolo mutator
-ed evitare locking. La proprietà può essere trasferita. Si veda anche <a class="reference external" href="https://kotlinlang.org/docs/multiplatform-mobile-concurrency-overview.html">Kotlin Concurrency overview</a>.</p></li>
-</ul>
-</li>
 <li><p>Le <a class="reference external" href="https://it.wikipedia.org/wiki/Chiusura_(informatica)">Chiusure lessicali</a> sono spesso usati come <span class="blue">callbacks</span> in programmi con asincronismo <a class="reference external" href="https://it.wikipedia.org/wiki/I/O_bound">I/O bound</a>,
 in accordo allo stile di programmazione <strong>CPS</strong> (<a class="reference external" href="https://en.wikipedia.org/wiki/Continuation-passing_style">Continuation-passing style</a>) .</p></li>
 <li><p>Per dare supporto alla <em>programmazione asincrona</em> (o <em>non bloccante</em>), evitando il noto callback hell
 (si veda <a class="reference external" href="https://en.wikipedia.org/wiki/Asynchronous_I/O">Asynchronous I/O</a>), Kotlin introduce il meccanismo delle <em>coroutines</em>.</p></li>
-<li><p>Una coroutine (si veda) <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#coroutinesIntro">Introduction to coroutines</a>) è una <em>istanza di calcolo sospendibile</em>
-non vincolata a a nessun thread particolare.
-Può sospendere la sua esecuzione in un thread e riprendere in un altro.</p>
+</ol>
+<section id="kotlin-concurrent-overview">
+<h3>Kotlin concurrent overview<a class="headerlink" href="#kotlin-concurrent-overview" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p>A function can be activated as a coroutine, i.e. as a a sort of ‘light-weight thread’.</p></li>
+<li><p>A coroutine can invoke other functions; it can also <a class="reference internal" href="#id1"><span class="std std-ref">suspend</span></a> its behavior (without
+blocking its running thread).</p>
 <a class="reference internal image-reference" href="_images/coroutines0.png"><img alt="_images/coroutines0.png" class="align-center" src="_images/coroutines0.png" style="width: 40%;" /></a>
-<p>Il concetto si basa sull’idea di sospendere un calcolo senza bloccare un thread
-(si veda <span class="blue">suspend function</span> in <a class="reference external" href="https://kotlinlang.org/docs/coroutines-basics.html#extract-function-refactoring">Coroutines basics</a>)
-implementato utilizzando (dietro le quinte) una macchina a stati e <code class="docutils literal notranslate"><span class="pre">CPS</span></code> .
-Le coroutines non sono parte del linguaggio e nemmeno della libreria standard; fanno parte di una libreria separata</p>
 </li>
+<li><p>Interaction among concurrent activities (coroutines) can be supported by <a class="reference internal" href="#i-canali"><span class="std std-ref">channels</span></a> that provide
+suspensive send/receive operations.</p>
+<a class="reference internal image-reference" href="_images/UsingChannelManyCoroutines.png"><img alt="_images/UsingChannelManyCoroutines.png" class="align-center" src="_images/UsingChannelManyCoroutines.png" style="width: 80%;" /></a>
+</li>
+<li><p>Combining a coroutine with a channel to communicate with other coroutines makes the idea
+of Kotlin <a class="reference internal" href="#gli-attori"><span class="std std-ref">actor</span></a>.</p></li>
 </ol>
 </section>
+<section id="le-coroutines">
+<h3>Le coroutines<a class="headerlink" href="#le-coroutines" title="Permalink to this headline">¶</a></h3>
+<p>Una coroutine (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#coroutinesIntro">Introduction to coroutines</a>) è una <em>istanza di calcolo sospendibile</em>
+non vincolata a a nessun thread particolare.
+Può sospendere la sua esecuzione in un thread e riprendere in un altro.</p>
+<p>Il concetto di coroutine si basa sull’idea di sospendere un calcolo senza bloccare un thread
+(si veda <span class="blue">suspend function</span> in <a class="reference external" href="https://kotlinlang.org/docs/coroutines-basics.html#extract-function-refactoring">Coroutines basics</a>)
+implementato utilizzando (dietro le quinte) una macchina a stati e <a class="reference internal" href="#le-funzioni"><span class="std std-ref">CPS</span></a> .</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/coroutines.png"><img alt="_images/coroutines.png" class="align-center" src="_images/coroutines.png" style="width: 40%;" /></a>
+</div></blockquote>
+<p>Le coroutines non sono parte del linguaggio e nemmeno della libreria standard; fanno parte di una libreria separata</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/democoroutinesintro.kt">demoCoroutinesIntro.kt</a></p></td>
+<td><p><cite>GlocalScope, CoroutineScope, Launch, Join, runBlocking, Dispatchers</cite></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demodispatchers.kt">demoDispatchers.kt</a></p></td>
+<td><p><cite>Dispatchers.Default, Dispatchers.IO, newSingleThreadContext, Dispatchers.Unconfined</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#dispatchers">Dispatchers</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demosequences.kt">demoSequences.kt</a></p></td>
+<td><p><cite>Sequences, Suspendable sequences (yield) `</cite></p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="id1">
+<h3>Suspending functions<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Una funzione di sospensione è una normale funzione di Kotlin con l’aggiunta del modificatore <strong>suspend</strong>
+che indica che la funzione può sospendere l’esecuzione di una coroutine.</p>
+<a class="reference internal image-reference" href="_images/coroutineSuspend1.png"><img alt="_images/coroutineSuspend1.png" class="align-center" src="_images/coroutineSuspend1.png" style="width: 40%;" /></a>
+<p>Le <em>suspending function</em> possono richiamare qualsiasi altra funzione regolare, ma per sospendere effettivamente
+l’esecuzione, questa deve essere un’altra funzione di sospensione.</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demosuspended.kt">demoSuspended.kt</a></p></td>
+<td><p><cite>Delay,async coroutine builder</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#suspend">Suspending functions</a>)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+</section>
 <section id="la-parte-interazione">
-<h3>La parte interazione<a class="headerlink" href="#la-parte-interazione" title="Permalink to this headline">¶</a></h3>
+<h2>La parte interazione<a class="headerlink" href="#la-parte-interazione" title="Permalink to this headline">¶</a></h2>
+<p>I <a class="reference external" href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-deferred/">Deferred values</a> forniscono un modo conveniente per trasferire un singolo valore tra coroutine.</p>
 <ol class="arabic simple">
-<li><p>I <a class="reference external" href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-deferred/">Deferred values</a> forniscono un modo conveniente per trasferire un singolo valore tra coroutine.
-I <a class="reference external" href="https://kotlinlang.org/docs/channels.html">Canali Kotlin</a> forniscono un modo per trasferire un flusso di valori (uno <span class="blue">stream</span>).</p></li>
-<li><p>Un <em>attore Kotlin</em> è una combinazione di una coroutine, lo stato in essa incapsulato e confinato e un canale
-per comunicare con altre coroutine.
-Gli <a class="reference external" href="https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#actors">Attori Kotlin</a> promuovono uno stile di programmazione basato su messaggi che supera
-la tradizionale interazione di chiamata di procedura senza perdere in prestazioni.</p></li>
+<li><p>I <a class="reference external" href="https://kotlinlang.org/docs/channels.html">Canali Kotlin</a> forniscono un modo per trasferire un flusso di valori (uno <span class="blue">stream</span>).</p></li>
+<li><p>Un <em>attore Kotlin</em> è una combinazione di una coroutine, lo stato in essa incapsulato/confinato e un canale
+per comunicare con altre coroutine.</p></li>
 </ol>
+<section id="i-canali">
+<h3>I canali<a class="headerlink" href="#i-canali" title="Permalink to this headline">¶</a></h3>
+<p>A <a class="reference external" href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/-channel/index.html">KotlinChannel</a> is conceptually very similar to a <em>BlockingQueue</em>.
+One key difference is that instead of a blocking put operation it has a <em>suspending send</em>,
+and instead of a blocking take operation it has a <em>suspending receive</em>.
+They are used for providing and consuming objects from the channel, implemented with a FIFO strategy.</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demochannels.kt">demoChannels.kt</a></p></td>
+<td><p><cite>Channel&lt;Int&gt;</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#channels">Kotlin channels</a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/simpleproducerkotlin.kt">simpleProducerKotlin.kt</a></p></td>
+<td><p><cite>ReceiveChannel&lt;Int&gt;</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/prodconskotlin.kt">prodConsKotlin.kt</a></p></td>
+<td><p><cite>ManyType producer</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/prodmanyconskotlin">prodManyConsKotlin.kt</a></p></td>
+<td><p><cite>Many consumers</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="gli-attori">
+<h3>Gli attori<a class="headerlink" href="#gli-attori" title="Permalink to this headline">¶</a></h3>
+<p>Gli <a class="reference external" href="https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#actors">Attori Kotlin</a> promuovono uno stile di programmazione basato su messaggi che supera
+la tradizionale interazione di chiamata di procedura senza perdere in prestazioni.</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoactors.kt">demoActors.kt</a></p></td>
+<td><p>(si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#actors">Kotlin Actors</a>)</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/demoActor0.png"><img alt="_images/demoActor0.png" class="align-center" src="_images/demoActor0.png" style="width: 50%;" /></a>
+</div></blockquote>
+</td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoactorcounter.kt">demoActorCounter.kt</a></p></td>
+<td><p>(si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#actorcounter">actorcounter</a>)</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/demoActorCounter.png"><img alt="_images/demoActorCounter.png" class="align-center" src="_images/demoActorCounter.png" style="width: 30%;" /></a>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 </section>
 </section>
 </section>
@@ -201,9 +394,24 @@ la tradizionale interazione di chiamata di procedura senza perdere in prestazion
 <li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">KotlinNotes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#koltin-per-iss-72939">Koltin per ISS-72939</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#la-parte-strutturale">La parte strutturale</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#la-parte-concorrente">La parte concorrente</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#la-parte-interazione">La parte interazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#learning-by-examples">Learning by examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#la-parte-strutturale">La parte strutturale</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dati-e-tipi">Dati e tipi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#oggetti-e-classi">Oggetti e classi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#le-funzioni">Le funzioni</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#la-parte-concorrente">La parte concorrente</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kotlin-concurrent-overview">Kotlin concurrent overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#le-coroutines">Le coroutines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Suspending functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#la-parte-interazione">La parte interazione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#i-canali">I canali</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gli-attori">Gli attori</a></li>
 </ul>
 </li>
 </ul>
