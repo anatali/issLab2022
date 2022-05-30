@@ -33,7 +33,10 @@ fun createProducer(scope : CoroutineScope ){
 suspend fun doconsume(){
     val v = producer.receive()	//the first item
     println( "doconsume receives1 $v in ${curThread()}")
-    producer.consumeEach { println( "doconsume receives2 $it in ${curThread()}") }
+    producer.consumeEach {
+        println( "doconsume receives2 $it in ${curThread()}")
+        delay(500)
+    }
 }
 
 fun manyTypeProducerOnChannel(){

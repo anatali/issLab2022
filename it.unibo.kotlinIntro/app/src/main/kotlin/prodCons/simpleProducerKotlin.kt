@@ -31,7 +31,7 @@ fun startProducer( scope: CoroutineScope ) {
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 suspend fun consume( ){
     val v = simpleProducer.receive()  //the first
-    //delay(50)
+    delay(250)
     println( "consume- first ${v} at ${System.currentTimeMillis()} in ${curThread()}" )
     simpleProducer.consumeEach {
         //delay(50)
@@ -63,11 +63,12 @@ suspend fun consume1( scope: CoroutineScope ){
 fun main() {
     println("BEGINS CPU=$cpus ${kotlindemo.curThread()}")
     runBlocking {
-        //startProducer(this)
-        //consume()
+        startProducer(this)
+        consume()
 //MORE FUNCTIONAL STYLE
+        /*
         val myscope = CoroutineScope(dispatcher)
-        consume1(myscope)
+        consume1(myscope)*/
         println("ENDS runBlocking ${kotlindemo.curThread()}")
     }
     println("ENDS main ${kotlindemo.curThread()}")
