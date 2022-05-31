@@ -38,6 +38,7 @@ iss22
    BasicRobot22
    Applicazioni22
    KotlinNotes
+   demo2022
 
 
 Indices and tables
