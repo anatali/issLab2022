@@ -29,8 +29,7 @@ val choiche = arrayOf("demoBaseFunzioni","demoLambda","demoCps","demoAsynchCps",
      "ioBoundFunCallBlocking","ioBoundFunCallnewSingleThreadContext","ioBoundFunCallActivate",
     "demoChannelTestOneSendRec","demoChannelTestMany",
     "manyTypeProducerOnChannel", "manyConsumers",
-     "actorsSenderReceiver", "doCounterActor",
-     "testObject","testClass","testPropertyDelegate","testDataClass","testCompanion","testInheritance"  )
+     "actorsSenderReceiver", "doCounterActor" )
 
 var demoTodo : () -> Unit = { println("nothing to do") }
 fun readInt() : Int { print(">"); return readLine()!!.toInt() }
@@ -67,9 +66,8 @@ fun doDemo( input : Int ){
         19 ->  demoTodo =  { prodCons.manyTypeProducerOnChannel() }
         20 ->  demoTodo =  { prodCons.manyConsumers() }
         21 ->  demoTodo =  { kotlindemo.actorsSenderReceiver() }
-        22 ->  demoTodo =  { kotlindemo.actorsSenderReceiver() }
-        23 ->  demoTodo =  { kotlindemo.doCounterActor() }
-        24 ->  demoTodo =  { kotlindemo.doCounterActor() }
+        22 ->  demoTodo =  { kotlindemo.doCounterActor() }
+
         else ->  { println("command unknown") }  //Note the block
     }
     println( "work done in time= ${measureTimeMillis(  demoTodo )}"  )

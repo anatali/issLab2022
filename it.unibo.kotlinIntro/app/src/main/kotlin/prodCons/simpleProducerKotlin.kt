@@ -11,7 +11,7 @@ produce coroutine builder : can send items to a ReceiveChannel
     - capacity   : default (0) or set by the user
  */
 
-val dispatcher  = newSingleThreadContext("myThread") //Dispatchers.IO //
+val dispatcher  = newSingleThreadContext("oneThread") //Dispatchers.IO //
 //var simpleProducer : ReceiveChannel<Int>? = null
 lateinit var simpleProducer : ReceiveChannel<Int>
 
