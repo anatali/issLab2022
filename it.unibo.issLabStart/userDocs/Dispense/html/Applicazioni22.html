@@ -154,6 +154,229 @@ E’ utile confrontare questo modello con:</p>
 <p>Il progetto  <a class="reference external" href="../../../../../unibo.robotappl">unibo.robotappl</a>:  utilizza <a class="reference internal" href="#pathexec"><span class="std std-ref">pathexec</span></a> per spostare il robot in un dato punto della stanza,
 nota la mappa.</p>
 </section>
+<section id="riprendiamo-il-radarsystem">
+<h2>Riprendiamo il RadarSystem<a class="headerlink" href="#riprendiamo-il-radarsystem" title="Permalink to this headline">¶</a></h2>
+<p>Affrontare la costrzuione di un sistema software partendo dalla costruzione di
+uno o più modelli
+significa promuovere una <span class="blue">metodologia di sviluppo top-down</span> che, partendo dai requisiti,
+giunge al livello delle tecnologie di implementazione solo dopo avere ben compreso
+le problematiche indotte dai requisiti stessi e dopo avere definito l’architettura del sistema.</p>
+<p>Le tecnologie adottate per la implementazione non sono quindi più una scelta ‘a-priori’, ma costitusicono la
+risposta ritenuta più adeguata dagli analisti e dai progettisti per la costruzione concreta del sistema.</p>
+<p>Al termine del nsotro percorso, è quindi opportuno riprendere il sistema <a class="reference internal" href="RadarSystem.html#radarsystem"><span class="std std-ref">RadarSystem</span></a> dal quale siamo partiti
+cercando di impostare la fase di analisi dei requisiti e la fase di analisi del problema con l’obiettivo di
+definre, al temine di ciscuna di queste, un modello (eseguibile) del sistema, avvalendoci
+del <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">QActor (meta)model</span></a>.</p>
+<p>Cerchermo di procedere in modo sintetico, evidenziando, per ogni fase, i punti salienti, con richiami a quanto
+fatto in precedenza.</p>
+<section id="radarsystem-analisi-dei-requisiti">
+<h3>RadarSystem: analisi dei requisiti<a class="headerlink" href="#radarsystem-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h3>
+<p>Abbiamo già introdotto una <a class="reference internal" href="RadarSystem.html#user-story"><span class="std std-ref">User story</span></a> e, dopo le <a class="reference internal" href="RadarSystem.html#domande-al-committente"><span class="std std-ref">Domande al committente</span></a>, abbiamo
+asserito (in linguaggio naturale) che:</p>
+<ul class="simple">
+<li><p>Si tratta di realizzare un sistema software distribuito ed eterogeneo</p></li>
+</ul>
+<p>I termini di modello possiamo ‘formalizzare’ questo asserto nel modo che segue:</p>
+<section id="radarsystem-modello-dei-requisiti">
+<h4>RadarSystem: modello dei requisiti<a class="headerlink" href="#radarsystem-modello-dei-requisiti" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="n">radarsystem22</span>
+
+<span class="n">Context</span> <span class="n">ctxrasp</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;192.168.1.xxx&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8086</span><span class="p">]</span>  <span class="o">//</span><span class="n">Raspberry</span>
+<span class="n">Context</span> <span class="n">ctxpc</span>   <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;192.168.1.yyy&quot;</span> <span class="n">port</span><span class="o">=</span><span class="mi">8088</span><span class="p">]</span>  <span class="o">//</span><span class="n">PC</span>
+
+<span class="n">QActor</span> <span class="n">sonar22</span> <span class="n">context</span> <span class="n">ctxrasp</span><span class="p">{</span> <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{}</span> <span class="p">}</span>
+<span class="n">QActor</span> <span class="n">led22</span> <span class="n">context</span> <span class="n">ctxrasp</span><span class="p">{</span> <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{}</span><span class="o">.</span> <span class="p">}</span>
+<span class="n">QActor</span> <span class="n">radar22</span> <span class="n">context</span> <span class="n">ctxpc</span><span class="p">{</span> <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{}</span> <span class="p">}</span>
+<span class="n">QActor</span> <span class="n">controller22</span> <span class="n">context</span> <span class="n">ctxpc</span><span class="p">{</span> <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span><span class="p">{}</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Questo modello, a livello-requisiti,  dice che il sistema <strong>deve essere</strong> distributo su due nodi (contesti):
+il sotto-sistema sul Raspberry deve includere i dispositivi, mentre il sotto-sistema sul PC deve includere
+il RadarDisplay e il Controller.</p>
+<p>L’esistenza del Controller non si evince dal testo dei requisiti, ma è stata motivata nella nostra
+prima <a class="reference internal" href="RadarSystemAnalisi.html#analisi-del-problema"><span class="std std-ref">Analisi del problema</span></a>, che si era conclusa con la evidenziazione di <a class="reference internal" href="RadarSystemAnalisi.html#un-primo-abstraction-gap"><span class="std std-ref">Un primo abstraction gap</span></a>
+che ci ha indotto a iniziare un percorso per definire e costruire
+<em>componenti riusabili che possano ‘sopravvivere’ all’applicazione che stiamo costruendo per poter essere
+impiegati in futuro in altre applicazioni distribuite</em>.</p>
+<p>Questo percorso è stato svolto in modo <a class="reference internal" href="CostruireSoftware.html#sviluppo-bottomup"><span class="std std-ref">bottom-up</span></a>, partendo dai protocolli per le comunicazioni
+in rete, ed è culminato, dopo vari passi, nella definizione del <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">QActor (meta)model</span></a>.
+Questo linguaggio si basa su un insieme di concetti (metamodello) che ora ci permette di:</p>
+<ul class="simple">
+<li><p>ignorare i dettagli tecnologici relativi alle interazioni</p></li>
+<li><p>focalizzare l’attenzione sulla logica della interazione e sulle informazioni che i componenti si devono scambiare</p></li>
+<li><p>impostare in tempi brevi un prototipo eseguibile con cui interagire con il committente</p></li>
+</ul>
+<p>La costruzione di un <span class="blue">prototipo eseguibile</span> diventa ora un obiettivo importante, fin
+dalla fase di analisi del problema o, quantomento, fin dal primo SPRINT di progettazione/sviluppo.</p>
+</section>
+</section>
+<section id="radarsystem-analisi-del-problema">
+<h3>RadarSystem: analisi del problema<a class="headerlink" href="#radarsystem-analisi-del-problema" title="Permalink to this headline">¶</a></h3>
+<p><span class="remark">Domanda-chiave: come interagiscono i componenti?</span></p>
+<p>La risposta ‘formale’ a questa domanda induce a definire un insieme di (tipi di) messaggi, prima ancora di addentrarci
+sui dettagli interni dei componenti.</p>
+<p>Ricordiamo il nostro precedente <a class="reference internal" href="RadarSystemSupporti.html#sprint2-radarsystem-distribuito"><span class="std std-ref">SPRINT2: RadarSystem distribuito</span></a> e il lavoro connesso alla fase
+di <a class="reference internal" href="RadarSystemSupporti.html#sprint2-deployment"><span class="std std-ref">Deployment</span></a>, che ora sappiamo poter variare agevolmente,  agendo su una
+dichiarazione. Se ad esempio si ritiene opportuno che anche il <em>Controller</em> operi sul RaspberryPi, basterà dire:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">QActor</span> <span class="n">controller22</span> <span class="n">context</span> <span class="n">ctxrasp</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>La nostra attenzione è invece ora rivolta a un aspetto che rimaneva sommerso nella fase in cui volevamo
+definire i <a class="reference internal" href="RadarSystemSupporti.html#supporti-per-comunicazioni"><span class="std std-ref">Supporti per comunicazioni</span></a> e che si è  evidenziato
+dapprima nella fase di <a class="reference internal" href="Enablers.html#approfondimento-della-analisi-del-problema"><span class="std std-ref">Approfondimento della analisi del problema</span></a> e poi, passando attraverso ol concetto di
+<a class="reference internal" href="ContestiContenitori.html#contesti-contenitori"><span class="std std-ref">Contesti-contenitori</span></a>, nella introduziuone di una <a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi"><span class="std std-ref">Struttura dei messaggi applicativi</span></a>
+basata su una precisa  <a class="reference internal" href="CostruireSoftware.html#terminologia-di-riferimento"><span class="std std-ref">Terminologia di riferimento</span></a> (tipologia) per i messaggi.</p>
+<p>Ora, come analisti del problema, <strong>asseriamo</strong> che:</p>
+<ul class="simple">
+<li><p>il <em>Sonar</em> è un dispositivo che, una volta attivato, emette informazioni senza sapere a chi interessino</p></li>
+<li><p>il <em>RadarDisplay</em> è un componente interessato alle informazioni emesse dal Sonar</p></li>
+<li><p>il <em>Led</em> è un dispositivo che esegue comandi di on/off</p></li>
+<li><p>il <em>Controller</em> è il componente che include la businness logic. Esso è interessato alle informazioni emesse dal Sonar.
+in quanto deve inviare comandi al Led a secondo dalla distanza rilevata. Il <em>Controller</em> è anche ritenuto
+responsabile dalla attivazione/disattivazione del <em>Sonar</em>.</p></li>
+</ul>
+<p>In questa analisi, abbiamo ritenuto un valore aggiunto quello di ridurre quanto più possibile le conoscenze
+reciproche (e quindi <em>ridurre le interdipendenze esplicite</em>) tra i componenti.</p>
+<p>Come analisti, indichiamo quindi che componenti del sistema <strong>devono</strong>  interagire
+utilizzando i seguenti tipi di messaggio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dispatch</span> <span class="n">sonaractivate</span>   <span class="p">:</span> <span class="n">info</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>  <span class="o">//</span>
+<span class="n">Dispatch</span> <span class="n">sonardeactivate</span> <span class="p">:</span> <span class="n">info</span><span class="p">(</span><span class="n">ARG</span><span class="p">)</span>
+<span class="n">Dispatch</span> <span class="n">ledCmd</span>          <span class="p">:</span> <span class="n">ledCmd</span><span class="p">(</span><span class="n">ONOFF</span><span class="p">)</span>
+<span class="n">Event</span>    <span class="n">sonardata</span>       <span class="p">:</span> <span class="n">distance</span><span class="p">(</span> <span class="n">V</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p><span class="remark">Punto-chiave: se qualche analista dissente, non possiamo passare al progetto</span></p>
+<p>Infatti possiamo pensare ai risulati dell’analisi come la specifica di COSA (<strong>WHAT</strong>) occoore fare.
+Compito del progetto è di passare da WHAT a <strong>HOW</strong>.</p>
+<p>Tuttavia, come analisti del problema, possiamo anche definire una versione eseguibile del modello, in modo da
+coinvolgere subito anche il committente <em>‘al suo livello di competenza e di interesse’</em>.</p>
+<p><span class="remark">Punto-chiave: sapere cosa pensa il committente, discutendo su un prototipo</span></p>
+<section id="radarsystem-architettura-logica-1">
+<h4>RadarSystem: architettura_logica_1<a class="headerlink" href="#radarsystem-architettura-logica-1" title="Permalink to this headline">¶</a></h4>
+<a class="reference internal image-reference" href="_images/analisiQak22.png"><img alt="_images/analisiQak22.png" class="align-center" src="_images/analisiQak22.png" style="width: 80%;" /></a>
+</section>
+<section id="modello-della-analisi-come-primo-prototipo">
+<h4>Modello della analisi come primo prototipo<a class="headerlink" href="#modello-della-analisi-come-primo-prototipo" title="Permalink to this headline">¶</a></h4>
+<p>La figura precedente è una prima <strong>rappreentazione</strong> (<span class="blue">grafica e semi-formale</span>, della architettura) del sistema,
+che può essere rappresentato, <span class="blue">in modo formale ed eseguibile</span>, dal modello <a class="reference external" href="../../../../../unibo.radarsystemqak22/src/radarsysystem22analisi.qak">radarsysystem22analisi.qak</a>.</p>
+</section>
+</section>
+<section id="radarsystem-una-diversa-analisi">
+<h3>RadarSystem: una diversa analisi<a class="headerlink" href="#radarsystem-una-diversa-analisi" title="Permalink to this headline">¶</a></h3>
+<p>Durante la <a class="reference external" href=":https://www.agileway.it/sprint-review-meeting/">Sprint Review</a> (si vedano le note su <a class="reference internal" href="CostruireSoftware.html#id1"><span class="std std-ref">SCRUM</span></a>) qualcuno osserva che si potrebbe concepire il sistema
+in modo diverso, evitando la introduzione di un <em>Controller</em> che conosce i (nomi dei) componenti <em>Led</em> e <em>Radar</em>.</p>
+<p>In particolare viene asserito che:</p>
+<ol class="arabic simple">
+<li><p>un <strong>sistema</strong> nasce perchè un insieme di enti (che verranno poi visti come ‘componenti’) elaborano
+informazione in un modo che può risultare coordinato e ‘goal oriented’ a un osservatore esterno,
+ma che non è forzato/imposto/realizzato da nessun componente in particolare</p></li>
+<li><p>ciascun ente opera in modo totalmente autonomo, senza essere consapevole della esistenza degli altri</p></li>
+<li><p>l’informazione scambiata assume la forma di <em>eventi</em> che possono indurre ciascun ente ad effettuare azioni
+locali che, con gli occhi di un ossservatore ‘globale’ producono il soddisfacimento dei requisiti.</p></li>
+</ol>
+<p>Alla domanda:</p>
+<ul class="simple">
+<li><p>ma come fa il Led ad accendersi se nessuno gli invia un comando?</p></li>
+</ul>
+<p>viene data la seguente risposta:</p>
+<ul>
+<li><p>si assume che ogni componente sia indotto as operare in termini di ‘reazione a stimoli’
+rappresentati da eventi. Il Led quindi potrebbe essere definito come un componente capace di
+percepire un evento/stimolo del tipo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Event</span> <span class="n">thrill</span> <span class="p">:</span> <span class="n">info</span><span class="p">(</span><span class="n">CMD</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Il Led potrebbe accendersi se l’evento  <code class="docutils literal notranslate"><span class="pre">thrill</span></code> ha contenuto <code class="docutils literal notranslate"><span class="pre">info(on)</span></code> e spegnersi se ha <code class="docutils literal notranslate"><span class="pre">info(off)</span></code>.</p>
+<p>E’ ovvio che si potrebbe introdurre un <em>Controller</em> che ha come ‘obiettivo dichiarato’ la trasformazione di
+eventi <code class="docutils literal notranslate"><span class="pre">sonardata:distance(D)</span></code> in eventi <code class="docutils literal notranslate"><span class="pre">thrill</span></code> a seconda del valore <code class="docutils literal notranslate"><span class="pre">D</span></code>.</p>
+<p>Ma si potrebbe anche perseguire l’idea (o proporre un nuovo  ‘metamodello’ organizzativo)
+in cui i sistemi possono ‘evolvore in modo spontaneo’ quando, nell’ambito di
+un insieme già attivo, si introduce un nuovo elemento.</p>
+<p>Si supponga ad esempio di attivare (su nodi di elaborazione diversi) i componenti Sonar, Radar e Led</p>
+<a class="reference internal image-reference" href="_images/analisiQak22NoControllerNoWatcher.png"><img alt="_images/analisiQak22NoControllerNoWatcher.png" class="align-center" src="_images/analisiQak22NoControllerNoWatcher.png" style="width: 80%;" /></a>
+<p>In questa configurazione, il Radar mostra i dati emessi da Sonar, ma il Led non si accende in quanto manca
+un componente capace di trasformare  eventi <code class="docutils literal notranslate"><span class="pre">sonardata:distance(D)</span></code> in eventi <code class="docutils literal notranslate"><span class="pre">thrill</span></code>.</p>
+<p>Se però attiviamo un nuovo componente (diciamo un <code class="docutils literal notranslate"><span class="pre">watcher</span></code>) dotato di un valore di soglia interno (diciamo <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code>),
+capace di perecipere gli eventi <code class="docutils literal notranslate"><span class="pre">sonardata:distance(D)</span></code> e di emettere <code class="docutils literal notranslate"><span class="pre">thrill:info(on)</span></code> se <code class="docutils literal notranslate"><span class="pre">D&lt;=DLIMI</span></code>
+o altrimenti <code class="docutils literal notranslate"><span class="pre">thrill:info(off)</span></code>, allora vederemo che il Led si comporterà in accordo a un nostro piano di testing.</p>
+<section id="watcher-qak">
+<h4>watcher.qak<a class="headerlink" href="#watcher-qak" title="Permalink to this headline">¶</a></h4>
+<p>Il ‘componente aggiuntivo’ che permette di raggiungere l’effetto voluto, può essere subito modellato come segue:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Event</span>  <span class="n">sonardata</span>   <span class="p">:</span> <span class="n">distance</span><span class="p">(</span> <span class="n">V</span> <span class="p">)</span>
+<span class="n">Event</span>  <span class="n">thrill</span>      <span class="p">:</span> <span class="n">info</span><span class="p">(</span><span class="n">CMD</span><span class="p">)</span>
+
+
+<span class="n">QActor</span> <span class="n">watcherqak22</span> <span class="n">context</span> <span class="n">ctxwatcherqak22</span><span class="p">{</span>
+  <span class="p">[</span><span class="c1"># val DLIMIT = 30 #]</span>
+  <span class="n">State</span> <span class="n">s0</span> <span class="n">initial</span> <span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;$name STARTS&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="n">Transition</span> <span class="n">t0</span>  <span class="n">whenEvent</span> <span class="n">sonardata</span> <span class="o">-&gt;</span> <span class="n">handleSonarData</span>
+
+  <span class="n">State</span> <span class="n">handleSonarData</span><span class="p">{</span>
+    <span class="n">onMsg</span><span class="p">(</span> <span class="n">sonardata</span> <span class="p">:</span> <span class="n">distance</span><span class="p">(</span><span class="n">D</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="p">[</span><span class="c1"># var DistanceStr = payloadArg(0);</span>
+        <span class="n">var</span> <span class="n">Distance</span>    <span class="o">=</span> <span class="n">DistanceStr</span><span class="o">.</span><span class="n">toInt</span><span class="p">()</span>
+      <span class="c1">#]</span>
+        <span class="k">if</span> <span class="p">[</span><span class="c1"># Distance &lt;= DLIMIT #]  {   emit thrill : info( on ) }</span>
+      <span class="k">else</span> <span class="p">{</span> <span class="n">emit</span> <span class="n">thrill</span> <span class="p">:</span> <span class="n">info</span><span class="p">(</span> <span class="n">off</span> <span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">Transition</span> <span class="n">t0</span> <span class="n">whenEvent</span> <span class="n">sonardata</span> <span class="o">-&gt;</span> <span class="n">handleSonarData</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="radarsystem-architettura-logica-2">
+<h4>RadarSystem: architettura_logica_2<a class="headerlink" href="#radarsystem-architettura-logica-2" title="Permalink to this headline">¶</a></h4>
+<p>La nuova analisi fornisce sia l’esempio di un possibile dibattto/contezioso tra analisti, sia un esempio
+di <a class="reference external" href="https://www.baeldung.com/cs/opinionated-software-design">Opinionated Software</a> fondato sull’idea (opinion) che i sistemi si possano sviluppare anche partendo da componenti
+che non sanno nulla l’uno dell’altro.</p>
+<p>In concreto quello cha abbiamo è la proposta di una diversa architattura logica:</p>
+<a class="reference internal image-reference" href="_images/radarSystemqakAllEvents.png"><img alt="_images/radarSystemqakAllEvents.png" class="align-center" src="_images/radarSystemqakAllEvents.png" style="width: 80%;" /></a>
+</section>
+<section id="interazioni-mediante-mqtt">
+<h4>Interazioni mediante MQTT<a class="headerlink" href="#interazioni-mediante-mqtt" title="Permalink to this headline">¶</a></h4>
+<p>Questa architettura può essere realizzata e sperimentata avvalendosi del <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">QActor (meta)model</span></a> sfruttando
+la possibilità dei QActor di interagire usando come supporto un <em>broker MQTT</em>
+(si veda <a class="reference internal" href="OltreTcp.html#nuovi-supporti-interaction2021"><span class="std std-ref">Nuovi supporti Interaction2021</span></a>).</p>
+<p>Ogni componente saraà ora introdotto da un modello che spefica l’uso di un broker MQTT e di una <strong>topic</strong> di riferimento.
+Ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">System</span> <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span>
+<span class="n">mqttBroker</span> <span class="s2">&quot;broker.hivemq.com&quot;</span> <span class="p">:</span> <span class="mi">1883</span>  <span class="n">eventTopic</span> <span class="s2">&quot;unibo/nat/radar&quot;</span>
+
+<span class="n">Context</span> <span class="o">&lt;</span><span class="n">ctxname</span><span class="o">&gt;</span> <span class="n">ip</span> <span class="p">[</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;...&quot;</span> <span class="n">port</span><span class="o">=...</span><span class="p">]</span>
+
+<span class="n">QActor</span> <span class="o">&lt;</span><span class="n">qanam</span><span class="o">&gt;&gt;</span> <span class="n">context</span> <span class="o">&lt;</span><span class="n">ctxname</span><span class="o">&gt;</span><span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Di fatto quindi la topic qualificata come <code class="docutils literal notranslate"><span class="pre">unibo/nat/radar</span></code> sarà l’elemento che permette ai diversi
+componenti (Sonar,Radar,Led e Watcher) di lavorare come un tutto organico, cioè come un sistema.</p>
+</section>
+</section>
+</section>
+<section id="robot2022">
+<h2>Robot2022<a class="headerlink" href="#robot2022" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Il progetto <em>it.unibo.qak21.basicrobot</em>  è stato portato in <em>unibo.basicrobot22</em></p></li>
+<li><p><em>unibo.basicrobot22</em> include l’attore <span class="blue">pathexec</span> ed è stato deployed su DockerHub in una configurazione
+che comprende il VirtualRobot.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Il robot riceve i dati del sonar come eventi <code class="docutils literal notranslate"><span class="pre">sonardata:distance</span></code>.
+Questi eventi possono essere visualizzati via MQTT da <span class="blue">radarqak22</span></p></li>
+<li><p>Il robot riceve da <span class="blue">distanceFilter</span> il dispatch <code class="docutils literal notranslate"><span class="pre">obstacle:obstacle(</span> <span class="pre">ARG</span> <span class="pre">)</span></code></p></li>
+<li><p>Il robot  può essere comandato da <code class="docutils literal notranslate"><span class="pre">consoleGuiSimple.kt</span></code> (in <em>resources/console</em>)
+e da <code class="docutils literal notranslate"><span class="pre">basicRobotCmdGui</span></code> in <em>webForActors</em></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</section>
 </section>
 
 
@@ -221,9 +444,33 @@ nota la mappa.</p>
 <li class="toctree-l2"><a class="reference internal" href="#id3">webForActors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">unibo.mapperQak22</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id5">unibo.robotappl</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#riprendiamo-il-radarsystem">Riprendiamo il RadarSystem</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#radarsystem-analisi-dei-requisiti">RadarSystem: analisi dei requisiti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#radarsystem-modello-dei-requisiti">RadarSystem: modello dei requisiti</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#radarsystem-analisi-del-problema">RadarSystem: analisi del problema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#radarsystem-architettura-logica-1">RadarSystem: architettura_logica_1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modello-della-analisi-come-primo-prototipo">Modello della analisi come primo prototipo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#radarsystem-una-diversa-analisi">RadarSystem: una diversa analisi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#watcher-qak">watcher.qak</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#radarsystem-architettura-logica-2">RadarSystem: architettura_logica_2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interazioni-mediante-mqtt">Interazioni mediante MQTT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robot2022">Robot2022</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo2022.html">demo2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Architetture.html">Architetture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConclusioniISS22.html">ConclusioniISS22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a></li>
 </ul>
 
 <div class="relations">

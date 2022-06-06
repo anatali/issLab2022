@@ -15,6 +15,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="QActor (meta)model" href="QakIntro.html" />
     <link rel="prev" title="Attori come risorse CoAP" href="AttoriCoap.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -49,7 +50,7 @@ di informazione)   in chiamate a metodi di <code class="docutils literal notrans
 dei messaggi di livello applicativo indirizzati a un particolare dispositivo.</p></li>
 <li><p>Un oggetto di tipo <a class="reference internal" href="ContestiContenitori.html#contextmsghandler"><span class="std std-ref">ContextMsgHandler</span></a> che realizza un gestore dei sistema dei messaggi
 li reindirizza (dispatching) agli opportuni handler applicativi.</p></li>
-<li><p>Un (unico) <span class="xref std std-ref">TcpContextServer</span> attivato su un nodo di elaborazione <code class="docutils literal notranslate"><span class="pre">A</span></code> (ad esempio un Raspberry) che
+<li><p>Un (unico) <a class="reference internal" href="#icontext"><span class="std std-ref">TcpContextServer</span></a> attivato su un nodo di elaborazione <code class="docutils literal notranslate"><span class="pre">A</span></code> (ad esempio un Raspberry) che
 permette a componenti <a class="reference internal" href="RadarSystemSupporti.html#proxyasclient"><span class="std std-ref">proxy</span></a> allocati su nodi esterni  (ad esempio un PC)
 di interagire con i dispositivi allocati su <code class="docutils literal notranslate"><span class="pre">A</span></code>. Questo componente è un <a class="reference internal" href="RadarSystemSupporti.html#tcpserver"><span class="std std-ref">TcpServer</span></a> che crea un
 <a class="reference internal" href="RadarSystemSupporti.html#tcpapplmessagehandler"><span class="std std-ref">TcpApplMessageHandler</span></a> per ogni connessione, il quale riceve i messaggi e chiama il
@@ -92,14 +93,14 @@ aggiungere/rimuovere componenti di tipo <a class="reference internal" href="Rada
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Questo contratto è già rispettato da <span class="xref std std-ref">TcpContextServer</span>, così che possiamo estendere la sua definizione come segue:</p>
+<p>Questo contratto è già rispettato da <a class="reference internal" href="#icontext"><span class="std std-ref">TcpContextServer</span></a>, così che possiamo estendere la sua definizione come segue:</p>
 <blockquote>
 <div><p>public class TcpContextServer extends TcpServer <strong>implements IContext</strong></p>
 </div></blockquote>
 </section>
 </section>
 <section id="nuovi-supporti-interaction2021">
-<h2>Nuovi supporti <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a><a class="headerlink" href="#nuovi-supporti-interaction2021" title="Permalink to this headline">¶</a></h2>
+<h2>Nuovi supporti Interaction2021<a class="headerlink" href="#nuovi-supporti-interaction2021" title="Permalink to this headline">¶</a></h2>
 <p>Il <a class="reference internal" href="RadarSystemSupporti.html#tcpsupportclient"><span class="std std-ref">TcpClientSupport</span></a> crea l’implemetazione TCP di <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>
 introdotta a suo tempo, come oggetto di classe <a class="reference internal" href="RadarSystemSupporti.html#tcpconnection"><span class="std std-ref">TcpConnection</span></a>.</p>
 <p>La creazione di analoghi supporti per MQTT e CoAP  parte dalle seguenti osservazioni:</p>
@@ -166,7 +167,7 @@ il quale si connette al Broker.</p>
 </pre></div>
 </div>
 <p>Il metodo <code class="docutils literal notranslate"><span class="pre">publish</span></code> viene usato per la implementazione del motodo <code class="docutils literal notranslate"><span class="pre">forward</span></code> dei messaggi strutturati
-di tipo <a class="reference internal" href="ContestiContenitori.html#applmessage"><span class="std std-ref">ApplMessage</span></a>.</p>
+di tipo <a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi"><span class="std std-ref">ApplMessage</span></a>.</p>
 </section>
 <section id="mqttconnection-forward">
 <h4>MqttConnection forward<a class="headerlink" href="#mqttconnection-forward" title="Permalink to this headline">¶</a></h4>
@@ -466,16 +467,16 @@ e per CoAP (che denominiamo <a class="reference internal" href="#coapcontextserv
 <p>I parametri <code class="docutils literal notranslate"><span class="pre">id</span></code> ed <code class="docutils literal notranslate"><span class="pre">entry</span></code> da specificare nel costruttore nei vari casi sono:</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col style="width: 39%" />
+<col style="width: 31%" />
+<col style="width: 31%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Server</p></td>
 <td><p>id</p></td>
 <td><p>entry</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="xref std std-ref">TcpContextServer</span></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#icontext"><span class="std std-ref">TcpContextServer</span></a></p></td>
 <td><p>nome dell’host</p></td>
 <td><p>port</p></td>
 </tr>
@@ -525,7 +526,7 @@ dato il nome dell’oggetto.</p>
 <p><span class="remark">realizza una infrastruttura di comunicazione</span></p>
 <p><span class="remark">fornisce ai componenti applicativi la capacità di intergire in rete</span></p>
 <p><span class="remark">impone che ogni componente applicativo abbia un nome univoco</span></p>
-<p>Abbiamo già introdotto <span class="xref std std-ref">TcpContextServer</span> come implementazione di <a class="reference internal" href="#icontext"><span class="std std-ref">IContext</span></a>
+<p>Abbiamo già introdotto <a class="reference internal" href="#icontext"><span class="std std-ref">TcpContextServer</span></a> come implementazione di <a class="reference internal" href="#icontext"><span class="std std-ref">IContext</span></a>
 che utilizza librerie per la gestione di <em>Socket</em>.
 La realizzazione di analoghi ContextServer per MQTT e CoAP si basa sulle citate nuove
 <a class="reference internal" href="#librerieprotocolli"><span class="std std-ref">librerie</span></a>.</p>
@@ -591,7 +592,8 @@ ricevuto sulla entry-topic deve avere la struttura introdotta in <a class="refer
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">msg</span><span class="p">(</span><span class="n">MSGID</span><span class="p">,</span><span class="n">MSGTYPE</span><span class="p">,</span><span class="n">SENDER</span><span class="p">,</span><span class="n">RECEIVER</span><span class="p">,</span><span class="n">CONTENT</span><span class="p">,</span><span class="n">SEQNUM</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Pertanto deve essere possibile eseguire il mapping della stringa in un oggetto di tipo <a class="reference internal" href="ContestiContenitori.html#applmessage"><span class="std std-ref">ApplMessage</span></a>,
+<p>Pertanto deve essere possibile eseguire il mapping della stringa in un oggetto di tipo
+<a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi"><span class="std std-ref">ApplMessage</span></a>,
 senza generare eccezioni.
 Il gestore di sistema dei messaggi  realizza questo mapping nel  metodo <code class="docutils literal notranslate"><span class="pre">messageArrived</span></code>:</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ContextMqttMsgHandler</span> <span class="kd">extends</span> <span class="n">ApplMsgHandler</span>
@@ -1149,6 +1151,8 @@ applicazione Spring (si veda <span class="xref std std-doc">RadarSystemWebgui</s
 <li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
@@ -1157,7 +1161,7 @@ applicazione Spring (si veda <span class="xref std std-doc">RadarSystemWebgui</s
 <li class="toctree-l3"><a class="reference internal" href="#icontext">IContext</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#nuovi-supporti-interaction2021">Nuovi supporti <span class="xref std std-ref">Interaction2021</span></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#nuovi-supporti-interaction2021">Nuovi supporti Interaction2021</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#mqttconnection-implementa-interaction2021"><code class="docutils literal notranslate"><span class="pre">MqttConnection</span></code> implementa <span class="xref std std-ref">Interaction2021</span></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#mqttconnection-publish">MqttConnection publish</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mqttconnection-forward">MqttConnection forward</a></li>
@@ -1218,6 +1222,11 @@ applicazione Spring (si veda <span class="xref std std-doc">RadarSystemWebgui</s
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo2022.html">demo2022</a></li>
 </ul>
 
 <div class="relations">
@@ -1225,6 +1234,7 @@ applicazione Spring (si veda <span class="xref std std-doc">RadarSystemWebgui</s
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="AttoriCoap.html" title="previous chapter">Attori come risorse CoAP</a></li>
+      <li>Next: <a href="QakIntro.html" title="next chapter">QActor (meta)model</a></li>
   </ul></li>
 </ul>
 </div>

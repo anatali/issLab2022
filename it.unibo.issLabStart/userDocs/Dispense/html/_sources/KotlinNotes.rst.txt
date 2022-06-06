@@ -4,7 +4,7 @@
 .. role:: worktodo
 
 .. _Actor model: https://en.wikipedia.org/wiki/Actor_model
-.. _kotlinUnibo: ../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html
+.. _kotlinUnibo: ../../../../../issLab2022/it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html
 
 .. _Data, Types and Variables: ../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#data
 .. _Functions: ../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#funs
@@ -74,9 +74,10 @@
 .. _demosequences.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demosequences.kt
 .. _demosuspended.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demosuspended.kt
 .. _demochannels.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demochannels.kt
-.. _prodconskotlin.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/prodconskotlin.kt
-.. _prodmanyconskotlin.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/prodmanyconskotlin
-.. _simpleproducerkotlin.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/simpleproducerkotlin.kt
+.. _prodconskotlin.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/prodConsKotlin.kt
+.. _prodmanyconskotlin.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/prodManyConsKotlin.kt
+.. _simpleproducerkotlin.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/simpleProducerKotlin.kt
+.. _simpleReceiverKotlin.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/simpleReceiverKotlin.kt
 .. _demoactors.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoactors.kt
 .. _demoactorcounter.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demoactorcounter.kt
 .. _demo2022.kt: ../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demo2022.kt
@@ -281,6 +282,7 @@ Asynch
 +++++++++++++++++++++++++++++++++
 Kotlin concurrent overview
 +++++++++++++++++++++++++++++++++
+
 #. Per dare supporto alla *programmazione asincrona* (o *non bloccante*), evitando il noto callback hell
    (si veda `Asynchronous I/O`_), Kotlin introduce il meccanismo delle *coroutines*.
 #. A coroutine can invoke other functions; it can also :ref:`suspend<Suspending functions>` its behavior (without 
@@ -388,7 +390,7 @@ They are used for providing and consuming objects from the channel, implemented 
       :width: 100%
 
       * - `demoChannels.kt`_ (**17,18**)
-        - `Channel<Int>`  (si veda `Kotlin channels`_)
+        - `Channel<Int>`  (si veda `Kotlin channels`_) :remark:`Utile anche per Dispatchers`
       *  - `simpleProducerKotlin.kt`_ 
          - `ReceiveChannel<Int>`  (si veda `Producers-consumers in Kotlin`_)
       *  - `prodConsKotlin.kt`_ (**19**)
@@ -397,10 +399,72 @@ They are used for providing and consuming objects from the channel, implemented 
          - `Many consumers` (si veda `Producers-consumers in Kotlin`_)
 
 +++++++++++++++++++++++++++++++++++
+ReceiveChannel
++++++++++++++++++++++++++++++++++++
+
+Channels implement the ``SendChannel`` and ``ReceiveChannel`` interfaces.
+
+Dunque un produttore si può pensare come un oggetto computazionale che implementa una ``ReceiveChannel`` interface in modo che un 
+consumatore che possiede un riferimento al produttore possa eseguire una ``receive()``.
+
+Per un esempio, si veda 
+
+   .. list-table::
+      :widths: 25,75
+      :width: 100%
+
+      *  - `simpleProducerKotlin.kt`_ 
+         - `ReceiveChannel<Int>`  (si veda `Producers-consumers in Kotlin`_)
+
+Altri esempi:
+
+   .. list-table::
+      :widths: 25,75
+      :width: 100%
+
+      *  - `prodConsKotlin.kt`_ (**19**)
+         - `ManyType producer` (si veda `Producers-consumers in Kotlin`_)
+      *  - `prodManyConsKotlin.kt`_  (**20**)
+         - `Many consumers` (si veda `Producers-consumers in Kotlin`_)          
+
+
++++++++++++++++++++++++++++++++++++
+SendChannel
++++++++++++++++++++++++++++++++++++
+
+Un consumatore si può pensare come un oggetto computazionale che implementa una ``SendChannel`` interface in modo che un 
+produttore  che possiede un riferimento al produttore possa eseguire una ``send()``.
+
+Per un esempio, si veda 
+
+   .. list-table::
+      :widths: 25,75
+      :width: 100%
+
+      *  - `simpleReceiverKotlin.kt`_ 
+         - `SendChannel<Int>`  (si veda `Producers-consumers in Kotlin`_)
+
+
+
+
++++++++++++++++++++++++++++++++++++
 Gli attori
 +++++++++++++++++++++++++++++++++++
 
+Un attore è un oggetto computazionale che implementa una ``SendChannel`` che incapsula una variabile ``channel`` (mailbox)
+per rendere più conveniente l'uso della ``receive()``.
 
+.. code::
+
+  scope.actor<String> {
+    var msg = channel.receive()
+    ... 
+    for (v in channel) {
+        // Process Messages 
+        when (v) {
+          ...
+        }
+    }
 
 Gli `Attori Kotlin`_ promuovono uno stile di programmazione basato su messaggi che supera
 la tradizionale interazione di chiamata di procedura senza perdere in prestazioni.
@@ -427,6 +491,15 @@ la tradizionale interazione di chiamata di procedura senza perdere in prestazion
                  :width: 30% 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ActorBasic.kt incapsula un attore
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Si dovrebbe ora comprendere come la classe :ref:`ActorBasic.kt` realizzi in modo 
+efficiente il concetto di un ente computazionale dotato di flusso di controllo autonomo, capace di recevere e gestire
+messaggi in modo FIFO, sfruttando un attore Kotlin incapsulato:
 
 
-
+     .. image::  ./_static/img/Qak/ActorBasic.png
+      :align: center 
+      :width: 50% 

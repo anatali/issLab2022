@@ -5,7 +5,7 @@
 
 .. _BasicRobot2021: ../../../../../unibo.basicrobot22/userDocs/basicrobot2021.html
 .. _NanoRobot: ../../../../../unibo.basicrobot22/userDocs/LabNanoRobot.html
-.. _Mbot: ../../../../../unibo.basicrobot22/userDocs/Mbot2020.html
+.. _Mbot: ../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html
 
 .. basicrobot.qak: ../../../../../unibo.basicrobot22/src/basicrobot.qak 
 .. _kotlinUnibo: ../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html
@@ -16,7 +16,7 @@
 .. _virtualrobotSupport: ../../../../../unibo.basicrobot22/resources/robotVirtual/virtualrobotSupport2021.kt
 .. _nanoSupport: ../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt
 .. _motors: ../../../../../unibo.basicrobot22/resources/robotNano/Motors.c
-.. _mbotSupport: ../../../../../unibo.basicrobot22/resources/robotNano/nanoSupport.kt
+.. _mbotSupport: ../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html
 
 
 
@@ -42,7 +42,7 @@ BasicRobot22: requisiti
 Più specificatamente, ``BasicRobot22``: 
  
 - (requisito :blue:`cmdbase`) è in grado di eseguire comandi-base  **cmd** di spostamento, 
-  con argomento :blue:`MOVE = w | s | l | r | h`
+  con argomento :blue:`MOVE = w | s | l | r | h` (linguaggio :ref:`aril<Linguaggio di Comando: da cril a aril>`)
 - (requisito :blue:`cmdstep`) è in grado di rispondere alla richiesta di effettuare uno **step** in avanti per il tempo :blue:`TIME` specificato 
   nell'argomento, fornendo una risposta che può essere:
 
@@ -391,7 +391,7 @@ BasicRobot22: supporti
       .. image::  ./_static/img/Robot22/mbot.PNG 
            :align: center 
            :width: 90%
-    - per Mbot: `mbotSupport`_
+    - per Mbot: `mbotSupport`_ 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 File di configurazione

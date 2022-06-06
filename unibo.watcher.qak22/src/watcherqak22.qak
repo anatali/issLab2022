@@ -1,0 +1,29 @@
+System /*-trace*/ watcherqak22
+mqttBroker "broker.hivemq.com" : 1883  eventTopic "unibo/nat/radar"
+
+Event  sonardata       : distance( V )   //for the application level
+Event  thrill          : info(CMD)
+
+Context ctxwatcherqak22 ip [host="localhost" port=8067] 
+
+
+QActor watcherqak22 context ctxwatcherqak22{
+	[# val DLIMIT = 30 #]
+	State s0 initial {
+		println("$name STARTS")
+	}
+	Transition t0  whenEvent sonardata -> handleSonarData
+	 
+	State handleSonarData{
+		printCurrentMessage
+ 		onMsg( sonardata : distance(D) ) {
+ 			[# var DistanceStr = payloadArg(0); 
+ 			   var Distance    = DistanceStr.toInt() 
+ 			#]
+	   		if [# Distance <= DLIMIT #]  {   emit thrill : info( on ) } 
+	 		else { emit thrill : info( off ) }  
+ 		}
+	}
+	Transition t0 whenEvent sonardata -> handleSonarData
+}
+

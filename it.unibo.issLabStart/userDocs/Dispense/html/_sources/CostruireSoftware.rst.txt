@@ -10,7 +10,7 @@
 .. _GitHubIss2022 : https://github.com/anatali/issLab2022
 .. _VideoStudenti : https://unibo.cloud.panopto.eu/Panopto/Pages/Sessions/List.aspx#folderID=%222f957969-7f72-4609-a690-aca900aeba02%22
 .. _DockerRepo : https://hub.docker.com/repositories
-.. _Dispense Ingegneria del software : ./NatMolBook/bookEntry.html  
+.. _Dispense Ingegneria del software: ./NatMolBook/bookEntry.html  
 .. _SCRUM :   https://scrumguides.org/
 .. _Sprint review : https://www.agileway.it/sprint-review-meeting/
 .. _FSM : https://en.wikipedia.org/wiki/Finite-state_machine

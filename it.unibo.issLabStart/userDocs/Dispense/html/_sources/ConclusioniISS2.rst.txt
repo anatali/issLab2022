@@ -1,0 +1,29 @@
+.. role:: red 
+.. role:: blue 
+.. role:: remark
+.. role:: worktodo
+
+===================================
+ConclusioniISS22
+===================================
+
+I punti salienti del nostro lavoro si possono riassumere dicendo che, in :ref:`Ingegneria`:
+
+#. :remark:`Non c'è prodotto (codice) senza progetto ...`
+#. :remark:`Non c'è progetto senza analisi del problema ...`
+#. :remark:`Non c'è problema senza requisiti.`
+
+e che, nella :ref:`Ingegneria del software<Programmatori = (non) ingegneri?>`:
+
+- :remark:`I modelli permettono di analizzare, sperimentare e decidere, prima di codificare`
+
+- Nell'ambito di un processo di sviluppo :ref:`agile-iterativo<Indicazioni sul processo di produzione>`:
+
+  :remark:`Il software deve essere facilmente configurabile/modificabile`
+  
+  in quanto  i requisiti possono essere precisati (o anche cambiare) in corso d'opera e perchè 
+  alcune problematche potrebbero sfuggire durante la prima anailsi del problema
+
+- L':blue:`architettura (logica) di un sistema software` è 
+
+  :remark:`un invariante con cui pianificare il lavoro e disciplinare la variabilità`

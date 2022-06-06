@@ -26,7 +26,7 @@ RobotCleaner
 
 
 -------------------------------------------
-Aprile 2002: requisiti
+Aprile 2022: requisiti
 -------------------------------------------
 Muovere il :ref:`VirtualRobot` in modo da coprire tutta la superficie di una stanza vuota.
 
@@ -199,7 +199,7 @@ denominiamo :blue:`aril` (**Abstract Robot Interaction Lanaguage**).
  
 
 -------------------------------------------
-Maggio 20022: prototipo dopo l'analisi 
+Maggio 2022: prototipo dopo l'analisi 
 ------------------------------------------- 
 
 - Occorre definire un **modello** del sistema che descrive in modo 'formale' (comprensibile/eseguibile da una macchina)  

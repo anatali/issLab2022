@@ -1,0 +1,32 @@
+System /*-trace*/ ledqak22
+mqttBroker "broker.hivemq.com" : 1883  eventTopic "unibo/nat/radar"
+
+Event  sonardata       : distance( V )   //for the application level
+Event  thrill          : info(CMD)
+
+Context ctxledqak22 ip [host="localhost" port=8065] 
+
+
+QActor ledqak22 context ctxledqak22{
+ 	State s0 initial {
+		println("$name STARTS")
+	}
+	Transition t0  whenEvent thrill -> handleThrill
+	
+	State handleThrill{
+		onMsg( thrill : info(CMD) ){
+			[# var Cmd = payloadArg(0) #]
+			if [# Cmd=="on" #]{
+				[# unibo.actor22comm.utils.ColorsOut.outappl( 
+					"${name} - on", unibo.actor22comm.utils.ColorsOut.MAGENTA)
+				#]				
+			}else{
+				[# unibo.actor22comm.utils.ColorsOut.outappl( 
+					"${name} - off", unibo.actor22comm.utils.ColorsOut.GREEN)
+				#]
+			}
+		}	 
+	}
+	Transition t0 whenEvent thrill -> handleThrill
+}
+

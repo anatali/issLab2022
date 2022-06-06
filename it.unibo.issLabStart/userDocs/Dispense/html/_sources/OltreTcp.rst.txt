@@ -36,7 +36,7 @@ Con maggior dettaglio, questa architettura si basa sugli elementi costitutivi di
   dei messaggi di livello applicativo indirizzati a un particolare dispositivo.
 - Un oggetto di tipo :ref:`ContextMsgHandler<ContextMsgHandler>` che realizza un gestore dei sistema dei messaggi 
   li reindirizza (dispatching) agli opportuni handler applicativi.
-- Un (unico) :ref:`TcpContextServer<TcpContextServer>` attivato su un nodo di elaborazione ``A`` (ad esempio un Raspberry) che 
+- Un (unico) :ref:`TcpContextServer<IContext>` attivato su un nodo di elaborazione ``A`` (ad esempio un Raspberry) che 
   permette a componenti :ref:`proxy<ProxyAsClient>` allocati su nodi esterni  (ad esempio un PC)
   di interagire con i dispositivi allocati su ``A``. Questo componente è un :ref:`TcpServer<TcpServer>` che crea un 
   :ref:`TcpApplMessageHandler` per ogni connessione, il quale riceve i messaggi e chiama il 
@@ -91,13 +91,13 @@ IContext
     public void deactivate();
   }
 
-Questo contratto è già rispettato da :ref:`TcpContextServer`, così che possiamo estendere la sua definizione come segue: 
+Questo contratto è già rispettato da :ref:`TcpContextServer<IContext>`, così che possiamo estendere la sua definizione come segue: 
 
   public class TcpContextServer extends TcpServer **implements IContext**
 
 
 ---------------------------------------------------------
-Nuovi supporti :ref:`Interaction2021<Interaction2021>`
+Nuovi supporti Interaction2021
 ---------------------------------------------------------
 
 Il :ref:`tcpsupportClient` crea l'implemetazione TCP di :ref:`Interaction2021<Interaction2021>` 
@@ -181,7 +181,7 @@ MqttConnection publish
     }
 
 Il metodo ``publish`` viene usato per la implementazione del motodo ``forward`` dei messaggi strutturati
-di tipo :ref:`ApplMessage<ApplMessage>`.
+di tipo :ref:`ApplMessage<Struttura dei messaggi applicativi>`.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 MqttConnection forward  
@@ -557,13 +557,13 @@ Context2021
 
 I parametri ``id`` ed ``entry`` da specificare nel costruttore nei vari casi sono:
 
-===========================   ===========================    =========================== 
+==================================   ===========================    =========================== 
         Server                            id                        entry
----------------------------   ---------------------------    ---------------------------
-:ref:`TcpContextServer`               nome dell'host                  port
-:ref:`MqttContextServer`              id del client              nome di una topic     
-:ref:`CoapContextServer`                    -                      -
-===========================   ===========================    ===========================   
+----------------------------------   ---------------------------    ---------------------------
+:ref:`TcpContextServer<IContext>`    nome dell'host                 port
+:ref:`MqttContextServer`             id del client                  nome di una topic     
+:ref:`CoapContextServer`             -                              -
+==================================   ===========================    ===========================   
 
 
 Il :ref:`CoapContextServer` non ha bisogno di parametri in quanto coorelato al  
@@ -616,7 +616,7 @@ Osserviamo che stiamo costruendo un framework che:
 :remark:`impone che ogni componente applicativo abbia un nome univoco`
 
 
-Abbiamo già introdotto :ref:`TcpContextServer` come implementazione di :ref:`IContext`
+Abbiamo già introdotto :ref:`TcpContextServer<IContext>` come implementazione di :ref:`IContext`
 che utilizza librerie per la gestione di *Socket*.
 La realizzazione di analoghi ContextServer per MQTT e CoAP si basa sulle citate nuove
 :ref:`librerie<librerieprotocolli>`.
@@ -702,7 +702,8 @@ ricevuto sulla entry-topic deve avere la struttura introdotta in :ref:`msgApplic
 
   msg(MSGID,MSGTYPE,SENDER,RECEIVER,CONTENT,SEQNUM)
 
-Pertanto deve essere possibile eseguire il mapping della stringa in un oggetto di tipo :ref:`ApplMessage<ApplMessage>`,
+Pertanto deve essere possibile eseguire il mapping della stringa in un oggetto di tipo 
+:ref:`ApplMessage<Struttura dei messaggi applicativi>`,
 senza generare eccezioni.
 Il gestore di sistema dei messaggi  realizza questo mapping nel  metodo ``messageArrived``:
 

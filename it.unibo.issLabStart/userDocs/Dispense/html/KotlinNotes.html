@@ -307,16 +307,72 @@ They are used for providing and consuming objects from the channel, implemented 
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/demochannels.kt">demoChannels.kt</a> (<strong>17,18</strong>)</p></td>
-<td><p><cite>Channel&lt;Int&gt;</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#channels">Kotlin channels</a>)</p></td>
+<td><p><cite>Channel&lt;Int&gt;</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#channels">Kotlin channels</a>) <span class="remark">Utile anche per Dispatchers</span></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/simpleproducerkotlin.kt">simpleProducerKotlin.kt</a></p></td>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/simpleProducerKotlin.kt">simpleProducerKotlin.kt</a></p></td>
 <td><p><cite>ReceiveChannel&lt;Int&gt;</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/prodconskotlin.kt">prodConsKotlin.kt</a> (<strong>19</strong>)</p></td>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/prodConsKotlin.kt">prodConsKotlin.kt</a> (<strong>19</strong>)</p></td>
 <td><p><cite>ManyType producer</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/kotlindemo/prodmanyconskotlin">prodManyConsKotlin.kt</a>  (<strong>20</strong>)</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/prodManyConsKotlin.kt">prodManyConsKotlin.kt</a>  (<strong>20</strong>)</p></td>
 <td><p><cite>Many consumers</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="receivechannel">
+<h3>ReceiveChannel<a class="headerlink" href="#receivechannel" title="Permalink to this headline">¶</a></h3>
+<p>Channels implement the <code class="docutils literal notranslate"><span class="pre">SendChannel</span></code> and <code class="docutils literal notranslate"><span class="pre">ReceiveChannel</span></code> interfaces.</p>
+<p>Dunque un produttore si può pensare come un oggetto computazionale che implementa una <code class="docutils literal notranslate"><span class="pre">ReceiveChannel</span></code> interface in modo che un
+consumatore che possiede un riferimento al produttore possa eseguire una <code class="docutils literal notranslate"><span class="pre">receive()</span></code>.</p>
+<p>Per un esempio, si veda</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/simpleProducerKotlin.kt">simpleProducerKotlin.kt</a></p></td>
+<td><p><cite>ReceiveChannel&lt;Int&gt;</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Altri esempi:</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/prodConsKotlin.kt">prodConsKotlin.kt</a> (<strong>19</strong>)</p></td>
+<td><p><cite>ManyType producer</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/prodManyConsKotlin.kt">prodManyConsKotlin.kt</a>  (<strong>20</strong>)</p></td>
+<td><p><cite>Many consumers</cite> (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</section>
+<section id="sendchannel">
+<h3>SendChannel<a class="headerlink" href="#sendchannel" title="Permalink to this headline">¶</a></h3>
+<p>Un consumatore si può pensare come un oggetto computazionale che implementa una <code class="docutils literal notranslate"><span class="pre">SendChannel</span></code> interface in modo che un
+produttore  che possiede un riferimento al produttore possa eseguire una <code class="docutils literal notranslate"><span class="pre">send()</span></code>.</p>
+<p>Per un esempio, si veda</p>
+<blockquote>
+<div><table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference external" href="../../../../../it.unibo.kotlinIntro/app/src/main/kotlin/prodCons/simpleReceiverKotlin.kt">simpleReceiverKotlin.kt</a></p></td>
+<td><p><cite>SendChannel&lt;Int&gt;</cite>  (si veda <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html#kotlinprodcons">Producers-consumers in Kotlin</a>)</p></td>
 </tr>
 </tbody>
 </table>
@@ -324,6 +380,19 @@ They are used for providing and consuming objects from the channel, implemented 
 </section>
 <section id="gli-attori">
 <h3>Gli attori<a class="headerlink" href="#gli-attori" title="Permalink to this headline">¶</a></h3>
+<p>Un attore è un oggetto computazionale che implementa una <code class="docutils literal notranslate"><span class="pre">SendChannel</span></code> che incapsula una variabile <code class="docutils literal notranslate"><span class="pre">channel</span></code> (mailbox)
+per rendere più conveniente l’uso della <code class="docutils literal notranslate"><span class="pre">receive()</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scope</span><span class="o">.</span><span class="n">actor</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="p">{</span>
+  <span class="n">var</span> <span class="n">msg</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
+  <span class="o">...</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">v</span> <span class="ow">in</span> <span class="n">channel</span><span class="p">)</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">Process</span> <span class="n">Messages</span>
+      <span class="n">when</span> <span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">...</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
 <p>Gli <a class="reference external" href="https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#actors">Attori Kotlin</a> promuovono uno stile di programmazione basato su messaggi che supera
 la tradizionale interazione di chiamata di procedura senza perdere in prestazioni.</p>
 <blockquote>
@@ -350,6 +419,15 @@ la tradizionale interazione di chiamata di procedura senza perdere in prestazion
 </tbody>
 </table>
 </div></blockquote>
+<section id="actorbasic-kt-incapsula-un-attore">
+<h4>ActorBasic.kt incapsula un attore<a class="headerlink" href="#actorbasic-kt-incapsula-un-attore" title="Permalink to this headline">¶</a></h4>
+<p>Si dovrebbe ora comprendere come la classe <a class="reference internal" href="QakIntro.html#actorbasic-kt"><span class="std std-ref">ActorBasic.kt</span></a> realizzi in modo
+efficiente il concetto di un ente computazionale dotato di flusso di controllo autonomo, capace di recevere e gestire
+messaggi in modo FIFO, sfruttando un attore Kotlin incapsulato:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/ActorBasic.png"><img alt="_images/ActorBasic.png" class="align-center" src="_images/ActorBasic.png" style="width: 50%;" /></a>
+</div></blockquote>
+</section>
 </section>
 </section>
 </section>
@@ -424,12 +502,21 @@ la tradizionale interazione di chiamata di procedura senza perdere in prestazion
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#la-parte-interazione">La parte interazione</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#i-canali">I canali</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gli-attori">Gli attori</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receivechannel">ReceiveChannel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sendchannel">SendChannel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gli-attori">Gli attori</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#actorbasic-kt-incapsula-un-attore">ActorBasic.kt incapsula un attore</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="demo2022.html">demo2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Architetture.html">Architetture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConclusioniISS22.html">ConclusioniISS22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a></li>
 </ul>
 
 <div class="relations">

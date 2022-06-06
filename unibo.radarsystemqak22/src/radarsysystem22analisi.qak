@@ -1,0 +1,122 @@
+System radarsystem22analisi
+Dispatch sonaractivate   : info(ARG)  //
+Dispatch sonardeactivate : info(ARG)
+Dispatch ledCmd          : ledCmd(ONOFF)
+Dispatch polar           : polar(D,A)
+Event    sonardata       : distance( V )
+
+//Context ctxrasp ip [host="192.168.1.xxx" port=8086]  //Raspberry
+//Context ctxpc   ip [host="192.168.1.yyy" port=8088]  //PC
+
+Context ctxprototipo0   ip [host="localhost" port=8088]  //PC
+
+//TODO: sviluppare sonarqak22 e usarlo come CodedActor o come ExternalActor
+QActor sonar22 context ctxprototipo0{ //ctxrasp{ 
+[# var goon = true #]
+	State s0 initial{
+		println("${name} STARTS  ")
+	} 
+	Transition t0 whenMsg sonaractivate   -> doActivate
+				  whenMsg sonardeactivate -> doDeactivate
+	State doActivate{  
+		//emit sonardata : distance( D )
+		 
+		[# var D = 50 
+		   for( i in 1..5){ 
+ 		   	 unibo.actor22comm.utils.ColorsOut.outappl( 
+					"${name} simulates $D", unibo.actor22comm.utils.ColorsOut.YELLOW)
+		   	 emit( "sonardata", "distance( $D )" )
+		   	 delay(500)
+		   	 D = D - 5
+		   }
+		   for( i in 1..5){ 
+		   	unibo.actor22comm.utils.ColorsOut.outappl( 
+					"${name} simulates $D", unibo.actor22comm.utils.ColorsOut.YELLOW)
+		   	emit( "sonardata",  "distance( $D )" )
+		   	delay(500)
+		   	D = D + 5
+		   }
+		#]
+ 	}
+ 	
+ 	State doDeactivate{  
+ 		println("${name} ENDS  ")
+ 	}
+}
+
+QActor led22 context ctxprototipo0{ //ctxrasp{ 
+	State s0 initial{
+		println("${name} STARTS")
+	} 
+	Transition t0 whenMsg ledCmd -> doCmd
+	
+	State doCmd{
+		//printCurrentMessage
+		onMsg( ledCmd : ledCmd(V) ){
+			[# var Cmd = payloadArg(0) #]
+			if [# Cmd=="on" #]{
+				[# unibo.actor22comm.utils.ColorsOut.outappl( 
+					"${name} - on", unibo.actor22comm.utils.ColorsOut.MAGENTA)
+				#]				
+			}else{
+				[# unibo.actor22comm.utils.ColorsOut.outappl( 
+					"${name} - off", unibo.actor22comm.utils.ColorsOut.GREEN)
+				#]
+			}
+		}	 
+	}
+	Transition t0 whenMsg ledCmd -> doCmd
+}
+
+QActor radar22 context ctxprototipo0{ //ctxpc{ 
+	State s0 initial{
+		println("${name} STARTS")
+	} 
+	Transition t0 whenMsg polar -> showDataOnGui
+	
+	State  showDataOnGui{
+		onMsg( polar : polar(D,A)){
+			[#  var D = payloadArg(0)
+				var A = payloadArg(1)
+				unibo.actor22comm.utils.ColorsOut.outappl( 
+				   "RADARGUI : $D/$A", unibo.actor22comm.utils.ColorsOut.BLUE)
+			#]			
+		}	
+	}
+	Transition t0 whenMsg polar -> showDataOnGui
+}
+ 
+QActor controller22 context ctxprototipo0{ //ctxpc{ 
+[# val DLIMIT = 30 #]
+	State s0 initial{
+		println("${name} STARTS - Activates the sonar")
+		forward sonar22 -m sonaractivate : info(ok)
+	} 
+	Transition t0 whenEvent sonardata -> doBusinessWork
+	
+	State doBusinessWork{
+		//printCurrentMessage
+		onMsg( sonardata : distance(D)){
+			[# var D = payloadArg(0).toInt() #]
+			//Interact with the Radar
+			forward radar22 -m polar : polar( $D, 90)
+			//Interact with the Led
+			if [# D <= DLIMIT #]{
+ 				//println("${name} - Turn the Led on")
+				forward led22 -m ledCmd : ledCmd(on)
+			}else{ //TODO in the project: if Led is on ....
+ 				//println("${name} - Turn the Led off")
+				forward led22 -m ledCmd : ledCmd(off)				
+			}
+		}
+	}
+	Transition t0 whenEvent sonardata -> doBusinessWork
+	
+}
+
+/*
+ * WORKPLAN:
+ * 1) MODIFCARE LA CONFIGURAZIONE 
+ * 2) DEFINIRE I DISPOSITIVI (come attori External ? ...)
+ * 3) ...
+ */

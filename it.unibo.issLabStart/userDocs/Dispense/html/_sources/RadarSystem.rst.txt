@@ -79,7 +79,7 @@ Poichè il testo dei requisiti fornisce già un nome per ciascun requisito, si h
 di partenza per la :blue:`forward traceability`.
 
 +++++++++++++++++++++++++++++++++++++
-User stories
+User story
 +++++++++++++++++++++++++++++++++++++
 
 Una user-story che esprime il funzionamento atteso del sistema, catturando tutti i requisiti può essere
