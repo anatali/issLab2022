@@ -7,10 +7,10 @@ import kotlinx.coroutines.channels.SendChannel
 var dispatcher    = newSingleThreadContext("single")
 lateinit var receiverActor : SendChannel<String>
 
-fun startReceiver(  ){
-	val myScope = CoroutineScope(dispatcher)
+@kotlinx.coroutines.ObsoleteCoroutinesApi
 
-	receiverActor = myScope.actor<String>( dispatcher, capacity = 2) {
+fun startReceiver( scope : CoroutineScope){
+	receiverActor = scope.actor<String>( dispatcher, capacity = 2) {
 		//actor is a coroutine builder (dual of produce)
 		println("receiverActor STARTS")
 		/*
@@ -20,16 +20,7 @@ fun startReceiver(  ){
 		All the ReceiveChannel functions on this interface delegate to the channel instance
 		returned by this function.
 		 */
-		//delay(500)		//time of initialization ...
-		for (v in channel) {
-			when( v ){
-				"end" -> { println("receiverActor ENDS ${curThread()}") }
-				else -> {
-					println("receiverActor receives $v ${curThread()}")
-				}
-			}
-		}
-		/*
+		delay(500)		//time of initialization ...
 		var msg = channel.receive()
 		while( msg != "end" ){ 	//message-driven
 			delay(500)   //time to elaborate the msg ...
@@ -37,14 +28,13 @@ fun startReceiver(  ){
 			msg = channel.receive()
 		}
 		println("receiverActor ENDS ${curThread()}")
-		 */
 	}
 }
 @kotlinx.coroutines.ObsoleteCoroutinesApi
 
 fun startSender( ){
-	println("senderActor STARTS")
 	val myScope = CoroutineScope(dispatcher)
+	//myScope.launch{	//(1)
 	val senderActor = myScope.actor<String> {	//(2)
 		println("sender STARTS")
 		for( i in 1..4 ) {
@@ -57,16 +47,14 @@ fun startSender( ){
 }
 
 fun actorsSenderReceiver(){
-		startReceiver( )	//first, to setup: lateinit var receiverActor
+	runBlocking {
+		startReceiver(this)	//first
 		startSender()
+	}
 }
 
 fun main() {
 	println("BEGINS CPU=$cpus ${curThread()}")
-	runBlocking{
-		actorsSenderReceiver()
-		(receiverActor as Job).join()
-		//delay(2000)  //DA EVITARE ...
-	}
+	actorsSenderReceiver();
 	println("ENDS main ${curThread()}")
 }

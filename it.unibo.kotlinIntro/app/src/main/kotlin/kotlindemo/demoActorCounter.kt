@@ -26,6 +26,7 @@ class CounterMsg(
 	val response: CompletableDeferred<Int>?=null){
 }
 
+@kotlinx.coroutines.ObsoleteCoroutinesApi
 
 fun createCounter(scope : CoroutineScope):SendChannel<CounterMsg>{
  val counterActor = scope.actor<CounterMsg> {
@@ -49,6 +50,7 @@ suspend fun showValue(counterActor: SendChannel<CounterMsg>){
     val cVal = CompletableDeferred<Int>()
     counterActor.send(CounterMsg("GET", cVal))
 	println("Counter showValue wait for completion .... ")
+
 	val result = cVal.await()	//wait for completion
 /*
 Awaits for completion of this value without blocking a thread
@@ -64,8 +66,14 @@ Use isCompleted to check for completion of this deferred value without waiting.
 */
     println("Counter VALUE=${result}")
 }
-
-
+/*
+suspend fun sendManyMessages( scope : CoroutineScope, 
+		counterActor: SendChannel<CounterMsg>){
+	scope.manyRun {
+		counterActor.send( CounterMsg("INC") )
+    }
+}
+*/
 
 fun doCounterActor(){
 	runBlocking {
@@ -75,7 +83,7 @@ fun doCounterActor(){
 		manyRun {counter.send( CounterMsg("INC"))}
 		showValue(counter)
 		counter.send(CounterMsg("END"))
-		println("counter as Job JOIN ${curThread()}")
+		println("JOIN ${curThread()}")
 		(counter as Job).join()    //WAIT for termination
 		//counter.close() //shutdown the actor
 		println("ENDS runBlocking ${curThread()}")
