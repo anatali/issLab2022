@@ -29,8 +29,8 @@ val choiche = arrayOf("demoBaseFunzioni","demoLambda","demoCps","demoAsynchCps",
      "ioBoundFunCallBlocking","ioBoundFunCallnewSingleThreadContext","ioBoundFunCallActivate",
     "demoChannelTestOneSendRec","demoChannelTestMany",
     "manyTypeProducerOnChannel", "manyConsumers",
-     "actorsSenderReceiver", "doCounterActor",
-     "testObject","testClass","testPropertyDelegate","testDataClass","testCompanion","testInheritance"  )
+     "actorsSenderReceiver", "doCounterActor"
+       )
 
 var demoTodo : () -> Unit = { println("nothing to do") }
 fun readInt() : Int { print(">"); return readLine()!!.toInt() }
@@ -54,10 +54,9 @@ fun doDemo( input : Int ){
         6 ->  demoTodo =  { runBlockThreadInGlobalScope() }
         7 ->  demoTodo =  { runBlockingLaunchJoin() }
         8 ->  demoTodo =  { runBlockingLaunchNoJoin() }
-        9 ->  demoTodo =  { scopeDemo() }
         10 ->  demoTodo =  { runInNewScope() }
         11 ->  demoTodo =  { manyThreads() }
-        12 ->  demoTodo =  { manyCoroutines() }
+        12 ->  demoTodo =  { runBlocking{ manyCoroutines()  } }
         13 ->  demoTodo =  { scopeAsyncDemo() }
         14 ->  demoTodo =  { ioBoundFunCallBlocking() }
         15 ->  demoTodo =  { ioBoundFunCallnewSingleThreadContext() }
@@ -67,9 +66,8 @@ fun doDemo( input : Int ){
         19 ->  demoTodo =  { prodCons.manyTypeProducerOnChannel() }
         20 ->  demoTodo =  { prodCons.manyConsumers() }
         21 ->  demoTodo =  { kotlindemo.actorsSenderReceiver() }
-        22 ->  demoTodo =  { kotlindemo.actorsSenderReceiver() }
-        23 ->  demoTodo =  { kotlindemo.doCounterActor() }
-        24 ->  demoTodo =  { kotlindemo.doCounterActor() }
+        //22 ->  demoTodo =  { kotlindemo.actorsSenderReceiver() }
+        22 ->  demoTodo =  { kotlindemo.doCounterActor() }
         else ->  { println("command unknown") }  //Note the block
     }
     println( "work done in time= ${measureTimeMillis(  demoTodo )}"  )
@@ -96,12 +94,11 @@ Funzioni con le demo
 
 fun demoBaseFunzioni(){
     println("-- DEMOBASE funzioni")
-    println( fun(){ println("Hello-anonymous")}   ) //Function0<kotlin.Unit>
-    println( fun(){ println("Hello-anonymous")}()   ) //Hello-anonymous e poi kotlin.Unit
-    val ftgreetCallResult = ftgreet("Hello Greeting")() //side effect: Hello Greeting
+    //println( fun(){ println("Hello-anonymous")}   ) //Function0<kotlin.Unit>
+    //println( fun(){ println("Hello-anonymous")}()   ) //Hello-anonymous e poi kotlin.Unit
+    val ftgreetCallResult = ftgreet("Hello Greeting")()//side effect: Hello Greeting
     println( "ftgreetCallResult=$ftgreetCallResult" ) //kotlin.Unit
 }
-
 fun demoLambda() {
     println("-- DEMOLAMBDA")
     val v1 = exec23( "no shortcut", { x:Int, y:Int -> x-y } ) //1) no shortcut
@@ -232,11 +229,12 @@ fun runBlockThreadInGlobalScope(){
 }
 fun runBlockingLaunchJoin(){
     runBlocking {
+        thcounter = 0;
         println("Before run2  ${curThread()}")
         val job =  launch{ runBlockThread(2000)  }
-        println("Just after launch ${curThread()}")
+        println("Just after launch ${curThread()}"  )
         job.join()
-        println("After job ${curThread()}")
+        println("After job ${curThread()} thcounter=$thcounter")
     }
     //the coroutine is launched in the scope of the outer runBlocking coroutine.7
     println("Ends runBlockingLaunchJoin ${curThread()}")
@@ -301,10 +299,9 @@ fun incGlobalCounter(   ){
     thcounter++
 }
 
-fun manyThreads(){  //user-option 4
+fun manyThreads(){  //user-option
     thcounter=0
     maxNumThread = 0
-
     val time = measureTimeMillis{
         val jobs = List(n){
             kotlin.concurrent.thread(start = true) {
@@ -316,18 +313,19 @@ fun manyThreads(){  //user-option 4
     println("manyThreads time= $time thcounter=$thcounter maxNumThread=$maxNumThread")
 }
 
-fun manyCoroutines(){	//user-option 5
-    //val d = newSingleThreadContext("single")
-    val d = newFixedThreadPoolContext(10,"d")
+suspend fun manyCoroutines(){	//user-option 5
+    val d = newSingleThreadContext("single")
+    //val d = newFixedThreadPoolContext(10,"d")
     //val d = Dispatchers.Default
     val scope = CoroutineScope( d )
     thcounter=0
     maxNumThread=0
     val time = measureTimeMillis {
-        val jobs = List(n) { scope.launch{ repeat(k) { incGlobalCounter() } } }
-        //jobs.forEach { it.join() } //wait for termination of all coroutines
+        val jobs = List(n) {
+            scope.launch{ repeat(k) { incGlobalCounter() } }
+        }
+        jobs.forEach { it.join() } //wait for termination of all coroutines
     }
-
     println("manyCoroutines time= $time counter=$thcounter maxNumThread=$maxNumThread")
 }
 

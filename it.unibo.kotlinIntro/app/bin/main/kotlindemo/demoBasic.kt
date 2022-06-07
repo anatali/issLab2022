@@ -40,28 +40,19 @@ package kotlindemo
 
  fun main() {
     println("BEGINS CPU=$cpus ${curThread()}")
-
     println( st ) //Hello Bob
-
      println("v=$v")	//v=0
-
     println( "v01 is String=${v01 is String}") //v01 is String=false
     println( "v01 is Int=${v01 is Int}")	//v01 is Int=true
-
 	println( "v02 is String=${sv02}")
 	println( "v02 is Int=${nv02}")
-
      //val n = v02.length
-
-	if (v02 is String) println(v02.length) // Smart cast: v02 is automatically cast to String
-
+	if (v02 is String) println("vo2isString length=${v02.length}") // Smart cast: v02 is automatically cast to String
     println( n02 )					//3 from Explicit type casting
-
     // println( "${v02 as Int}")   //java.lang.ClassCastException
-
 	println( "$x02			")		//null  from Safe type casting
 	println( "$t02")				//100 from as? ?:
-	  
+
 	 
 	println( "s1 === s2 : ${s1 === s2} ")	//true
 	println( "s1 == s2  : ${s1 == s2} ")    //true
