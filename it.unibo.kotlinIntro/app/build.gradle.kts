@@ -28,7 +28,7 @@ version = "1.0"
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = "15"
+        jvmTarget = "11"
     }
 }
 dependencies {
@@ -66,7 +66,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("kotlindemo.demoBasicKt")
+    mainClass.set("demo2022Kt")
 }
 
 
