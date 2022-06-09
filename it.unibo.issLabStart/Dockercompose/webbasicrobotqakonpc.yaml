@@ -1,0 +1,8 @@
+version: '3'
+services:
+  webgui:
+    image: docker.io/natbodocker/webbasicrobotqakforpc:1.1
+    ## image: webbasicrobotqakforpc:1.1
+    ports:
+      - 8085:8085
+
