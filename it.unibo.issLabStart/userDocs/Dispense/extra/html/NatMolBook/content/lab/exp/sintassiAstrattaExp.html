@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Espressioni: sintassi astratta" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/analisiRequisitiExp.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Espressioni: sintassi astratta</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Espressioni: sintassi astratta</h1>
+
+	
+<div>
+<div class="p">
+Il modello delle espressioni sviluppato fino a questo punto
+fornisce la sintassi astratta delle espressioni generate dalla grammatica data,
+che può essere utilizzata per costruire applicazioni anche in assenza
+di un parser e di un lexer.
+Ad esempio l'espressione:
+<pre class="pre">2 * 3 - (4 + 1 )</pre>
+
+può essere costruita come segue:
+<pre class="pre">
+IExp e1  = new OpExp( "*", new NumExp(2), new NumExp(3) );		
+IExp e2  = new OpExp( "+", new NumExp(4), new NumExp(1) );
+IExp exp = new OpExp( "-", e1, e2 );
+</pre>
+
+Sulla base delle interfacce definite è anche possibile impostare
+algoritmi di riscrittura e di valutazione delle espressioni 
+senza averne completato l'implementazione. Le sezioni che
+seguono presenteranno qualche esempio in proposito.
+</div>
+
+ 
+
+<div class="section"><h2 class="sectiontitle">Riscrittura in forma polacca</h2>
+<p>
+Un'espressione come <tt>2 * 3 - (4 + 1 )</tt> è scritta in <em>forma infissa</em>,
+cioè in una sintassi concreta in cui gli operatori binari compaiono
+tra i due rispettivi operandi. Un'espressione può tuttavia essere
+scritta anche in forma (polacca) prefissa, in cui gli operatori precedono gli
+gli operandi (<tt>- 2  3 *  4  1 +</tt>) o (polacca) postfissa, in cui gli operatori seguono gli
+gli operandi (<tt>2  3 *  4  1 + -</tt>).
+</p>
+<div class="p">
+Data un'espressione in forma interna ad albero binario,
+la riscrittura in forma polacca può essere effettuta impostando una visita
+all'abero stesso; ad esempio:
+<pre class="pre">
+public String visitPostfissa(IExp exp){
+	if( exp.isAtomic() ) return ""+((IAtomicExp)exp).getVal();
+	else {
+		String lS = visitPostfissa( 
+			((IComposedExp)exp).getLeft() );
+		String rS = visitPostfissa( 
+			((IComposedExp)exp).getRight() );
+		return lS + " " + " " + rS + " "+ 
+			((IComposedExp)exp).getOpName();	
+	}
+}
+</pre>
+
+Allo stesso modo si può impostare la valutazione di un'espressione:
+<pre class="pre">
+public int eval(IExp exp){
+int v=0;
+	if( exp.isAtomic() ) return ((IAtomicExp)exp).getVal();
+	else {
+		int v1 = eval( ((IComposedExp)exp).getLeft() );
+		int v2 = eval( ((IComposedExp)exp).getRight() );
+		char op = 
+			((IComposedExp)exp).getOpName().charAt(0);
+		switch( op ){
+			case '+' : v = v1 + v2;break;
+			case '-' : v = v1 - v2;break;
+			case '*' : v = v1 * v2;break;
+			case '/' : v = v1 / v2;break;
+		}
+		return v;	
+	}
+}
+</pre>
+
+</div>
+
+</div>
+ 
+
+<div class="section"><h2 class="sectiontitle">Il pattern Visitor</h2>
+<p>
+Osservando il codice precedente vediamo che siamo chiamati
+ad eseguire operazioni specifiche in funzione del tipo di elemento che
+forma un oggetto di tipo <tt>Exp</tt>. Per evitare l'uso del controllo
+esplicito di tipo e del type-casting sarebbe necessario introdurre
+nuove operazioni nelle classi <tt>NumExp</tt> e <tt>OpExp</tt> per
+supportare le esigenze di visita e di valutazione. 
+D'altra parte le necessità che possono sorgere da parte di chi
+utilizza esprssioni possono essere molteplici; ci si chiede quindi se
+sia possibile estendere le operazioni relative alla gerarchia di classi di
+radice <tt>Exp</tt> senza dover modificare ogni volta l'insieme di operazioni
+definite da ciascuna classe.
+</p>
+<p>
+La risposta a questa domanda è fornita dal  
+xref href="../pattern/Visitor.dita"/&gt; 
+che realizza l'idea di <em>double dispatch</em> per cui
+l'operazione eseguita da un oggetto dipende non solo
+dal nome della richiesta e dal tipo dell'oggetto
+ma anche dal tipo di un secondo oggetto. Questo secondo
+oggetto è detto <em>visitor</em> ed incpasula la logica dell'operazione
+da eseguire.
+</p>
+<div class="p">
+Il meccanismo è il seguente: ogni classe 
+della gerarchia definisce una operazione (di nome <tt>accept</tt>) che
+riceve come argomento di ingresso un visitor; tale operazione delega
+a questo visitor la responsabilità di eseguire un'operazione 
+(di nome standard <tt>visit</tt>) sull'oggetto corrente trasferito come argomento
+secondo il seguente schema di comportamento:
+<pre class="pre">
+public void accept( Visitor v){
+	v.visit(this);
+</pre>
+
+Nel caso del nostro modello delle espressioni un <em>Visitor</em> potrebbe 
+realizzare la seguente interfaccia:
+<pre class="pre">
+ public interface IExpVisitor {	
+	public  void visit( IAtomicExp e );
+	public  void visit( IComposedExp e );	
+	public  Object doJob();
+}
+</pre>
+
+Il metodo <tt>doJob</tt> restituisce l'oggetto che rappresenta
+il risultato dell'applicazione dell'operazione realizzata dal visitor.
+Il modello di dominio deve essere esteso come segue:
+<pre class="pre">
+public interface IExp {
+	public void accept(IExpVisitor e);
+}
+</pre>
+
+Su queste basi possiamo pianificare il seguente piano di collaudo:
+<pre class="pre">
+private IExp fixture ;
+
+protected void setUp() {
+//		String frase = "2 * 3 - (4 + 1 )";		
+	IExp e1 = new OpExp( "*", 
+				new NumExp(2), new NumExp(3) );		
+	IExp e2 = new OpExp( "+", 
+				new NumExp(4), new NumExp(1) );
+	fixture = new OpExp( "-", e1, e2 );
+}//setUp
+
+public void testPolacca() {
+	IExpVisitor visitor = new RewriteVisitor();
+	String resultExpected = "2 3 * 4 1 + -";
+	String result =  visitor.doJob(fixture).toString();
+	assertTrue("testPolacca", result.equals(resultExpected));
+}//testPolacca	 
+
+public void testEval() {
+	IExpVisitor visitor = new EvalVisitor();
+	String resultExpected = "1";
+	fixture.accept(visitor);
+	String result =  visitor.doJob(fixture).toString();
+	assertTrue("testEval", result.equals(resultExpected));
+}//testEval	 
+</pre>
+
+Il visitor che realizza la riscrittura in forma polacca postfissa 
+può essere definito come segue:
+<pre class="pre">
+package it.unibo.exp.expVisitor;
+import java.util.Stack;
+
+public class RewriteVisitor implements IExpVisitor{
+Stack&lt;String&gt;  stack = new Stack&lt;String&gt;();
+
+	public void visit(IAtomicExp e) {
+		stack.push(""+e.getVal());
+	}
+
+	public void visit(IComposedExp e) {
+		e.getLeft().accept(this);
+		String leftSon = (String) stack.pop();
+		e.getRight().accept(this);
+		String rightSon = (String) stack.pop();
+		stack.push(
+		  leftSon+" " + rightSon + " " + e.getOpName());
+	}
+	
+	public String doJob(IExp e){
+		e.accept(this);
+		if( !stack.empty()) return stack.pop();
+		else return null;
+	}
+}
+</pre>
+
+La definizione del visitor che efettua la valutazione 
+dell'espressione viene lasciata come esercizio al lettore.
+
+</div>
+
+</div>
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/analisiRequisitiExp.html">Espressioni: analisi dei requisiti</a></div>
+</div>
+</div>
+
+</body>
+</html>

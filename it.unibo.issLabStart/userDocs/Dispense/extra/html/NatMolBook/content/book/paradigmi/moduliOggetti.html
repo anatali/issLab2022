@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Moduli e information hiding" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/paradigmi/paradigmi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Moduli e information hiding</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Moduli e information hiding</h1>
+
+<div>
+<p>
+A partire dal 1972 e dai contributi di Parnas [Parnas72], 
+i linguaggi di programmazione tendono 
+a introdurre nuovi costrutti linguistici per meglio catturare la semantica delle 
+astrazioni di dato, separando in modo radicale l'aspetto della rappresentazione concreta 
+dall'aspetto legato all'accesso ai dati. Si diffondono cioè costrutti capaci di supportare 
+l'incapsulamento dell'informazione, cioè la proprietà di rendere inaccessibile la rappresentazione 
+concreta dei dati (implementazione) e di permetterne la manipolazione solo attraverso 
+le operazioni di un insieme di operazioni di interfaccia. 
+</p>
+<p>
+L'incapsulamento (anche detto <strong>information hinding</strong>) costituisce un concetto complementare 
+all'astrazione. Mentre l'astrazione si focalizza sul funzionamento osservabile di un oggetto 
+e su cosa fa un oggetto, l'incapsulamento si focalizza sull'implementazione e permette 
+di modificare un sistema software con uno sforzo limitato. Qualunque sia l'implementazione 
+scelta per una nuova categoria di dati, essa è inessenziale agli occhi dei clienti, 
+una volta che assicuri il rispetto del contratto tra il cliente e un oggetto di quella 
+categoria stabilito dall'interfaccia. 
+</p>
+<p>
+Il <strong>modulo</strong> nasce come un costrutto linguistico che permette di raggruppare dati, 
+funzioni e procedure in una singola unità sintattica e che permette l'incapsulamento 
+dell'informazione. Attraverso l'uso di un modulo è possibile costruire una barriera 
+di astrazione intorno alla rappresentazione concreta di dati ed operazioni. 
+Se ben definito, un modulo ha la possibilità di: garantire l'uso consistente e corretto 
+di risorse computazionali, cioè il soddisfacimento di invarianti e di ottenere 
+indipendenza dalla rappresentazione.
+</p>
+<p> 
+Mentre le funzioni possono essere viste come <em>meccanismi di astrazione rispetto 
+alle espressioni</em> e le procedure come <em>meccanismi di astrazione rispetto ai comandi</em>, 
+i moduli <strong>non</strong> costituiscono invece un meccanismo di astrazione, ma solo un contenitore 
+di informazione senza alcuna precisa semantica. In particolare il modulo in quanto tale 
+non riflette e non suggerisce l'idea di astrazione di dato e un programmatore poco 
+accorto potrebbe usare i moduli in modo incoerente e non ricevere alcuna indicazione 
+di "errore" da parte del compilatore. 
+</p>
+<p>
+Un costrutto linguistico più direttamente 
+correlato all'idea di tipo di dato inteso come unione di dati e operazioni applicabili 
+si di essi è il costrutto <tt>class</tt>, che 
+nasce nel <tt>Simula67</tt> per 
+specifica la struttura e il comportamento di entità 
+computazionali, detti <strong>oggetti</strong>, che costituiscono una unione di dati e comportamento, 
+caratterizzata da una precisa semantica e specifiche proprietà. 
+</p>
+<p>
+
+Impostare un sistema sulla base di una <strong>A</strong>rchitettura ad oggetti
+(si veda <a href="../sistemi/stileArchitetturale.html">Lo stile architetturale</a>), induce a spostare l'attenzione
+dal funzionamento interno di ciascun oggetto al modo con cui gli oggetti sono relazionati tra loro.
+</p>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/paradigmi/paradigmi.html">Linguaggi e paradigmi computazionali</a></div>
+</div>
+</div>
+
+</body>
+</html>

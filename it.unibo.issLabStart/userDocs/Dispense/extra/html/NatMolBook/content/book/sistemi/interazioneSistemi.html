@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Interazione" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/sistemi/dimensioniSistemi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Interazione</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Interazione</h1>
+
+<div>
+
+<p>
+Per descrivere l'interazione <tt>UML</tt> introduce
+ <tt>event, interaction</tt>.
+</p>
+<p>
+<tt>UML2.0</tt> introduce una nuova forma di descrizione ad alto livello di interazioni:
+l'<tt>Iteraction Overview Diagram</tt>. Questo digramma combina elementi 
+degli <tt>activity diagrams</tt> e dei <tt>sequence diagrams</tt> per mostrare il flusso di
+un sistema in esecuzione.
+</p>
+<p>
+Le interazioni possono essere <em>sincrone</em> o <em>asincrone</em> 
+e riguardare informazioni o <em>stream</em> di dati. In questo secondo caso esse
+possono essere anche <em>isocrone</em>.
+</p>
+<div class="p">
+<ul>
+<li>In una <em>interazione asincrona</em> 
+la comunicazione è "bufferizzata" senza alcuna limitazione sulle dimensioni
+del buffer. L'emittente non deve attendere alcuna informazione
+di ritorno anche quando invia informazione ad uno specifico destinatario.
+Il ricevente attende solo quando il buffer è vuoto.
+Nel caso di stream, non vi sono vincoli di tempo per la ricezione.
+</li>
+
+<li>
+In una <em>interazione sincrona</em> 
+la comunicazione avviene senza l'uso di alcun buffer.
+L'emittente e il desinatario scambiano
+informazione unificando concettualmente le proprie attività. 
+Nel caso di stream, il destinatario si aspetta di ricevere i dati con un ritardo
+(<em>delay</em>) che non supera un massimo prefissato.
+</li>
+
+<li>
+Una <em>interazione isocrona</em> riguarda solo stream;
+il destinatario si aspetta di ricevere
+i dati con un delay compreso tra un minimo e un massimo. 
+</li>
+</ul>
+
+</div>
+<p>
+
+Per impostare in modo sistematico la dimensione interazione è opportuno
+chiarire le diverse forme che questa può assumere.
+Nel seguito faremo riferimento alla seguente terminologia:
+</p>
+<div class="p">
+
+<ul>
+<li><em>Evento (event)</em>: informazione emessa (più o meno consapevolmente) 
+in modo asincrono da una sorgente senza alcuna particolare nozione di ricevente e 
+senza alcuna aspettativa da parte dell'emittente. </li>
+
+
+<li><em>Segnale (signal)</em>: informazione inviata in modo asincrono  a <tt>N (N&gt;=1)</tt> destinatari, 
+noti o meno all'emittente, con l'aspettativa che venga ricevuta da qualcuno, 
+al fine di eseguire un'azione che potrebbe portare vantaggio all'emittente e/o 
+al sistema nel suo complesso. </li>
+
+
+<li><em>Messaggio (message)</em>: informazione inviata in modo asincrono  a <tt>N (N&gt;=1)</tt> 
+specifici destinatari, 
+noti alla emittaente,  con l'aspettativa che questi lo ricevano e lo elaborino, 
+senza attesa di una risposta esplicita.</li>
+
+
+<li><em>Invito (invitation)</em>: messaggio inviato a <tt>N (N&gt;=1)</tt> destinatari, con l'aspettativa 
+che almeno uno lo riceva e invii al mittente un messaggio di conferma.</li>
+
+
+<li><em>Richiesta (request)</em>: messaggio inviato a uno specifico receiver; il contenuto 
+del messaggio rappresenta la richiesta di esecuzione di una attività, 
+con aspettativa da parte del sender che questa attività si concluda con una 
+risposta pertinente alla richiesta. </li>
+
+
+<li><em>Conferma (reply, acknowledgment)</em>: messaggio inviato da un receiver al 
+sender di un invito; Il contenuto del messaggio rappresenta un riconoscimento 
+di avvenuta ricezione.</li>
+
+
+<li><em>Risposta (response)</em>: messaggio inviato da un receiver al sender di una 
+richiesta; il contenuto del messaggio rappresenta la risposta alla richiesta.</li>
+
+
+<li><em>Risultato (result)</em>: messaggio inviato dal receiver di una richiesta 
+ad uno o più destinataori, noti e meno; il contenuto del messaggio 
+rappresenta la risposta alla richiesta.</li>
+
+</ul>
+
+
+</div>
+<div class="p">
+Le interazioni vengono spesso suddivise secondo quattro pattern [POSA3]; con
+riferimento alla terminologia precedente; :
+<ul>
+<li><em>Fire and forget</em>: il caso di invio di eventi, segnali, messaggi.
+</li>
+
+<li><em>Sync with server</em>: il caso di invio di  invitation.
+</li>
+
+<li><em>Poll objects</em>: il sender invia una request delegando ad  un oggetto 
+(<em>poll object</em>) la responsabilità di ricevere la risposta. 
+Il sender usa il poll object per verificare ed acquisire la disponibilità della risposta.
+</li>
+
+<li><em>Result callback</em>: il sender invia una request specificando un oggetto  
+(<em>callback object</em>) 
+che implementa un metodo che verrà invocato dal supporto non 
+appena il receiver invierà la risposta.
+
+</li>
+
+</ul>
+
+
+
+
+</div>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/sistemi/dimensioniSistemi.html">Dimensioni</a></div>
+</div>
+</div>
+
+</body>
+</html>

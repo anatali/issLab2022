@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Using WEnv &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="VirtualRobot" href="VirtualRobot.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="using-wenv">
+<h1>Using WEnv<a class="headerlink" href="#using-wenv" title="Permalink to this headline">¶</a></h1>
+<p>C:Didattica2021issLab2021unibo.wenvUsage22resourceshtmlNaiveGui.html</p>
+<section id="uso-di-wenv">
+<h2>Uso di WENv<a class="headerlink" href="#uso-di-wenv" title="Permalink to this headline">¶</a></h2>
+<section id="package-unibo-wenvusage22-wshttp">
+<h3>package unibo.wenvUsage22.wshttp<a class="headerlink" href="#package-unibo-wenvusage22-wshttp" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>ClientUsingWsHttp: invia comandi cril su HttpConnection</p></li>
+<li><p>ClientUsingWs: invia comandi cril su WsConnection e implements IObserver</p></li>
+<li><p>ClientUsingWsHttp: iniva comandi su HTTP implements IObserver e riceve update dopo comandi da NaiveGui.html</p></li>
+</ul>
+</section>
+</section>
+<section id="attorifsm-base">
+<h2>AttoriFSM base<a class="headerlink" href="#attorifsm-base" title="Permalink to this headline">¶</a></h2>
+<section id="package-unibo-wenvusage22-actors">
+<h3>package unibo.wenvUsage22.actors<a class="headerlink" href="#package-unibo-wenvusage22-actors" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>QakActor22Fsm extends QakActor22</p></li>
+<li></li>
+<li><p>QakActor22FsmAnnot  extends QakActor22Fsm</p></li>
+<li></li>
+<li><p>FirstQakActor22Fsm: esempio di QakActor22Fsm che usa aril per muovere (w)</p></li>
+<li><p>MainFirstQakActor22Fsm: usa nuove annotazioni e FirstQakActor22Fsm</p></li>
+</ul>
+</section>
+<section id="package-unibo-wenvusage22-actors-robot">
+<h3>package unibo.wenvUsage22.actors.robot<a class="headerlink" href="#package-unibo-wenvusage22-actors-robot" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>RobotMoverFsm: esempio di QakActor22Fsm che usa aril per muovere fino a ostacolo</p></li>
+<li><p>MainRobotMoverFsm: usa nuove annotazioni e RobotMoverFsm</p></li>
+</ul>
+</section>
+</section>
+<section id="attorifsm-annotated">
+<h2>AttoriFSM annotated<a class="headerlink" href="#attorifsm-annotated" title="Permalink to this headline">¶</a></h2>
+<section id="package-unibo-wenvusage22-annot">
+<h3>package unibo.wenvUsage22.annot<a class="headerlink" href="#package-unibo-wenvusage22-annot" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>FirstAnnotated: primo esempio di QakActor22FsmAnnot</p></li>
+<li><p>MainFirstAnnotated : usa nuove annotazioni e FirstAnnotated</p></li>
+</ul>
+</section>
+<section id="package-unibo-wenvusage22-actors-robot-annotated">
+<h3>package unibo.wenvUsage22.actors.robot.annotated<a class="headerlink" href="#package-unibo-wenvusage22-actors-robot-annotated" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>RobotMoverFsmAnnotated: esempio di QakActor22FsmAnnot che usa aril</p></li>
+<li><p>RobotController: invia comando aril (w) a RobotMoverFsmAnnotated</p></li>
+<li><p>MainRobotMoverFsmAnnotated: usa nuove annotazioni e RobotMoverFsmAnnotated,RobotController</p></li>
+</ul>
+</section>
+</section>
+<section id="attorifsm-at-work">
+<h2>AttoriFSM at work<a class="headerlink" href="#attorifsm-at-work" title="Permalink to this headline">¶</a></h2>
+<section id="package-unibo-wenvusage22-annot-walker">
+<h3>package unibo.wenvUsage22.annot.walker<a class="headerlink" href="#package-unibo-wenvusage22-annot-walker" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>BoundaryWalkerAnnot</p></li>
+<li><p>MainBoundaryWalkerAnnot</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using WEnv</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#uso-di-wenv">Uso di WENv</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#package-unibo-wenvusage22-wshttp">package unibo.wenvUsage22.wshttp</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#attorifsm-base">AttoriFSM base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#package-unibo-wenvusage22-actors">package unibo.wenvUsage22.actors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-unibo-wenvusage22-actors-robot">package unibo.wenvUsage22.actors.robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#attorifsm-annotated">AttoriFSM annotated</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#package-unibo-wenvusage22-annot">package unibo.wenvUsage22.annot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package-unibo-wenvusage22-actors-robot-annotated">package unibo.wenvUsage22.actors.robot.annotated</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#attorifsm-at-work">AttoriFSM at work</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#package-unibo-wenvusage22-annot-walker">package unibo.wenvUsage22.annot.walker</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="VirtualRobot.html" title="previous chapter">VirtualRobot</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/UsingWEnv.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

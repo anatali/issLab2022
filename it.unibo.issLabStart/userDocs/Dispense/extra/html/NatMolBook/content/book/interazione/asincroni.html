@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Comunicazione Asincrona" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/esempiInterazione.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Comunicazione Asincrona</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Comunicazione Asincrona</h1>
+
+<div>
+
+<p>
+In questa sezione viene mostrato come e se è possibile mappare l'ISL presentato in precedenza attraverso i diagrammi
+di sequenza UML 2.0 utilizzando in particolare messaggi di tipo AsynchCall e AsynchSignal.
+Verranno ripresi gli esempi illustrati nella sezione relativa ai messaggi SynchCall.
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Dispatch</h2>
+
+<p>
+Come esempio di comunicazione dispatch è stato introdotto lo scenario di invio di un messaggio di posta elettronica.
+Nella figura sottostante è riportato il diagramma di sequenza rappresentante tale scenario realizzato attraverso messaggi
+AsynchCall.
+</p>
+
+<div class="fignone"><span class="figcap">Figure 1. Dispatch Asincrono</span>
+<br /><img src="../../images/UML/DSequenza/dispatchA.jpg" alt="Dispatch Asincrono" /><br />
+</div>
+
+<p>
+Come per il caso sincrono, per rappresentare l'eventuale invio di un messaggio di fault è stato utilizzato il Combined fragment
+"break".
+Nella figura sottostante, invece, è rappresentato il diagramma di sequenza relativo all'invio della posta elettronica realizzato
+mediante AsynchSignal. Come si può vedere tale diagramma non differisce molto dal precedente.
+Inoltre l'utilizzo di call asincrone e signal ha il vantaggio di non dover delegare al supporto di comunicazione il compito
+di inviare un messaggio al Sender per sbloccare il suo flusso di esecuzione.
+</p>
+
+<div class="fignone"><span class="figcap">Figure 2. Dispatch con Segnale</span>
+<br /><img src="../../images/UML/DSequenza/dispatchSignal.jpg" alt="Dispatch con Segnale" /><br />
+</div>
+
+<p>
+Confrontando i diagrammi con quello realizzato nel caso di interazione sincrona possiamo dire che sia AsynchCall che AsynchSignal
+permettono di modellare in modo abbastanza soddisfacente questo tipo di comunicazione.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Signal ed Event</h2>
+
+<p>
+Questi due tipi di comunicazione (rispettivamente invio sms e allarme) da una parte vengono mappati abbastanza bene 
+da AsynchCall ed in modo soddisfacente da AsynchSignal,
+in quanto entrambi i tipi di messaggi supportano al meglio la natura asincrona delle comunicazioni.
+Dall'altra parte però essi sono affetti dalle stesse problematiche delle SynchCall relative all'invio broadcast che
+non è supportato da UML 2.0. Anche in questo caso bisognerà fare ricorso all'utilizzo di messaggi "lost" e "found",
+con la conseguente abiguità che ne deriva.
+</p>
+
+</div>
+
+
+
+<div class="section"><h2 class="sectiontitle">Request/Response</h2>
+
+
+<p>
+Riprendiamo l'esempio dell'invio della posta elettronica proposto nella sezione relativa ai messaggi sincroni.
+Utilizzando messaggi di tipo AsynchCall il Sender non ha più la necessità di attendere un messaggio di presa in carico
+per continuare la sua esecuzione e questo ovviamente offre un vantaggio rispetto all'uso di una call sincrona.
+Il problema che rimane però anche nel caso asincrono è quello di stabilire l'associazione tra la richiesta effettuata e 
+il replay messagge che giungerà dal Receiver, che come abbiamo detto più volte rappresenta una delle limitazioni più grandi dei
+diagrammi di sequenza.
+</p>
+
+<p>
+Le cose non migliorano adottando AsynchSignal poichè in questo caso non si possono nemmeno adottare messaggi di replay per
+mandare la risposta al Sender in quanto la specifica UML 2.0 non lo consente (anche se ciò è consentito da MagicDraw).
+Quindi in questo caso sarà necessario inviare la risposta attraverso un altro AsynchSignal che diventa ancora più difficile
+da correlare alla richiesta iniziale.
+</p>
+
+<p>
+Comunque c'è da notare che l'utilizzo dei due tipi di messaggi asincroni non risolve il problema del protocollo parzialmente 
+specificato in quanto il Sender ha diverse possibilità di azione per il recupero della risposta.
+Inoltre, per quanto riguarda l'invio broadcast si hanno le stesse problematiche già discusse per il caso sincrono.
+</p>
+
+</div>
+
+<div class="section"><h2 class="sectiontitle">Invitation/Acknowledgement</h2>
+
+<p>
+Come fatto notare nel caso sincrono, la realizzazione di questo tipo di comunicazione non si discosta molto dalla
+realizzazione della comunicazione request/response.
+Possiamo quindi affermare che la modellazione di questa comunicazione attraverso messaggi e segnali asincroni risolve 
+solo una delle problematiche illustrate nel caso sincrono (la presa in consegna del supporto) e lascia aperte
+tutte le altre problematiche di rappresentazione.
+</p>
+
+</div>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/interazione/esempiInterazione.html">Esempi di Interazione con i diagrammi di sequenza</a></div>
+</div>
+</div>
+
+</body>
+</html>

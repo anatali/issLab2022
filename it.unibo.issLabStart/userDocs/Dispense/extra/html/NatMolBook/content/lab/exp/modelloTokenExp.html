@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Modello dei token" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/modelloDominioExp.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Modello dei token</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Modello dei token</h1>
+
+	
+<div>
+<p>
+<em>Token: struttura</em>
+</p>
+<p> 
+I <tt>token</tt> possono essere rappresentati attraverso il seguente
+modello <tt>UML</tt>:
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figura 1. Modello dei token</span>
+<br /><img src="../../images/exp/tokenModel.jpg" /><br />
+</div>
+
+</div>
+<div class="p">
+
+Il modello introduce classi per rappresentare
+gli elementi lessicali relativi alla grammatica data:
+<ul>
+<li><tt>LPatToken</tt>: rappresenta una parentesi aperta.</li>
+
+<li><tt>RPatToken</tt>: rappresenta una parentesi chiusa.</li>
+
+<li><tt>OpToken</tt>: rappresenta un operator binario.</li>
+
+<li><tt>AddToken</tt>: rappresenta un operatore di somma o sottrazione. </li>
+
+<li><tt>MulToken</tt>: rappresenta un operatore di prodotto o divisione. </li>
+
+<li><tt>NumToken</tt>: rappresenta un numero naturale.</li>
+
+</ul>
+
+Ogni token è una entità atomica dotata dell'attributo <tt>name</tt> che verrà usato
+per distinguere i token di una stessa classe. Ad esempio il simbolo <tt>+</tt>
+può essere rappresentato da un <tt>AddToken</tt> con <tt>name</tt> uguale a <tt>"+"</tt>.
+I token che rappresentano numeri naturali (<tt>NumToken</tt>) posseggono anche
+l'attibuto <tt>value</tt> che ne denota il valore.
+</div>
+<div class="p">
+Oltre agli elementi lessicali relativi alla grammatica data 
+il modello introduce anche
+<ul>
+<li><tt>EofToken</tt>: rappresenta la fine della frase.</li>
+
+<li><tt>OtherToken</tt>: rappresenta un elemento non riconosciuto.</li>
+
+</ul>
+
+Ad esempio la frase
+<pre class="pre">27 + 3 ?!- 5 )
+</pre>
+
+viene rappresentata dalla seguente sequenza di token:
+<pre class="pre">NumToken AddToken NumToken OtherToken OtherToken AddToken NumToken RPatToken
+</pre>
+
+</div>
+<p>
+Un token rappresenta un oggetto nel senso più classico del termine:
+è cioè un ente che nasconde la propria rappresentazione interna
+e che può essere uitlizzato avvelendosi solo di 
+operazioni definite in una opportuna interfaccia (<tt>IToken</tt>
+o <tt>INumToken</tt>).
+Questo implica che le dimensioni interazione e comportamento
+sono riconducibili all'idea di oggetto come ente passivo
+e dotato di stato (modificabile o meno). 
+</p>
+<p>
+<em>Token: interazione</em>
+</p>
+<p>
+La interazione con un token avviene invocando una operazione
+resa disponibile dalla interfaccia. Il meccanismo di supporto
+e la chiamata di procedura/funzione, che prevede un trasferimento di controllo
+e di evetuali argomenti dal chiamante e la eventuale
+restituzione di un valore.
+
+</p>
+<p>
+<em>Token: comportamento</em>
+</p>
+<p>
+Un token è un oggetto atomico il cui stato non è modificabile.
+Il comportamento di ogni operazione di un token
+è quindi riconducibile al comportamento di una funzione priva di effetti
+collaterali che restituisce il valore di una specifica proprietà.
+Spesso a queste funzioni viene dato un nome del tipo
+<tt>getXXX</tt> ove <tt>XXX</tt> è il nome della proprietà.
+</p>
+<p>
+E' anche possibile aggiungere una indicazione
+relativa al modo con cui costruire un token.
+</p>
+<p>
+<em>Token: costruzione</em>
+</p>
+<div class="p">
+Il costruttore di una entità atomica quale un token è una operazione
+che ha tanti argomenti quante le propietà che il token deve assumere.
+Ad esempio la frase <tt>Java</tt>
+<pre class="pre">
+IToken op0 = new MulToken("/");
+</pre>
+
+esprime la dichiarazione di una variabile <tt>op0</tt> come
+simbolo atto a denotare un oggetto di tipo <tt>IToken</tt> 
+e la inizializzazione di tale variabile al riferimento
+ad un oggetto di classe <tt>MulToken</tt> che rappresenta
+un operatore di divisione.
+</div>
+<p>
+Al momento escludiamo dal modello la presenza di operazioni del tipo 
+<tt>setXXX</tt> che sono spesso introdotte per inizializzare
+il valore di una proprietà di un oggetto creato con un costruttore
+privo di argomenti.
+Operazioni di questo tipo sono introdotte in modo sistematico
+accanto a funzioni <tt>getXXX</tt>, quando si vogliono applicare
+tecniche di inversione di controllo 
+(si veda <a href="../../book/paradigmi/inversioneControllo.html">Inversione del controllo</a>)
+per la risoluzione di dipendenze
+tra oggetti. La loro presenza è però molto pericolosa in quando
+rende dinamicamente modificabile un oggetto che dovrebbe rappresentare una costante. 
+</p>
+
+ 
+
+ 
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/modelloDominioExp.html">Espressioni: modellazione del dominio</a></div>
+</div>
+</div>
+
+</body>
+</html>

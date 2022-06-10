@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Eventi &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Annotazioni" href="Annotazioni.html" />
+    <link rel="prev" title="Attori" href="Attori.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="eventi">
+<h1>Eventi<a class="headerlink" href="#eventi" title="Permalink to this headline">¶</a></h1>
+<p>Concettualmente, una sorgente dovrebbe essere capace di
+emettere informazione percettibile da un numero qualsiasi di osservatori interessati,
+senza che l’azione di osservazione possa alterare il funzionamento della sorgente.</p>
+<p>Questa idea (che segnala un <strong>abstraction gap</strong>)
+suggerisce il concetto di <em>messaggio che non ha un preciso destinatario</em>
+come indicato in <a class="reference internal" href="CostruireSoftware.html#terminologia-di-riferimento"><span class="std std-ref">Terminologia di riferimento</span></a>.</p>
+<p><span class="remark">un attore può emette informazione in forma di evento</span></p>
+<p>Per implementare questa idea di evento, dobbiamo:</p>
+<ul class="simple">
+<li><p>dichiarare l’interesse da parte di un attore di percepire un evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code>;</p></li>
+<li><p>dotare ‘geneticamente’ un attore di una operazione <code class="docutils literal notranslate"><span class="pre">emit</span></code> che produce come effetto la inserzione
+di <code class="docutils literal notranslate"><span class="pre">Ev</span></code> nella coda di tutti gli attori interessati, locali e remoti.</p></li>
+</ul>
+<blockquote>
+<div><p>Come supporto alla realizzazione, useremo un attore specializzato.</p>
+</div></blockquote>
+<section id="eventmsghandler">
+<h2>EventMsgHandler<a class="headerlink" href="#eventmsghandler" title="Permalink to this headline">¶</a></h2>
+<p>Un attore che ha due compiti principali:</p>
+<ol class="arabic simple">
+<li><p><span class="blue">registrazione</span>: tenere memoria del fatto che un attore  si è dichiarato interessato
+alla percezione di un evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code>. Per questa funzione, <em>EventMsgHandler</em> introduce una mappa
+che associa il nome di un attore-observer al’id dell’evento che desidera osservare.</p></li>
+<li><p><span class="blue">aggiornamento</span>: inserire l’evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code> nella coda di tutti gli attori interessati
+quando un attore emette l’evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code>. Per questa funzione,  <em>EventMsgHandler</em>
+usa l’operazione <a class="reference internal" href="Attori.html#sendamsg-di-qak22util"><span class="std std-ref">sendAMsg di Qak22Util</span></a>.</p></li>
+</ol>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EventMsgHandler</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+ <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">myName</span> <span class="o">=</span> <span class="s">&quot;eventhandler&quot;</span><span class="p">;</span>
+ <span class="kd">protected</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">eventObserverMap</span> <span class="o">=</span>
+                          <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">Qak22Context</span><span class="p">.</span><span class="na">registerForEvent</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">eventObserverMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">());</span>
+  <span class="p">}</span><span class="k">else</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">Qak22Context</span><span class="p">.</span><span class="na">unregisterForEvent</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">eventObserverMap</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">());</span>
+  <span class="p">}</span><span class="k">else</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isEvent</span><span class="p">()</span> <span class="p">)</span>  <span class="n">updateTheObservers</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+    <span class="k">else</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">myName</span> <span class="o">+</span> <span class="s">&quot; msg unknown&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="qak22context-registeraseventobserver">
+<h3>Qak22Context.registerAsEventObserver<a class="headerlink" href="#qak22context-registeraseventobserver" title="Permalink to this headline">¶</a></h3>
+<p>Il compito di registrazione di <a class="reference internal" href="#eventmsghandler"><span class="std std-ref">EventMsgHandler</span></a> viene svolto come conseguenza della ricezione
+di un <em>dispatch</em> con id <strong>registerForEvent</strong> che contiene il nome dell’attore-osservatore e l’identificatore
+dell’evento osservato:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(registerForEvent,dispatch,OBSERVERNAME,eventhandler,EVENTID,N)</span></code></p>
+</div></blockquote>
+<p>Questo messaggio è inviato da <a class="reference internal" href="Attori.html#qak22context"><span class="std std-ref">Qak22Context</span></a> quando il livello applicativo ne invoca il metodo
+<code class="docutils literal notranslate"><span class="pre">registerAsEventObserver</span></code></p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Qak22Context</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">registerForEvent</span>   <span class="o">=</span> <span class="s">&quot;registerForEvent&quot;</span><span class="p">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">unregisterForEvent</span> <span class="o">=</span> <span class="s">&quot;unregisterForEvent&quot;</span><span class="p">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">registerAsEventObserver</span><span class="p">(</span><span class="n">String</span> <span class="n">observer</span><span class="p">,</span> <span class="n">String</span> <span class="n">evId</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">QakActor22</span> <span class="n">a</span> <span class="o">=</span> <span class="n">getActor</span><span class="p">(</span><span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">a</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">new</span> <span class="n">EventMsgHandler</span><span class="p">();</span>
+        <span class="n">IApplMessage</span> <span class="n">m</span> <span class="o">=</span> <span class="n">CommUtils</span><span class="p">.</span><span class="na">buildDispatch</span><span class="p">(</span><span class="n">observer</span><span class="p">,</span>
+                            <span class="n">registerForEvent</span><span class="p">,</span> <span class="n">evId</span><span class="p">,</span> <span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span><span class="p">);</span>
+        <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">m</span><span class="p">,</span> <span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="eventmsghandler-updatetheobservers">
+<h3>EventMsgHandler updateTheObservers<a class="headerlink" href="#eventmsghandler-updatetheobservers" title="Permalink to this headline">¶</a></h3>
+<p>L’operazione di <span class="blue">aggiornamento</span> degli observer registrati viene realizzata usando l’operazione
+<a class="reference internal" href="Attori.html#sendamsg-di-qak22util"><span class="std std-ref">sendAMsg</span></a>  per inviare il messaggio a tutti gli attori registrati, locali o remoti.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">updateTheObservers</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">eventObserverMap</span><span class="p">.</span><span class="na">forEach</span><span class="p">(</span>
+  <span class="p">(</span> <span class="n">String</span> <span class="n">actorName</span><span class="p">,</span>  <span class="n">String</span> <span class="n">evName</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">evName</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">())</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="n">IApplMessage</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Qak22Util</span><span class="p">.</span><span class="na">buildEvent</span><span class="p">(</span>
+              <span class="n">msg</span><span class="p">.</span><span class="na">msgSender</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgId</span><span class="p">(),</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">(),</span> <span class="n">actorName</span> <span class="p">)</span> <span class="p">;</span>
+          <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">m</span> <span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">)</span> <span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ovviamente gli osservatori remoti devono essere stati dichiarati come tali.</p>
+</section>
+</section>
+<section id="emit-di-un-evento">
+<h2>emit di un evento<a class="headerlink" href="#emit-di-un-evento" title="Permalink to this headline">¶</a></h2>
+<p>L’operazione <code class="docutils literal notranslate"><span class="pre">emit</span></code> di un messaggio di evento <code class="docutils literal notranslate"><span class="pre">Ev</span></code> viene implementata nella classe
+<a class="reference internal" href="Attori.html#qakactor22-il-costruttore"><span class="std std-ref">QakActor22</span></a> ‘ridirigendo’ <code class="docutils literal notranslate"><span class="pre">Ev</span></code> a <a class="reference internal" href="#eventmsghandler"><span class="std std-ref">EventMsgHandler</span></a>
+che a sua volta esegue il suo compito di <a class="reference internal" href="#eventmsghandler-updatetheobservers"><span class="std std-ref">aggiornamento</span></a>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">emit</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isEvent</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">Qak22Util</span><span class="p">.</span><span class="na">sendAMsg</span><span class="p">(</span> <span class="n">msg</span><span class="p">,</span> <span class="n">EventMsgHandler</span><span class="p">.</span><span class="na">myName</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’esempio di una sorgente di eventi si trova in <a class="reference internal" href="SonarObservable.html#il-sonar-come-attore-che-emette-eventi"><span class="std std-ref">Il Sonar come attore che emette eventi</span></a>.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Eventi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#eventmsghandler">EventMsgHandler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qak22context-registeraseventobserver">Qak22Context.registerAsEventObserver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eventmsghandler-updatetheobservers">EventMsgHandler updateTheObservers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#emit-di-un-evento">emit di un evento</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Attori.html" title="previous chapter">Attori</a></li>
+      <li>Next: <a href="Annotazioni.html" title="next chapter">Annotazioni</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Eventi.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

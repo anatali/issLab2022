@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Lexer: struttura e comportamento" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/esempioModelBased.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Lexer: struttura e comportamento</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Lexer: struttura e comportamento</h1>
+
+	
+<div>
+<div class="p">
+Per impostare il progetto della struttura e del comportamento 
+di un analizzatore lessicale iniziamo dalla visione classica del lexer 
+come automa a stati finiti (<tt>ASF</tt>) 
+e quindi facciamo riferimento alla prima interfaccia d'uso introdotta:
+<pre class="pre">
+public interface ILexer {
+  public Expr0Token next();
+}
+</pre>
+
+La struttura della grammatica potrebbe portare alla definizione di un <tt>ASF</tt>
+come quello rappresentato dallo state diagram <tt>UML</tt> che segue:
+</div>
+<div class="p">
+<div class="fignone"><span class="figcap">Figura 1. Il lexer come ASF</span>
+<img src="../../images/exp/lexefASFNaive.jpg" />
+</div>
+ 
+</div>
+<p>
+Il diagramma utilizza  il termine <tt>digit</tt> per indicare
+una cifra decimale e il termine <tt>other</tt> per denotare
+qualunque simbolo (carattere) non
+compreso tra i simboli terminali della grammatica.
+</p>
+<p>
+Il diagramma non mostra tutti gli stati: quelli mancanti, 
+relativi al riconoscimento di operatori moltiplicativi e delle
+parentesi, sono simili allo stato <tt>AddOpState</tt> 
+relativo al riconoscimento degli operatori <tt>"+"</tt> o 
+<tt>"-"</tt>.
+</p>
+<p>
+Questo automa emette le proprie uscite sia in corrispondenza agli
+stati, sia in corrispondenza a transizioni; esso è quindi
+un automa sia di Moore sia di Mealy. Si noti che al verificarsi
+della transizione da <tt>NumState</tt> 
+a <tt>AddOpSate</tt> con ingresso <tt>+</tt> o <tt>-</tt> l'automa enette due uscite: un
+<tt>NumToken</tt> durante la transizione e un <tt>AddToken</tt>
+appena raggiunto il nuovo stato.
+</p>
+<p>
+La versione mostrata nel diagramma che segue riduce il numero degli stati
+fattorizzando nello stato <tt>TerminalSymState</tt> 
+la gestione dei simboli terminali (indicati da
+<tt>terminalSym</tt>) e dedicando lo stato <tt>NumState</tt> 
+alla gestione dei <tt>digit</tt>.
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figura 2. Il lexer come <tt>ASF</tt> di Mealy</span>
+<img src="../../images/exp/lexefASF.jpg" />
+</div>
+
+</div>
+<p>
+L'automa è ora impostato come un ASF di Mealy che emette
+sempre solo un token
+tranne in alcune  transizioni verso lo stato finale <tt>End</tt>,
+in cui pososno essere emessi due <tt>token</tt>, il secondo dei quali
+è sempre di classe <tt>EofToken</tt>. 
+</p>
+<p>
+Lo stato <tt>Memo</tt> rappresenta una memoria interna all'automa
+che tiene traccia di un token già riconosciuto ma non ancora emesso in uscita.
+
+
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Dal modello dell'ASF al codice</h2>
+<div class="p">
+L'ASF riconoscitore/emettitore di token rappresenta la soluzione (logica, astratta)
+al problema del riconoscimento lessicale.
+Questo automa può essere tradotto in codice in modo sistematico,
+creando una corrispondenza biunivoca tra gli elementi dell'automa
+e diverse parti del codice. Vi possono essere al proposito diverse strategie;
+nel seguito useremo i seguenti criteri:
+<ol>
+<li>Definizione di funzioni per la categorizzazione degli ingressi:
+<pre class="pre">
+boolean isDigit( char n ){
+  return (n &gt;= '0' &amp;&amp; n &lt;= '9');
+}
+
+boolean isEof( char n ){
+  return ( n == 65535 );
+}
+
+boolean isTerminal( char n ){
+  return (isBraket(n) || isAddOp(n) || isMulOp(n) );
+}
+
+boolean isAddOp( char n ){
+  return (n == '+' || n == '-');
+}
+
+boolean isMulOp( char n ){
+  return (n == '*'|| n == '/');
+}
+
+boolean isBraket( char n ){
+  return (n == '(' || n == ')');
+}
+</pre>
+
+</li>
+
+<li>Definizione dell'insieme degli stati mediante un tipo enumerativo:
+<pre class="pre">
+enum State { 
+  TeminalSymState, NumState, MemoState, EndState, ErrorState };
+</pre>
+
+</li>
+
+<li>Definizione dello stato corrente (con inizializzazione):
+<pre class="pre">
+State curState = State.TeminalSymState;
+</pre>
+
+</li>
+
+
+<li>Definizione della funzione caratteristica di stato
+(<em>state function</em>) dell'automa:
+<pre class="pre">
+void sfn(char n){
+    switch (curState) {
+  case TeminalSymState: TeminalSymState(n); break;
+  case NumState: NumState(n); break;
+  case MemoState: MemoState(n); break;
+  case EndState: ErrorState(n); break;
+  case ErrorState: ErrorState(n); break;
+  default: ErrorState(n);
+    }//switch      
+}
+</pre>
+
+La <em>state function</em> <tt>sfn</tt> è definita ipotizzando che il simbolo
+di ingresso del'automa sia rappresentato da un singolo carattere.
+Il costrutto <tt>switch</tt> delega i dettagli del comportamento relativo
+a ciascun stato a una funzione specifica per quello stato; in questo modo
+è facile modificare il codice per aggiungere / rimuovere stati.
+<p>
+Riportiamo qui di seguito la funzione relativa allo stato <tt>TeminalSymState</tt>
+sottolineando come la struttura interna di questa funzione rifletta le
+informazioni contenute nello state diagram; in particolare essa invoca
+una diversa funzione di transizione (si veda il punto 6) per ciascuna categoria di ingressi.
+Le funzioni relative agli altri stati sono definibili in modo analogo.
+</p>
+
+<pre class="pre">  
+void TeminalSymState(char n){
+  if ( isEof(n) ){  
+    transitionToEndState( n );
+    return;
+  }
+  if( isDigit(n) ){
+    transitionToNumState( n );
+    return;
+  }
+  if( isTerminal(n) ){
+    transitionMealy(State.TeminalSymState, n);
+    return;
+  }
+  transitionMealy(State.TeminalSymState,n);
+}
+
+</pre>
+
+</li>
+
+<li>Definizione della funzione caratteristica di uscita 
+(<em>machine function</em>) dell'automa:
+<pre class="pre">  
+public void mfn(State newState, char n){
+switch (newState) {
+case TeminalSymState: 
+    if( curState == State.MemoState)
+      emitTheToken( memoCh );
+    emitTheToken( n ); 
+    break;
+case NumState:  if( curState == State.MemoState)
+      emitTheToken( memoCh );
+    break;
+case MemoState: if( curState == State.NumState )
+      emitNumToken();
+    else emitTheToken( memoCh );
+    break;
+case EndState:  if( curState == State.NumState )
+      emitNumToken();
+    else   
+    if( curState == State.MemoState)
+      emitTheToken( memoCh );
+    emitToken( new EofToken( ) ); 
+    break;
+case ErrorState: if( curState == State.NumState )
+       emitNumToken();
+    else 
+    if( curState == State.MemoState)
+      emitTheToken( memoCh );
+    emitToken( new ErrorToken( ) ); 
+    break;
+default:   
+  if( curState == State.MemoState)
+    emitToken( new ErrorToken( ) );
+  emitToken(new ErrorToken());
+}//switch    
+}
+
+void emitTheToken( char n ){
+Expr0Token token; 
+   switch (n) {
+      case '(':   token = new LParToken( ); break;
+      case ')':   token = new RParToken( ); break;  
+      case '+':   token = new AddToken( "+" ); break;
+      case '-':    token = new AddToken( "-" ); break;
+      case '*':   token = new MulToken( "*" ); break;
+      case '/':   token = new MulToken( "/" ); break;  
+      default:     token = new OtherToken( );    
+   }//switch
+   emitToken( token );
+}
+</pre>
+
+La funzione <tt>emitToken</tt> incapsula i dettagli 
+in cui avviene l'emissione verso il mondo esterno di un <tt>token</tt>
+<p />
+
+</li>
+
+<li>Definizione di tante funzioni quante i diversi
+tipi di transizione dell'automa:
+<pre class="pre">  
+void transitionToEndState( char n ){
+  mfn( State.EndState, n );
+  curState = State.EndState;
+}
+
+void transitionMealy( State newState, char n){
+  mfn( newState,n );
+  curState = newState;
+}
+
+void transitionToNumState( char n ){
+  curNum = curNum*10+(n-'0');
+  mfn( State.NumState, n );
+  curState = State.NumState;   
+}
+
+void transitionToMemoState( char n ){
+  memoCh = n;
+  mfn( State.MemoState, n );
+  curState = State.MemoState;
+}
+
+</pre>
+
+</li>
+
+
+</ol>
+
+</div>
+<p>
+Per amore di chiarezza e modularità possiamo incaspulare il codice precedente
+in una classe, come rappresentato nel diagramma <tt>UML</tt> che segue:
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figura 3. Lexer core-machine</span>
+<img src="../../images/exp/lexefASFCoreMachine.jpg" />
+</div>
+
+</div>
+<p>
+La classe astratta <tt>AbstractCoreLexerASF</tt> implementa l'operazione
+<tt>sfn</tt> lasciando non specificata
+l'operazione <tt>emitToken</tt>.
+E' stato cioè applicato il
+pattern xref href="../pattern/TemplateMethod.dita"/&gt; :
+[GHJV95] per
+evitare di cablare entro questa "macchina" i dettagli relativi alla emissione
+delle uscite; questi dettagli dovranno essere definiti da una versione
+specializzata della classe; ad esempio: 
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figura 4. Lexer come specializzazione della core-machine</span>
+<img src="../../images/exp/lexePojoAsSpecialization.jpg" />
+</div>
+
+</div>
+<p>
+<tt>LexerPojo</tt> è una specializzazione della
+classe <tt>AbstractCoreLexerASF</tt> che realizza in quasto caso un 
+<tt>POJO</tt> cioè un <em>Plain Old Java Object</em>.
+
+</p>
+
+</div>
+
+
+
+
+<div class="section"><h2 class="sectiontitle">Interazioni con i dispositivi</h2>
+<p>
+</p>
+<div class="p">
+Per evitare di dover modificare
+il codice al variare della sorgente-dati, è opportuno
+incapsulare in un oggetto di supporto 
+la dipendenza dal dispositivo di ingresso della
+classe che implementa l'interfaccia <tt>ILexer</tt>. Al momento
+possiamo vicolare il supporto al "contratto" rappresentato dalla seguente
+interfaccia (su cui torneremo in seguito):
+<pre class="pre">
+public interface ISupportInput {
+  public String receive() throws Exception;
+  public char receiveChar() throws Exception;
+}
+</pre>
+
+Le informazioni di ingresso possono essere disponibili in diverse forme:
+su stringa, su file, come stream di dati via rete, etc. Per ciascuna
+di queste forme si può introdurre una classe di implementaizone
+dell'interfaccia <tt>ISupportInput</tt>; ad esempio, nel 
+caso in cui l'ingresso sia disponibile in forma di stringa:
+<pre class="pre">
+public class StringInputSupport implements ISupportInput {
+ public StringInputSupport( String sentence ){
+      ...//TODO
+ }
+  //TODO
+}
+</pre>
+
+Per evitare la dipendenza del codice dalla classe di implementazione
+dei dispositivi è opportuno l'uso del 
+pattern xref href="../pattern/FactoryMethod.dita"/&gt; 
+:
+<pre class="pre">
+public class SupportIOFactory {
+
+  public static ISupportInput createStringSupport(
+  					String sentence){
+  	return new StringInputSupport( sentence );
+  }
+  
+  public static ISupportInput createFileSupport( 
+  					String fileName ){
+ 	 return null; //TODO
+  }
+  
+}
+</pre>
+
+Il piano di collaudo mostra l'uso della factory e del dispositivo:
+<pre class="pre">
+public final void testMoreChar(){
+String str = "1 2 +-     H";
+fixture = SupportIOFactory.createStringSupport(str);
+try {
+  for( int i=0; i&lt;str.length();i++){
+  char curCh = fixture.receiveChar();
+  assertEquals("testMoreChar", curCh, str.charAt(i) );
+  }
+} catch (Exception e) {
+  fail("testMoreChar " + e);
+}
+}
+
+</pre>
+
+
+</div>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Layers</h2>
+<div class="p">
+Il diagramma <tt>UML</tt> che segue mostra le relazione logica tra il
+lexer e il supporto di ingresso:
+
+<div class="fignone"><span class="figcap">Figura 5. Dipendenza dai dispositivi di input</span>
+<img src="../../images/exp/lexerWithIO.jpg" /> 
+</div>
+
+
+Poichè i supporti di ingresso sono logicamente distinti dal codice applicativo 
+(in questo caso  costituito dal lexer)
+e possono costituire una risorsa riusabile in altre applicazioni,
+può essere conveniente incapsulare le classi di implementazione in un ambiente
+separato da quello che incapsula il codice del lexer.
+Il modo più semplice per ottenere lo scopo è avvalersi dell'entità
+<tt>package</tt>; ad esempio:
+
+<div class="fignone"><span class="figcap">Figura 6. I layer</span>
+<img src="../../images/exp/lexerLayer.jpg" /> 
+</div>
+
+
+Questo diagramma <tt>UML</tt>:
+</div>
+<div class="p">
+<ul>
+<li>rappresenta una tipica struttura a livelli, in cui
+i package più in alto rappresenta il layer applicativo e quello
+più in basso la "piattaforma" di supporto;</li>
+
+<li>include la definizione della interfaccia <tt>ISupportInput</tt> a livello
+piattaforma.</li>
+
+</ul>
+
+ </div>
+<p>
+Il secondo punto solleva una questione importante: quale debba essere
+il livello "che comanda". Nel caso attuale è evidente che la piattaforma 
+di supporto costituisce una sorta di implementazione per esigenze
+espresse dal layer applicativo. Tuttavia, il fatto che sia
+il package <tt>Platform</tt> a definire ed esporre il contratto 
+rappresentato dall'interfaccia <tt>ISupportInput</tt> può indurre a pensare
+che debba essere il livello applicativo a doversi adeguare al modo con cui
+la piattaforma definisce l'uso dei suoi servizi e non la piattaforma
+a doversi adeguare alle esigenze del livello applicativo.
+
+D'altra parte, spostare la definizione dell'interfaccia <tt>ISupportInput</tt>
+nel package <tt>Application</tt> renderebbe il package <tt>Platform</tt> incapace di
+esporre i propri "servizi" in forma astratta
+</p>
+<p>
+Sciogliere un dilemma di questo tipo 
+(si veda xref href="../paradigmi/componentiInterfacce.dita"/&gt;) costituisce una decisione molto
+importante per il progettista (se non per l'analista stesso) nel caso
+in cui i vari layer siano veri e propri componenti software.
+</p>
+ 
+ 
+</div>
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/esempioModelBased.html">Esempio di sviluppo model based</a></div>
+</div>
+</div>
+
+</body>
+</html>

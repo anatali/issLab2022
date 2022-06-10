@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Casi d'uso" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/analisiRequisiti.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/relazioniUsecases.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/scenari.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="workflowRequisiti" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Casi d'uso</title>
+</head>
+<body id="workflowRequisiti"><a name="workflowRequisiti"><!-- --></a>
+
+
+<h1 class="topictitle1">Casi d'uso</h1>
+
+<div>
+<p>
+Gli <em>use cases</em> sono stati proposti da Jacobson []JCJO92 come un modo
+sistematico e naturale per la raccolta di <tt>C-requirements</tt> attraverso la 
+specifica della interazione tra il sistema e gli agenti esterni (detti <em>attori</em>) 
+ad esso interessati. L'intento è descrivere
+le funzionalità che <em><strong>danno valore</strong></em> al sistema e non
+le funzionalità relative alla sua organizzazione interna.
+</p>
+<div class="p">
+
+Un attore (<em>Actor</em>) identifica il <em>ruolo</em> 
+che una entità esterna assume quando interagisce direttamente con il sistema.
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="33.333333333333336%"><div class="fignone"><span class="figcap">Figure 1. Actor</span>
+<br /><img src="../../../images/book/actor.jpg" /><br />
+</div>
+
+</td>
+
+<td valign="top" width="33.333333333333336%"><div class="fignone"><span class="figcap">Figure 2. Use case</span>
+<br /><img src="../../../images/book/useCase.jpg" /><br />
+</div>
+
+</td>
+
+<td valign="top" width="33.333333333333336%"><div class="fignone"><span class="figcap">Figure 3. Use case realization</span>
+<br /><img src="../../../images/book/useCaseRealization.jpg" /><br />
+</div>
+ 
+</td>
+
+</tr>
+
+</table>
+
+
+Un <em>Actor</em> modella  agenti anche di natura molto diversa tra loro, quali persone, 
+sistemi elettronici, sistemi meccanici, etc. che possono avere una qualche interazione 
+con il sistema. Dal momento che il loro comportamento è definito esternamente 
+al sistema in costruzione, non necessitano di alcuna ulteriore specifica.
+</div>
+<p>
+L'ovale rappresenta in <tt>UML</tt> un caso d'uso (use case) che a sua volta
+specifica una <em>interazione</em> tra il sistema e uno o più <em>actor</em>, 
+unitamente alle funzionalità che il sistema deve eseguire, agli occhi dei suoi utlizzatori.
+
+Un caso d'uso rappresenta una sequenza di azioni eseguita dal sistema per produrre
+un risultato osservabile che abbia valore agli occhi di un actor; questa
+azione può essere decomposta in altri use cases. 
+</p>
+<p>
+L'ovale tratteggiato rappresenta una collezione di oggetti
+che interagiscono per realizare un use case o un'operazione.
+
+Questa icona viene anche usata per rappresentare
+un <em>pattern</em> o una <em>collaborazione parametrizzata</em>, 
+cioè uno schema i cui
+partecipanti sono astratti e sono sotituiti da enti concreti 
+al momento dell'utilizzo.
+</p>
+<div class="p">
+Gli use case sono utili non solo per la comprensione dei requisiti, ma anche per:
+
+<ul><li>guidare la individuazione di un modello del dominio;</li>
+ 
+<li>promuovere la corrispondenza (tracciabilità)  tra 
+requisiti, progetto e implementazione;</li>
+
+<li>impostare tecniche di <em>rapid prototyping</em>;</li>
+
+<li>individuare e specificare piani di collaudo.</li>
+
+</ul>
+
+Ad ogni use case è di solito  associata, 
+ una documentazione supplementare che può essere sia semplicemente 
+testuale sia espressa in termini di diagrammi <tt>UML</tt> di attività
+(<em>State Machine Diagrams</em>, 
+<em>Activity Diagrams</em>, <em>Sequence Diagrams</em>, etc). 
+</div>
+<p>
+Tra i diversi tipi di diagrammi delle attività, i
+<em>sequence diagram</em> richiedono una decomposizione ad oggetti, che
+deve essere impostata rimanendo sempre dal punto di vista dell'utente, 
+evitando di introdurre concetti che riguardano la progettazione.
+A tal fine, le classi che compaiono nelle <em>swimlines</em>  sono rappresentative
+degli <em>attori</em> che iniziano azioni distinte e delle <em>classi-chiave</em> del dominio.
+
+
+
+</p>
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../../content/book/modelBased/fasi/relazioniUsecases.html">Relazioni tra use cases</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/modelBased/fasi/scenari.html">Scenari</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/modelBased/fasi/analisiRequisiti.html">Analisi dei requisiti</a></div>
+</div>
+</div>
+
+</body>
+</html>

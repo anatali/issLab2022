@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Service Dependency" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Service Dependency</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Service Dependency</h1>
+
+<div>
+<p>
+Il <em>Service Layer</em> si occupa di fornire 
+il supporto per la gestione delle <em>Service Dependency</em>. Quest'ultimo tipo di 
+dipendenze può essere a sua volta classificato in due sotto tipi: 
+</p>
+<div class="p">
+<ul>
+<li>Dipendenza Bundle-to-Service</li>
+
+<li>Dipendenza Service-to-Service</li>
+
+</ul>
+
+
+</div>
+
+<div class="section"><h2 class="sectiontitle">Dipendenza Bundle-to-Service</h2>
+<p>
+
+Un oggetto di un bundle può richiedere i servizi offerti da un altro bundle. 
+In questo caso si genera una dipendenza 
+di tipo dinamico, in quanto gestita dai bundle a run-time e lasca, in quanto collegata alla
+sola interfaccia del servizio, che potrebbe essere implementata da qualsiasi bundle. 
+Tale dipendenza è detta <em>Bundle-to-Service</em>. Un bundle che vuole utilizzare un servizio 
+deve conoscere solo la sua interfaccia: la ricerca dei fornitori 
+di quel servizio avviene a run-time, senza nessun intervento garantista 
+da parte del framework. 
+</p>
+<p>
+Il vantaggio principale di questa scelta sta nel suo dinamismo: 
+i bundle possono essere messi in esecuzione anche se al momento non sono disponibili 
+tutti i servizi di cui necessitano. Questo è particolarmente utile nel caso di servizi 
+non indispensabili (ad esempio la mancanza del servizio di <tt>log</tt>, per tenere traccia 
+delle operazioni eseguite, potrebbe non perturbare il resto delle operazioni del bundle), 
+e di servizi che vengono attivati solo successivamente alla messa in opera del sistema, 
+come ad esempio l'inserimento di un nuovo dispositivo. Lo svantaggio principale 
+di questo tipo di dipendenze consiste nell'elevato sforzo computazionale richiesto 
+ai bundle che devono occuparsi di gestire le fasi di ricerca dei servizi, 
+la possibilità di non trovarne e soprattutto la possibilità che essi, da un 
+momento all'altro, non siano più disponibili. 
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Dipendenza Service-to-Service</h2>
+<p>
+Questo tipo di dipendenza è un caso particolare del precedente ed è descritto 
+nella figura. Si supponga che un bundle <tt>B1</tt> richieda un servizio <tt>S2</tt> che 
+a run-time è fornito dal bundle <tt>B2</tt>. Il servizio <tt>S2</tt> 
+è implementato da un oggetto <tt>O2</tt> 
+che a sua volta necessita di un servizio <tt>S3</tt> (fornito da un bundle <tt>B3</tt>). 
+In questo caso il
+bundle <tt>B1</tt> risulta dipendere da entrambi i servizi, in quanto la mancanza di 
+<tt>S3</tt> non gli permetterebbe di ottenere il servizio <tt>S2</tt>. La dipendenza tra due 
+servizi è detta <em>Service-to-Service</em>, ed è la più difficile da gestire, 
+in quanto non può essere nota a priori. Ogni bundle ha infatti la visibilità 
+limitata al primo servizio (<tt>S2</tt> nell'esempio) e OSGi non fornisce alcun modo per scoprire 
+se questo dipende a sua volta da altri servizi. 
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 1. Esempio di dipendenza Service-to-Service.</span>
+<img src="../../../images/OSGi/serviceToService.bmp" />
+</div>
+
+</div>
+<p>
+
+In un ambiente dinamico come OSGi, in cui in ogni istante può cambiare 
+il numero di bundle (quindi di servizi) in esecuzione, la gestione delle 
+Service Dependency può diventare troppo onerosa, per cui sono state pensate 
+diverse soluzioni a questo problema, tra cui 
+</p>
+<div class="p">
+<ul>
+<li>Service Tracker </li>
+
+<li>Service Binder </li>
+
+</ul>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

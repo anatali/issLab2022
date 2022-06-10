@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="it-it" xml:lang="it-it">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Analisi del problema" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/lab/exp/esempioModelBased.html" />
+<meta content="Antonio Natali" name="DC.Creator" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="id20090225083013" name="DC.Identifier" />
+<meta content="it-IT" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Analisi del problema</title>
+</head>
+<body id="id20090225083013"><a name="id20090225083013"><!-- --></a>
+
+
+	<h1 class="topictitle1">Analisi del problema</h1>
+
+	
+<div>
+<p>
+L'analisi del problema è fortunatamente nota, essendo il concetto di espressione
+aritmetica oggetto dello studio della matematica e dell'informatica teorica.
+Per quanto riguarda il processo di costruzione del software,
+ricordiamo che obiettivi fondamentali dell'analisi sono:
+</p>
+<p>
+Un sistema per il riconoscimento e la valutazione di espressioni aritmetiche 
+può essere basato sulla architettura
+logica rappresentata nella figura che segue:
+</p>
+
+<div class="section"><h2 class="sectiontitle">Architettura logica</h2>
+<div class="p">
+<div class="fignone"><span class="figcap">Figura 1. Architettura Logica del sistema</span><img src="../../images/exp/systemLogic.jpg" /></div>
+ 
+
+Questo diagramma strutturale dice che l'analista ha:
+<ul>
+<li>Riconosciuto il fatto che il sistema richiede la definizione di tre sottosistemi
+(<em>three tier</em>): 
+<ul>
+<li> il sottosistema che definisce il modello dei dati del dominio.
+</li>
+	
+<li> il sottosistema di presentazione 
+che si occupa della interazione (in ingresso e in uscita) 
+con l'utente (<em>interfaccia grafica</em>);
+</li>
+		
+<li> il sottosistema di elaborazione che realizza le attività che
+danno valore all'applicazione (<em>riconoscimento e valutazione di frasi</em>).
+Questo sottosistema comprende anche entità 
+capaci di configurare (<em>configurator</em>) 
+il sistema e di gestire le interazioni (<em>controller</em>) tra il sottosistema di
+presentazione e quello di elaborazione.
+</li>
+		
+</ul>
+
+</li>
+		
+<li> La  separazione delle attività interne di elaborazione
+dai dispositivi di I/O.
+</li>
+		
+<li> 
+L'articolazione del sottosistema di riconoscimento e valutazione
+in tre parti: analizzatore lessicale (<em>Lexer</em>) analizzatore sintattico
+(<em>Parser</em>) e uno o più valutatori (<em>Evaluator</em>).
+</li>
+	
+
+</ul>
+
+</div>
+<p>
+Naturalmente questa architettura va intesa come una prima
+decomposizione del sistema, legata ai requisiti funzionali
+e non funzionali che si vogliono raggiungere.
+Essa lascia ancora indefinite molte parti, quali
+ad esempio l'effettivo rappporto tra <em>Lexer</em>, <em>Parser</em> 
+ed <em>Evaluator</em>
+tra il controller e gli altri componenti, etc..
+</p>
+<div class="p">
+Per quanto riguarda il sottosistema applicativo,
+l'analista può osservare che la frase da riconoscere
+e valutare può essere resa disponibile in diverse forme:
+su file, come stream di dati via rete, come campo di un database, etc.
+Per evitare dipendenze dirette da queste diverse tecnologie di supporto
+alle frasi, l'analista
+indica come opportuno pensare alla frase da analizzare come
+il contenuto informativo di un
+<em>dispositivo logico</em> di ingresso capace di permettere l'accesso sequenziale
+ai singoli caratteri. Questo dispositivo deve essere logicamente
+reso disponibile al <em>Lexer</em> attraverso un'interfaccia quale ad esempio:
+<pre class="pre">
+public interface ISupportInput {
+  public String receive() throws Exception;
+  public char receiveChar() throws Exception;
+}
+</pre>
+
+</div>
+<div class="p">
+Sulla base di queste considerazioni la parte strutturale
+dell'architettura logica della parte applicativa può essere rappresentata
+come segue:
+<div class="fignone"><span class="figcap">Figura 2. Architettura Logica della parte applicativa</span>
+<img src="../../images/exp/applicationLogic.jpg" /></div>
+ 
+</div>
+<p>
+L'analista ha detto  che, sul piano logico, il 
+<em>Parser</em> dipende dal <em>Lexer</em>; per essere più precisi
+ha detto qualcosa del tipo: <em>il (sottosistema) <tt>Parser</tt>
+deve avvelersi di <strong>informazioni</strong> prodotte dal (sottosistema) 
+<tt>Lexer</tt></em>. Non ha detto in alcun modo che, per ottenere
+queste informazioni, il (sottosistema) <tt>Parser</tt> deve "chiamare"
+(una operazione de) il <tt>Lexer</tt>; l'informazione potrebbe essere anche
+"iniettata" dal <tt>Lexer</tt> (o da altro sottosistema) entro il <tt>Parser</tt>.
+</p>
+<div class="p">
+Per quanto riguarda la parte di valutazione delle espressioni 
+L'analista può osservare che un valutatore 
+può essere posto in esecuzione in due modi diversi:
+<ul>
+<li> procedendo passo-passo sotto la guida del <tt>Parser</tt>;
+</li>
+		
+<li> agendo, al termine della attività del <tt>Parser</tt>,
+sull'<tt>APT</tt> da questi prodotto.
+</li>
+		
+</ul>
+
+</div>
+<p>
+La figura mostra che l'analista non pone vincoli in merito
+a questo punto.
+</p>
+
+</div>
+
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Argomento principale:</strong> <a href="../../../content/lab/exp/esempioModelBased.html">Esempio di sviluppo model based</a></div>
+</div>
+</div>
+
+</body>
+</html>

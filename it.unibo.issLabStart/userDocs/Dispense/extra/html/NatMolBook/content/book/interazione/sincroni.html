@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Comunicazione Sincrona" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/esempiInterazione.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Comunicazione Sincrona</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Comunicazione Sincrona</h1>
+
+<div>
+
+<p>
+In questa sezione viene mostrato come e se è possibile mappare l'ISL presentato in precedenza attraverso i diagrammi
+di sequenza UML 2.0 utilizzando in particolare  messaggi di tipo SynchCall.
+Vedremo negli esempi che con questo tipo di messaggi avremo sempre il problema di capire chi fornisce la risposta che 
+"sblocca" il mittente del messaggio.
+</p>
+
+<p>
+Al fine di illustrare il mapping useremo esempi tratti dalle comunicazioni con cui abbiamo a che fare nella vita 
+quotidiana.
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Dispatch</h2>
+
+<p>
+Un classico esempio di comunicazione di tipo "dispatch" è rappresentato dall'invio di un messaggio di posta elettronica.
+Di fatto, se pensiamo solamente al protocollo utilizzato per l'invio di una e-mail (prescindendo quindi dalle aspettative
+di chi invia il messaggio) questo presuppone semplicemente che dopo l'invio della e-mail al
+mittente venga segnalto solamente se ci sono stati dei problemi.
+Il diagramma di interazione di questo scenario è riporato nella figura sottostante.
+</p>
+
+<p>
+Da notare che come accennato nella sezione degli esempi di interazione si suppone che sia il supporto alla comunicazione
+a dare un "acknowledgement" al Sender in modo che il suo flusso di esecuzione possa riprendere. 
+Questa supposizione ovviamente cambia la semantica del diagramma di sequenza in quanto tale messaggio non è indicato nel
+diagramma per evitare di aumentare la complessità del diagramma stesso introducendo anche il supporto alla comunicazione.
+Ovviamente questa nuova entità dovrebbe essere introdotta nel diagramma nel caso in cui il relativo codice dovesse essere
+realizzato da uno sviluppatore non conscio della "convenzione"  adottata.
+</p>
+
+<div class="fignone"><span class="figcap">Figure 1. Dispatch Sincrono</span>
+<br /><img src="../../images/UML/DSequenza/dispatchS.jpg" alt="Dispatch Sincrono" /><br />
+</div>
+
+<p>
+Per realizzare questa semplice comunicazione abbiamo dovuto fare ricorso al Combined fragment "break" che permette di 
+esprimere un comportamento opzionale e successivamente fa terminare l'interazione, in alternativa si poteva utilizzare
+il Combined fragment "opt".
+Per indicare il messaggio di fault "Mail Undelivered" è stato usata una SynchCall anche se si ritiene non essere la soluzione
+migliore, in quanto di nuovo il supporto alla comunicazione dovrebbe fornire l'"acknowledgement" per sbloccare l'esecuzione
+del Receiver.
+</p>
+
+
+<div class="p">
+Da notare che l'utilizzo di messaggi SynchCall per rappresentare una comunicazione di tipo dispatch non sembra essere la
+soluzione migliore a meno di far emergere l'entità "supporto alla comunicazione" e far apparire i messaggi di presa in
+consegna dell'e-mail. Però di nuovo qui nascono diversi problemi:
+<ul>
+<li>"è davvero quello che si vuole rappresentare?". Questa domanda sorge spontanea in quanto non sempre si vuole
+mostrare l'entità "supporto alla comunicazione", nella fase di progettazione potrebbe essere molto utile indicarla, ma 
+se siamo nella fase di analisi, nella quale vogliamo solo indicare interazioni ad alto livello, un diagramma come 
+quello riportato in figura è ambiguo e può portare ad una comprensione errata da parte del progettista. </li>
+
+<li>"come rappresento la presa in carico?". Questa è un'altra questione interessante in quanto dalla specifica UML si
+evince che una SynchCall necessita di un replay message per sbloccare l'attesa del chiamante, ma se il supporto 
+invia un replay message, come potremmo poi rappresentare una eventuale risposta a questa e-mail? di nuovo con un 
+replay message? ma poi come lo associo la risposta alla relativa domanda?</li>
+
+</ul>
+
+Di nuovo le limitazioni dei diagrammi di sequenza di UML non consentono una completa e non ambigua rappresentazione
+di questo semplice tipo di comunicazione.
+</div>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Signal ed Event</h2>
+
+<p>
+Un esempio di comunicazione di tipo "signal" è rappresentato dall'invio di un sms. Se pensiamo al meccanismo sottostante
+e prescindiamo dalle aspettative del mittente l'invio di un sms rappresenta l'invio di un segnale ad uno o più destinatari.
+Allo stesso modo un esempio di comunicazione di tipo "event" potrebbe essere rappresentato da un allarme che suona e 
+produce una perturbazione dell'ambiente circostante che può essere percepita o meno dalle altre entità nell'ambiente. 
+</p>
+
+<p>
+Ovviamente questi due tipi di comunicazione che per loro natura sono asincroni non sono facilmente mappabili attraverso 
+l'utilizzo di call sincorne. 
+Inoltre, come abbiamo già visto in precedenza l'invio di segnali broadcast comporta l'utilizzo 
+di "lost" e "found" message,  rendendo così estremamente ambigui i diagrammi che ne risultano.
+Non ci dilungheremo oltre nello spiegare tutte le problematiche relative alla realizzazione  di signal ed event
+attraverso SynchCall in quanto tali problematiche sono già state trattate ampiamente nei paragrafi precedenti.  
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Request/Response</h2>
+
+<p>
+Questo tipo di comunicazione è quello che trova maggiori esempi nelle interazioni che abbiamo nel quotidiano.
+L'esempio più immediato che viene in mente è quello di una telefonata che viene mappato molto facilmente
+da una SynchCall essendo la telefonata per sua natura sincrona. Questo però è poco rappresentativo,
+in quanto la maggior parte delle comunicazioni request/response non avviene in questo modo.
+Riprendiamo invece l'esempio della posta elettronica (tralasciando la questione del messaggio di fault già trattata nella
+sezione relativa a "dispatch"), stavolta supponendo che nelle aspettative del mittente ci sia il 
+desiderio di ricevere una e-mail di risposta. 
+</p>
+
+<p>
+Il diagramma di sequenza che viene più immediato in questo caso è quello di una SynchCall con il relativo messaggio di
+replay. Tale diagramma però appare subito il meno realistico, in quanto non è detto che la risposta sia immediata e 
+quindi non possiamo pensare di lasciare il Sender in attesa di una risposta che potrebbe anche non arrivare mai per
+problemi di varia natura (rete, ricevente non legge la posta, ecc.).
+Dovremo quindi pensare di utilizzare il "trucco" che il supporto invii al Sender un messaggio di presa in carico del messaggio
+e poi al Sender in un qualche modo arriverà la risposta alla e-mail spedita.
+</p>
+
+<p>
+Anche in questo caso vediamo emergere diverse problematiche già ampiamente illustrate.
+La prima riguarda la rappresentazione sia del messaggio della presa in carico sia della risposta, come si fa
+a distinguerle se vengono rappresentate dalla stessa freccia?
+La seconda problematica riguarda l'associazione tra richiesta e risposta nel caso che quest'ultima non sia
+istantanea e il Sender abbia avviato altre comunicazioni.
+L'ultima problematica è relativa ai protocolli parzialmente specificati, categoria di cui questo esempio fa parte.
+Abbiamo infatti il problema di stabilire come la risposta possa essere consegnata al Sender e come abbiamo già
+ampiamente discusso nel caso della richiesta "weather" vi sono più soluzioni ciascuna delle quali presenta diverse 
+problematiche.  
+</p>
+
+<p>
+Le cose si complicano ulteriormente se pensiamo a request/response di tipo 1-n. In questo caso non possiamo
+usare lo schema con messaggi "lost" e "found" in quanto il Sender avrà sicuramente necessità di conoscere l'identità
+di chi ha mandato la response a meno di non introdurre nel contenuto del messaggio una indicazione dell'identità del mittente.
+Il caso si complica ulteriormente se dovessimo rappresentare più Sender nello stesso diagramma, in questo caso avremo
+la necessità di indicare anche l'identità del destinatario della response oltre a quella del mittente.
+Questo ovviamente da un lato ci consentirebbe di risolvere il problema, dall'altro però ci porta ad una soluzione che 
+"mescola" l'atto di comunicazione con l'informazione veicolata, cose che per quanto possibile occorrerebbe tenere distinte.
+E' bene ricordare che aggiungere informazioni relative all'atto fisico della comunicazione all'interno del messaggio 
+causa diversi problemi in caso di generazione automatica del codice. Il contenuto del messaggio non dovrebbe nemmeno
+essere processato dal generatore automatico, se così non fosse ci troveremo ad avere generatori automatici creati 
+ad hoc per ogni team di sviluppo (supponendo che all'interno dello stesso team si adottino sempre le stesse convenzioni) e
+questo ridurrebbe drasticamente le potenzialità del loro riuso.
+L'unica soluzione al problema dell'invio broadcast risulterebbe quella rappresentare sul diagramma tante interazioni singole
+quanti sono i diversi destinatari e attendere le relative risposte.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Invitation/Acknowledgement</h2>
+
+<p>
+Un esempio di questo tipo di comunicazione è dato dalle fasi iniziali dell'avvio di una chat nelle quali una entità 
+invita altre entità a prendere parte alla discussione e si mette in attesa di ricevere le risposte agli inviti.
+Anche se la semantica della comunicazione è differente rispetto a quella che abbiamo nel caso di request/response, all'atto
+pratico della realizzazione di questa comunicazione attraverso i diagrammi di sequenza è facile vedere che si incontrano
+le stesse problematiche di "implementazione" attraverso SynchCall. 
+</p>
+
+</div>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/interazione/esempiInterazione.html">Esempi di Interazione con i diagrammi di sequenza</a></div>
+</div>
+</div>
+
+</body>
+</html>

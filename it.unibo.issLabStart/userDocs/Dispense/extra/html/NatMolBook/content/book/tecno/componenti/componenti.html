@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="I componenti software" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/introTecnologie.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>I componenti software</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">I componenti software</h1>
+
+<div>
+
+<div class="p">
+L'attuale tecnologie informatica sta proponendo varie 
+infrastrutture di supporto per componenti software: 
+basta pensare a COM (Microsoft), CORBA (OMG) e Java stesso (Sun).
+Questa infrastrutture offrono servizi che concorrono a formare
+i termini di riferimento pe run gloassario relativo ai componenti:
+	<ul>
+	<li>acquisition</li>
+
+	<li>configuration</li>
+
+	<li>installation</li>
+
+	<li>composition</li>
+
+	<li>integration</li>
+
+	<li>deployment</li>
+
+	<li>loading</li>
+
+	<li>execution</li>
+
+	</ul>
+
+
+La situazione complessiva è ancora in rapido divenire, anche a causa della natura di
+metaprodotto del software, che rende più difficile applicare tecniche e metodologie già
+consolidate nell'ingegneria tradizionale o nell'hardware.
+Tra le principali problematiche si possono elencare quelle che discutermeo
+nelle sezioni che seguono.
+</div>
+
+<div class="section"><h2 class="sectiontitle">Contratti e interfacce</h2>
+<p>
+In un mondo a componenti, un'interfaccia è definita in modo a sè stante e fornisce lo
+strumento principale con cui i componenti possono interconnettersi, svincolando il progetto e
+lo sviluppo dei clienti da quello dei servitori.
+</p>
+<p>
+Concettualmente un'interfaccia costituisce un contratto che deve essere rispettato da ogni ente
+che vuole partecipare a un'interazione. Questa idea implica la necessità di un formalismo per
+la specifica del contratto e la garanzia che esista un automa capace di decidere se un dato ente
+soddisfa un dato contratto o meno. Questa decisione dovrebbe essere presa prima possibile: a
+compile-time prima che a load-time o a load-time prima che a run-time.
+</p>
+<p>
+Tutti questi requisiti sono però difficili da soddisfare. Mentre la piena formalizzazione di
+un'interfaccia e la costruzione di verificatori generali ed efficienti è ancora argomento di
+ricerca, l'attuale tecnologia riduce un'interfaccia a un elenco di signature di operazioni in cui i
+dati di ingresso e di uscita sono dichiarati appartendere a specifici tipi.
+</p>
+<p>
+Dichiarare esplicitamente il tipo di un dato costituisce una versione semplificata di un'idea più
+generale di contratto espresso da pre- e post-condizioni sulle operazioni. In generale, per
+rispettare il contratto, un cliente può seguire regole più stringenti di quelle imposte dalle
+pre-condizioni e un servitore può richiedere condizioni meno stringenti in ingresso ed offrire
+post-condizioni piu rigide in uscita.
+</p>
+<p>
+Le specifiche di contratti basate sulla sola idea del rispetto di pre- e post-condizioni non
+possiede però sufficiente capacità espressiva riguardo a molti importanti aspetti. Rimangono
+inespresse specifiche su protocolli di uso delle operazioni, su vincoli temporali e su requisiti
+non funzionali, quali ad esempio la complessità computazionale richiesta a un servizio in
+termini di tempo e memoria.
+</p>
+<p>
+
+I componenti possono essere in relazione con un'interfaccia in termini
+di <tt>export</tt>, <tt>import</tt>, <tt>provides</tt> e
+<tt>requires</tt>:
+</p>
+<div class="p">
+	<ul>
+		<li>un componente è in relazione di <strong>export</strong> con un'interfaccia se la definisce;</li>
+
+		<li>un componente è in relazione di <strong>import</strong> con un'interfaccia se ne richiede la definizione (da
+		parte di un'altro componente);</li>
+
+		<li>un componente è in relazione di <strong>provides</strong> con un'interfaccia se ne fornisce (ad altri componenti 
+		attivi nel suo contesto) una implementazione;
+		</li>
+
+		<li>un componente è in relazione di <strong>requires</strong> con un'interfaccia se ne richiede la presenza di un numero
+		più o meno definito (la requires è caratterizzata da <em>cardinalità</em>) di implementazioni attive nel suo 
+		contesto al fine di eseguire corretamente in esso.</li>
+
+	</ul>
+
+</div>
+
+</div>
+
+
+
+<div class="section"><h2 class="sectiontitle">Contratti e osservabilità</h2>
+<p>
+Le architetture logiche di molti sistemi (tra cui i sistemi event-driven) ribaltano il normale
+flusso di controllo, prevedendo che sia un componente a chiamare un cliente (Hollywood
+principle) con meccanismi di call-back.
+</p>
+<p>
+In questi casi un componente può esporre parte del proprio stato all'osservazione di un altro
+componente durante lo svolgimento di un'operazione <tt>OP</tt>. Il cliente che esegue la call-back
+potrebbe osservare uno stato non consistente, in quanto il contratto stabilito dall'interfaccia di
+<tt>OP</tt> prevede di norma solo il soddisfacimento di pre-condizioni e di post-condizioni. La
+situazione si complica ulteriormente in caso di rientranza, cioè nel caso in cui venga invocato
+un nuovo metodo del componente prima che sia terminata l'esecuzione <tt>OP</tt>.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Sostituzione di componenti</h2>
+<p>
+
+</p>
+<p>
+Nei sistemi ad oggetti, un'interfaccia viene normalmente realizzata da una classe. <tt>Il</tt>
+meccanismo di late binding fa sì che possano venire dinamicamente connesse tra loro due
+parti (cliente e servitore) totalmente non consapevoli l'una dell'altra e probabilmente
+progettate e costruite da persone diverse. E' solo la qualità della specifica connessa
+all'interfaccia che può tenere insieme queste parti in modo corretto.
+</p>
+<p>
+In molte situazioni occorre stabilire se un componente <tt>C1</tt> che realizza un'interfaccia <tt>I1</tt> possa
+essere usato al posto di un componente <tt>C2</tt> che realizza un'interfaccia <tt>I2</tt>. Sul piano teorico
+questo può accadere se C1 appartiene a una categoria di oggetti che può essere considerata un
+sottotipo della categoria cui appartiene <tt>C2</tt>.
+In generale un'interfaccia <tt>I2</tt> può essere considerata una specializzazione di un'interfaccia <tt>I1</tt> se
+per ogni operazione con lo stesso nome (<tt>OP</tt>):
+</p>
+<div class="p">
+<ul>
+<li>il tipo del valore restituito dall'operazione <tt>OP</tt> definita in <tt>I2</tt> è un sottotipo del valore
+restituito dall'operazione <tt>OP</tt> definita in <tt>I1</tt>. Questa proprietà prende il nome di
+<strong>covarianza</strong> e si giustifica per il fatto che il componente sostituente deve avere
+post-condizioni (di cui il valore di uscita fa parte) più stringenti dell'originale;</li>
+
+<li>per ciascuno degli argomenti di ingresso di <tt>OP</tt>, il tipo dell'argomento definito in <tt>I1</tt> è un
+sottotipo del tipo dello stesso argomento definito in <tt>I2</tt>. Questa proprietà prende il nome
+di <strong>controvarianza</strong> e si giustifica per il fatto che il componente sostituente deve avere
+precondizioni (di cui i parametri di ingresso fanno parte) più rilassate dell'originale.</li>
+
+<li>per ciascuno degli argomenti di <tt>OP</tt> che può fungere da parametro di ingresso-uscita, il
+tipo specificato non deve essere modificato. Questa proprietà prende il nome di
+<strong>invarianza</strong> e si giustifica per il fatto che un argomento di ingresso-uscita partecipa
+contemporaneamente alle pre- e alle post-condizioni.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/introTecnologie.html">Tecnologie</a></div>
+</div>
+</div>
+
+</body>
+</html>

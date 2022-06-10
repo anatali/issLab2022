@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Schemi architetturali" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/modelBased/fasi/architetturaLogica.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Schemi architetturali</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Schemi architetturali</h1>
+
+<div>
+
+<div class="p">
+Jacobson  [JCJO92] propone una metodologia di costruzione 
+dell'architettura di un sistema basata sulla 
+partizione sistematica degli <em>use cases</em> in oggetti di tre categorie, ottenute
+articolando lo spazio concettuale in tre dimensioni:
+<em>informazione</em>, <em>presentazione</em> e 
+<em>controllo</em>.  
+A ciascuna di queste dimensioni corrisponde una specifica classe di oggetti,
+ciascuna rappresentata da uno stereotipo, cui corrisponde
+una specifica icona, ora adottata anche nel <em>Rational Unified Process</em> (<tt>RUP</tt>).
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr>
+<td valign="top" width="20%">
+<div class="fignone"><span class="figcap">Figure 1. Informazione </span>
+<br /><img src="../../../images/book/Aentita.jpg" /><br />
+</div>
+
+</td>
+
+<td valign="top" width="80%"><p><em>Entity</em></p>
+<p>
+E' la dimensione relativa alle entità
+del sistema cui corrisponde l'insieme degli oggetti che includono
+funzionalità relative alle informazioni che caratterizzano il sistema; questi oggetti
+sono denominati <em>oggetti entità</em> e costituiscono
+gran parte del modello del dominio 
+(si veda <a href="analisiRequisiti.html">Analisi dei requisiti</a>).</p>
+ </td>
+
+</tr>
+
+</table>
+
+
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr>
+<td valign="top" width="20%">
+<div class="fignone"><span class="figcap">Figure 2. Presentazione </span>
+<br /><img src="../../../images/book/APresentazione.jpg" /><br />
+</div>
+
+</td>
+
+<td valign="top" width="80%"><p><em>Boundary</em></p>
+<p>
+E' la dimensione relativa alle funzionalità che dipendono dall'ambiente esterno 
+cui corrisponde l'insieme degli oggetti  che incapsulano l'interfaccia
+del sistema verso il mondo esterno;
+questi oggetti sono denominati <em>oggetti interfaccia</em>.</p>
+
+</td>
+
+</tr>
+
+</table>
+
+
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr>
+<td valign="top" width="20%">
+<div class="fignone"><span class="figcap">Figure 3. Controllo </span>
+<br /><img src="../../../images/book/Acontrollo.jpg" /><br />
+</div>
+
+</td>
+
+<td valign="top" width="80%"><p><em>Control</em></p>
+<p>
+E' la dimensione relativa agli enti che incapsulano il controllo
+cui corrisponde l'insieme degli oggetti includono funzionalità non incapsulabili
+negli oggetti delle categorie precedenti. 
+Il loro compito, tipicamente, 
+è di fare da collante tra gli oggetti interfaccia e gli oggetti entità;
+questi oggetti sono denominati <em>oggetti controllo</em>.</p>
+
+</td>
+
+</tr>
+
+</table>
+
+
+La proposta di impostare l'architettura di un sistema software
+distinguendo tra <em>boundary objects</em>, <em>control objects</em>
+ ed <em>entity objects</em>
+costituisce un solido punto di partenza  anche per il disegno dell'architettura
+logica di molte applicazioni.
+Infatti l'analista tende ad affrontare la complessità dei problemi partizionando
+i problemi stessi in sotto-problemi;
+è quindi del tutto logico che un analista eviti di associare alle entità di un dominio
+sia le funzionalità  di una specifica applicazione sia le funzionlaià
+tipiche della interazione con l'utente. 
+Ne consegue un classico approccio all'analisi rappresentatabile in <tt>UML</tt>,
+da un diagramma come quello che segue:
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="20%"> </td>
+<td valign="top" width="60%">
+<div class="fignone"><span class="figcap">Figure 4. BCE</span>
+<img src="../../../images/book/BCE.jpg" />
+</div>
+
+</td>
+
+<td valign="top" width="20%"> </td>
+
+</tr>
+
+</table>
+
+
+La conseguenza è che l'architettura di un sistema software 
+risulta quasi fisiologicamente articolata in una
+sequenza di livelli (<em>layer</em>)  verticali che viene mantenuta
+anche in fase di progetto e realizzazione.
+</div>
+<p> 
+A questa articolazione verticale si accompagna spesso una 
+articolazione in layer orizzontali tipica delle piatatforme
+(si veda <a href="../../piattaforme/piattaforme.html">Piattaforme operative</a>).
+</p>
+
+
+
+
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/modelBased/fasi/architetturaLogica.html">Architettura Logica</a></div>
+</div>
+</div>
+
+</body>
+</html>

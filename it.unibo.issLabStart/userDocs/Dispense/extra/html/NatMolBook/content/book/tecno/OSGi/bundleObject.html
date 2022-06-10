@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Bundle object" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Bundle object</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Bundle object</h1>
+
+<div>
+
+<p>
+Ad ogni bundle installato nel Framework OSGi è associato un oggetto 
+<tt>BundleObject</tt> che è la rappresentazione a run-time del bundle stesso. 
+Tale oggetto può essere usato per gestire il ciclo di vita del bundle 
+(attivazione, disattivazione etc.) e per reperire tutte le informazioni 
+relative al bundle (identità, manifest, stato etc.). 
+</p>
+<p>
+Un bundle all'interno del framework può essere 
+identificato da: 
+</p>
+<div class="p">
+<ul>
+<li><strong>Bundle identifier</strong>: un numero intero unico assegnato dal framework 
+per il totale tempo di vita del bundle. 
+Tale numero viene assegnato in maniera crescente man mano che i bundle 
+vengono installati e potrà cambiare solo se il bundle viene aggiornato 
+o se il framework viene riavviato (il <tt>System-Bundle</tt> ha sempre identificativo <tt>0</tt>). </li>
+
+<li><strong>Bundle location</strong>: l'URL da cui è stato installato il bundle. All'interno dello 
+stesso framework la locazione del bundle deve essere unica e non varia in seguito ad aggiornamenti. </li>
+
+<li><strong>Bundle symbolic name</strong>: un nome assegnato dallo sviluppatore del bundle. 
+Insieme alla versione del bundle rappresenta un identificatore unico. </li>
+
+</ul>
+
+</div>
+<div class="p">
+ 
+Vari metodi possono essere invocati tramite quest'oggetto. 
+I più importanti sono elencati di seguito: 
+<ul>
+<li><tt>getBundleId()</tt>: fornisce il Bundle identifier associato al bundle. </li>
+
+<li><tt>getLocation()</tt>: fornisce il Bundle location associato al bundle. </li>
+
+<li><tt>getSymbolicName()</tt>: fornisce il Bundle Symbolic name associato al bundle. </li>
+
+<li><tt>getState()</tt>: fornisc lo stato corrente del bundle. </li>
+
+<li><tt>start()</tt>: avvia il bundle. </li>
+
+<li><tt>stop()</tt>: disattiva il bundle. </li>
+
+<li><tt>uninstall()</tt>: disinstalla il bundle. </li>
+
+<li><tt>update()</tt>: aggiorna il bundle. </li>
+
+</ul>
+
+</div>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

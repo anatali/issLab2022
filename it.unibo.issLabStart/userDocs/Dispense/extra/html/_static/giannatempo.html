@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0133)http://htmlpreview.github.io/?https://github.com/LorisGiann/ISS-projects/blob/main/it.unibo.radarSystem22/userDocs/radarSystem22.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--<base href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.radarSystem22/userDocs/radarSystem22.html">--><base href=".">
+  
+<style type="text/css">
+body
+{
+    margin-left:  30px;
+    margin-right: 30px;
+};
+
+P
+{
+    font-family: Tahoma;
+    font-size: 10pt;
+};
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+	font-size: 93%;
+}
+
+a:hover {
+    background-color: #cccccc;
+}
+
+
+hr {
+    clear: both;
+    height: 1px;
+    color: #242424;
+    background-color: transparent;
+}
+
+h1, h2, h3 {
+    color: #242424;
+    clear: left;
+    font: 100% Tahoma, Helvetica, Arial, sans-serif;
+    margin-bottom: 0.5em;
+    padding-top: 0.5em;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+top {
+	width: 100%;
+}
+
+
+#i {
+    color: #ff1010;
+}
+tt{
+	font-family: "Arial";
+    font-size: 90%;
+	color: #006600;
+}
+em{
+	font-family: "Arial";
+    font-size: 80%;
+	font-weight: bold;
+	border-style:solid;
+	border-color: #abe876;
+    color: #1632cc;
+}
+bc{
+	font-family: "Arial";
+	font-size: 90%;
+	font-weight: bold;
+    color: #990000;
+	background-color: #fcf8c7;
+}
+ks{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #0000CD	;
+	font-size: 90%;
+}
+kc{
+	font-family: "Arial";
+	font-weight: bold;
+    color: #008000	;
+	font-size: 90%;
+}
+pre{
+	font-family: "Consolas";
+	font-size: 85%;
+	background-color: #f5f5f5;
+	border: 1.5px solid silver;
+	padding: 5px;
+}
+m{
+	font-family: "Helvetica";
+	line-height: 100%;
+ 	font-size: 75%;
+}
+div.body{
+	 
+    font-size: 18px;
+}
+k{
+    color: #990000;
+	font-weight: bold;
+	font-size: 90%;
+}
+h1 {
+    font-size: 150%;
+    background-color: #b2c0ff;
+	padding: 10px;
+}
+
+h2 {
+    background-color: #9ed8ff;
+    font-size: 130%;
+}
+
+h3 {
+	background-color: #e6ccff;
+    font-size: 100%;
+}
+h4 {
+    background-color: #ccffcc;
+    font-size: 100%;
+	width: 95%;
+	border-radius: 5px;
+	padding: 2px;
+}
+h5 {
+    background-color: #d5ffb0;
+    font-size: 100%;
+
+}
+div.req{
+	background-color: #d9ffb3;
+    font-size: 18px;
+	width: 700px;
+    border: 3px solid green;
+    padding: 15px;
+    margin: 10px;
+}
+div.remark{
+	background-color: #E3F2FD;
+    border: 1.5px solid #d5f2ed;
+    padding: 15px;
+    margin: 10px;
+	border-radius: 25px;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+ol, ul, li {
+  margin: 0;
+  margin-left: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+img {
+	border: 1.5px solid #d5f2ed
+
+}
+
+a, a:visited, a:active, a:link, a:hover {
+    text-decoration: underline;
+    color: #545454;
+    background-color: transparent;
+}
+
+div.wrapdesc{
+	width: 90%;
+	margin: auto;
+}
+
+div.imagedesc{
+	width: 85%;
+	margin: auto;
+}
+</style><title>radarSystem22</title></head> 
+    <!--
+<link rel="stylesheet" type="text/css" href="../css/issStyle1.css">
+<script type="text/htmlpreview" src="../css/issStyle.js"></script>
+-->
+
+    
+
+   
+
+    
+<body>
+<div id="top">
+<h1>LABORATORIO DI INGEGNERIA DEI SISTEMI SOFTWARE <font size="5"></font> </h1>
+</div>  
+
+<div class="body"> 
+<h2>Introduction</h2>
+Primo progetto. 
+ 
+<h2>Requirements</h2>
+<div class="remark">
+	<p>Si desidera costruire un'applicazione software capace di:</p>
+
+	<ul>
+	<li>(requisito <b>radarGui</b>) mostrare le distanze rilevate da un sensore Sonar <tt>HC-SR04</tt> connesso a un RaspberryPi su un display (RadarDisplay) a forma di radar connesso a un PC.
+	<center><img src="./giannatempo_files/radarDisplay.png" width="10%"></center>.</li> 
+	<li>(requisito <b>ledAlarm</b>) accendere un Led se la distanza rilevata dal Sonar è inferiore a un valore limite prefissato denominato <tt>DLIMIT</tt>.</li>
+	</ul>
+</div>
+
+ 
+
+<h2>Requirement analysis</h2>
+<!--<div class="remark">
+	<p>Dizionario:</p>
+	<table>
+	  <tr>
+	    <th>Termine</th>
+	    <th>Sinonimi</th>
+	    <th>Significato</th>
+	  </tr>
+	  <tr>
+	    <td><i>Sensore</i></td>
+	    <td>radar</td>
+	    <td>Sensore Sonar HC-SR04, che fornisce la misura della distanza</td>
+	  </tr>
+	  <tr>
+	  	<td><i>Led</i></td>
+	  	<td></td>
+	    <td>Dispositivo luminoso di output, che si accende in caso la distanza sia &ltDILIMT</td>
+	  </tr>
+	  <tr>
+	    <td><i>RadarDisplay</i></td>
+	    <td></td>
+	    <td>Schermata mostrata dall'applicazione su PC che raffigura un radar, contenente un puntino tanto più distante dal centro quanto più lontano si trova l'ostacolo</td>
+	  </tr>
+	</table> 
+	<p><b>User-story US1:</b> L'utente pone un ostacolo a distanza d&ltDILIMT dal sensore, aspettandosi che il led si accenda. L'utente poi allontana l'ostacolo da sensore, visualizzando la variazione di posizione sul radar. Continuando ad allontanare l'ostacolo, una volta raggiunta la distanza d&gtDILIMT, il led si deve spegnere. </p> 
+</div>-->
+
+<h2>Problem analysis</h2>
+<!--<div class="remark">
+	<p>Il sistema si divide in due macro componenti: una applicazione deve essere messa in esecuzione sulla Raspberry, mentre un'ulteriore applicazione deve essere eseguita sul pc. </p>
+	<ul>
+		<li>quella in esecuzione sulla raspberry deve interfacciarsi con i pin di GPIO in modo da interpretare i segnali del sonar, tradurli in una distanza, e in base ad essa modificare accendere o spegnere il LED</li>
+		<li>quella in esecuzione sul PC deve mostrare a video il dato relativo alla distanza corrente</li>
+	</ul>
+	<p>La natura del sistema implica uno scambio di informazioni unidirezionale dall'applicazione sulla raspberry (produttore), al terminale con il radar (consumatore). <p>
+	<ul>
+		<li>Si potrebbe quindi fare utilizzo di una iterazione client-server, che tuttavia non permetterebbe un aggiornamento in tempo reale della nuova posizione dell'ostacolo (ma potrebbe risultare efficacie nel caso in cui la frequenza di aggiornamento richiesta non debba essere particolarmente elevata, utilizzando una strategia a polling). </li>
+		<li>Un modello più adatto risulterebbe quello publish-subscribe, dove i consumatori ricevono un messaggio ad ogni nuovo spostamento del punto. Il sistema nel suo complesso risulterebbe tuttavia più complesso necessitando della disponibilità di un broker. </li>
+		<li>Ulteriore alternativa sarebbe quella di inviare al consumatore i dati ad ogni nuovo movimento, ma ciò richiederebbe la conoscenza dell'indirizzo del terminale sul quale risiede l'applicazione che mostra il radar (o in alternatica lo sviluppo di un piccolo protocollo)</li>
+	</ul>
+</div>-->
+
+<h2>Test plans</h2>
+<div class="remark">
+	<p>L'utente pone un ostacolo a distanza d&lt;DILIMT dal sensore → il led si deve accendere</p>
+	<p>L'utente allontana l'ostacolo da sensore → deve essere visualizzata la variazione di posizione sul radar</p>
+	<p>Si continua ad allontanare l'ostacolo, superando la distanza d&gt;DILIMT → il led si deve spegnere. </p>
+</div>
+
+<h2>Project</h2> 
+<div class="remark">
+	<ol>
+		<li>Test snippet di codice forniti e eventuali modifiche per rendere compatibili i programmi per architettura a 64 bit</li>
+		<li>A partire dallo <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.radarSystem22/rpi/code/modified/c/LedBlinkSonar.c">snippet</a> di condice C che misura e fa lampeggiare il led sono state aggiunte delle funzioni per la realizzazione di un server UDP in ascolto sulla porta 8080 (<a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.radarSystem22/rpi/LedBlinkSonarUdp.c">programma realizzato</a>). <br> Ad ogni pacchetto di richiesta ne viene inviato uno di risposta con la distanza (il server lavora su un thread separato) </li>
+		<li>É stata creata la classe <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.radarSystem22/src/it/unibo/radarSystem22/oldUdp/ConnClient.java">ConnClient.java</a> che si occupa di effettuare una richiesta al server</li>
+		<li>É stata modificata la classe <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.radarSystem22/src/it/unibo/radarSystem22/oldUdp/RadarUsageMain.java">RadarUsageMain.java</a></li>
+	</ol>
+	
+	<h5> Architettura sistema fatto a casa</h5>
+	<center><img src="./giannatempo_files/architecture_old_udpProj.png" width="40%"></center>
+	<p>La differenza rispetto al progetto visto in aula è notevole. A livello architetturale, il programma C non ha una vera e propria struttura, si tratta essenzialmente di un insieme di funzioni, alcune delle quali sono "attive" nel senso che vengono lanciate in un thread a parte (come quella che fa lampeggiare il led e quella per il server). La comunicazione tra thread avviene tramite l'utilizzo di variabili globali.</p>
+	<p>Vi è anche una differenza a livello di interazione: Nel caso del programma C essendo il raspberry il server, il client dovrà fare una richiesta in maniera ciclica (a meno di non usare un sistema in cui il client si registra presso il server in modo che esso invii verso i client in maniera push i dati). Viceversa nel programma java è il raspberry il client, e questo invia i dati al monitor quando necessario</p>
+	
+	<h5> it.unibo.comm2022.udp.giannatempo </h5>
+	<center><img src="./giannatempo_files/it.unibo.comm2022.udp.giannatempo.png" width="50%"></center>
+	<p>Ogni client può ottenere una connessione <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpConnection.java"><i>UdpConnection</i></a>, che implementa <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/interfaces/Interaction2021.java"><i>Interaction2021</i></a>, attraverso <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpClientSupport.java"><i>UdpClientSupport</i></a>. Esso gestirà la socket UDP lato client.</p>
+	<p><a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpServer.java"><i>UdpServer</i></a> apre la socket lato server e rimane in ascolto sulla porta predefinita. Sul server, questo componente è l'unico a ricevere pacchetti dalla socket.</p>
+	<p>Quando un client invia un messaggio, il pacchetto viene ricevuto da <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpServer.java"><i>UdpServer</i></a>. <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpServer.java"><i>UdpServer</i></a> si sincronizza con l'<a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpApplMessageHandler.java"><i>UdpApplMessageHandler</i></a> corrispondente per passargli il pacchetto. <br> 
+	Se <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpApplMessageHandler.java"><i>UdpApplMessageHandler</i></a> non esiste per quell'endpoint, viene dapprima creata la <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpServerConnection.java"><i>UdpServerConnection</i></a> (implementazione specifica di <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/interfaces/Interaction2021.java"><i>Interaction2021</i></a> lato server), che <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpApplMessageHandler.java"><i>UdpApplMessageHandler</i></a> (che è un oggetto attivo) si occuperà di gestire. </p>
+	<p> La connessione viene chiusa quando un endpoint effettua una <i>close()</i> sulla connessione. La chiusura effettiva della connessione da parte dell'endpoint remoto avverra quando quest'ultimo effettuerà una read di un messaggio. <br>
+	Nel caso di close da parte del server, il client continuerà a credere che la connessione sia ancora aperta finchè non verrà effettuata una <i>receiveMsg()</i>: se durante questo lasso di tempo vengono inviati messaggi, il server li tratterà come se fossero pacchetti di una nuova connessione con l'endpoint!. <br> 
+	Invece, nel caso di close da parte del client, il server chiuderà automaticamente e immediatamente la connessione, siccome <a href="https://raw.githubusercontent.com/LorisGiann/ISS-projects/main/it.unibo.comm2022/src/it/unibo/comm2022/udp/UdpApplMessageHandler.java"><i>UdpApplMessageHandler</i></a> chiama di continuo <i>UdpServerConnection.receiveMsg()</i> </p>
+	
+	<p>NOTA: la soluzione adottata è architetturalmente uguale a quella per TCP (lo schema visto prima riporta tuttavia qualche dettaglio in più)</p>
+	<center><img src="./giannatempo_files/ServerAndConnections.png" width="40%"></center>
+</div>
+ 
+</div>
+
+<h2>Testing</h2> 
+ 
+
+<h2>Deployment</h2> 
+
+ 
+<h2>Maintenance</h2> 
+ 
+<!-- USEFUL
+<table style="width:100%" border="1">
+<tr>
+<td style="width:50%">
+</td>
+<td></td>
+</tr>
+</table>
+-->
+	      	
+<br><br> 	
+  
+
+<div style="background-color:rgba(86, 56, 253, 0.9); width:60%;text-align:left;color:white;padding-left: 0.5%;">
+<p>By Loris Giannatempo <br>
+Email: loris.giannatempo@studio.unibo.it <br>
+Git: https://github.com/LorisGiann/ISS-projects</p>
+<img alt="mbot" src="./giannatempo_files/me.jpg" width="30%" height="30%">
+
+
+</div> 
+
+
+</body></html>

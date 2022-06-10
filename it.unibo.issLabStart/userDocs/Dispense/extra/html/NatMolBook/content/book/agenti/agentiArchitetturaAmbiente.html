@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="L'ambiente" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/agentWorld.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>L'ambiente</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">L'ambiente</h1>
+
+<div>
+<p>
+Tradizionalmente l'ambiente del <tt>MAS</tt> è stato considerato semplicemente come un 
+contesto di deployment dove gli agenti erano immersi, esso per esempio include le 
+infrastrutture di comunicazione, la topologia della rete e le risorse fisiche disponibili.
+In questo caso l'ambiente del <tt>MAS</tt> viene considerato semplicemente come un 
+output della fase di analisi del sistema ed i progettisti sono in un qualche modo 
+soggetti ad esso e non possono cambiarlo.
+Oggigiorno però è presente un crescente riconoscimento dell'importanza del ruolo 
+dell'ambiente che viene sempre più spesso visto come una nuova dimensione di 
+progettazione dei <tt>MAS</tt> [Weyns07], [Viroli07]: esso infatti può incapsulare una significativa 
+porzione della complessità del sistema in termini di servizi, meccanismi e responsabilità 
+che possono sgravare gli agenti di qualche compito.
+Possiamo quindi pensare di dividere concettualmente l'ambiente del <tt>MAS</tt> 
+in due "diversi ambienti":
+</p>
+<div class="p">
+<ul>
+<li><em>ambiente esterno</em>: rappresenta il contesto di deployment dove il <tt>MAS</tt> 
+andrà ad eseguire</li>
+
+<li><em>ambiente interno</em> (ambiente degli agenti): rappresenta una porzione del 
+<tt>MAS</tt> esterna agli agenti che, anche se esterna agli agenti stessi, è soggetta 
+alla progettazione attiva</li>
+
+</ul>
+ 
+</div>
+<p>
+Ovviamente ai fini della progettazione di un nuovo <tt>MAS</tt> l'ambiente 
+"più interessante" è quello interno perchè è possibile progettarlo e quindi crearlo 
+con le risorse e la struttura topologica che meglio possono supportare l'esecuzione degli agenti. 
+</p>
+<p>
+In fase di analisi però va considerato e modellato accuratamente anche l'ambiente 
+esterno la cui conoscenza  sarà poi necessaria per la progettazione delle interazioni 
+che gli agenti avranno con le risorse pre-esistenti (che potremmo pensare come 
+legacy system): è infatti impensabile che il nuovo <tt>MAS</tt> vada ad operare 
+in un contesto dove non esista nessuna risorsa, è quindi bene modellare queste 
+risorse nel modo migliore al fine di garantire poi una corretta progettazione 
+dello spazio delle interazioni degli agenti.  
+</p>
+<p>
+Nel seguito parleremo semplicemente di ambiente facendo riferimento all'ambiente 
+intero del <tt>MAS</tt>, che come detto per noi risulta il più interessante 
+dal punto di vista ingegneristico. A tal proposito è possibile riconoscere 
+almeno due ingredienti fondamentali per la progettazione dell'ambiente: 
+le <em>astrazioni ambientali</em> che sono entità dell'ambiente che incapsulano 
+una o più funzionalità, e le <em>astrazioni topologiche</em> che sono entità 
+che rappresentano la struttura spaziale (fisica e/o logica) dell'ambiente stesso.
+</p>
+<p>
+<strong>Le astrazioni ambientali. </strong> L'astrazione di agente non è la sola astrazione a popolare 
+il <tt>MAS</tt> [Viroli07]: l'ambiente del <tt>MAS</tt> può essere visto come una composizione di 
+"blocchi di costruzione" chiamati <em>astrazioni ambientali</em>. Una astrazione ambientale 
+è una entità dell'ambiente del <tt>MAS</tt> che incapsula una o più funzionalità o servizi 
+per agli agenti. L'agente percepisce queste risorse nell'ambiente, conosce le funzionalità 
+che esse mettono a disposizione e può interagire con esse al fine di portare a termine 
+i propri obiettivi (sociali o individuali). Dal punto di vista della progettazione, 
+le astrazioni ambientali possono essere viste come i luoghi dove possono essere memorizzate 
+e fatte applicare le regole, le norme e le funzioni che regolamentano il comportamento sociale degli agenti. 
+</p>
+<p>
+Le astrazioni ambientali rappresentano un modo per accomunare le svariate entità che 
+sono state proposte sia a livello concettuale che a livello implementativo da diverse 
+ricerche svolte negli anni passati [Viroli07]. L'idea di "uniformare" queste entità attraverso 
+una nuova astrazione nasce dal fatto che molte entità proposte condividono la stessa 
+idea di astrazione abilitante per l'interazione degli agenti. Molte infrastrutture per 
+agenti possono infatti essere viste come ambienti che incarnano le astrazioni ambientali 
+(abilitanti per le interazioni) per le applicazioni: per esempio possiamo citare gli spazi 
+di tuple di Linda [Gelernter85], [Gelernter92], i centri di tuple di TuCSoN [Omicini99], 
+i co-field di TOTA [Mamei05], etc.   
+</p>
+<p>
+<strong>Le astrazioni topologiche. </strong> Oltre a considerare le diverse astrazioni che popolano 
+l'ambiente del <tt>MAS</tt>, è opportuno considerare anche la sua struttura fisica o topologia. 
+In particolare possiamo considerare le <em>astrazioni topologiche</em> (astrazioni che supportano 
+la topologia come entità di prima classe) come astrazioni per la progettazione del <tt>MAS</tt> [Molesini08]. 
+Come definizione generale, possiamo vedere la topologia come una collezione di insiemi di 
+"quartieri/ vicinanze" (neighbourhood in inglese) che forniscono una nozione strutturata di 
+località per il <tt>MAS</tt>, dal punto di vista locale sino a quello dell'intero sistema.
+</p>
+<p>
+Quando consideriamo il <tt>MAS</tt> come una composizione di agenti situati e astrazioni 
+ambientali viene naturale pensare la topologia del <tt>MAS</tt> come una collezione di insiemi 
+di agenti e astrazioni ambientali. Questo influisce ovviamente su nozioni come la <em>visibilità</em> 
+tra gli agenti (se l'agente può vedere e comunicare con un altro agente), tra gli agenti e 
+le astrazioni ambientali (se l'agente può vedere e interagire con una astrazione ambientale), 
+e la <em>mobilità</em> di un agente (quali nuovi "quartieri" un agente può raggiungere). 
+</p>
+<p>
+Questo concetto è molto importante nel <tt>MAS</tt> poichè la visibilità e l'accessibilità di 
+altre entità identificano strettamente quali obiettivi possono essere delegati (a altri agenti)
+e quali servizi possono essere ottenuti (dalle astrazioni ambientali), infine definiscono 
+la capacità degli agenti di portare a termine i loro obiettivi.  
+In molti casi il concetto di topologia è legato alla struttura fisica del contesto di deployment 
+includendo sia la topologia della rete che quella dell'ambiente fisico come per esempio nel caso 
+di ambienti per sistemi robotici, ma in generale spesso dal punto di vista progettuale è 
+conveniente considerare una nozione virtuale dello spazio.
+</p>
+
+
+</div>
+
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/agentWorld.html">Un mondo ad agenti</a></div>
+</div>
+</div>
+
+</body>
+</html>

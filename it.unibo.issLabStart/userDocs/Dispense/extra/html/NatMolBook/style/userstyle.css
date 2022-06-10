@@ -1,0 +1,107 @@
+
+body{
+	margin:0px;
+	padding:0;
+}
+
+div#fullScreenBig{
+	width: 575px;
+	height: 370px;
+	top: 25px;
+	color: black; /**#30327a;**/
+	background: white; /* #FFFACD */
+	font-family:Tines;
+	font-size:14px;
+	font-style:normal;
+	position:absolute;
+	left: 10px;
+	text-align:left;
+}
+
+/* headings */
+h1{
+	height: 14px;
+	font-size:12pt;
+	font-family:Times;
+	font-weight:bold;
+	font-style:normal;
+	text-align:left;
+	left:9px;
+	top:0px;
+	margin: 1px;
+	padding: 0;
+	color:#4B0082; /* Indigo  */
+}
+
+h2{
+	height: 16px;
+	font-size:12pt;
+	color:magenta;
+	text-align:left;
+	top:0px;
+	font-style:italic;
+	font-family:Times;
+	font-weight:bold;
+	left: 0px;
+	margin: 0px;
+	padding: 0;
+}
+
+h1#smallTitle{
+	font-size:14pt;
+	font-family:Times;
+	font-weight:bold;
+	font-style:normal;
+ 	text-align:left;
+	position:absolute;
+	left:1px;
+	top:0px;
+	margin: 0px;
+	padding: 0;
+	color:navy;
+}
+
+h6{
+	font-size:11pt;
+	color:#778899;
+	font-style:normal;
+	text-align:left;
+	left:2px;
+	margin: 0px;
+	padding: 0;
+}
+
+/*********************************************************
+** main content and text styles and layout
+** including styles for tables, lists, form elements, etc.
+**********************************************************/
+tt{
+	color:#800000; /* Maroon  */
+}
+i{
+	color:#9932CC;
+	font-family:Times;
+ 	font-weight:bolder;
+	padding-left:0em;
+	padding-top:0px;
+	text-align:left;
+}
+
+b{
+	color:#FF6347;
+	font-family:Times;
+ 	font-weight:bolder;
+	padding-left:0em;
+	padding-top:0px;
+	text-align:left;
+}
+
+pre{
+	font-size:10pt;
+}
+
+kbd{
+	background: white; /* #FFFACD */
+	font-size:10pt;
+	font-family:Times;
+}

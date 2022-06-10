@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Open Service Gateway" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/componenti/componenti.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/bundle.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/bundleDependency.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/classLoading.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/bundleLifeCycle.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/bundleObject.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/bundleContext.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgiServices.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgiServiceDependency.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgiServiceTracker.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgiServiceBinder.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Open Service Gateway</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Open Service Gateway</h1>
+
+<div>
+<p>
+La <em>Open Service Gateway initiative</em> (<tt>OSGi</tt>)
+o <tt>OSGi Alliance</tt> è un consorzio non-profit fondato nel Marzo 1999 da produttori 
+hardware e software con lo scopo di creare una piattaforma (middleware) 
+che assicuri l'interoperabilità tra applicazioni e servizi forniti attraverso la rete. 
+Essa promuove un ecosistema trasversale di sviluppatori di software 
+e fornisce specifiche, implementazioni di riferimento, test suite 
+e certificazioni. 
+</p>
+<p>
+Inizialmente, le specifiche OSGi erano mirate al campo della domotica (Home-Automation), 
+in particolare alla costruzione di residential gateway efficienti. 
+Successivamente i suoi campi di utilizzo si sono estesi ai più diversi settori, 
+che vanno dalla telefonia mobile 
+
+alle applicazioni per desktop (l'IDE Eclipse [GBG03]
+è forse il più famoso). Si contano diverse applicazioni anche nell'ambito 
+dell'industria automobilistica, dell'automazione industriale
+e nello sviluppo di applicazioni server. 
+</p>
+<p>
+OSGi  detta  le specifiche di una architettura 
+distribuita nella quale è possibile eseguire in maniera coordinata 
+il deployment e la gestione remota dei servizi: la <em>OSGi Service Platform</em>. 
+
+Tali specifiche definiscono un ambiente Component-Oriented e standardizzato 
+per i servizi di rete, che è la base per un architettura Service-Oriented. 
+In questa ottica OSGi può essere sinteticamente definito come un <em>Universal 
+Middleware</em> che permette la creazione di software distribuibile in forma 
+binaria per diverse piattaforme, in diverse industrie, e per diversi scopi. 
+</p>
+
+<div class="fignone"><span class="figcap">Figure 1. Layer OSGi</span>
+<img src="../../../images/OSGi/Osgi_layer.png" alt="show" width="610" height="490" />
+</div>
+
+<p>
+
+
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Il Framework OSGi</h2>
+<p>
+Il componente principale delle OSGi specifications è rappresentato dal framework OSGi. 
+Esso implementa un modello a componenti dinamico e  fornisce un ambiente
+standardizzato, sicuro, modulare ed estensibile per 
+l'esecuzione di applicazioni. 
+</p>
+<p>
+I mattoni per la costruzione delle applicazioni sono i <strong>bundle</strong> e possono 
+essere installati, attivati, disattivati e disinstallati a run-time, 
+anche in modo remoto e senza bisogno di riavviare il sistema. 
+</p>
+<p>
+Come evidenziato nella figura precedente, il framework si poggia sulla Java Virtual Machine, 
+il che gli conferisce una totale indipendenza dalla piattaforma e 
+la capacità di offrire ai bundle la possibilità di accedere direttamente 
+alle risorse di sistema. Il framework OSGi
+è costituito da quattro livelli (o <em>layer</em>): 
+</p>
+<p>
+<img src="../../../images/OSGi/layering.png" />
+</p>
+<div class="p">
+
+<ul>
+<li>
+<strong>Execution environment</strong>: rappresenta un ambiente di esecuzione standardizzato 
+	per i bundle basato sulle Java specifications. A questo livello vengono gestite 
+	le possibili configurazioni dell'ambiente di esecuzione a seconda del sistema 
+	operativo e dei dispositivi sui quali verranno eseguite. 
+</li>
+<li>
+<strong>Module</strong>: fornisce le primitive per la costruzione dei moduli (bundle), 
+	definisce la politica di class-loading e di gestione delle dipendenze fra moduli.
+</li>
+<li>
+<strong>Life Cycle</strong>: fornisce le primitive per la gestione a run-time dei bundle: 
+	installazione, attivazione, disattivazione, aggiornamento e disinstallazione. 
+	Utilizza il <tt>Module Layer</tt> per gestire il class-loading.
+</li>
+<li>
+<strong>Service Registry</strong>: definisce il <em>servizio</em> quale entità fondamentale di 
+	composizione per le applicazioni e fornisce un modello di cooperazione 
+	fra bundle che tiene in conto del forte dinamismo del sistema. 
+</li>
+ 
+</ul>
+
+</div>
+<p>
+
+Esiste anche un altro livello trasversale e interagente con tutti gli altri: 
+il <strong>Security Layer</strong>. Si basa sostanzialmente sul Java2 security model fornendo 
+un sistema per firmare e verificare l'autenticità dei bundle; in più aggiunge 
+i meccanismi e le primitive per una gestione dinamica dei permessi. 
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Execution Environment</h2>
+<p>
+La disponibilità di implementazioni della macchina virtuale Java per diversi 
+ambienti operativi è la chiave della portabilità di Java, proclamata nello slogan 
+<em>write once, run everywhere</em>. 
+
+La <tt>JVM</tt> (Java Virtual Machine) realizza infatti un ambiente di esecuzione omogeneo, 
+che nasconde le specificità 
+del sistema operativo sottostante. Per ovviare alle limitazioni 
+computazionali dei moderni dispositivi (ad esempio cellulari e palmari) Java 
+ha affiancato alla sua edizione standard ([J2SE]) una nuova edizione ridotta e configurabile 
+a seconda del dispositivo su cui viene installata, 
+la <em>Java 2 Micro Edition</em> (<tt>J2ME</tt>) [J2ME]. 
+</p>
+<p>
+La introduzione di più tipi di macchina virtuale ha riaperto il problema della
+portabilità del software; OSGi lo affronta consentendo di 
+<em>specificare</em>
+quale ambiente di esecuzione Java utilizzare per una specifica applicazione. 
+
+OSGi permette di scegliere fra svariate configurazioni e profili quali ad esempio 
+<tt>J2SE, CDC, CLDC, MIDP</tt> etc. Inoltre OSGi ha standardizzato un proprio ambiente 
+di esecuzione basato su 
+<em>Fundation Profile</em> [JME-FP] ed una sua variante, <tt>OSGi/Minimum-1.1</tt>
+[OSGi/Min],
+che specifica l'ambiente di esecuzione minimo perché il framework OSGi 
+possa funzionare
+</p>
+<div class="p">
+<div class="fignone"><span class="figcap">Figure 2. Minimum Execution Environment OSGi</span>
+<img src="../../../images/OSGi/EE.jpg" />
+</div>
+
+L'ambiente minimale comprende un sottoinsieme delle primitive offerte dagli altri 
+ambienti di esecuzione consentiti e risulta pertanto compatibile con essi. 
+Per ogni componente (<tt>bundle</tt>) 
+è possibile specificare un proprio ambiente di esecuzione, 
+sarà poi il framework a gestire tale richiesta in maniera trasparente.
+</div>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Il Module Layer </h2>
+<p>
+La piattaforma standard Java fornisce solo un supporto limitato al packaging 
+e al deploying delle applicazioni e dei componenti. Ad esempio in Java non esiste 
+un modo per esprimere la dipendenza di un file <tt>jar</tt> da altri file <tt>jar</tt> 
+(la voce "<tt>Class-path</tt>" nel manifest non è un modo affidabile per esprimere tali dipendenze). 
+Pertanto è impossibile stabilire se codice incapsulato
+in un file <tt>jar</tt> funzionerà a run-time oppure no,
+a causa della mancanza di parti 
+contenute in altri file <tt>jar</tt>. 
+Inoltre tutto il codice contenuto in un file <tt>jar</tt> è visibile all'esterno;
+si possono dichiarare nel codice delle classi <tt>private</tt> o <tt>protected</tt>, ma in tal modo 
+tali classi risulterebbero non visibili all'interno dello stesso package. 
+</p>
+<p>
+Il Module Layer fornisce una soluzione generica e standardizzata per la 
+gestione della modularizzazione del codice Java. 
+</p>
+
+</div>
+
+
+
+<div class="section"><h2 class="sectiontitle">Dipendeze</h2>
+<p>
+Nel Framework OSGi la gestione delle dipendenze e collaborazioni fra bundle avviene 
+a due livelli: dipendenze dei bundle/package (<em>Deployment Dependency</em>)
+e dipendenze 
+dei servizi (<em>Service Dependency</em>). Il <tt>Module Layer</tt> si occupa in particolare 
+del primo tipo di dipendenze
+(si veda <a href="bundleDependency.html">Deployment dependency</a> ), mentre il <tt>Service Layer</tt> si occupa di fornire 
+il supporto per la gestione del secondo (si veda <a href="osgiServiceDependency.html">Service Dependency</a> ). 
+</p>
+
+
+</div>
+
+
+
+<div class="section"><h2 class="sectiontitle">Il Life Cycle Layer</h2>
+<p>
+Il Life Cycle Layer si poggia sul Module Layer e sul Security Layer per fornire 
+i meccanismi per gestire in maniera sicura il ciclo di vita dei bundle. 
+Il Module Layer in parte si occupa di questo aspetto definendo l'architettura 
+di class loading, ma non specifica come un bundle debba essere installato, 
+aggiornato o disinstallato nè formalizza sistematicamente le fasi di vita di un bundle. 
+(si veda <a href="bundleLifeCycle.html">Life cycle</a> ).
+</p>
+ 
+</div>
+
+
+
+<div class="section"><h2 class="sectiontitle">Il Service Layer </h2>
+<p>
+Il Service Layer definisce un modello collaborativo e dinamico di tipo 
+<em>publish, find and bind</em> (pubblica, torva e collega) che consente ai bundle sia 
+di erogare i propri servizi, che di usufruire di quelli messi a disposizione dagli 
+altri bundle, senza che nessuno di loro abbia conoscenza a priori degli altri. 
+
+Questo livello dà alla piattaforma OSGi i connotati di una 
+prima <em>Service Oriented Architecture</em> (<tt>SOA</tt>). 
+</p>
+
+</div>
+
+
+
+
+<div class="section"><h2 class="sectiontitle">Eventi e Listener </h2>
+<p>
+Il framework OSGi genera e gestisce una serie di eventi che descrivono il cambiamenti 
+di stato dell'intero sistema. Esistono tre categorie principali di eventi: 
+</p>
+<div class="p">
+<ul>
+<li>Bundle-Event</li>
+
+<li>Framework-Event</li>
+
+<li>Service-Event</li>
+
+</ul>
+
+</div>
+<p>
+I primi due tipi di eventi 
+sono relativi al Life Cycle Layer e rappresentano rispettivamente: gli eventi relativi 
+al cambiamento di stato di un bundle e quelli relativi alle modifiche del framework, 
+ed agli eventuali errori. L'ultimo tipo di evento è relativo al Service layer;
+eventi di questo tipo vengono 
+generati in caso di registrazione, cancellazione o modifica delle proprietà di un servizio. 
+</p>
+<p>
+Il framework definisce anche diversi tipi di listener che si occupano di catturare gli eventi 
+e notificarli agli interessati. In particolare i <tt>BundleListener</tt> vengono attivati quando arriva 
+un <tt>BundleEvent</tt>, quindi un cambiamento nello stato di un bundle (ad esempio 
+se viene fatto partire un bundle), i <tt>FrameworkListener</tt> quando arriva 
+un <tt>FrameworkEvent</tt> (che può 
+segnalare errori, warning, refresh, ecc.) ed i <tt>ServiceListener</tt> quando arriva un 
+<tt>Service-Event</tt> (ad esempio al momento della registrazione di un nuovo servizio). 
+</p>
+
+</div>
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/bundle.html">Il bundle e il suo manifest</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/bundleDependency.html">Deployment dependency</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/classLoading.html">Class loading</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/bundleLifeCycle.html">Life cycle</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/bundleObject.html">Bundle object</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/bundleContext.html">Bundle context</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/osgiServices.html">Servizi OSGi</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/osgiServiceDependency.html">Service Dependency</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/osgiServiceTracker.html">Service Tracker</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../../content/book/tecno/OSGi/osgiServiceBinder.html">Service Binder</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/componenti/componenti.html">I componenti software</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1153 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Actors22 &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RobotCleaner" href="RobotCleaner.html" />
+    <link rel="prev" title="VirtualRobot" href="VirtualRobot.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="actors22">
+<h1>Actors22<a class="headerlink" href="#actors22" title="Permalink to this headline">¶</a></h1>
+<p>Il lavoro svolto fino ad ora ha coperto buona parte di quanto prospettato nella <a class="reference internal" href="Introduzione.html#fase1"><span class="std std-ref">FASE1</span></a> e nella
+<a class="reference internal" href="Introduzione.html#fase2"><span class="std std-ref">FASE2</span></a>.</p>
+<section id="uno-sguardo-alla-fase1">
+<h2>Uno sguardo alla Fase1<a class="headerlink" href="#uno-sguardo-alla-fase1" title="Permalink to this headline">¶</a></h2>
+<p>La <a class="reference internal" href="Introduzione.html#fase1"><span class="std std-ref">FASE1</span></a> ci ha progressivamente portato a costruire supporti per comunicazioni
+via rete basati su diversi protocolli: dapprima TCP,UDP e successivamente anche HTTP e WS.</p>
+<p>Per agevolare lo sviluppo di applicazioni abbiamo ‘nascosto’ i dettagli tecnologici di ciascun protocollo,
+introducendo classi che implementano l’astrazione <span class="blue">connessione</span>,
+espressa dall’interfaccia <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">Interaction2021</span></a>.</p>
+<p>La implementazione del concetto di connessione per le WebSocket (<a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a>) ha introdotto l’idea
+di <strong>connessione osservabile</strong>,per la gestione dei <a class="reference internal" href="VirtualRobot.html#messaggi-di-stato"><span class="std std-ref">Messaggi di stato</span></a>.</p>
+<p>Abbiamo rimandato alcune voci:</p>
+<ul class="simple">
+<li><p>Refactoring del sistema a fronte dell’uso di altri protocolli: MQTT e CoAP.</p></li>
+<li><p>Come dotare l’applicazione di una WebGui usando SpringBoot.</p></li>
+</ul>
+<p>Le riprenderemo dopo avere completato il lavoro della <a class="reference internal" href="Introduzione.html#fase2"><span class="std std-ref">FASE2</span></a>.</p>
+</section>
+<section id="uno-sguardo-alla-fase2">
+<h2>Uno sguardo alla Fase2<a class="headerlink" href="#uno-sguardo-alla-fase2" title="Permalink to this headline">¶</a></h2>
+<p>La <a class="reference internal" href="Introduzione.html#fase2"><span class="std std-ref">FASE2</span></a> ci ha condotto a sviluppare supporti quali i
+<a class="reference internal" href="ContestiContenitori.html#contesti-contenitori"><span class="std std-ref">Contesti-contenitori</span></a> e l’<a class="reference internal" href="ContestiContenitori.html#enablercontext"><span class="std std-ref">EnablerContext</span></a> che si avvale di un gestore di sistema di messaggi
+<a class="reference internal" href="ContestiContenitori.html#il-gestore-di-sistema-dei-messaggi"><span class="std std-ref">ContextMsgHandler</span></a> per reindirizzare un messaggio a un
+handler applicativo (un POJO) di tipo <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a>.</p>
+<p>Abbiamo poi pensato di sostituire i POJO <a class="reference internal" href="RadarSystemSupporti.html#iapplmsghandler"><span class="std std-ref">IApplMsgHandler</span></a> con
+enti attivi,capaci di gestire in modo ‘nativo’ (FIFO) messaggi inseriti nella coda di ingresso loro associata.
+Abbiamo denotato questi nuovi componenti con il nome di <a class="reference internal" href="Attori.html#attori"><span class="std std-ref">Attori</span></a>  e ne abbiamo fornito una prima implementazione
+<a class="reference internal" href="Attori.html#actorqak-e-qakactor22"><span class="std std-ref">QakActor22</span></a> che ha creato una corrispondeza tra
+il ‘macro-mondo’ rappresentato dai servizi distribuiti sulla rete
+e il ‘micro-mondo’ rappresentato dai componenti interni a questi servizi.</p>
+<p>Il problema della possibile prolificazione di Thread dovuta al concetto di Attore è stato superato
+sfruttando una implementazione in Kotlin (libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.qakactor-2.7.jar</span></code>)
+realizzata in anni passati.
+Abbiamo cioè costruito ed iniziato ad usare:</p>
+<ul class="simple">
+<li><p>una infrastruttura per attori <strong>message-driven</strong> come supporto alla costruzione di software distribuiti ed eterogeni</p></li>
+</ul>
+<p>Al momento abbiamo lassciato in sospeso due temi:</p>
+<ul class="simple">
+<li><p>Introduzione al linguaggio Kotlin.</p></li>
+<li><p>Dalle coroutine Kotlin agli attori Kotlin.</p></li>
+</ul>
+<p>Li riprederemo dopo avere migliorato la nostra attuale infrastruttura,al fine di anticipare gli aspetti
+più importanti che avevamo riportato come <a class="reference internal" href="Introduzione.html#fase3"><span class="std std-ref">FASE3</span></a>:</p>
+<ul class="simple">
+<li><p>da bottom-up a <strong>top-down</strong>: il ruolo dei modelli</p></li>
+<li><p>uso di <strong>modelli eseguibili</strong> nelle fasi di analisi dei requisiti e del problema,
+come premessa per l’abbattimento dei costi (e degli imprevisti) di produzione</p></li>
+</ul>
+<p>Il lavoro che ci accingiamo a svolgere comprende anche un altro punto menzionato nella <a class="reference internal" href="Introduzione.html#fase2"><span class="std std-ref">FASE2</span></a></p>
+<ul class="simple">
+<li><p>da attori <em>message-driven</em> ad attori che operano come un <a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a>.</p></li>
+</ul>
+</section>
+<section id="preludio-alla-fase3">
+<h2>Preludio alla Fase3<a class="headerlink" href="#preludio-alla-fase3" title="Permalink to this headline">¶</a></h2>
+<p>In questa parte che precede la <a class="reference internal" href="Introduzione.html#fase3"><span class="std std-ref">FASE3</span></a> del nostro piano di lavoro,
+introdurremo alcuni miglioramenti alla implementazione degli attori con lo
+scopo di agevolare quanto più possibile il lavoro dell’Application Designer.</p>
+<p>A questo fine,faremo ampio ricorso allo strumento delle <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">Annotazioni</span></a> che
+permettono  di dare semantica aggiuntiva a classi e metodi Java attraverso <strong>frasi dichiarative</strong> che
+aiutano a meglio comprenderne il codice e a colmare in modo automatico
+l’<a class="reference internal" href="CostruireSoftware.html#abstraction-gap-e-topdown"><span class="std std-ref">abstraction gap</span></a> tra la nuova semantica e il livello tecnologico
+sottostante.</p>
+<p>La conseguenza più importante  sarà la possibilità di agevolare processi
+di produzione  <a class="reference internal" href="CostruireSoftware.html#abstraction-gap-e-topdown"><span class="std std-ref">topDown</span></a> del software,ponendo <strong>in primo
+piano i requisiti e il problema</strong>,in modo da introdurre le tecnologie come risposta ad esigenze
+esplicitamente espresse e motivate.</p>
+<p>Faremmo anche passi sostanziali nel concretizzare il lavoro delle fasi di analisi (dei requisiti e del problema)
+introducendo <a class="reference internal" href="CostruireSoftware.html#modelli"><span class="std std-ref">Modelli</span></a> <strong>eseguibili</strong> del sistema da sviluppare,coorredati da opportuni
+<a class="reference internal" href="CostruireSoftware.html#passi-operativi-a-regime"><span class="std std-ref">piani di testing</span></a>,da cui i progettisti potranno
+partire per le evoluzioni incrementali che,con diversi <a class="reference internal" href="CostruireSoftware.html#id1"><span class="std std-ref">SPRINT</span></a>,
+porteranno alla versione finale del sistema.</p>
+</section>
+<section id="actor22-annotated">
+<h2>Actor22 annotated<a class="headerlink" href="#actor22-annotated" title="Permalink to this headline">¶</a></h2>
+<p>In una <a class="reference external" href="https://it.wikipedia.org/wiki/Olismo">visione olistica</a> di un sistema software,cercheremo di superare la visione ‘tecnicistica’ introdotta in
+<a class="reference internal" href="Annotazioni.html#configurare-con-annotation"><span class="std std-ref">Configurare con Annotation</span></a>,cercando di creare una corrispondenza sistematica tra
+i concetti-base del nostro <a class="reference internal" href="Attori.html#il-paradigma-ad-attori"><span class="std std-ref">Modello ad Attori</span></a> e le nostre nuove frasi dichiarative
+in forma di <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">Annotazioni</span></a> Java.</p>
+<section id="un-esempio-di-sistema-a-due-nodi">
+<h3>Un esempio di sistema a due nodi<a class="headerlink" href="#un-esempio-di-sistema-a-due-nodi" title="Permalink to this headline">¶</a></h3>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> package: <em>unibo.wenvUsage22.actors.demofirst</em>.</p>
+<p>Riportiamo subito un esempio di come si presentereranno le dichiarazioni per un sistema distribuito formato da due nodi:</p>
+<ul class="simple">
+<li><p>un PC,su cui attiviamo il programma <code class="docutils literal notranslate"><span class="pre">MainAnnotationDemo22Pc</span></code></p></li>
+<li><p>un RaspberryPi,su su cui attiviamo il programma <code class="docutils literal notranslate"><span class="pre">MainAnnotationDemo22Rasp</span></code></p></li>
+</ul>
+<section id="parte-del-sistema-su-pc">
+<h4>Parte del sistema su PC<a class="headerlink" href="#parte-del-sistema-su-pc" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Context22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;pcCtx&quot;</span><span class="p">,</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+       <span class="n">port</span><span class="o">=</span><span class="s2">&quot;8080&quot;</span><span class="p">,</span><span class="n">protocol</span><span class="o">=</span><span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">)</span>
+<span class="nd">@Context22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;raspCtx&quot;</span><span class="p">,</span><span class="n">host</span> <span class="o">=</span><span class="s2">&quot;192.168.1.12&quot;</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="s2">&quot;8082&quot;</span><span class="p">)</span> <span class="o">//</span><span class="n">TCP</span> <span class="n">default</span>
+<span class="nd">@Actor22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span><span class="n">contextName</span><span class="o">=</span><span class="s2">&quot;pcCtx&quot;</span><span class="p">,</span><span class="n">implement</span><span class="o">=</span><span class="n">A1Actor22OnPc</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+<span class="nd">@Actor22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a2&quot;</span><span class="p">,</span><span class="n">contextName</span><span class="o">=</span><span class="s2">&quot;raspCtx&quot;</span><span class="p">)</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">MainAnnotationDemo22Pc</span> <span class="p">{</span>
+<span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Questo programma dichiara il sistema composto da due attori:</p>
+<ul class="simple">
+<li><p>l’attore  <code class="docutils literal notranslate"><span class="pre">a1</span></code>,che opera nel contesto di nome <code class="docutils literal notranslate"><span class="pre">pcCtx</span></code> <strong>locale</strong> al PC in quanto specifica che il suo host è
+<span class="blue">localhost</span>.  Ne viene quindi fornita anche la classe che lo implementa</p></li>
+<li><p>l’attore  <code class="docutils literal notranslate"><span class="pre">a2</span></code>,che opera nel contesto di nome <code class="docutils literal notranslate"><span class="pre">raspCtx</span></code> con <strong>host diverso da  localhost</strong>.
+L’attore viene dunque visto (in questa prospettiva del sistema) come  <strong>remoto</strong>  e NON se ne specifica la classe
+di implementazione.</p></li>
+</ul>
+</section>
+<section id="parte-del-sistema-su-raspberrypi">
+<h4>Parte del sistema su RaspberryPi<a class="headerlink" href="#parte-del-sistema-su-raspberrypi" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Context22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;pcCtx&quot;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;192.168.1.12&quot;</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="s2">&quot;8080&quot;</span><span class="p">)</span>
+<span class="nd">@Context22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;raspCtx&quot;</span><span class="p">,</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>   <span class="n">port</span><span class="o">=</span><span class="s2">&quot;8082&quot;</span><span class="p">)</span> <span class="o">//</span><span class="n">TCP</span> <span class="n">default</span>
+<span class="nd">@Actor22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a1&quot;</span><span class="p">,</span> <span class="n">contextName</span><span class="o">=</span><span class="s2">&quot;pcCtx&quot;</span><span class="p">)</span>
+<span class="nd">@Actor22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a2&quot;</span><span class="p">,</span> <span class="n">contextName</span><span class="o">=</span><span class="s2">&quot;raspCtx&quot;</span><span class="p">,</span><span class="n">implement</span><span class="o">=</span><span class="n">A2Actor22OnRasp</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+
+<span class="n">public</span> <span class="k">class</span> <span class="nc">MainAnnotationDemo22Rasp</span> <span class="p">{</span>
+<span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Questo programma dichiara il sistema nello stesso modo,ma con una <strong>prospettiva diversa</strong>:</p>
+<ul class="simple">
+<li><p>l’attore di nome <code class="docutils literal notranslate"><span class="pre">a1</span></code> su <code class="docutils literal notranslate"><span class="pre">pcCtx</span></code> viene visto come <strong>remoto</strong></p></li>
+<li><p>l’attore di nome  <code class="docutils literal notranslate"><span class="pre">a2</span></code> su <code class="docutils literal notranslate"><span class="pre">raspCtx</span></code> viene visto come <strong>locale</strong> al RaspberryPi e se ne fornisce dunque
+la classe di implementazione.</p></li>
+</ul>
+</section>
+<section id="configurazione-del-sistema">
+<h4>Configurazione del sistema<a class="headerlink" href="#configurazione-del-sistema" title="Permalink to this headline">¶</a></h4>
+<p>Le annotazioni  sono gestite da <a class="reference internal" href="Attori.html#qak22context"><span class="std std-ref">Qak22Context</span></a>. Il programma di ciascun nodo avrà unaa stessa,semplice
+fase di configurazione; ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">MainAnnotationDemo22Pc</span> <span class="p">{</span>
+<span class="n">Qak22Context</span><span class="o">.</span><span class="n">configureTheSystem</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Vediamo dunque come si è pervenuti a questo modo di specifica,dando anche qualche dettaglio su come opera
+il metodo  <code class="docutils literal notranslate"><span class="pre">Qak22Context.configureTheSystem</span></code>.</p>
+</section>
+</section>
+<section id="annotazioni-per-dichiarare-contesti">
+<h3>Annotazioni per dichiarare Contesti<a class="headerlink" href="#annotazioni-per-dichiarare-contesti" title="Permalink to this headline">¶</a></h3>
+<p>Nella sezione  <a class="reference internal" href="Attori.html#dal-locale-al-distribuito"><span class="std std-ref">Dal locale al distribuito</span></a> abbiamo detto che:</p>
+<p><span class="remark">Un sistema distribuito è di norma formato da due o più contesti</span></p>
+<p>Inoltre,un contesto:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>opera su un nodo di elaborazione associato a un indirizzo IP</p></li>
+<li><p>utilizza almeno un protocollo di comunicazione (tra cui sempre TCP) per ricevere messaggi
+su una data porta di ingresso (che potrebbe assumere la forma di un URI</p></li>
+</ul>
+</div></blockquote>
+<p>Ne consegue una annotazione dichiarativa della forma:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&#64;Context22(name=&lt;STRING&gt;,host=&lt;STRING&gt;,port=&lt;STRING&gt;,protocol=ProtocolType.&lt;xxx&gt;)</span></code></p>
+</div></blockquote>
+<section id="qak22context-setcontexts22">
+<h4>Qak22Context.setContexts22<a class="headerlink" href="#qak22context-setcontexts22" title="Permalink to this headline">¶</a></h4>
+<p>La annotazione precedente viene elaborata (da <a class="reference internal" href="Attori.html#qak22context"><span class="std std-ref">Qak22Context</span></a> col metodo <code class="docutils literal notranslate"><span class="pre">setContexts22</span></code>) che tiene traccia
+di tutti i contesti dichiarati.</p>
+<p>Nel caso di contesto con <strong>host=”localhost”</strong>,si crea un oggetto che implementa l’interfaccia <a class="reference internal" href="ContestiContenitori.html#icontext"><span class="std std-ref">IContext</span></a>
+come istanza della classe <code class="docutils literal notranslate"><span class="pre">EnablerContextForActors</span></code> definita nel
+<a class="reference internal" href="Attori.html#package-unibo-actor22comm"><span class="std std-ref">Package unibo.actor22Comm</span></a> che utilizza il <a class="reference internal" href="Attori.html#contextmsghandler-per-attori"><span class="std std-ref">ContextMsgHandler per attori</span></a>.</p>
+</section>
+</section>
+<section id="annotazioni-per-dichiarare-attori">
+<h3>Annotazioni per dichiarare Attori<a class="headerlink" href="#annotazioni-per-dichiarare-attori" title="Permalink to this headline">¶</a></h3>
+<p><span class="remark">Un attore nasce,vive e muore in un contesto</span></p>
+<ul>
+<li><p>Nel caso di attore <strong>locale</strong>,ne consegue una annotazione dichiarativa della forma:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&#64;Actor22(name=&lt;STRING&gt;,</span> <span class="pre">contextName=&lt;STRING&gt;,implement=&lt;CLASS&gt;)</span></code></p>
+</div></blockquote>
+<p>La annotazione precedente viene elaborata (da <a class="reference internal" href="Attori.html#qak22context"><span class="std std-ref">Qak22Context</span></a> col metodo <code class="docutils literal notranslate"><span class="pre">setActorAsLocal</span></code>) che:</p>
+<ul class="simple">
+<li><p>crea una istanza dell’attore come implementazione della classe specificata</p></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Nel caso di attore <strong>remoto</strong>,ne consegue una annotazione dichiarativa della forma:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&#64;Actor22(name=&lt;STRING&gt;,</span> <span class="pre">contextName=&lt;STRING&gt;)</span></code></p>
+</div></blockquote>
+<p>La annotazione precedente viene elaborata (da <a class="reference internal" href="Attori.html#qak22context"><span class="std std-ref">Qak22Context</span></a> col metodo <code class="docutils literal notranslate"><span class="pre">setActorAsRemote</span></code>) che:</p>
+<ul class="simple">
+<li><p>crea un proxy (singleton) per il contesto in cui risiede l’attore</p></li>
+<li><p>memorizza il proxy in una mappa utilizzata dalla operazione <a class="reference internal" href="Attori.html#sendmsgtoremoteactor"><span class="std std-ref">sendMsgToRemoteActor</span></a> invocata da
+<a class="reference internal" href="Attori.html#invio-di-messaggi-da-attore"><span class="std std-ref">sendMsg</span></a>)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="actor22-esempi-con-wenv">
+<h2>Actor22: esempi con WEnv<a class="headerlink" href="#actor22-esempi-con-wenv" title="Permalink to this headline">¶</a></h2>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> package: <em>unibo.wenvUsage22.actors.basic</em>.</p>
+<p>Costruiamo un sistema formato da un attore di classe <code class="docutils literal notranslate"><span class="pre">ActorWithObserverUsingWEnv</span></code> che fa percorrere al
+<a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a> il boundary della stanza,utilizzando <a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a> e l’osservatore della
+connessione di classe <a class="reference internal" href="VirtualRobot.html#wsconnsysobserver"><span class="std std-ref">WsConnSysObserver</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Context22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;pcCtx&quot;</span><span class="p">,</span><span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+    <span class="n">protocol</span><span class="o">=</span><span class="n">ProtocolType</span><span class="o">.</span><span class="n">tcp</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="s2">&quot;8083&quot;</span><span class="p">)</span>
+<span class="nd">@Actor22</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">MainActorUsingWEnv</span><span class="o">.</span><span class="n">myName</span><span class="p">,</span><span class="n">contextName</span><span class="o">=</span><span class="s2">&quot;pcCtx&quot;</span><span class="p">,</span>
+    <span class="n">implement</span><span class="o">=</span><span class="n">ActorWithObserverUsingWEnv</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">MainActorUsingWEnv</span> <span class="p">{</span>
+      <span class="n">public</span> <span class="n">static</span> <span class="n">final</span> <span class="n">String</span> <span class="n">myName</span><span class="o">=</span><span class="s2">&quot;wenvUse&quot;</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="n">void</span> <span class="n">doJob</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Qak22Context</span><span class="o">.</span><span class="n">configureTheSystem</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+  <span class="n">Qak22Context</span><span class="o">.</span><span class="n">showActorNames</span><span class="p">();</span>
+  <span class="n">Qak22Util</span><span class="o">.</span><span class="n">sendAMsg</span><span class="p">(</span><span class="n">SystemData</span><span class="o">.</span><span class="n">startSysCmd</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span><span class="n">myName</span><span class="p">));</span>
+<span class="p">};</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">terminate</span><span class="p">()</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">main</span><span class="p">(</span><span class="n">String</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span> <span class="n">throws</span> <span class="ne">Exception</span> <span class="p">{</span>
+  <span class="n">CommUtils</span><span class="o">.</span><span class="n">aboutThreads</span><span class="p">(</span><span class="s2">&quot;Before start - &quot;</span><span class="p">);</span>
+  <span class="n">MainActorUsingWEnv</span> <span class="n">appl</span><span class="o">=</span><span class="n">new</span> <span class="n">MainActorUsingWEnv</span><span class="p">();</span>
+  <span class="n">appl</span><span class="o">.</span><span class="n">doJob</span><span class="p">();</span>
+  <span class="n">appl</span><span class="o">.</span><span class="n">terminate</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="actorwithobserverusingwenv">
+<h3>ActorWithObserverUsingWEnv<a class="headerlink" href="#actorwithobserverusingwenv" title="Permalink to this headline">¶</a></h3>
+<p>Al momento della creazione,l’attore si connette al <a class="reference internal" href="VirtualRobot.html#virtualrobot"><span class="std std-ref">VirtualRobot</span></a> creando una <a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a>
+associata a un osservatore di tipo <a class="reference internal" href="VirtualRobot.html#wsconnsysobserver"><span class="std std-ref">WsConnSysObserver</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">ActorWithObserverUsingWEnv</span> <span class="n">extends</span> <span class="n">QakActor22</span>  <span class="p">{</span>
+  <span class="n">private</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+  <span class="n">private</span> <span class="nb">int</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+  <span class="n">public</span> <span class="n">ActorWithObserverUsingWEnv</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+    <span class="n">init</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="n">protected</span> <span class="n">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">conn</span><span class="o">=</span><span class="n">WsConnection</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;localhost:8091&quot;</span><span class="p">);</span>
+    <span class="p">((</span><span class="n">WsConnection</span><span class="p">)</span> <span class="n">conn</span><span class="p">)</span><span class="o">.</span><span class="n">addObserver</span><span class="p">(</span><span class="n">new</span> <span class="n">WsConnSysObserver</span><span class="p">(</span><span class="n">getName</span><span class="p">()));</span>
+    <span class="n">ColorsOut</span><span class="o">.</span><span class="n">outappl</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; | conn:&quot;</span> <span class="o">+</span> <span class="n">conn</span><span class="p">,</span> <span class="n">ColorsOut</span><span class="o">.</span><span class="n">BLUE</span><span class="p">);</span>
+  <span class="p">}</span>
+
+
+  <span class="nd">@Override</span>
+  <span class="n">protected</span> <span class="n">void</span> <span class="n">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+     <span class="n">interpret</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>La gestione dei messaggi è delegata al metodo  <code class="docutils literal notranslate"><span class="pre">interpret</span></code>,che gestisce:</p>
+<ul class="simple">
+<li><p>il mesaggio di attivazione dell’attore (con <code class="docutils literal notranslate"><span class="pre">id=ApplData.activateId</span></code>),inviando un comando di movimento
+in avanti di durata tale da provocare la collisione del robot con <code class="docutils literal notranslate"><span class="pre">wallDown</span></code></p></li>
+<li><p>il messaggio <code class="docutils literal notranslate"><span class="pre">SystemData.wsEventId</span></code> generato da  <a class="reference internal" href="VirtualRobot.html#wsconnsysobserver"><span class="std std-ref">WsConnSysObserver</span></a> al momento della collisione
+del robot con <code class="docutils literal notranslate"><span class="pre">wallDown</span></code></p></li>
+<li><p>messaggi di movimento (con <code class="docutils literal notranslate"><span class="pre">id=</span> <span class="pre">ApplData.moveCmdId</span></code>)</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>protected void interpret(IApplMessage m) {
+  if(m.msgId().equals(ApplData.activateId)) {
+autoMsg(ApplData.moveCmd(getName(),getName(),&quot;w&quot;));
+return;
+  }
+  if(m.isEvent() || m.msgId().equals(SystemData.wsEventId)) {
+handleWsInfo(m);
+return;
+  }
+  if(! m.msgId().equals(ApplData.moveCmdId)) {
+ColorsOut.outappl(getName() + &quot; | sorry,I don&#39;t handle :&quot; + m, ColorsOut.YELLOW);
+return;
+  }
+  switch(m.msgContent()) {
+case &quot;w&quot; : VRobotMoves.moveForward(getName(),conn,2300);break;
+case &quot;a&quot; : VRobotMoves.turnLeft(getName(),conn);break;
+default: break;
+  }
+}
+</pre></div>
+</div>
+<section id="gestione-dei-messaggi-di-stato">
+<h4>Gestione dei messaggi di stato<a class="headerlink" href="#gestione-dei-messaggi-di-stato" title="Permalink to this headline">¶</a></h4>
+<p>La gestione dei <a class="reference internal" href="VirtualRobot.html#messaggi-di-stato"><span class="std std-ref">Messaggi di stato</span></a> distingue tra completamenti di mosse e collsioni,
+realizzando parte della ‘business logic’.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">protected</span> <span class="n">void</span> <span class="n">handleWsInfo</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">msg</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">msgContent</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+    <span class="n">JSONObject</span> <span class="n">d</span><span class="o">=</span><span class="n">new</span> <span class="n">JSONObject</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">))</span> <span class="p">{</span>
+  <span class="n">n</span><span class="o">++</span><span class="p">;</span>
+  <span class="n">sendMsg</span><span class="p">(</span><span class="n">ApplData</span><span class="o">.</span><span class="n">moveCmd</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">getName</span><span class="p">(),</span><span class="s2">&quot;a&quot;</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">d</span><span class="o">.</span><span class="n">getBoolean</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span>
+   <span class="n">sendMsg</span><span class="p">(</span><span class="n">ApplData</span><span class="o">.</span><span class="n">moveCmd</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">getName</span><span class="p">(),</span><span class="s2">&quot;w&quot;</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="remark">la realizzazione ‘spezzata’ della business logic va rivista</span></p>
+</section>
+</section>
+<section id="un-primo-automa-a-stati-finiti">
+<h3>Un primo automa a stati finiti<a class="headerlink" href="#un-primo-automa-a-stati-finiti" title="Permalink to this headline">¶</a></h3>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.actors.fsm.basic.ActorWithFsmBasic</em>.</p>
+<p>Il comportamento logico del BoundaryWalker può essere descritto da un semplice FSM (<a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">private</span> <span class="n">enum</span> <span class="n">State</span> <span class="p">{</span><span class="n">start</span><span class="p">,</span><span class="n">goingAhead</span><span class="p">,</span><span class="n">turnedLeft</span><span class="p">,</span><span class="n">end</span> <span class="p">};</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/FsmBoundary.PNG"><img alt="_images/FsmBoundary.PNG" class="align-center" src="_images/FsmBoundary.PNG" style="width: 60%;" /></a>
+<p>Lo <a class="reference external" href="https://en.wikipedia.org/wiki/State_diagram#:~:text=A%20state%20diagram%20is%20a,this%20is%20a%20reasonable%20abstraction.">state diagram</a> di figura può essere realizzato da una funzione come quella che segue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">fsm</span><span class="p">(</span><span class="n">String</span> <span class="n">move</span><span class="p">,</span><span class="n">boolean</span> <span class="n">endmove</span><span class="p">){</span>
+  <span class="n">switch</span><span class="p">(</span><span class="n">curState</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">case</span> <span class="n">start</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">VRobotMoves</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">conn</span><span class="p">);</span> <span class="o">//</span><span class="n">forward</span> <span class="n">per</span> <span class="mi">300</span>
+    <span class="n">curState</span><span class="o">=</span><span class="n">State</span><span class="o">.</span><span class="n">goingAhead</span><span class="p">;</span>
+    <span class="n">numIter</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">case</span> <span class="n">goingAhead</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">endmove</span><span class="p">)</span> <span class="p">{</span>  <span class="o">//</span><span class="n">lo</span> <span class="n">stato</span> <span class="n">non</span> <span class="n">cambia</span>
+  <span class="n">VRobotMoves</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">conn</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="n">VRobotMoves</span><span class="o">.</span><span class="n">turnLeft</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">conn</span><span class="p">);</span>
+  <span class="n">curState</span><span class="o">=</span><span class="n">State</span><span class="o">.</span><span class="n">turnedLeft</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">case</span> <span class="n">turnedLeft</span><span class="p">:{</span>
+    <span class="n">numIter</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">numIter</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">VRobotMoves</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">conn</span><span class="p">);</span>
+  <span class="n">curState</span><span class="o">=</span><span class="n">State</span><span class="o">.</span><span class="n">goingAhead</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="n">curState</span><span class="o">=</span><span class="n">State</span><span class="o">.</span><span class="n">end</span><span class="p">;</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">case</span> <span class="n">end</span><span class="p">:</span> <span class="p">{</span>
+    <span class="n">ColorsOut</span><span class="o">.</span><span class="n">outappl</span><span class="p">(</span><span class="s2">&quot;fsm DONE &quot;</span> <span class="p">,</span><span class="n">ColorsOut</span><span class="o">.</span><span class="n">MAGENTA</span><span class="p">);</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="nuova-gestione-dei-messaggi-di-stato">
+<h4>Nuova gestione dei messaggi di stato<a class="headerlink" href="#nuova-gestione-dei-messaggi-di-stato" title="Permalink to this headline">¶</a></h4>
+<p>La ricezione di un messaggio di stato induce un nuovo passo computazionale (una transizione) nell’automa.</p>
+<p><span class="remark">tutta la business logic è ora definita dalla funzione fsm</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">protected</span> <span class="n">void</span> <span class="n">handleWsInfo</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">m</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">msg</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">msgContent</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
+    <span class="n">JSONObject</span> <span class="n">d</span><span class="o">=</span><span class="n">new</span> <span class="n">JSONObject</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">))</span> <span class="p">{</span>
+  <span class="n">fsm</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="s2">&quot;collision&quot;</span><span class="p">),</span><span class="n">false</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">d</span><span class="o">.</span><span class="n">getBoolean</span><span class="p">(</span><span class="s2">&quot;endmove&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span>
+  <span class="n">fsm</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">getString</span><span class="p">(</span><span class="s2">&quot;move&quot;</span><span class="p">),</span><span class="n">true</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="qakactor22fsm">
+<h2>QakActor22Fsm<a class="headerlink" href="#qakactor22fsm" title="Permalink to this headline">¶</a></h2>
+<p>La classe astratta <code class="docutils literal notranslate"><span class="pre">QakActor22Fsm</span></code> estende <a class="reference internal" href="Attori.html#actorqak-e-qakactor22"><span class="std std-ref">QakActor22</span></a> impostando il funzionamento di un attore
+come un FSM concepito come una <a class="reference external" href="https://it.wikipedia.org/wiki/Macchina_di_Moore">Macchina di Moore</a> i cui stati sono definiti da azioni,implementazioni della interfaccia
+<a class="reference internal" href="#stateactionfun"><span class="std std-ref">StateActionFun</span></a>.</p>
+<p>Ogni stato è uan coppia <code class="docutils literal notranslate"><span class="pre">&lt;StateName,StateActionFun&gt;</span></code> che viene inserita durante la fase di costruzione
+nella  <em>tabella degli stati</em> (<code class="docutils literal notranslate"><span class="pre">stateMap</span></code>).</p>
+<section id="qakactor22fsm-costruttore">
+<h3>QakActor22Fsm: costruttore<a class="headerlink" href="#qakactor22fsm-costruttore" title="Permalink to this headline">¶</a></h3>
+<p>Il costruttore dell’automa opera come segue:</p>
+<ol class="arabic simple">
+<li><p>invoca un metodo (dichiarato abstract) <a class="reference internal" href="#declarethestates"><span class="std std-ref">declareTheStates</span></a> in cui l’Application designer definisce
+gli stati dell’automa. Questi stati sono inseriti nella <em>tabella degli stati</em>  <code class="docutils literal notranslate"><span class="pre">stateMap</span></code>, usando come
+chiave il nome dello stato</p></li>
+<li><p>fissa il valore della variabile <code class="docutils literal notranslate"><span class="pre">curState</span></code> che denota il nome dello stato corrente al valore restituito dal metodo
+<code class="docutils literal notranslate"><span class="pre">setTheInitialState</span></code> (dichiarato abstract)</p></li>
+<li><p>attiva l’automa,che si posiziona sullo stato iniziale (unico)</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">QakActor22Fsm</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nb">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+  <span class="n">declareTheStates</span><span class="p">();</span>
+  <span class="n">setTheInitialState</span><span class="p">();</span>
+  <span class="n">addExpectedMsg</span><span class="p">(</span><span class="n">curState</span><span class="p">,</span><span class="n">ApplData</span><span class="o">.</span><span class="n">startSysCmdId</span><span class="p">);</span>
+  <span class="o">//</span><span class="n">Si</span> <span class="n">auto</span><span class="o">-</span><span class="n">invia</span> <span class="n">il</span> <span class="n">messaggio</span> <span class="n">di</span> <span class="n">inizio</span> <span class="n">che</span> <span class="n">porta</span> <span class="n">nello</span> <span class="n">stato</span> <span class="n">iniziale</span>
+  <span class="n">autoMsg</span><span class="p">(</span><span class="n">ApplData</span><span class="o">.</span><span class="n">startSysCmd</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span><span class="n">name</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="addexpectedmsg">
+<h3>addExpectedMsg<a class="headerlink" href="#addexpectedmsg" title="Permalink to this headline">¶</a></h3>
+<p>In un <a class="reference external" href="https://it.wikipedia.org/wiki/Automa_a_stati_finiti">Automa a stati finiti</a>,ogni stato risulta ‘essere interessato’ a ricevere un preciso insieme di messaggi,
+effettuando una transizione di stato quando uno di questi si manifesta.</p>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">addExpectedMsg</span></code> inserisce l’identificatore di un messaggio tra quelli attesi,usando una
+tabella  <code class="docutils literal notranslate"><span class="pre">nextMsgMap</span></code> che ha come chiave il nome dello stato.
+Questa tabella viene consultata dal metodo <code class="docutils literal notranslate"><span class="pre">checkIfExpected</span></code> e aggiornata dal metodo <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a>,
+che effettua le transizioni di stato.</p>
+</section>
+<section id="qakactor22fsm-handlemsg">
+<h3>QakActor22Fsm: handleMsg<a class="headerlink" href="#qakactor22fsm-handlemsg" title="Permalink to this headline">¶</a></h3>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">QakActor22Fsm</span></code> funziona secondo il solito meccanismo message-driven,ma realizza una gestione dei messaggi
+volta a tenere conto delle specifiche dell’automa.</p>
+<p><span class="remark">un messaggio è gestito solo se atteso nello stato corrente,se no è memorizzato</span></p>
+<p>In particolare,il metodo <code class="docutils literal notranslate"><span class="pre">handleMsg</span></code>:</p>
+<ol class="arabic simple">
+<li><p>controlla che il messaggio sia atteso nello stato corrente</p></li>
+<li><p>se il messaggio è atteso,esegue <a class="reference internal" href="#statetransition"><span class="std std-ref">stateTransition</span></a>,che effettua una transizione dallo stato corrente
+allo stato indicato nella <em>tabella delle transizioni correnti</em> (<a class="reference internal" href="#addtransition"><span class="std std-ref">transTab</span></a>)</p></li>
+<li><p>se il messaggio non è atteso,lo inserisce in una coda locale interna (<code class="docutils literal notranslate"><span class="pre">OldMsgQueue</span></code>),che verrà consultata al termine
+della esecuzione del nuovo stato (si veda <a class="reference internal" href="#nextstate"><span class="std std-ref">nextState</span></a>)</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">String</span> <span class="n">state</span><span class="o">=</span><span class="n">checkIfExpected</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="n">stateTransition</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">msg</span><span class="p">);</span>
+<span class="k">else</span> <span class="n">memoTheMessage</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="stateactionfun">
+<h3>StateActionFun<a class="headerlink" href="#stateactionfun" title="Permalink to this headline">¶</a></h3>
+<p>Un oggetto di tipo <code class="docutils literal notranslate"><span class="pre">StateActionFun</span></code> definisce il comportamento dell’automa in relazione alla ricezione di un messaggio
+di tipo <a class="reference internal" href="ContestiContenitori.html#iapplmessage"><span class="std std-ref">IApplMessage</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="n">interface</span> <span class="n">StateActionFun</span> <span class="p">{</span>
+<span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">QakActor22Fsm</span></code> (alquanto  <a class="reference external" href="https://govdevsecopshub.com/2021/02/26/opinionated-software-what-it-is-and-how-it-enables-devops/">opinionated</a> …) impone un precisa struttura logica al
+comportamento di uno stato:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">StateActionFun</span> <span class="o">...=</span><span class="n">new</span> <span class="n">StateActionFun</span><span class="p">()</span> <span class="p">{</span>
+<span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">//</span><span class="n">Body</span> <span class="n">dello</span> <span class="n">stato</span> <span class="p">(</span><span class="n">Behavior</span><span class="p">)</span>
+    <span class="n">addTransition</span><span class="p">(</span><span class="o">&lt;</span><span class="n">nextState</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">msgId</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">addTransition</span> <span class="o">...</span>
+    <span class="n">nextState</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">StateActionFun</span> <span class="n">s0State</span><span class="o">=</span><span class="n">new</span> <span class="n">StateActionFun</span><span class="p">()</span> <span class="p">{</span>
+<span class="nd">@Override</span>
+<span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">outInfo</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span> <span class="o">//</span><span class="n">outInfo</span> <span class="n">Inherited</span>
+    <span class="n">addTransition</span><span class="p">(</span><span class="s2">&quot;s1&quot;</span><span class="p">,</span><span class="n">ApplData</span><span class="o">.</span><span class="n">moveCmdId</span><span class="p">);</span>
+    <span class="n">nextState</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="declarethestates">
+<h3>declareTheStates<a class="headerlink" href="#declarethestates" title="Permalink to this headline">¶</a></h3>
+<p>Un esempio del metodo declareTheStates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="n">protected</span> <span class="n">void</span> <span class="n">declareTheStates</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="n">StateActionFun</span> <span class="n">s0State</span><span class="o">=...</span>
+  <span class="n">declareState</span><span class="p">(</span><span class="s2">&quot;s0&quot;</span><span class="p">,</span><span class="n">s0State</span><span class="p">);</span>
+
+  <span class="n">declareState</span><span class="p">(</span><span class="s2">&quot;s1&quot;</span><span class="p">,</span><span class="n">new</span> <span class="n">StateActionFun</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nd">@Override</span>
+  <span class="n">public</span> <span class="n">void</span> <span class="n">run</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">outInfo</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>    <span class="o">//</span><span class="n">outInfo</span> <span class="n">Inherited</span>
+<span class="n">addTransition</span><span class="p">(</span><span class="s2">&quot;s1&quot;</span><span class="p">,</span><span class="n">ApplData</span><span class="o">.</span><span class="n">moveCmdId</span><span class="p">);</span>
+<span class="n">addTransition</span><span class="p">(</span><span class="s2">&quot;s2&quot;</span><span class="p">,</span><span class="n">ApplData</span><span class="o">.</span><span class="n">haltSysCmdId</span><span class="p">);</span>
+<span class="n">nextState</span><span class="p">();</span>
+  <span class="p">}</span>
+   <span class="o">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<section id="declarestate">
+<h4>declareState<a class="headerlink" href="#declarestate" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo declareState inserisce lo stato nella <em>tabella degli stati</em>  <code class="docutils literal notranslate"><span class="pre">stateMap</span></code>.</p>
+</section>
+</section>
+<section id="addtransition">
+<h3>addTransition<a class="headerlink" href="#addtransition" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">addTransition</span></code> aggiunge una transizione alla <em>tabella delle transizioni correnti</em> (<code class="docutils literal notranslate"><span class="pre">transTab</span></code>)
+aggiungendo una coppia <span class="blue">(nextstate,msgId)</span> col seguente significato:</p>
+<ul class="simple">
+<li><p>se il prossimo messaggio ha identificatore <span class="blue">msgId</span>,transita allo stato <span class="blue">nextstate</span></p></li>
+</ul>
+</section>
+<section id="statetransition">
+<h3>stateTransition<a class="headerlink" href="#statetransition" title="Permalink to this headline">¶</a></h3>
+<p>La transizione di stato opera come segue:</p>
+<ol class="arabic simple">
+<li><p>aggiorna il valore dello stato corrente (variabile <code class="docutils literal notranslate"><span class="pre">curState</span></code>)</p></li>
+<li><p>pulisce la  <em>tabella delle transizioni correnti</em> <code class="docutils literal notranslate"><span class="pre">transTab</span></code></p></li>
+<li><p>recupera dalla <em>tabella degli stati</em> <code class="docutils literal notranslate"><span class="pre">stateMap</span></code> il riferimento al codice dello stato</p></li>
+<li><p>esegue il codice dello stato</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">stateTransition</span><span class="p">(</span><span class="n">String</span> <span class="n">stateName</span><span class="p">,</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">curState</span>  <span class="o">=</span><span class="n">stateName</span><span class="p">;</span>
+        <span class="n">currentMsg</span><span class="o">=</span><span class="n">msg</span><span class="p">;</span>
+        <span class="n">transTab</span><span class="o">.</span><span class="n">removeAllElements</span><span class="p">();</span>
+        <span class="n">StateActionFun</span> <span class="n">a</span><span class="o">=</span><span class="n">stateMap</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stateName</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">a</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="n">a</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+        <span class="k">else</span> <span class="n">ColorsOut</span><span class="o">.</span><span class="n">outerr</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; | QakActor22Fsm TERMINATED&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="nextstate">
+<h3>nextState<a class="headerlink" href="#nextstate" title="Permalink to this headline">¶</a></h3>
+<p>La operazione <code class="docutils literal notranslate"><span class="pre">nextState</span></code> definita in <code class="docutils literal notranslate"><span class="pre">QakActor22Fsm</span></code> effettua una transione di stato sulla base del
+prossimo messaggio (o meglio del prossimo <code class="docutils literal notranslate"><span class="pre">msgId</span></code>)
+ricevuto dall’automa. Per ogni elemento della tabella <code class="docutils literal notranslate"><span class="pre">transTab</span></code>:</p>
+<ol class="arabic simple">
+<li><p>cerca se il <code class="docutils literal notranslate"><span class="pre">msgId</span></code> si trova nella <code class="docutils literal notranslate"><span class="pre">oldMsgQueue</span></code>. In caso positivo,invoca <a class="reference internal" href="#statetransition"><span class="std std-ref">stateTransition</span></a> per effettuare la
+transizione di stato relativa a questo vecchio messaggio</p></li>
+<li><p>in caso negativo,invoca <cite>addExpectedMsg</cite>,per inserire l’id del messaggio tra quelli attesi.
+Ricordando il funzionamento di <a class="reference internal" href="#qakactor22fsm-handlemsg"><span class="std std-ref">QakActor22Fsm: handleMsg</span></a>,l’automa al momento di ferma.</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">nextState</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">clearExpectedMsgs</span><span class="p">();</span>
+        <span class="n">Iterator</span><span class="o">&lt;</span> <span class="n">Pair</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="nb">iter</span><span class="o">=</span><span class="n">transTab</span><span class="o">.</span><span class="n">iterator</span><span class="p">();</span>
+        <span class="k">while</span><span class="p">(</span><span class="nb">iter</span><span class="o">.</span><span class="n">hasNext</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">Pair</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">v</span><span class="o">=</span><span class="nb">iter</span><span class="o">.</span><span class="n">next</span><span class="p">();</span>
+                <span class="n">String</span> <span class="n">state</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">getFirst</span><span class="p">();</span>
+                <span class="n">String</span> <span class="n">msgId</span><span class="o">=</span><span class="n">v</span><span class="o">.</span><span class="n">getSecond</span><span class="p">();</span>
+                <span class="n">IApplMessage</span> <span class="n">oldMsg</span><span class="o">=</span><span class="n">searchInOldMsgQueue</span><span class="p">(</span><span class="n">msgId</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">oldMsg</span> <span class="o">!=</span> <span class="n">null</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">stateTransition</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">oldMsg</span><span class="p">);</span>
+                        <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span>  <span class="n">addExpectedMsg</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">msgId</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="automa-refactored">
+<h3>Automa refactored<a class="headerlink" href="#automa-refactored" title="Permalink to this headline">¶</a></h3>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.actors.robot.RobotBoundaryWalkerFsm</em>.</p>
+<p><span class="worktodo">WORKTODO: Refactoring usando QakActor22Fsm</span></p>
+<ul class="simple">
+<li><p>Fare un refactoring di <a class="reference internal" href="#un-primo-automa-a-stati-finiti"><span class="std std-ref">ActorWithFsmBasic</span></a> impostando l’attore come
+un istanza di <a class="reference internal" href="#qakactor22fsm"><span class="std std-ref">QakActor22Fsm</span></a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="annotazioni-state-e-transition">
+<h2>Annotazioni State e Transition<a class="headerlink" href="#annotazioni-state-e-transition" title="Permalink to this headline">¶</a></h2>
+<p>Abbiamo visto come la classe <a class="reference internal" href="#qakactor22fsm"><span class="std std-ref">QakActor22Fsm</span></a> forzi un ApplicationDesigner a concepire un attore come una
+<a class="reference external" href="https://it.wikipedia.org/wiki/Macchina_di_Moore">Macchina di Moore</a> i cui stati sono definiti da azioni,implementazioni della interfaccia
+<a class="reference internal" href="#stateactionfun"><span class="std std-ref">StateActionFun</span></a>.</p>
+<p>L’ApplicationDesigner viene indotto a definire due metodi che <a class="reference internal" href="#qakactor22fsm"><span class="std std-ref">QakActor22Fsm</span></a> dichiara come <strong>abstract</strong>:</p>
+<ul class="simple">
+<li><p>il metodo <a class="reference internal" href="#declarethestates"><span class="std std-ref">declareTheStates</span></a> che si avvale del metodo <a class="reference internal" href="#declarestate"><span class="std std-ref">declareState</span></a></p></li>
+<li><p>il metodo <a class="reference internal" href="#qakactor22fsm-costruttore"><span class="std std-ref">setTheInitialState</span></a></p></li>
+</ul>
+<p>Ora ci poniamo come obiettivo quello di ‘nascondere’ (ancora una volta!) questi dettagli,introducendo <a class="reference internal" href="Annotazioni.html#annotazioni"><span class="std std-ref">Annotazioni</span></a> ai metodi
+che realizzano gli stati dell’automa.</p>
+<p>A questo fine introduciamo:</p>
+<ul>
+<li><p>l’annotazione <code class="docutils literal notranslate"><span class="pre">State</span></code> che denota un metodo come stato.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@java</span> <span class="p">(</span><span class="n">ElementType</span><span class="o">.</span><span class="n">METHOD</span><span class="p">)</span>
+<span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="n">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Inherited</span>
+<span class="n">public</span> <span class="nd">@interface</span> <span class="n">State</span> <span class="p">{</span>
+        <span class="n">String</span> <span class="n">name</span><span class="p">()</span> <span class="n">default</span> <span class="s2">&quot;s0&quot;</span><span class="p">;</span>
+        <span class="n">boolean</span> <span class="n">initial</span><span class="p">()</span> <span class="n">default</span>  <span class="n">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>l’annotazione <code class="docutils literal notranslate"><span class="pre">Transition</span></code> che denota una transizione.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Target</span> <span class="p">(</span><span class="n">ElementType</span><span class="o">.</span><span class="n">METHOD</span><span class="p">)</span>
+<span class="nd">@Retention</span><span class="p">(</span><span class="n">RetentionPolicy</span><span class="o">.</span><span class="n">RUNTIME</span><span class="p">)</span>
+<span class="nd">@Repeatable</span><span class="p">(</span><span class="n">Transitions</span><span class="o">.</span><span class="n">class</span><span class="p">)</span>
+<span class="n">public</span> <span class="nd">@interface</span> <span class="n">Transition</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">name</span><span class="p">()</span> <span class="n">default</span> <span class="s2">&quot;t0&quot;</span><span class="p">;</span>
+  <span class="n">String</span> <span class="n">state</span><span class="p">()</span>  <span class="p">;</span>
+  <span class="n">String</span> <span class="n">msgId</span><span class="p">()</span>  <span class="p">;</span>
+  <span class="n">Class</span> <span class="n">guard</span><span class="p">()</span> <span class="n">default</span> <span class="n">GuardAlwaysTrue</span><span class="o">.</span><span class="n">class</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>una classe <code class="docutils literal notranslate"><span class="pre">QakActor22FsmAnnot</span></code> che estende <a class="reference internal" href="#qakactor22fsm"><span class="std std-ref">QakActor22Fsm</span></a> con operazioni capaci di elaborare le annotazioni sui metodi</p></li>
+</ul>
+<section id="transizioni-senza-messaggi">
+<h3>Transizioni senza messaggi<a class="headerlink" href="#transizioni-senza-messaggi" title="Permalink to this headline">¶</a></h3>
+<p>Un automa può transitare da uno stato all’altro in modo ‘spontaneo’ (cioè non legato alla ricezione di un messaggio)
+se <strong>msgId==null</strong>.</p>
+</section>
+<section id="transizioni-condizionate-da-guardie">
+<h3>Transizioni condizionate da guardie<a class="headerlink" href="#transizioni-condizionate-da-guardie" title="Permalink to this headline">¶</a></h3>
+<p>Ogni transizione può essere associata a una guardia,che ne condiziona l’attivazione.</p>
+<p>Le annotazioni Java consentono di specificare attributi soltanto di valori primitivi o Class.
+Vediamo una possibile uso di Class per esprimere e realizzare. guardie.</p>
+<p>Il valore di default per una guardia è la classe <code class="docutils literal notranslate"><span class="pre">GuardAlwaysTrue</span></code> che,una volta valutata,fornisce sempre il valore boolean <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<section id="guardalwaystrue">
+<h4>GuardAlwaysTrue<a class="headerlink" href="#guardalwaystrue" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IGuard</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">eval</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GuardAlwaysTrue</span> <span class="kd">implements</span> <span class="n">IGuard</span><span class="p">{</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">eval</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>L’ApplicationDesigner può introdurre classi-guardia in funzione delle esigenze applicative. Ad esempio:</p>
+</section>
+<section id="una-guardia-di-livello-applicativo">
+<h4>Una guardia di livello applicativo<a class="headerlink" href="#una-guardia-di-livello-applicativo" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Guard0</span> <span class="kd">implements</span> <span class="n">IGuard</span><span class="p">{</span>
+<span class="kd">protected</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">vn</span> <span class="p">;</span>
+<span class="c1">//Usato dall&#39;applicativo</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">vn</span><span class="o">=</span><span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">eval</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">vn</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Nell’esempio che segue,alla ricezione del messaggio con <code class="docutils literal notranslate"><span class="pre">id=SystemData.demoSysId</span></code>,lo stato <code class="docutils literal notranslate"><span class="pre">s0</span></code>
+passa nello stato <code class="docutils literal notranslate"><span class="pre">s1</span></code> solo se <code class="docutils literal notranslate"><span class="pre">n&gt;0</span></code>.</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestGuards</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
+  <span class="kd">private</span> <span class="kt">int</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="kd">public</span> <span class="nf">TestGuards</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@State</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s0&quot;</span><span class="p">,</span><span class="n">initial</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;s1&quot;</span><span class="p">,</span>
+      <span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">demoSysId</span><span class="p">,</span><span class="n">guard</span><span class="o">=</span><span class="n">Guard0</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">s0</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">Guard0</span><span class="p">.</span><span class="na">setValue</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">autoMsg</span><span class="p">(</span><span class="n">SystemData</span><span class="p">.</span><span class="na">demoSysCmd</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">getName</span><span class="p">()));</span>
+<span class="p">}</span>
+<span class="nd">@State</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;s1&quot;</span><span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">s1</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="qakactor22fsmannot">
+<h3>QakActor22FsmAnnot<a class="headerlink" href="#qakactor22fsmannot" title="Permalink to this headline">¶</a></h3>
+<p>La classe  <code class="docutils literal notranslate"><span class="pre">QakActor22FsmAnnot</span></code> definisce il metodo <a class="reference internal" href="#declarethestates"><span class="std std-ref">declareTheStates</span></a> come analizzatore di tutte le annotazioni <code class="docutils literal notranslate"><span class="pre">State</span></code> e <code class="docutils literal notranslate"><span class="pre">Transition</span></code>
+presenti nella classe specilizzata dall’ApplicationDesigner.</p>
+<section id="qakactor22fsmannot-declarethestates">
+<h4>QakActor22FsmAnnot.declareTheStates<a class="headerlink" href="#qakactor22fsmannot-declarethestates" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">declareTheStates</span><span class="p">()</span> <span class="p">{</span>
+<span class="k">try</span> <span class="p">{</span>
+  <span class="n">Method</span><span class="o">[]</span> <span class="n">m</span><span class="o">=</span><span class="k">this</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getDeclaredMethods</span><span class="p">();</span>
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">m</span><span class="p">.</span><span class="na">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">m</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">.</span><span class="na">setAccessible</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="c1">//necessario per accedere</span>
+<span class="k">if</span><span class="p">(</span><span class="n">m</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">.</span><span class="na">isAnnotationPresent</span><span class="p">(</span><span class="n">State</span><span class="p">.</span><span class="na">class</span><span class="p">))</span>
+               <span class="n">elabAnnotatedMethod</span><span class="p">(</span><span class="n">m</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">);</span>
+<span class="p">}</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="s">&quot;readAnnots ERROR:&quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="qakactor22fsmannot-elabstatemethod">
+<h4>QakActor22FsmAnnot.elabStateMethod<a class="headerlink" href="#qakactor22fsmannot-elabstatemethod" title="Permalink to this headline">¶</a></h4>
+<p>Per ciascun metodo annotato,:ref:<cite>QakActor22FsmAnnot.declareTheStates</cite> invoca il metodo</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">elabStateMethod(Method</span> <span class="pre">m,String</span> <span class="pre">stateName)</span></code></p>
+</div></blockquote>
+<p>che:</p>
+<ul>
+<li><p>tiene traccia delle informazioni dichiarate nelle annotazioni <code class="docutils literal notranslate"><span class="pre">Transition</span></code>
+in tre liste (<code class="docutils literal notranslate"><span class="pre">nextStates</span></code>,``msgIds`` e <code class="docutils literal notranslate"><span class="pre">guards</span></code>)</p></li>
+<li><p>invoca il metodo <a class="reference internal" href="#declarestate-in-qakactor22fsmannot"><span class="std std-ref">declareState</span></a> creando una istanza di <a class="reference internal" href="#stateactionfun"><span class="std std-ref">StateActionFun</span></a>:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabStateMethod</span><span class="p">(</span><span class="n">Method</span> <span class="n">m</span><span class="p">,</span><span class="n">String</span> <span class="n">stateName</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span> <span class="n">m</span><span class="p">.</span><span class="na">getName</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">stateName</span><span class="p">))</span> <span class="p">{</span>
+<span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span>
+  <span class="s">&quot; | Method name must be the same as state name&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">nextStates</span><span class="o">=</span><span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">msgIds</span>    <span class="o">=</span><span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+  <span class="n">Vector</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&gt;</span> <span class="n">guards</span>     <span class="o">=</span><span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&gt;</span><span class="p">();</span>
+
+  <span class="n">Transition</span><span class="o">[]</span> <span class="n">ta</span><span class="o">=</span><span class="n">m</span><span class="p">.</span><span class="na">getAnnotationsByType</span><span class="p">(</span><span class="n">Transition</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">Transition</span> <span class="n">t</span> <span class="p">:</span> <span class="n">ta</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">nextStates</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="na">state</span><span class="p">());</span>
+<span class="n">msgIds</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="na">msgId</span><span class="p">());</span>
+<span class="n">guards</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="na">guard</span><span class="p">());</span>
+  <span class="p">}</span>
+  <span class="n">doDeclareState</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">stateName</span><span class="p">,</span><span class="n">nextStates</span><span class="p">,</span><span class="n">msgIds</span><span class="p">,</span><span class="n">guards</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="qakactor22fsmannot-dodeclarestate">
+<h4>QakActor22FsmAnnot.doDeclareState<a class="headerlink" href="#qakactor22fsmannot-dodeclarestate" title="Permalink to this headline">¶</a></h4>
+<p>Un volta raccolte le informazioni sulle transizioni,si possono costruire gli stati.</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doDeclareState</span><span class="p">(</span><span class="n">Method</span> <span class="n">curMethod</span><span class="p">,</span>
+<span class="n">String</span> <span class="n">stateName</span><span class="p">,</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">nextStates</span><span class="p">,</span>
+<span class="n">Vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">msgIds</span><span class="p">,</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Class</span><span class="o">&gt;</span> <span class="n">guards</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">declareState</span><span class="p">(</span><span class="n">stateName</span><span class="p">,</span><span class="k">new</span> <span class="n">StateActionFun</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+  <span class="p">});</span><span class="c1">//declareState</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="declarestate-in-qakactor22fsmannot">
+<h4>declareState in QakActor22FsmAnnot<a class="headerlink" href="#declarestate-in-qakactor22fsmannot" title="Permalink to this headline">¶</a></h4>
+<p>Questo metodo realizza <a class="reference internal" href="#declarestate"><span class="std std-ref">declareState</span></a> al prosto dell’ApplicationDesigner.</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="n">declareState</span><span class="p">(</span><span class="n">stateName</span><span class="p">,</span><span class="k">new</span> <span class="n">StateActionFun</span><span class="p">()</span> <span class="p">{</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">try</span> <span class="p">{</span>
+  <span class="n">curMethod</span><span class="p">.</span><span class="na">invoke</span><span class="p">(</span> <span class="n">myself</span><span class="p">,</span><span class="n">msg</span>  <span class="p">);</span>  <span class="c1">//I metodi hanno this come arg implicito</span>
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">nextStates</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">addTransition</span><span class="p">(</span><span class="n">nextStates</span><span class="p">.</span><span class="na">elementAt</span><span class="p">(</span><span class="n">j</span><span class="p">),</span><span class="n">msgIds</span><span class="p">.</span><span class="na">elementAt</span><span class="p">(</span><span class="n">j</span><span class="p">));</span>
+  <span class="p">}</span>
+  <span class="n">nextState</span><span class="p">();</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">QakActor22FsmAnnot</span></code> costruisce in modo automatico quelle parti di codice richieste da
+<a class="reference internal" href="#qakactor22fsm"><span class="std std-ref">QakActor22Fsm</span></a> e che nella versione non annotata dovevano essere scritte dall’ApplicationDesigner.</p>
+</section>
+<section id="addtransition-in-qakactor22fsmannot">
+<h4>addTransition in QakActor22FsmAnnot<a class="headerlink" href="#addtransition-in-qakactor22fsmannot" title="Permalink to this headline">¶</a></h4>
+<p>Aggiorna la <a class="reference internal" href="#addtransition"><span class="std std-ref">transTab</span></a>:</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">addTransition</span><span class="p">(</span><span class="n">String</span> <span class="n">state</span><span class="p">,</span><span class="n">String</span> <span class="n">msgId</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">transTab</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span> <span class="n">Pair</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">msgId</span><span class="p">));</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">msgId</span><span class="p">.</span><span class="na">length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//Per info</span>
+    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">out</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; QakActor22Fsm |</span>
+<span class="s">  in &quot;</span> <span class="o">+</span> <span class="n">curState</span> <span class="o">+</span> <span class="s">&quot; adding an empty move&quot;</span><span class="p">,</span><span class="n">ColorsOut</span><span class="p">.</span><span class="na">BLUE</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+<section id="refactoring-del-boundarywalker">
+<h3>Refactoring del BoundaryWalker<a class="headerlink" href="#refactoring-del-boundarywalker" title="Permalink to this headline">¶</a></h3>
+<p>Progetto: <strong>unibo.wenvUsage22</strong> code: <em>unibo.wenvUsage22.actors.annot.walker.BoundaryWalkerAnnot</em>.</p>
+<p>Prima di procedere alla definizione dell’attore,introduciamo  due nuove ‘features’</p>
+<section id="vrobotmoves-step">
+<h4>VRobotMoves.step<a class="headerlink" href="#vrobotmoves-step" title="Permalink to this headline">¶</a></h4>
+<p>La classe di utilità <code class="docutils literal notranslate"><span class="pre">VRobotMoves</span></code> (nel package <em>unibo.wenvUsage22.common</em>)
+definisce un metodo <span class="blue">step</span> che muove in avanti il robot per <code class="docutils literal notranslate"><span class="pre">300msec</span></code>.</p>
+<blockquote>
+<div><blockquote>
+<div></div></blockquote>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">step</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">,</span><span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">moveForward</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">conn</span><span class="p">,</span><span class="mi">300</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">moveForward</span><span class="p">(</span>
+    <span class="n">String</span> <span class="n">name</span><span class="p">,</span><span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">,</span><span class="kt">int</span> <span class="n">duration</span><span class="p">)</span>  <span class="p">{</span>
+  <span class="k">try</span> <span class="p">{</span>
+<span class="n">conn</span><span class="p">.</span><span class="na">forward</span><span class="p">(</span><span class="n">ApplData</span><span class="p">.</span><span class="na">moveForward</span><span class="p">(</span><span class="n">duration</span><span class="p">));</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Lo <span class="blue">step</span> invia un comando espresso in <a class="reference internal" href="VirtualRobot.html#comandi-base-per-il-robot-in-cril"><span class="std std-ref">cril</span></a>: come si vede da <code class="docutils literal notranslate"><span class="pre">ApplData</span></code>:</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span>  <span class="n">String</span> <span class="nf">moveForward</span><span class="p">(</span><span class="kt">int</span> <span class="n">duration</span><span class="p">){</span>
+  <span class="k">return</span> <span class="n">crilCmd</span><span class="p">(</span><span class="s">&quot;moveForward&quot;</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span> <span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Sappiamo che dopo questo comando possiamo avere due esiti:</p>
+<ul class="simple">
+<li><p>mossa completata con sucesso: WEnv invia sulla WSConnection un <code class="docutils literal notranslate"><span class="pre">endmove</span></code></p></li>
+<li><p>collisione: WEnv invia sulla WS un <code class="docutils literal notranslate"><span class="pre">collision</span></code></p></li>
+</ul>
+<p>Impostatiamo il funzionamento dell’automa in modo che esso attenda sempre
+un evento sull’esito di una mossa prima di effettuare la successiva. In questo modo:</p>
+<p><span class="remark">evitiamo di inviare nuovi comandi prima del completamento di una mossa</span></p>
+<p>Questo scopo viene raggiunto con l’aiuto di un osservatore sulla WSConnection.</p>
+</section>
+<section id="wsconnwenvobserver">
+<h4>WsConnWEnvObserver<a class="headerlink" href="#wsconnwenvobserver" title="Permalink to this headline">¶</a></h4>
+<p>Il compito che diamo all’osservatore <code class="docutils literal notranslate"><span class="pre">WsConnWEnvObserver</span></code> (che specializza <a class="reference internal" href="VirtualRobot.html#wsconnsysobserver"><span class="std std-ref">WsConnSysObserver</span></a>) è di gestire le
+informazioni inviate da WEnv sulla WSConnection dopo l’esecuzione di uno <span class="blue">step</span> o di una rotazione, in modo da emettere
+due possibili eventi/emssaggi:</p>
+<ul class="simple">
+<li><p>SystemData. <strong>endMoveOkEvent</strong> se la mossa è stata completata con successo</p></li>
+<li><p>SystemData. <strong>endMoveKoEvent</strong> se la mossa non è stata completata
+(per via di una collisione,nel nostro caso corrente)</p></li>
+</ul>
+<section id="tempo-effettivo-di-una-mossa">
+<h5>Tempo effettivo di una mossa<a class="headerlink" href="#tempo-effettivo-di-una-mossa" title="Permalink to this headline">¶</a></h5>
+<p>Il sistema viene anche organanizzato in
+modo da ricevere,in caso di fallimento,il <strong>tempo trascorso</strong> dall’inizio del movimento al momento del fallimento.
+Conoscere il tempo effettivo di esecuzione di uno step:</p>
+<p><span class="remark">permette di gestire la localizzazione del robot</span></p>
+<p>A questo fine,si è introdotto in <a class="reference internal" href="VirtualRobot.html#wsconnsysobserver"><span class="std std-ref">WsConnSysObserver</span></a> un <em>Timer</em>,che viene attivato per ogni osservatore registrato
+nel metodo <strong>sendLine</strong> di <a class="reference internal" href="VirtualRobot.html#wsconnection"><span class="std std-ref">WsConnection</span></a> e fermato al termine di ogni mossa (dal metodo <strong>update</strong> di <code class="docutils literal notranslate"><span class="pre">WsConnWEnvObserver</span></code>.</p>
+</section>
+</section>
+<section id="boundarywalkerannot">
+<h4>BoundaryWalkerAnnot<a class="headerlink" href="#boundarywalkerannot" title="Permalink to this headline">¶</a></h4>
+<p>Con le premesse precedenti,la nuova versione del BoundaryWalker può essere definita come segue:</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BoundaryWalkerAnnot</span> <span class="kd">extends</span> <span class="n">QakActor22FsmAnnot</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">ncorner</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">BoundaryWalkerAnnot</span><span class="p">(</span><span class="n">String</span> <span class="n">name</span><span class="p">)</span> <span class="p">{</span> <span class="kd">super</span><span class="p">(</span><span class="n">name</span><span class="p">);}</span>
+
+<span class="nd">@State</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;robotStart&quot;</span><span class="p">,</span><span class="n">initial</span><span class="o">=</span><span class="kc">true</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;robotMoving&quot;</span><span class="p">,</span><span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">endMoveOkId</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;wallDetected&quot;</span><span class="p">,</span><span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">endMoveKoId</span><span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">robotStart</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">conn</span><span class="o">=</span><span class="n">WsConnection</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;localhost:8091&quot;</span><span class="p">);</span>
+    <span class="p">((</span><span class="n">WsConnection</span><span class="p">)</span><span class="n">conn</span><span class="p">).</span><span class="na">addObserver</span><span class="p">(</span><span class="k">new</span> <span class="n">WsConnWEnvObserver</span><span class="p">(</span><span class="n">getName</span><span class="p">()));</span>
+    <span class="n">VRobotMoves</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@State</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;robotMoving&quot;</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;robotMoving&quot;</span><span class="p">,</span><span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">endMoveOkId</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;wallDetected&quot;</span><span class="p">,</span><span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">endMoveKoId</span><span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">robotMoving</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">msg</span><span class="p">);</span>
+    <span class="n">VRobotMoves</span><span class="p">.</span><span class="na">step</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@State</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;wallDetected&quot;</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;robotMoving&quot;</span><span class="p">,</span><span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">endMoveOkId</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="s">&quot;endWork&quot;</span><span class="p">,</span>   <span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">haltSysCmdId</span><span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">wallDetected</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ncorner</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">ncorner</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">autoMsg</span><span class="p">(</span><span class="n">SystemData</span><span class="p">.</span><span class="na">haltSysCmd</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">getName</span><span class="p">()));</span>
+    <span class="p">}</span><span class="k">else</span> <span class="n">VRobotMoves</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span><span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@State</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;endWork&quot;</span><span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">endWork</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">outInfo</span><span class="p">(</span><span class="s">&quot;BYE&quot;</span><span class="p">);</span>
+    <span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Vediamo che:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="blue">robotStart</span>: è  lo stato iniziale,in cui ‘attore si connette al robot usando la WSConnection.</dt><dd><p>In questo stato,l’attore invia un comando <span class="blue">step</span>,pianificando le transizioni come segue:</p>
+<ul>
+<li><p>in caso di soccesso, passerà nello stato <span class="blue">robotMoving</span></p></li>
+<li><p>in caso di fallimento,ipotizza una collisione (non allarmi o altro) e passerà nello stato <span class="blue">wallDetected</span></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="blue">wallDetected</span>: è  lo stato in cui l’attore sa che il robot ha incontrato un muro.</dt><dd><p>In questo stato,l’attore invia un comando di rotazione a sinistra,se capisce di non avere terminato il percorso.
+Se no,si auto-invia un messaggio di terminazione SystemData. <strong>haltSysCmdId</strong>.
+Le transizioni sono pianificate in modo che l’attore:</p>
+<ul>
+<li><p>passerà nello stato <span class="blue">robotMoving</span> nel caso riceva un nessggio di mossa (rotazione) terminata con successo</p></li>
+<li><p>passerà nello stato <span class="blue">endWork</span> nel caso riceva il messaggio di terminazione SystemData. <strong>haltSysCmdId</strong></p></li>
+<li><p>il caso di fallimento della mossa di rotazione viene escluso</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><span class="blue">endWork</span>: è  lo stato finale in cui l’attore termina il sistema.</p></li>
+</ul>
+<section id="alternativa-con-guardie">
+<h5>Alternativa con guardie<a class="headerlink" href="#alternativa-con-guardie" title="Permalink to this headline">¶</a></h5>
+<p>Lo stato <code class="docutils literal notranslate"><span class="pre">wallDetected</span></code> può essere reimpostato specificando opportune guardie in <code class="docutils literal notranslate"><span class="pre">&#64;Transition</span></code>.
+Lo stile dichiarativo esclude la possibilità di costrutti quali <code class="docutils literal notranslate"><span class="pre">if-then-else</span></code>; pertanto
+si introducono due classi-guardia: una per continuare e una per terminare il lavoro.</p>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@State</span><span class="p">(</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;wallDetected&quot;</span> <span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;robotMoving&quot;</span> <span class="p">,</span>
+  <span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">endMoveOkId</span><span class="p">,</span><span class="n">guard</span><span class="o">=</span><span class="n">GuardContinueWork</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+<span class="nd">@Transition</span><span class="p">(</span> <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;endWork&quot;</span> <span class="p">,</span>
+  <span class="n">msgId</span><span class="o">=</span><span class="n">SystemData</span><span class="p">.</span><span class="na">endMoveOkId</span><span class="p">,</span><span class="n">guard</span><span class="o">=</span><span class="n">GuardEndOfWork</span><span class="p">.</span><span class="na">class</span><span class="p">)</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">wallDetected</span><span class="p">(</span> <span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ncorner</span><span class="o">++</span><span class="p">;</span>
+  <span class="n">GuardContinueWork</span><span class="p">.</span><span class="na">setValue</span><span class="p">(</span><span class="n">ncorner</span><span class="p">);</span>
+  <span class="n">GuardEndOfWork</span><span class="p">.</span><span class="na">setValue</span><span class="p">(</span><span class="n">ncorner</span><span class="p">);</span>
+  <span class="n">VRobotMoves</span><span class="p">.</span><span class="na">turnLeft</span><span class="p">(</span><span class="n">getName</span><span class="p">(),</span> <span class="n">conn</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+</section>
+</section>
+</section>
+<section id="prossimi-passi">
+<h2>Prossimi passi<a class="headerlink" href="#prossimi-passi" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p><span class="blue">BoundaryWalkerAnnotAlarms</span>: un walker che elabora eventi fireAlarm e endAlarm</p></li>
+<li><p><span class="blue">RobotCleaner</span>: un prototipo dopo l’analisi del problema.</p></li>
+<li><p>Il ruolo e i vantaggi di un approccio top-down che produce un modello eseguibile del sistema</p></li>
+<li><dl class="simple">
+<dt><span class="blue">RobotCleaner</span> con comandi di <strong>start/stop/resume</strong>. Due casi:</dt><dd><ul class="simple">
+<li><p>dopo uno stop si ferma e riprende dopo resume</p></li>
+<li><p>dopo uno stop torna a HOME e dopo resume riprende dal punto in cui è stato interotto</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Actors22</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#uno-sguardo-alla-fase1">Uno sguardo alla Fase1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uno-sguardo-alla-fase2">Uno sguardo alla Fase2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preludio-alla-fase3">Preludio alla Fase3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#actor22-annotated">Actor22 annotated</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#un-esempio-di-sistema-a-due-nodi">Un esempio di sistema a due nodi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parte-del-sistema-su-pc">Parte del sistema su PC</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parte-del-sistema-su-raspberrypi">Parte del sistema su RaspberryPi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configurazione-del-sistema">Configurazione del sistema</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#annotazioni-per-dichiarare-contesti">Annotazioni per dichiarare Contesti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qak22context-setcontexts22">Qak22Context.setContexts22</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#annotazioni-per-dichiarare-attori">Annotazioni per dichiarare Attori</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#actor22-esempi-con-wenv">Actor22: esempi con WEnv</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#actorwithobserverusingwenv">ActorWithObserverUsingWEnv</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gestione-dei-messaggi-di-stato">Gestione dei messaggi di stato</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#un-primo-automa-a-stati-finiti">Un primo automa a stati finiti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nuova-gestione-dei-messaggi-di-stato">Nuova gestione dei messaggi di stato</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#qakactor22fsm">QakActor22Fsm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#qakactor22fsm-costruttore">QakActor22Fsm: costruttore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#addexpectedmsg">addExpectedMsg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#qakactor22fsm-handlemsg">QakActor22Fsm: handleMsg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stateactionfun">StateActionFun</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#declarethestates">declareTheStates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#declarestate">declareState</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#addtransition">addTransition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#statetransition">stateTransition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nextstate">nextState</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automa-refactored">Automa refactored</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#annotazioni-state-e-transition">Annotazioni State e Transition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#transizioni-senza-messaggi">Transizioni senza messaggi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transizioni-condizionate-da-guardie">Transizioni condizionate da guardie</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#guardalwaystrue">GuardAlwaysTrue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#una-guardia-di-livello-applicativo">Una guardia di livello applicativo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#qakactor22fsmannot">QakActor22FsmAnnot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#qakactor22fsmannot-declarethestates">QakActor22FsmAnnot.declareTheStates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qakactor22fsmannot-elabstatemethod">QakActor22FsmAnnot.elabStateMethod</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qakactor22fsmannot-dodeclarestate">QakActor22FsmAnnot.doDeclareState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#declarestate-in-qakactor22fsmannot">declareState in QakActor22FsmAnnot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#addtransition-in-qakactor22fsmannot">addTransition in QakActor22FsmAnnot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#refactoring-del-boundarywalker">Refactoring del BoundaryWalker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vrobotmoves-step">VRobotMoves.step</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#wsconnwenvobserver">WsConnWEnvObserver</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#tempo-effettivo-di-una-mossa">Tempo effettivo di una mossa</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#boundarywalkerannot">BoundaryWalkerAnnot</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#alternativa-con-guardie">Alternativa con guardie</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prossimi-passi">Prossimi passi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplications</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="VirtualRobot.html" title="previous chapter">VirtualRobot</a></li>
+      <li>Next: <a href="RobotCleaner.html" title="next chapter">RobotCleaner</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Actors22.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

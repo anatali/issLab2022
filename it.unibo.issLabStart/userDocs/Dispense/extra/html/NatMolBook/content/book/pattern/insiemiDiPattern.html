@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Insiemi di pattern" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/pattern/introPattern.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Insiemi di pattern</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Insiemi di pattern</h1>
+
+<div>
+<p>
+Per vari autori, una collezione di pattern che si appoggiano l'uno sull'altro 
+permette di costruire sistemi che risultano superiori alla somma delle loro parti. 
+Ad esempio Michael Beedle, in
+<em>Reengineering the Application Development Process</em> lega l'uso di
+insiemi di pattern
+all'idea di sistemi capaci di mostrare comportamenti emergenti ed auto-organizzanti:
+<em>"spontaneously recurring patterns of dense local interaction between entities, 
+resulting in dynamic, self-organizing systems that are adaptive, open, and capable 
+of multi-scale effects. In other words, pattern languages provide a dynamic process 
+for the orderly resolution of problems within their domain which indirectly leads 
+to the resolution of a much broader problem. <strong>The patterns and rules in a pattern 
+language combine to form an architectural style. In this manner, pattern languages 
+guide system analysts, architects, designers, and implementors to produce workable 
+systems that solve common organizational and development problems at all levels 
+of scale and diversity.</strong>"</em> 
+</p>
+<p>
+In generale va detto che non si tratta solo di 
+definire collezioni o cataloghi di pattern secondo un qualche
+schema logico di aggregazione; l'obiettivo è individuare famiglie e/o <em>insiemi di pattern che
+nel loro complesso possano caratterizzare uno stile architetturale</em>.
+La figura che segue mostra le relazioni tra i pattern presentati in [POSA2]
+</p>
+<div class="p"> 
+<div class="fignone"><span class="figcap">Figure 1. Il sitema di pattern POSA2</span>
+<img src="../../images/book/POSA2pattern.jpg" />
+</div>
+
+</div>
+<div class="p"> 
+L'organizzazione di pattern in insiemi coerenti può avvenire in vari modi.
+In particolare ([POSA5] cap 9, pag. 248-250):
+ 
+
+<ul>
+<li>Si definisce un catalogo di pattern secondo un qualche criterio;
+in questo modo si evidenziano insiemi detti <strong>pattern collections</strong> ([POSA5] cap 8, pag. 209-242).
+I <em>Design Patterns</em> descritti nel testo della GoF [GFJV95] 
+sono suddivisi in tre categorie:
+pattern <em>creazionali, strutturali</em> e <em> comportamentali</em>.
+</li>
+
+<li>Un insieme di pattern può essere esplorato cercando
+famiglie di pattern che possano risolvere specifici problemi; in questo modo si
+evidenziano insiemi detti <strong>pattern complements</strong> ([POSA5] cap 5, pag. 135-164).</li>
+
+<li>Individuare i pattern per il progetto e la realizzazione dei quali può
+essere utile fare ricorso ad altri pattern; in questo modo si
+evidenziano insiemi detti <strong>pattern compounds</strong> ([POSA5] cap 6, pag. 165-182).</li>
+
+<li>Trattare lo sviluppo di un sistema software
+in modo narrativo, evidenziando la sequanza logica di applicazione di pattern, 
+e descrivendo i criteri con cui
+i pattern sono stati progressivamente selezionati, guidando di fatto il progetto e lo sviluppo
+del sistema; in questo modo si
+evidenziano insiemi detti <strong>pattern stories</strong> ([POSA5] cap 7, pag. 183-190);
+</li>
+
+<li>Rimuovere la parte narrativa specifica da una pattern story, ponenndo
+in evidenza un insieme "riusabile" detto <strong>pattern sequence</strong>
+([POSA5] cap 7, pag. 191-208).</li>
+
+</ul>
+
+ 
+ 
+
+
+
+Un insieme di pattern forma un sistema quando è completo da due punti di vista:
+ 
+<ul>
+<li><strong>Morfologicamente</strong>: i pattern si collegano l'uno all'altro a formare una struttura
+priva di discontiniità.</li>
+
+<li><strong>Funzionalmente</strong>: ogni nuova forza (introdotta da un pattern) 
+è risolta dal sistema di pattern.</li>
+
+</ul>
+
+</div>
+<p>
+Nel seguito faremo riferimento in particolare al sistema di pattern definito in [POSA4]
+che amplia quanto definito in [POSA2] includendo <tt>114</tt> pattern 
+suddivisi in <tt>13</tt> aree di problemi: 
+</p>
+<div class="p">
+<ol>
+<li>from mud to  structure</li>
+
+<li>distribution infrastructure</li>
+ 
+<li>event demultiplexing and dispatching</li>
+ 
+<li>interface partitioning</li>
+
+<li>component partitioning</li>
+ 
+<li>application control</li>
+
+<li>concurrency</li>
+ 
+<li>synchronization</li>
+ 
+<li>object interaction</li>
+
+<li>adaptation and extension</li>
+ 
+<li>modal behaviour</li>
+ 
+<li>resource management</li>
+ 
+<li>database access</li>
+
+</ol>
+
+ 
+A pag. 40 di [POSA4] viene presentato un diagramma che illustra le relazioni logiche tra le aree:
+<div class="fignone"><span class="figcap">Figure 2. Aree POSA4</span>
+<img src="../../images/book/areePOSA4.jpg" /> 
+</div>
+
+A pag.45 gli autori presentano una figura che illustra in modo sintetico
+il modo con cui viene descritta una problem area:
+<div class="fignone"><span class="figcap">Figure 3. Struttura della sescrizione di un'area POSA4</span>
+<img src="../../images/book/descriptionSchemaPOSA4.jpg" />
+</div>
+
+Notiamo che gli autori non utlizzano, intenzionalmente, alcuna notazione 
+di quelle oggi in uso (in particolare quella connessa a <tt>UML</tt>) ,
+dicendo che (pag. 47):
+
+<em>"One reason we do not use popular modeling notations is to avoid the
+fallacy of 'false concreteness,' which often leads readers to think that
+what is in the diagram is the only way to implement a pattern. Instead,
+we provide a solution sketch, not a concrete specification with classes,
+objects, and relationships between them. Our notation therefore
+mixes many aspects: role specification, role organization, role collaboration,
+pseudo-interfaces, and pseudo-code, whatever appears
+appropriate to show a particular pattern."</em>
+
+</div>
+
+ 
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/pattern/introPattern.html">I (design) pattern</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Un percorso di riferimento" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/visione.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/workflowRequisiti.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/workflowAnalisi.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/pianoCollaudo.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/pianoLavoro.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/workflowProgetto.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/implementazione.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/workflowCollaudo.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/deployment.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/fasi/maintenance.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Un percorso di riferimento</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Un percorso di riferimento</h1>
+
+<div>
+
+<p>
+In un processo di produzione che mira a costruire
+un prodotto software a partire dai requisiti di un committente,
+gli elementi logici che svolgono un ruolo strategico possono essere riassunti
+attraverso l'activity diagram UML che segue.
+</p>
+<p>
+<img src="../../images/book/workflow09.jpg" />
+</p>
+<p>
+La richiesta di sviluppo di una nuova applicazione innesca la fase
+di analisi dei requisiti che, in stretta cooperzione con
+il committente, produce alcuni artefatti essenziali
+tra cui un <em>modello dei casi d'uso</em> (<em>use cases</em>)
+con relativi <em>scenari</em>,  un <em>glossario</em> dei termini
+usati nel documento che descrive i requisiti
+e un primo <em>modello del dominio</em> 
+indipendente dalle tecnologie realizzative e, per quanto possibile, anche dalla
+specifica applicazione in esame.
+</p>
+<p>
+Non appena l'analisi dei requisiti raggiunge uno stadio sufficientemente
+stabile, si passa ad enucleare i principali problemi posti dall'applicazione.
+Dall'analisi dei problemi si cerca di capire se siamo
+in un contesto già affrontato da altri, iniziando anche 
+a tenere conto di <em>requisiti non funzionali</em>
+(si veda <a href="../modelBased/fasi/requisitNonFunzionali.html">Requisiti non funzionali</a>).
+Un possibile
+punto di riferimento è la <em>pattern community</em>, che potrebbe avere già proposto
+uno o più <em>pattern languages</em> 
+(si veda <a href="../pattern/patternLanguages.html">Pattern languages</a>) 
+relativi al problema in esame. 
+Nel caso esista un pattern language affine, un'attenta lettura del pattern
+language aiuterà a comprendere meglio il problema ed ad approfondire l'analisi grazie
+alle esplcita enuniciazione del <em>contesto</em> e delle <em>forze</em> in gioco.
+Nel caso in cui non si trovi alcun pattern language di riferimento, la fase di analisi
+del problema dovrà richiedere più tempo, attenzione e risorse umane.
+</p>
+<p>
+La fase di analisi produce vari artefatti che trovano la loro sintesi
+nella definizione di una <em>architettura logica</em> che può
+essere vista come la specifica di un insieme di <em>vincoli</em> (strutturali, comportamentali
+e di interazione) imposti dal problema e/o dal dominio applicativo;
+tali vincoli devono essere individuati tenendo
+conto dei requisiti, dell'ambiente e del contesto socio-economico 
+in cui si inserisce l'applicazione,
+evitando di introdurre vincoli dettati da specifiche
+tecnologie realizzative (a meno che queste non siano 
+esplicitamente menzionate nei requisiti).
+</p>
+<p>
+<em>Esempio</em>: una ditta viene 
+incaricata del progetto del ponte sullo stretto di
+Messina, Dopo avere analizzato le caratteristiche del territorio e del tratto di mare 
+da attraversare, la ditta
+potrebbe concludere che l'architettura (logica) del ponte
+dovrà essere a una sola campata; ciò in quanto si è valutato
+troppo rischioso (per via delle correnti, venti, etc) o troppo 
+antieconomico (per la profondità, etc). pensare di 
+installare pilastri di supporto in mezzo al mare.
+</p>
+<p>
+Gli artefatti (modelli) scaturiti dall'analisi, e in particolare
+l'architettura logica, costituiscono 
+gli elementi fondamentali per una accurata  <em>analisi dei rischi</em> e 
+una prima <em>pianificazione del lavoro</em>, nel quadro di un processo di tipo iterativo.
+Da essi si anche ricavare un primo insieme
+di <em>piani di collaudo</em> utili ad agevolare
+la integrazione di sistema e a supportare <em>processi test-driven</em>.
+</p>
+<p>
+Dalla fase di analisi del problema il responsabile del progetto
+ricava informazioni essenziali per oragnizzare i tempi e i modi
+delle fasi successive del processo di sviluppo, tenendo conto
+delle risorse disponibili. Se l'architettura logica
+del sistema mostra che questo può essere articolato in più
+sottosistemi, allora il project leader può
+attivare, anche in parallelo, diverse linee di progettazione 
+e sviluppo. Poichè è essenziale che venga garantita la possibilità
+di integrazione del diversi sottositemi nell'unico sistema finale,
+il project leader cura con la massima attenzione le modalità
+di interazione tra i  sottosistemi e definisce precisi
+vincoli (se possibile in forma di <em>piani di colaudo</em>) 
+per ciascun sottosistema.
+</p>
+<p>
+La fase di progettazione (di un sottosistema) mira
+non solo a individuare e descrivere una soluzione al problema 
+(<em>what</em>), ma soprattutto
+a descrivere i motivi (<em>why</em>) che  determinano la soluzione proposta.
+</p>
+<p>
+La fase di progettazione dovrebbe procedere dal generale al particolare,
+svilppando per prime le parti più critiche individuate dall'analisi.
+I pattern languages possono essere usati per impostare un processo di sviluppo
+incrementale il cui risultato consiste 
+in una specifica <em>pattern sequence</em> [POSA5].
+
+La progettazione non procede necessariamente a cascata,
+ma può dare luogo a refactoring (di progetto) e può produrre anche
+retroazioni sulla fasi precedenti.
+Al progressivo sviluppo dell'architettura del sistema corrisponde un
+progressivo raffinamento dei piani di collaudo.
+</p>
+<p>
+La progettazione può essere notevolmente influenzata
+(ed anche agevolata) dall'uso di piattaforme operative 
+sviluppate da terze parti 
+in forma di <em>framework</em> o di  <em>product-line architectures</em>
+(si veda <a href="../modelBased/fasi/sviluppoConFramework.html">Sviluppo basato su framework</a>).
+Idealmente però  la fase di progettazione mira 
+a dare risposte a problemi posti dall'applicazione; essa
+dovrebbe avvenire quindi in modo il più possibile 
+platform-independent, così che la realizzazione possa poi avvenire
+su piattaforme operative diverse.
+</p>
+<p>
+Il codice di implementazione dovrebbe essere il più possibile allineato 
+con la soluzione logica scaturita dalla fase di progetto. Questo obiettivo
+viene facilmente raggiunto nel caso in cui sia possibile <em>generare il codice</em>
+in modo automatico dai modelli che rappresentano il progetto.
+Nel caso in cui non sia possibile adottare approcci generativi, 
+la <em>tracciabilità</em> 
+(si veda <a href="../modelBased/fasi/workflowRequisiti.html">Requisiti</a>)
+deve essere mantenuta in modo esplicito dagli sviluppatori.
+La produzione del codice avviene comunque in un contesto vincolato dai piani 
+di collaudo definiti nelle fasi precedenti.
+
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Impostazione generale</h2>
+<p>
+In sintesi si può affermare che non si tratta solo di costruire un prodotto 
+</p>
+<p> ... ma di porre attenzione al <em>processo</em> di produzione ...
+</p>
+<p> ... costruendo <em>artefatti</em> (prevalentemente 
+in forma di modelli UML) ...
+</p>
+<p> ... con particolare riguardo agli artefatti di analisi e di progetto ...
+</p>
+<p> ... al fine di promuovere e sostenere 
+un'organizzazione cooperativa ed evolutiva del lavoro.
+</p>
+<p>
+L'analisi dei requisiti, l'analisi del problema e la progettazione richiedono 
+infatti forti
+<em>interazioni tra persone</em>, in particolare colleghi di lavoro (analisti, progettisti, etc)
+ed utenti finali. 
+</p>
+<p>
+L'introduzione di adeguati modelli espressi in <tt>UML</tt> 
+può risultare fondamentale per 
+il miglioramento della comunicazione e della comprensione reciproca;
+i modelli di progetto possono inoltre già costituire la specifica finale 
+per il sistema,
+nel caso in cui sia possibile la generazione
+automatica di (parte del) codice su specifiche piattaforme.
+</p>
+<div class="p">
+Per gestire al meglio il processo di produzione
+può essere conveniente introdurre uno schema
+di riferimento con il supporto di un <strong>sito dell'applicazione</strong> 
+in cui mantenere una rappresentazione aggiornata degli artefatti.  
+Scopo del sito è promuovere lo scambio di conoscenza tra i diversi attori
+(analisti, progetti, realizzatori, etc) coinvolti nel processo.
+Un esempio di come si può presentare un sito di processo realizzato
+con il framework <a href="http://maven.apache.org">Maven</a>
+è ripostato nell figura che segue:
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="14.285714285714286%"> </td>
+<td valign="top" width="71.42857142857143%">
+<div class="fignone"><span class="figcap">Figure 1. Sito di progetto</span>
+<img src="../../images/book/sitoMaven.jpg" />
+</div>
+
+</td>
+<td valign="top" width="14.285714285714286%"> </td>
+</tr>
+
+</table>
+
+
+Questo sito può essre generato da un archetipo
+che fornisce uno schema di riferimento iniziale per
+la descrizione e l'organizzazione degli artefatti
+nel contesto di un processo di tipo iterativo 
+(si veda <a href="../processi/processiASpirale.html">Processi iterativi a spirale</a>).
+
+</div>
+<div class="p">
+Come criterio di comportamento generale  si può partire
+dalla massima
+"<em>non c'è codice senza progetto, non c'è progetto sena analisi del problema,
+non c'è problema senza requisiti</em>" e procedere secondo il seguente 
+workflow:
+ 
+<ol>
+<li>Si imposta la fasi di analisi del problema con l'obiettivo di definire
+un'architettura logica che tenga conto dei requisiti e dei vincoli 
+imposti dal problema e dal dominio applicativo.
+</li>
+
+<li>Facendo riferimento all'architettura logica si definisce un primo piano di collaudo.
+</li>
+
+<li>Facendo riferimento all'architettura logica si individuano la parti
+più rischiose e/o più costose da realizzare e si pianificano
+in modo esplicito i
+tempi di progettazione e sviluppo, sulla base delle
+risorse umane disponibili e dei tempi di consegna concordati.
+</li>
+
+<li>Si imposta una prima iterazione di progetto con
+l'intento di costruire un  prototipo che soddisfi il piano di collaudo, 
+limitando l'attenzione  ai requisiti essenziali e agli scenari primari
+definiti in tali requisiti.</li>
+
+<li>Si mostra il prototipo al committente e si
+interagisce con il committente stesso per assestare i requisiti.
+Nel caso risulti necessario, 
+si innesca una nuova iterazione sull'analisi del problema
+e si ridefinisce il piano di lavoro.</li>
+
+
+<li>Si imposta una seconda iterazione, tenendo conto
+anche dei requisiti e degli scenari secondari
+non affrontati nella prima iterazione.
+Una volta realizzato e collaudato il nuovo prototipo, si torna a interagire con il
+committente iniziando, se sarà il caso, nuove iterazioni fino
+alla "copertura" di tutti i requisiti.</li>
+
+<li>Si costruisce la versione di distribuzione del prodotto
+e si procede alla eventuale installazione.</li>
+
+</ol>
+
+L'archetipo del sito cui faremo riferimento introduce un insieme di voci
+che veraano discusse nelle sezioni che seguono.
+</div>
+<div class="p">
+In questa sede osserviamo che,
+ponendo al centro dell'attenzione i requisiti, le viste
+del sistema espresse attraverso artefatti di vario tipo,
+inclusi modelli UML, possono 
+porre in luce aspetti diversi, concettuali o fisici, in relazione ai
+diversi attori coinvolti nel processo.
+La figura che segue esprime una possibile articolazione di riferimento:
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="16.666666666666668%"> </td>
+<td valign="top" width="66.66666666666667%">
+<div class="fignone"><span class="figcap">Figure 2. I modelli nel  processo</span>
+<img src="../../images/book/archprocess0Small.jpg" />
+</div>
+
+</td>
+
+<td valign="top" width="16.666666666666668%"> </td>
+
+</tr>
+
+</table>
+
+L'insieme dei modelli che formano gli artefatti costruiti nelle varie fasi del processo
+deve formare una descrizione completa, 
+consistente e non troppo ridondante (di una vista) del sistema
+</div>
+<div class="p">
+La transizione tra i diversi modelli deve essere continua, cioè
+deve avvenire quanto più possibile "senza cuciture" (in modo <em>seamless</em>) 
+facendo in modo che un oggetto in un modello abbia il suo o i suoi corrispettivi in un altro. 
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="16.666666666666668%"> </td>
+<td valign="top" width="66.66666666666667%">
+<div class="fignone"><span class="figcap">Figure 3. Un sistema integrato di modelli</span>
+<img src="../../images/book/modelIntegration.jpg" />
+</div>
+
+</td>
+
+<td valign="top" width="16.666666666666668%"> </td>
+
+</tr>
+
+</table>
+
+Il concetto di transizione seamless tra modelli 
+è alla base della proprietà di tracciabilità (<em>traceability</em>), 
+per cui, in qualsiasi direzione si percorra la sequenza di modelli generati, 
+deve essere possibile mappare uno o più oggetti in un modello in uno 
+o più oggetti in un altro. 
+</div>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Modello del dominio</h2>
+<p>
+Concludiamo queste note di carattere generale osservando che
+la definizione di un <em>sistema software</em> implica spesso la definizione di una 
+collezione di <strong>domini</strong> e di <strong>dipendenze  tra domini</strong>. 
+Il termine <em>dominio</em> denota un mondo relativamente
+ autonomo, reale o astratto, costituito da un insieme di 
+ <strong>entità</strong> che operano in accordo a precise
+regole, politiche e vincoli.
+Categorie di domini frequentemente usate sono:
+</p>
+<div class="p">
+<ul>
+<li><em>Dominio di <strong>applicazione</strong></em>: rappresenta il sistema dal punto di vista dell'utente.</li>
+
+<li><em>Dominio di <strong>architettura</strong></em>: rappresenta le strategie globali di progetto.</li>
+
+<li><em>Dominio di <strong>servizio</strong></em>: fornisce servizi generici di supporto al dominio applicativo.</li>
+
+<li><em>Dominio di <strong>implementazione</strong></em>: rappresenta componenti o 
+piattaforme software pre-esistenti o legacy.</li>
+
+</ul>
+
+</div>
+<p>
+
+Un dominio viene rappresentato in UML da un <strong>package</strong>.
+Un dominio può fare assunzioni sulla esistenza di altri domini, caratterizzati da precise proprietà.
+
+</p>
+
+</div>
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/visione.html">Visione</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/workflowRequisiti.html">Requisiti</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/workflowAnalisi.html">Analisi</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/pianoCollaudo.html">Piano di collaudo</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/pianoLavoro.html">Piano di lavoro</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/workflowProgetto.html">Progetto</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/implementazione.html">Implementazione</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/workflowCollaudo.html">Collaudo</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/deployment.html">Deployment</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/modelBased/fasi/maintenance.html">Maintenance</a></strong><br />
+</li>
+</ul>
+</div>
+
+</body>
+</html>

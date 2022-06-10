@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Il ruolo dei pattern" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/pattern/introPattern.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Il ruolo dei pattern</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Il ruolo dei pattern</h1>
+
+<div>
+<p>
+L'uso dei pattern risulta particolarmente utile nelle fasi di analisi
+del problema e di impostazione dell'architettura (logica) della soluzione.
+</p>
+<p>
+Un pattern ha in primo luogo un ruolo "didattico" in quanto spiega la 
+logica con cui un problema può essere risolto, 
+usando uno "stile letterario" di descrizione.
+In secondo luogo, un pattern ha un ruolo "sociale" in quanto promuove 
+una tecnologia collaborativa in cui la comunità ricostruisce e codifica 
+un'esperienza condivisa, gettando le premesse per nuove azioni di successo. 
+Infine un pattern ha un ruolo "generativo" in quanto è anche in grado 
+di promuovere una soluzione efficace ad un problema. 
+</p>
+<p> 
+Il punto più importante nella descrizione di un pattern però non 
+è la parte relativa alla "soluzione" ma è 
+l'insieme delle forze e il contesto che determinano il problema e il
+modo in cui il pattern affronta queste forze.
+Nella visione dell'architetto  
+Alexander [Alexander79] <strong>le forze</strong>
+sono i vincoli, i requisiti, le proprietà desiderate che "rendono un problema" il
+problema di cui il pattern si occupa; il <strong>contesto</strong> è la situazione 
+che conduce al problema e che delinea i casi
+in cui il pattern può essere applicato con successo.
+</p>
+<p> 
+
+
+Un pattern affronta dunque uno specifico <strong>problema</strong> e 
+pone in relazione un <strong>contesto</strong>, un sistema di <strong>forze</strong> che
+si manifestano ripetutamente in quel contesto e una specifica
+configurazione software (<strong>soluzione</strong>) che permette a queste forze di bilanciarsi.
+(definizione di Jim Coplien, 2004).
+Un pattern definisce <em>un possibile spazio di soluzioni</em> e non un singolo
+punto; da esso si possono ricavare molte 
+realizzazioni concrete diverse, ciascuna delle quali deve ternere
+conto dei requisiti della specifica applicazione. 
+Nell'ambito di un processo  di produzione del software
+un pattern può essere interpretato come un <em>micro-processo</em>
+che produce specifici artefatti.
+ 
+</p>
+<p>
+Un <strong>pattern architetturale</strong> esprime l'organizzazione strutturale e 
+comportamentale di un sistema software. Definisce 
+un insieme predefinito di sottosistemi, specificando le loro responsabilità, 
+ le loro relazioni strutturali e le regole (protocolli) d'uso.
+
+Un <strong>pattern di progettazione</strong> fornisce invece uno schema 
+utile a raffinare i sottosistemi di un sistema sofware,
+specificando una struttura 
+di interazione tra componenti che risolve un problema generale di progettazione
+nell'ambito di un particolare contesto. Come tale
+esso  rappresenta uno schema per raffinare
+la struttura e il comportamento dei sottosistemi di
+un sistema software.
+E' importante osservare che l'applicazione di un design pattern 
+non incide sulla struttura fondamentale del sistema.
+
+Si dice invece <strong>idioma</strong> un pattern di basso livello, solitamente legato a un linguaggio
+di programmazione, che descrive come realizzare un dato schema
+di relazioni tra componenti usando le features del linguaggio
+</p>
+<p>
+La categorizzazione di un pattern come architturale o di progetto può dipendere
+dal punto di vista; ad esempio il pattern <em>interpreter</em> [GHJV95] viene proposto come
+un design pattern, ma potrebbe anche essere visto come l'elemento centrale
+di un sistema software.
+</p>
+<p>
+Vari autori hanno osseravto che alcuni problemi possono essere meglio
+affrontati attraverso <strong>compound patterns</strong>, con l'avvertenza che
+la composizione di un insieme di pattern risolve l'insieme di forze specifico del problema e non
+una combinazione dei problemi relativi a ciascun pattern componente.
+Ad esempio il compound pattern <em>Bureaucracy</em> di Dirk Riehle include
+i pattern [GHJV95] <em>Composite, Mediator, Chain of Responsibility</em> e <em>Observer</em>.
+ 
+E' stato anche osservato che un problema di tipo generale può essere risolto da una <strong>famiglia di pattern</strong>;
+ciascun elemento della famiglia o definisce il problema in modo più specifico
+o risolve le forze in modo diverso.
+
+ 
+Si puo anche dare il caso che un particolare dominio applicativo 
+possa essere associato ad un <strong>sistema di pattern</strong> in cui
+ciascun pattern risolve uno specifico problema in qual dominio,  facendo 
+anche riferimento ad altri pattern del sistema per la sua implementazione.
+</p>
+<p>
+In generale quindi, i pattern sono utili ciascuno individualmente; essi però possono
+risultare ancora più utili se combinati in un insieme coerente 
+costruito tenendo conto che <em>ogni pattern dipende dai pattern più semplici
+che contiene e dai pattern più ampi entro cui è contenuto</em> ([Alexander79], pag 312).
+</p>
+<p>
+
+La lunga riflessione sul concetto di pattern che si è sviluppata a partire dagli anni 90
+ha quindi indotto a porre maggiore attenzione alle <em>relazioni</em> tra i diversi pattern
+e ha promosso l'idea che via sia maggior valore negli insiemi di pattern piuttosto
+che nei singoli pattern presi isolatamente.
+Non si tratta solo di definire collezioni o cataloghi di pattern secondo un qualche
+schema logico di aggregazione; l'obiettivo è individuare famiglie e/o <em>insiemi di pattern che
+nel loro complesso possano caratterizzare uno stile architetturale</em>
+(si veda <a href="insiemiDiPattern.html">Insiemi di pattern</a>).
+
+</p>
+
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/pattern/introPattern.html">I (design) pattern</a></div>
+</div>
+</div>
+
+</body>
+</html>

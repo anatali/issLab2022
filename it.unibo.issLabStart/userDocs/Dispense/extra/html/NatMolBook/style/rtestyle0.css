@@ -1,0 +1,672 @@
+/* layout and positioning styles */
+body{
+	margin:0;
+	padding:0;
+}
+
+/* this is the main style of the project */
+div#indexwrapper{
+	height:75px;
+	width: 400px;
+	background: url(../images/backgroundNew.jpg);
+	border-right:1px #333333;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 100;
+}
+
+div#indexwrappersimple{
+	height:20px;
+	width: 400px;
+	border-right:1px #333333;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 100;
+}
+div#indexBody{
+	height:80px;
+	width: 400px;
+ 	border-right:1px #333333;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	left: 400px;
+	top: 0px;
+	z-index: 100;
+}
+
+div#wrapper{
+	height:180px;
+	width: 200px;
+	background: url(../images/background.jpg);
+	border-right:1px #333333;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 100;
+}
+
+/* headings */
+h1{
+	font-size:20pt;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-style:normal;
+	text-align:left;
+	position:absolute;
+	left:9px;
+	top:24px;
+	margin: 0;
+	padding: 0;
+	color:#ffffff;
+}
+
+h1#smallTitle{
+	font-size:8pt;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-style:normal;
+	text-align:left;
+	position:absolute;
+	left:9px;
+	top:4px;
+	margin: 0;
+	padding: 0;
+	color:#ffffff;
+}
+
+h2{
+	font-size:10pt;
+	color:yellow;
+	text-align:left;
+	position:absolute;
+	top:61px;
+	font-style:italic;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	left: 15px;
+	width: 465px;
+	margin: 0;
+	padding: 0;
+	height: 19px;
+}
+
+h3{
+	font-size:10pt;
+	background: navy;
+	color:white;
+	text-align:left;
+	font-style:italic;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	width: 550px;
+	margin: 1;
+	padding: 0;
+	height: 18px;
+}
+
+h4{
+	font-size:10pt;
+	background:darkblue;
+	color:yellow;
+	text-align:left;
+	font-style:italic;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	width: 220px;
+	margin: 0;
+	padding: 0;
+	height: 19px;
+}
+
+
+/*Links at the top of the page */
+div#links, div#links ul{
+	background:transparent;
+	font-size:9pt;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#30327a;
+	padding-left:10px;
+	padding-right:10px;
+	list-style: none;
+	text-decoration:none;
+}
+
+/*new top link style */
+#glossary{
+	position:absolute;
+	top: 84px;
+	left: 0.75em;
+}
+
+#bpid{
+	position:absolute;
+	top: 84px;
+	left: 12.2em;
+}
+#rte{
+	position:absolute;
+	top: 84px;
+	left: 6.2em;
+}
+#bpdev{
+	position:absolute;
+	top: 84px;
+	right: 1em;
+}
+
+/*end style for links at top of page */
+
+/****************************************************************************
+** main content screen positioning.  Different ones depend on the layout needed
+*****************************************************************************/
+div#fullScreen{
+	color: black; /**#30327a;**/
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	position:absolute;
+	left: 10px;
+	top: 90px;
+	width: 550px;
+	height: 320px;
+}
+
+div#fullScreenIndex{
+	background-color: white;
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	position:absolute;
+	left: 250px;
+	top: 0px;
+	width: 200px;
+	height: 80px;
+}
+
+div#scormButtons{
+	background-color:  white;
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	position:absolute;
+	left: 450px;
+	top: 0px;
+	width: 200px;
+	height: 80px;
+}
+
+
+div#splitScreenLS{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	position:absolute;
+	left: 25px;
+	top: 118px;
+	width: 294px;
+	height: 320px;
+}
+
+div#splitScreenRS{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	position:absolute;
+	left: 350px;
+	top: 118px;
+	width: 260px;
+	height: 316px;
+}
+
+
+#matchingLS{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	position:absolute;
+	left: 25px;
+	top: 130px;
+	width: 299px;
+}
+
+#matchingRS{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	position:absolute;
+	left: 352px;
+	top: 130px;
+	width: 260px;
+}
+
+/* used primarily for displaying feedback to the user */
+#fullWidth{
+	color:#006666;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	position:absolute;
+	bottom:20px;
+	left: 35px;
+	right: 60px;
+}
+
+/* used for displaying code feedback on the application sections */
+div#splitCodeLS{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	position:absolute;
+	left: 0px;
+	top: 20px;
+	width: 280px;
+}
+
+/* used for displaying code feedback on the application sections */
+div#splitCodeRS{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	position:absolute;
+	left: 300px;
+	top: 20px;
+	width: 280px;
+}
+
+/*end content layout styles */
+
+/*********************************************************
+** main content headings and text styles and layout
+** including styles for tables, lists, form elements, etc.
+**********************************************************/
+p#heading{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bolder;
+	padding-left:0em;
+	padding-top:0px;
+	text-align:left;
+}
+p#qHeading{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bolder;
+	padding-left:0em;
+	padding-top:0px;
+	text-align:left;
+}
+#contd{
+	font-size:13px;
+	font-style:italic;
+}
+
+p#italic{
+	font-style:italic;
+}
+
+#content{
+	color:#30327a;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:normal;
+}
+
+#indented{
+	padding-left:3em;
+	padding-right:3.5em;
+	width: 500px;
+}
+
+#question{
+	font-weight:bold;
+}
+
+#matching{
+	font-size:11px;
+	padding:0;
+	margin:0;
+}
+
+#likert{
+	padding:5px;
+	margin:0;
+	width:80px;
+	vertical-align:top;
+	text-align:center;
+}
+#bold{
+	font-weight:bold;
+}
+
+#feedback{
+	color:#6600cc;
+}
+
+#code{
+	font-family:Courier New, Courier, mono;
+	font-size:9pt;
+	font-weight:bold;
+
+}
+textarea#answerbox{
+	width:360px;
+	height: 100px;
+}
+
+div#submit{
+	position:absolute;
+	left: 200px;
+}
+
+div#blankNumList{
+	position:absolute;
+	top:160px;
+	left: 350px;
+}
+
+table{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:10pt;
+	color:#30327a;
+}
+td{
+	padding-top:10px;
+	vertical-align:top;
+	padding-right:10px;
+}
+tr{
+	padding-top:10px;
+	vertical-align:top;
+	padding-right:10px;
+}
+li{
+}
+
+textinput{
+	width:20pt;
+}
+dt{
+	font-weight:bold;
+}
+dd{
+	padding-bottom:10px;
+}
+
+#smallFont{
+	font-size:10px;
+	padding-bottom:0;
+}
+
+div#standards{
+	position:absolute;
+	bottom:0;
+	left:0;
+	z-index:24;
+}
+
+/****************************************
+** Icon text Decription  Box
+******************************************/
+div#iconText{
+	position: absolute;
+	top: 110;
+	left: 280;
+	width: 250px;
+	margin-left: 280px;
+}
+
+div#guyAtComputer{
+	background-image: url(../images/score_bill.png);
+	background-color: White;
+	position: absolute;
+	top: 125;
+	left:0;
+	width: 570;
+	height: 200;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+/**************************************************************************
+** the following styles are used on all conceptual content feedback pages
+****************************************************************************/
+div#right{
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	color: #00CED1;
+	font-size: 9pt;
+	font-style: italic;
+	font-weight: bold;
+}
+
+div#wrong{
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	color: #FF6347;
+	font-size: 9pt;
+	font-style: italic;
+	font-weight: bold;
+}
+
+#navigation{
+	position: absolute;
+	height: 25px;
+	width: 550px;
+	bottom: -50px;
+
+}
+
+#prevBtn{
+	background: transparent;
+	position: absolute;
+	left: 5px;
+	z-index: 10;
+	color: #30327a;
+	font-size: 9pt;
+	padding-bottom: 10px;
+	padding-top: 2px;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: normal;
+	padding:0;
+}
+
+#nextBtn{
+	background: transparent;
+	position: absolute;
+	right: 25px;
+	z-index: 11;
+	color: #30327a;
+	font-size: 9pt;
+	padding-bottom: 10px;
+	padding-top: 2px;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	font-weight: normal;
+	padding:0;
+}
+
+.EntryBox {
+	padding: 5px;
+	line-height: 16px;
+	width: 75%;
+	border: thin double #999999;
+	font-family: "Times New Roman", Times, serif;
+	background-color: #CCCCCC;
+	margin-left: 12.5%;
+}
+
+
+/* styles for all links, including top nav bar */
+a, a:visited{
+	text-decoration:none;
+	color:#30327a;
+}
+a:hover{
+	text-decoration:none;
+	color:cyan;
+}
+
+a#webLink, #webLink:hover, #webLink:visited{
+text-decoration:underline;
+color:#30327a;
+}
+
+/**************************************************************************
+** popup definition style
+****************************************************************************/
+#pup {position:absolute; visibility:hidden; z-index:200; width:130px; }
+
+/* CSS Document */
+/* score_cc.css */
+
+/******************************************************
+** Styles for  icons in Score-Conceptual Content 3a-f
+********************************************************/
+#icon1a{
+	background-color: White;
+	background-image: url(../images/score_paper.jpg);
+	border: groove #DCDCDC;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	top: 110px;
+	align:center;
+	valign:middle;
+	text-decoration:none;
+}
+#icon2a{
+	background-color: White;
+	background-image: url(../images/score_clock.jpg);
+	border: groove #DCDCDC;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 85px;
+	top: 110px;
+	background-position: bottom;
+}
+#icon3a{
+	background-color: White;
+	background-image: url(../images/score_weight.jpg);
+	border: groove #DCDCDC;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 170px;
+	top: 110px;
+	background-position: center;
+}
+#icon4a{
+	background-color: White;
+	background-image: url(../images/score_a.jpg);
+	border: groove #DCDCDC;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	top: 195px;
+	background-position: center;
+}
+#icon5a{
+	background-color: White;
+	background-image: url(../images/score_branch.jpg);
+	border: groove #DCDCDC;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 85px;
+	top: 195px;
+	background-position: center;
+}
+#icon6a{
+	background-color: White;
+	background-image: url(../images/score_controls.jpg);
+	border: groove #DCDCDC;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 170px;
+	top: 195px;
+	background-position: center;
+}
+
+#icon1b{
+	background-color: White;
+	background-image: url(../images/score_paper_selected.jpg);
+	border: groove #DAA520;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	top: 110px;
+	align: center;
+	valign: middle;
+	text-decoration: none;
+}
+#icon2b{
+	background-color: White;
+	background-image: url(../images/score_clock_selected.jpg);
+	border: groove #DAA520;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 85px;
+	top: 110px;
+	background-position: bottom;
+}
+#icon3b{
+	background-color: White;
+	background-image: url(../images/score_weight_selected.jpg);
+	border: groove #DAA520;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 170px;
+	top: 110px;
+	background-position: center;
+}
+#icon4b{
+	background-color: White;
+	background-image: url(../images/score_a_selected.jpg);
+	border: groove #DAA520;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	top: 195px;
+	background-position: center;
+}
+#icon5b{
+	background-color: White;
+	background-image: url(../images/score_branch_selected.jpg);
+	border: groove #DAA520;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 85px;
+	top: 195px;
+	background-position: center;
+}
+#icon6b{
+	background-color: White;
+	background-image: url(../images/score_controls_selected.jpg);
+	border: groove #DAA520;
+	width: 85px;
+	height: 85px;
+	position: absolute;
+	left: 170px;
+	top: 195px;
+	background-position: center;
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Inversione del controllo" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/paradigmi/componentiSoftware.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Inversione del controllo</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Inversione del controllo</h1>
+
+<div>
+
+<p>
+Una delle più importanti relazioni tra oggetti è costituita dalla
+relazione di dipendenza e in particolare dalla dipendenza di un oggetto
+composto dalle sue parti componenti o da altri oggetti che intende
+utilizzare.
+</p>
+<p>
+L'idea di base della <em>dependency injection</em> è che il "popolamento" di un
+oggetto con una appropriata implementazione delle parti da cui dipende
+venga affettuata da un altro oggetto "assemblatore".
+Spesso si parla di <em>inversion of control</em> (<tt>IoC</tt>) in quanto 
+non è più un oggetto che si preoccupa della costruzione della parti da cui dipende, 
+ma un oggetto esterno.
+</p>
+<div class="p">
+Sono state indoviduate tre forme di dependency injection:
+<ul>
+<li><em>Constructor injection</em>, detta anche <em>IoC di tipo3</em>: la iniezione da parte
+dell'assemblatore avviene avvalendosi del costruttore di un oggetto;</li>
+
+<li><em>Setter injection</em>, detta anche <em>IoC di tipo2</em>:
+la iniziezione avviene tramite modificatori 
+(detti anche <em>setter methods</em>, 
+si veda <a href="../sistemi/comportamentoSistemi.html">Comportamento</a>) dell'oggetto.
+</li>
+
+<li><em>Interface injection</em>, detta anche <em>IoC di tipo1</em>:
+a iniziezione avviene definendo ed utilizzando interfacce per l'iniezione.
+</li>
+
+</ul>
+
+L'inversione del controllo è uno dei meccanismi più usati nelle infrastrutture 
+a componenti, di cui si discuterà nella sezione
+<a href="../tecno/componenti/componenti.html">I componenti software</a>.
+</div>
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/paradigmi/componentiSoftware.html">Componenti software</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="I (design) pattern" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/modelBased/versoUnProcesso.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/pattern/ruoloPattern.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/pattern/insiemiDiPattern.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/pattern/patternLanguages.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>I (design) pattern</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">I (design) pattern</h1>
+
+<div>
+<p>
+Nonostante il ruolo strategico che l'<strong>A</strong>rchitettura riveste nel denotare 
+e conferire ad un sistema
+le sue caratteristiche essenziali, l'architettura di un sistema software
+spesso non costituisce il risultato di una fase
+esplicita di analisi e di progettazione, ma scaturisce 
+in modo implicito dai meccanismi di combinazione relativi al linguaggio o allo stile 
+di programmazione adottato per la codifica.
+</p>
+<p>
+Ovviamente questo modo di procedere è molto pericoloso, soprattutto
+quando le metafore del linguaggio di codifica  non sono pertinenti al
+problema. Si pensi ad esempio al caso di un programmatore che debba
+affrontare la costruzione di una applicazione di rete disponendo del solo
+linguaggio <tt>C</tt>.
+</p>
+<p>
+Per colmare il divario tra il livello di progettazione
+e il livello di codifica si è diffuso l'utilizzo di un 
+potente tipo di "strumento logico": il <em>pattern</em>.
+</p>
+<p>
+L'ideatore riconosciuto del concetto di <em>pattern</em> è  l'architetto, 
+<em>Christopher Alexander</em> [Alexander79]
+
+che, di fronte alla necessità di dover risolvere ricorrentemente tipologie di problemi simili, 
+ha proposto l'idea di catturare la "<em>struttura di una comprovata soluzione efficace</em>" attraverso 
+una descrizione, detta appunto pattern.
+ 
+Un pattern per Alexander stabilisce una relazione tra un <em>contesto</em>, 
+un insieme di <em>forze</em>
+che caratterizza quel contesto e una <em>configurazione</em> che permette di trovare un equlibrio
+tra quelle forze, anche se contrastanti tra loro.
+ 
+Una configurazine specifica i partecipanti al pattern, le loro
+responsabilità e le loro interazioni; il pattern spiega come e 
+perchè le forze sono state bilanciate in quel modo.
+</p>
+<p>
+Come già accaduto per il concetto di oggetto, anche per il concetto
+di <em>pattern</em> sono state proposte molte visioni e definizioni. La definzione di [POSA1] pag. 8 dice:
+<em>A pattern for software architecture describes a particular recurring design
+problem that arises in specifc design contexts, and presents a well proven generic
+scheme for its solution. The solution scheme is specified by describing its costituent
+components, their responisibilites, and the way they collaborate.</em>
+</p>
+<p> 
+Un pattern fornisce uno schema di soluzione (non una soluzione immediatamente disponibile)
+per un problema ricorrente
+adottata in uno o più sistemi reali e individuato attraverso un'opera di astrazione.
+Martin Fowler definisce (in <em>Analysis Patterns</em>, pg.8) un pattern come
+<em>an idea that has been useful in one practical context and will
+probabily be useful in others</em>. Egli ribadisce anche (pg.12) che
+<em>patterns are suggestions, not prescriptions</em>.
+</p>
+<div class="p"> 
+Attraverso una accurata forma descrittiva (si veda [POSA5], cap 3, pag. 91-116
+e cap. 12, pag. 325-346]) i pattern ([POSA5] pag. 8-12):
+
+<ul>
+<li>documentano "best practices" di progettazione ritenute efficaci
+dagli esperti;</li>
+
+<li>catturano l'esperienza di progettazione in una forma che risulta
+indipendente dai dettagli di un singolo progetto, di un paradigma
+implementativo e da un linguaggio di programmazione;</li>
+
+<li>identificano e specificano astrazioni a un livello superiore
+a quello di singoli oggetti;</li>
+
+<li>forniscono un vocabolario comune e un visione condivisa di concetti di
+progettazione;</li>
+
+<li>costituisccno un modo per documentare le architetture software;</li>
+
+<li>supportano la costruzione di software caratterizzato da ben precise proprietà.</li>
+
+</ul>
+
+
+Va anche sottolineato che  ([POSA5] pag. 13-23):
+
+<ul>
+<li>un pattern non è l'espressione di un qualsiasi progetto di successo;</li>
+
+<li>un pattern non è un "blueprint" da cui ricavare immediatamente codice;</li>
+
+
+<li>un pattern non può essere applicato in modo meccanico;
+la sua integrazione in un sistema specifico richiede l'impegno della mente umana;</li>
+
+<li>talvolta i pattern sono accompagnati
+da diagrammi <tt>UML</tt>; questa pratica è tuttavia fuorviante, in quanto
+induce a pensare a un pattern come uno schema immediatamente utilizzabile;</li>
+
+<li>un pattern non promuove nuove idee; </li>
+
+<li>l'uso di un pattern non garantisce di per sè la produzione di
+software corretto, estendibile ed efficiente;</li>
+
+<li>i pattern non sono componenti software; </li>
+
+<li>l'uso dei pattern non è in disaccordo con l'idea di <em>refactoring</em>,
+ma può avvenire in modo complementare ad essa;</li>
+
+<li>i pattern da soli non sono in grado di risolvere la crisi del software. </li>
+
+</ul>
+
+
+Inizialmente introdotto nei processi software come 
+<em>pattern di progettazione</em>
+con specifico riferimento al paradigma ad oggetti, 
+l'idea di pattern si è  molto
+sviluppata, fino a giungere a proporre il concetto 
+ di <em>pattern language</em>
+(si veda <a href="patternLanguages.html">Pattern languages</a>).
+
+I <em>pattern (languages)</em> fungono oggi da veri e propri
+ depositi di conoscenza sulle tecniche più consolidate per la soluzione di problemi 
+ non riconducibili a livello di algoritmi. 
+</div>
+<div class="p">
+La figura che segue (di Douglas C. Schmidt) può infine essere utile per
+chiarire la differenza tra pattern, framework e middleware.
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="16.666666666666668%"> </td>
+<td valign="top" width="66.66666666666667%">
+<div class="fignone"><span class="figcap">Figure 1. Framework, pattern, middleware</span>
+<img src="../../images/book/patternFrameworkMiddleware.jpg" width="517" heigth="290"/>
+</div>
+
+</td>
+
+<td valign="top" width="16.666666666666668%"> </td>
+
+</tr>
+
+</table>
+
+
+
+</div>
+
+ 
+
+
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../content/book/pattern/ruoloPattern.html">Il ruolo dei pattern</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/pattern/insiemiDiPattern.html">Insiemi di pattern</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/pattern/patternLanguages.html">Pattern languages</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/modelBased/versoUnProcesso.html">Dai linguaggi di programmazione ai modelli</a></div>
+</div>
+</div>
+
+</body>
+</html>

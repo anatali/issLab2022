@@ -1,0 +1,1529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1" 
+  xmlns:imsmd="http://www.imsglobal.org/xsd/imsmd_v1p2"  
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2" 
+  identifier="ISBook"
+  xsi:schemaLocation="http://www.imsglobal.org/xsd/imscp_v1p1 imscp_v1p1.xsd 
+  http://www.imsglobal.org/xsd/imsmd_v1p2 imsmd_v1p2p2.xsd 
+  http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+<organizations>
+	<organization identifier="DEIS">
+		<title>Costruire sistemi software: dai modelli al codice</title>
+
+		<item identifier="introduzione" isvisible="true" identifierref="resource_introduzione">
+			<title>introduzione</title>
+		</item>		
+
+		<item identifier="crisiSoftware" isvisible="true" identifierref="resource_crisiSoftware">
+			<title>crisiSoftware</title>
+		</item>		
+
+		<item identifier="dimAlgoritmica" isvisible="true" identifierref="resource_dimAlgoritmica">
+			<title>dimAlgoritmica</title>
+		</item>		
+
+		<item identifier="dimSistemistica" isvisible="true" identifierref="resource_dimSistemistica">
+			<title>dimSistemistica</title>
+		</item>		
+
+		<item identifier="ingSoftware" isvisible="true" identifierref="resource_ingSoftware">
+			<title>ingSoftware</title>
+		</item>		
+
+		<item identifier="metodoMetodologia" isvisible="true" identifierref="resource_metodoMetodologia">
+			<title>metodoMetodologia</title>
+		</item>		
+
+		<item identifier="storiaDelleMetodologie" isvisible="true" identifierref="resource_storiaDelleMetodologie">
+			<title>storiaDelleMetodologie</title>
+		</item>		
+
+		<item identifier="cmm" isvisible="true" identifierref="resource_cmm">
+			<title>cmm</title>
+		</item>		
+
+		<item identifier="processiSviluppoSoftware" isvisible="true" identifierref="resource_processiSviluppoSoftware">
+			<title>processiSviluppoSoftware</title>
+		</item>		
+
+		<item identifier="qualita" isvisible="true" identifierref="resource_qualita">
+			<title>qualita</title>
+		</item>		
+
+		<item identifier="processiACasscata" isvisible="true" identifierref="resource_processiACasscata">
+			<title>processiACasscata</title>
+		</item>		
+
+		<item identifier="processiASpirale" isvisible="true" identifierref="resource_processiASpirale">
+			<title>processiASpirale</title>
+		</item>		
+
+		<item identifier="processiBasatiSuModelli" isvisible="true" identifierref="resource_processiBasatiSuModelli">
+			<title>processiBasatiSuModelli</title>
+		</item>		
+
+		<item identifier="processiAgili" isvisible="true" identifierref="resource_processiAgili">
+			<title>processiAgili</title>
+		</item>		
+
+		<item identifier="xpPratiche" isvisible="true" identifierref="resource_xpPratiche">
+			<title>xpPratiche</title>
+		</item>		
+
+		<item identifier="qualeProcesso" isvisible="true" identifierref="resource_qualeProcesso">
+			<title>qualeProcesso</title>
+		</item>		
+
+		<item identifier="versoUnProcesso" isvisible="true" identifierref="resource_versoUnProcesso">
+			<title>versoUnProcesso</title>
+		</item>		
+
+		<item identifier="paradigmi" isvisible="true" identifierref="resource_paradigmi">
+			<title>paradigmi</title>
+		</item>		
+
+		<item identifier="sintassiSemantica" isvisible="true" identifierref="resource_sintassiSemantica">
+			<title>sintassiSemantica</title>
+		</item>		
+
+		<item identifier="macchineBase" isvisible="true" identifierref="resource_macchineBase">
+			<title>macchineBase</title>
+		</item>		
+
+		<item identifier="macchineAstratte" isvisible="true" identifierref="resource_macchineAstratte">
+			<title>macchineAstratte</title>
+		</item>		
+
+		<item identifier="funzioniProcedure" isvisible="true" identifierref="resource_funzioniProcedure">
+			<title>funzioniProcedure</title>
+		</item>		
+
+		<item identifier="moduliOggetti" isvisible="true" identifierref="resource_moduliOggetti">
+			<title>moduliOggetti</title>
+		</item>		
+
+		<item identifier="oggetti" isvisible="true" identifierref="resource_oggetti">
+			<title>oggetti</title>
+		</item>		
+
+		<item identifier="daOggettiAUML" isvisible="true" identifierref="resource_daOggettiAUML">
+			<title>daOggettiAUML</title>
+		</item>		
+
+		<item identifier="componentiSoftware" isvisible="true" identifierref="resource_componentiSoftware">
+			<title>componentiSoftware</title>
+		</item>		
+
+		<item identifier="inversioneControllo" isvisible="true" identifierref="resource_inversioneControllo">
+			<title>inversioneControllo</title>
+		</item>		
+
+		<item identifier="paradigmaAgenti" isvisible="true" identifierref="resource_paradigmaAgenti">
+			<title>paradigmaAgenti</title>
+		</item>		
+
+		<item identifier="agenti" isvisible="true" identifierref="resource_agenti">
+			<title>agenti</title>
+		</item>		
+
+		<item identifier="agentiVsOggetti" isvisible="true" identifierref="resource_agentiVsOggetti">
+			<title>agentiVsOggetti</title>
+		</item>		
+
+		<item identifier="umlFirst" isvisible="true" identifierref="resource_umlFirst">
+			<title>umlFirst</title>
+		</item>		
+
+		<item identifier="concettoDiModello" isvisible="true" identifierref="resource_concettoDiModello">
+			<title>concettoDiModello</title>
+		</item>		
+
+		<item identifier="introUml" isvisible="true" identifierref="resource_introUml">
+			<title>introUml</title>
+		</item>		
+
+		<item identifier="layerUml" isvisible="true" identifierref="resource_layerUml">
+			<title>layerUml</title>
+		</item>		
+
+		<item identifier="introMOF" isvisible="true" identifierref="resource_introMOF">
+			<title>introMOF</title>
+		</item>		
+
+		<item identifier="diagrammiAM" isvisible="true" identifierref="resource_diagrammiAM">
+			<title>diagrammiAM</title>
+		</item>		
+
+		<item identifier="introUMLProfili" isvisible="true" identifierref="resource_introUMLProfili">
+			<title>introUMLProfili</title>
+		</item>		
+
+		<item identifier="umlComeLinguaggio" isvisible="true" identifierref="resource_umlComeLinguaggio">
+			<title>umlComeLinguaggio</title>
+		</item>		
+
+		<item identifier="introUMLAction" isvisible="true" identifierref="resource_introUMLAction">
+			<title>introUMLAction</title>
+		</item>		
+
+		<item identifier="introOCL" isvisible="true" identifierref="resource_introOCL">
+			<title>introOCL</title>
+		</item>		
+
+		<item identifier="architettureSistemi" isvisible="true" identifierref="resource_architettureSistemi">
+			<title>architettureSistemi</title>
+		</item>		
+
+		<item identifier="stileArchitetturale" isvisible="true" identifierref="resource_stileArchitetturale">
+			<title>stileArchitetturale</title>
+		</item>		
+
+		<item identifier="mda" isvisible="true" identifierref="resource_mda">
+			<title>mda</title>
+		</item>		
+
+		<item identifier="dimensioniSistemi" isvisible="true" identifierref="resource_dimensioniSistemi">
+			<title>dimensioniSistemi</title>
+		</item>		
+
+		<item identifier="struttura" isvisible="true" identifierref="resource_struttura">
+			<title>struttura</title>
+		</item>		
+
+		<item identifier="interazione" isvisible="true" identifierref="resource_interazione">
+			<title>interazione</title>
+		</item>		
+
+		<item identifier="comportamento" isvisible="true" identifierref="resource_comportamento">
+			<title>comportamento</title>
+		</item>		
+
+		<item identifier="strutturaIntro" isvisible="true" identifierref="resource_strutturaIntro">
+			<title>strutturaIntro</title>
+		</item>		
+
+		<item identifier="classi" isvisible="true" identifierref="resource_classi">
+			<title>classi</title>
+		</item>		
+
+		<item identifier="package" isvisible="true" identifierref="resource_package">
+			<title>package</title>
+		</item>		
+
+		<item identifier="strutComp" isvisible="true" identifierref="resource_strutComp">
+			<title>strutComp</title>
+		</item>		
+
+		<item identifier="componentiD" isvisible="true" identifierref="resource_componentiD">
+			<title>componentiD</title>
+		</item>		
+
+		<item identifier="deploymentD" isvisible="true" identifierref="resource_deploymentD">
+			<title>deploymentD</title>
+		</item>		
+
+		<item identifier="interazioneIntro" isvisible="true" identifierref="resource_interazioneIntro">
+			<title>interazioneIntro</title>
+		</item>		
+
+		<item identifier="sequenzaIntro" isvisible="true" identifierref="resource_sequenzaIntro">
+			<title>sequenzaIntro</title>
+		</item>		
+
+		<item identifier="messaggio" isvisible="true" identifierref="resource_messaggio">
+			<title>messaggio</title>
+		</item>		
+
+		<item identifier="combinedfragment" isvisible="true" identifierref="resource_combinedfragment">
+			<title>combinedfragment</title>
+		</item>		
+
+		<item identifier="esempiInterazione" isvisible="true" identifierref="resource_esempiInterazione">
+			<title>esempiInterazione</title>
+		</item>		
+
+		<item identifier="sincroni" isvisible="true" identifierref="resource_sincroni">
+			<title>sincroni</title>
+		</item>		
+
+		<item identifier="asincroni" isvisible="true" identifierref="resource_asincroni">
+			<title>asincroni</title>
+		</item>		
+
+		<item identifier="conclusioni" isvisible="true" identifierref="resource_conclusioni">
+			<title>conclusioni</title>
+		</item>		
+
+		<item identifier="comportamentoIntro" isvisible="true" identifierref="resource_comportamentoIntro">
+			<title>comportamentoIntro</title>
+		</item>		
+
+		<item identifier="stato" isvisible="true" identifierref="resource_stato">
+			<title>stato</title>
+		</item>		
+
+		<item identifier="attivita" isvisible="true" identifierref="resource_attivita">
+			<title>attivita</title>
+		</item>		
+
+		<item identifier="introPattern" isvisible="true" identifierref="resource_introPattern">
+			<title>introPattern</title>
+		</item>		
+
+		<item identifier="ruoloPattern" isvisible="true" identifierref="resource_ruoloPattern">
+			<title>ruoloPattern</title>
+		</item>		
+
+		<item identifier="insiemiDiPattern" isvisible="true" identifierref="resource_insiemiDiPattern">
+			<title>insiemiDiPattern</title>
+		</item>		
+
+		<item identifier="patternLanguages" isvisible="true" identifierref="resource_patternLanguages">
+			<title>patternLanguages</title>
+		</item>		
+
+		<item identifier="piattaforme" isvisible="true" identifierref="resource_piattaforme">
+			<title>piattaforme</title>
+		</item>		
+
+		<item identifier="processoLogico" isvisible="true" identifierref="resource_processoLogico">
+			<title>processoLogico</title>
+		</item>		
+
+		<item identifier="impostazioneGenerale" isvisible="true" identifierref="resource_impostazioneGenerale">
+			<title>impostazioneGenerale</title>
+		</item>		
+
+		<item identifier="sitoApplicazione" isvisible="true" identifierref="resource_sitoApplicazione">
+			<title>sitoApplicazione</title>
+		</item>		
+
+		<item identifier="workflowRequisiti" isvisible="true" identifierref="resource_workflowRequisiti">
+			<title>workflowRequisiti</title>
+		</item>		
+
+		<item identifier="ieeeRequisiti" isvisible="true" identifierref="resource_ieeeRequisiti">
+			<title>ieeeRequisiti</title>
+		</item>		
+
+		<item identifier="analisiRequisiti" isvisible="true" identifierref="resource_analisiRequisiti">
+			<title>analisiRequisiti</title>
+		</item>		
+
+		<item identifier="useCase" isvisible="true" identifierref="resource_useCase">
+			<title>useCase</title>
+		</item>		
+
+		<item identifier="relazioniUsecases" isvisible="true" identifierref="resource_relazioniUsecases">
+			<title>relazioniUsecases</title>
+		</item>		
+
+		<item identifier="scenari" isvisible="true" identifierref="resource_scenari">
+			<title>scenari</title>
+		</item>		
+
+		<item identifier="requisitNonFunzionali" isvisible="true" identifierref="resource_requisitNonFunzionali">
+			<title>requisitNonFunzionali</title>
+		</item>		
+
+		<item identifier="workflowAnalisi" isvisible="true" identifierref="resource_workflowAnalisi">
+			<title>workflowAnalisi</title>
+		</item>		
+
+		<item identifier="analisiProblema" isvisible="true" identifierref="resource_analisiProblema">
+			<title>analisiProblema</title>
+		</item>		
+
+		<item identifier="architetturaLogica" isvisible="true" identifierref="resource_architetturaLogica">
+			<title>architetturaLogica</title>
+		</item>		
+
+		<item identifier="schemiArchitettura" isvisible="true" identifierref="resource_schemiArchitettura">
+			<title>schemiArchitettura</title>
+		</item>		
+
+		<item identifier="layers" isvisible="true" identifierref="resource_layers">
+			<title>layers</title>
+		</item>		
+
+		<item identifier="analisiRischi" isvisible="true" identifierref="resource_analisiRischi">
+			<title>analisiRischi</title>
+		</item>		
+
+		<item identifier="pianoCollaudo" isvisible="true" identifierref="resource_pianoCollaudo">
+			<title>pianoCollaudo</title>
+		</item>		
+
+		<item identifier="pianoLavoro" isvisible="true" identifierref="resource_pianoLavoro">
+			<title>pianoLavoro</title>
+		</item>		
+
+		<item identifier="workflowProgetto" isvisible="true" identifierref="resource_workflowProgetto">
+			<title>workflowProgetto</title>
+		</item>		
+
+		<item identifier="progettazione" isvisible="true" identifierref="resource_progettazione">
+			<title>progettazione</title>
+		</item>		
+
+		<item identifier="sviluppoBottomUp" isvisible="true" identifierref="resource_sviluppoBottomUp">
+			<title>sviluppoBottomUp</title>
+		</item>		
+
+		<item identifier="piattaformeFramework" isvisible="true" identifierref="resource_piattaformeFramework">
+			<title>piattaformeFramework</title>
+		</item>		
+
+		<item identifier="applicationFramework" isvisible="true" identifierref="resource_applicationFramework">
+			<title>applicationFramework</title>
+		</item>		
+
+		<item identifier="sviluppoTopDown" isvisible="true" identifierref="resource_sviluppoTopDown">
+			<title>sviluppoTopDown</title>
+		</item>		
+
+		<item identifier="projectByPattern" isvisible="true" identifierref="resource_projectByPattern">
+			<title>projectByPattern</title>
+		</item>		
+
+		<item identifier="implementazione" isvisible="true" identifierref="resource_implementazione">
+			<title>implementazione</title>
+		</item>		
+
+		<item identifier="workflowCollaudo" isvisible="true" identifierref="resource_workflowCollaudo">
+			<title>workflowCollaudo</title>
+		</item>		
+
+		<item identifier="deployment" isvisible="true" identifierref="resource_deployment">
+			<title>deployment</title>
+		</item>		
+
+		<item identifier="maintenance" isvisible="true" identifierref="resource_maintenance">
+			<title>maintenance</title>
+		</item>		
+
+		<item identifier="esempioModelBased" isvisible="true" identifierref="resource_esempioModelBased">
+			<title>esempioModelBased</title>
+		</item>		
+
+		<item identifier="analisiRequisitiExp" isvisible="true" identifierref="resource_analisiRequisitiExp">
+			<title>analisiRequisitiExp</title>
+		</item>		
+
+		<item identifier="modelloDominioExp" isvisible="true" identifierref="resource_modelloDominioExp">
+			<title>modelloDominioExp</title>
+		</item>		
+
+		<item identifier="modelloTokenExp" isvisible="true" identifierref="resource_modelloTokenExp">
+			<title>modelloTokenExp</title>
+		</item>		
+
+		<item identifier="modelloExpExp" isvisible="true" identifierref="resource_modelloExpExp">
+			<title>modelloExpExp</title>
+		</item>		
+
+		<item identifier="pianoCollaudoExp" isvisible="true" identifierref="resource_pianoCollaudoExp">
+			<title>pianoCollaudoExp</title>
+		</item>		
+
+		<item identifier="sintassiAstrattaExp" isvisible="true" identifierref="resource_sintassiAstrattaExp">
+			<title>sintassiAstrattaExp</title>
+		</item>		
+
+		<item identifier="genCodeToolsExp" isvisible="true" identifierref="resource_genCodeToolsExp">
+			<title>genCodeToolsExp</title>
+		</item>		
+
+		<item identifier="analisiProblemaExp" isvisible="true" identifierref="resource_analisiProblemaExp">
+			<title>analisiProblemaExp</title>
+		</item>		
+
+		<item identifier="archLogicaExp" isvisible="true" identifierref="resource_archLogicaExp">
+			<title>archLogicaExp</title>
+		</item>		
+
+		<item identifier="archLogicaStruttura" isvisible="true" identifierref="resource_archLogicaStruttura">
+			<title>archLogicaStruttura</title>
+		</item>		
+
+		<item identifier="archLogicaInterazione" isvisible="true" identifierref="resource_archLogicaInterazione">
+			<title>archLogicaInterazione</title>
+		</item>		
+
+		<item identifier="archLogicaComportamento" isvisible="true" identifierref="resource_archLogicaComportamento">
+			<title>archLogicaComportamento</title>
+		</item>		
+
+		<item identifier="comportamentoSistema" isvisible="true" identifierref="resource_comportamentoSistema">
+			<title>comportamentoSistema</title>
+		</item>		
+
+		<item identifier="pianoLavoroExp" isvisible="true" identifierref="resource_pianoLavoroExp">
+			<title>pianoLavoroExp</title>
+		</item>		
+
+		<item identifier="progettoExp" isvisible="true" identifierref="resource_progettoExp">
+			<title>progettoExp</title>
+		</item>		
+
+		<item identifier="inputDev08Project" isvisible="true" identifierref="resource_inputDev08Project">
+			<title>inputDev08Project</title>
+		</item>		
+
+		<item identifier="lexer08Project" isvisible="true" identifierref="resource_lexer08Project">
+			<title>lexer08Project</title>
+		</item>		
+
+		<item identifier="parser08Project" isvisible="true" identifierref="resource_parser08Project">
+			<title>parser08Project</title>
+		</item>		
+
+		<item identifier="evaluator08Project" isvisible="true" identifierref="resource_evaluator08Project">
+			<title>evaluator08Project</title>
+		</item>		
+
+		<item identifier="implementazioneExp" isvisible="true" identifierref="resource_implementazioneExp">
+			<title>implementazioneExp</title>
+		</item>		
+
+		<item identifier="inputDevImplementation" isvisible="true" identifierref="resource_inputDevImplementation">
+			<title>inputDevImplementation</title>
+		</item>		
+
+		<item identifier="lexer08Implementation" isvisible="true" identifierref="resource_lexer08Implementation">
+			<title>lexer08Implementation</title>
+		</item>		
+
+		<item identifier="parser08Implementation" isvisible="true" identifierref="resource_parser08Implementation">
+			<title>parser08Implementation</title>
+		</item>		
+
+		<item identifier="evaluatorImplementation" isvisible="true" identifierref="resource_evaluatorImplementation">
+			<title>evaluatorImplementation</title>
+		</item>		
+
+		<item identifier="sysExpImplementation" isvisible="true" identifierref="resource_sysExpImplementation">
+			<title>sysExpImplementation</title>
+		</item>		
+
+		<item identifier="introTecnologie" isvisible="true" identifierref="resource_introTecnologie">
+			<title>introTecnologie</title>
+		</item>		
+
+		<item identifier="componenti" isvisible="true" identifierref="resource_componenti">
+			<title>componenti</title>
+		</item>		
+
+		<item identifier="osgi" isvisible="true" identifierref="resource_osgi">
+			<title>osgi</title>
+		</item>		
+
+		<item identifier="bundle" isvisible="true" identifierref="resource_bundle">
+			<title>bundle</title>
+		</item>		
+
+		<item identifier="bundleDependency" isvisible="true" identifierref="resource_bundleDependency">
+			<title>bundleDependency</title>
+		</item>		
+
+		<item identifier="classLoading" isvisible="true" identifierref="resource_classLoading">
+			<title>classLoading</title>
+		</item>		
+
+		<item identifier="bundleLifeCycle" isvisible="true" identifierref="resource_bundleLifeCycle">
+			<title>bundleLifeCycle</title>
+		</item>		
+
+		<item identifier="bundleObject" isvisible="true" identifierref="resource_bundleObject">
+			<title>bundleObject</title>
+		</item>		
+
+		<item identifier="bundleContext" isvisible="true" identifierref="resource_bundleContext">
+			<title>bundleContext</title>
+		</item>		
+
+		<item identifier="osgiServices" isvisible="true" identifierref="resource_osgiServices">
+			<title>osgiServices</title>
+		</item>		
+
+		<item identifier="osgiServiceDependency" isvisible="true" identifierref="resource_osgiServiceDependency">
+			<title>osgiServiceDependency</title>
+		</item>		
+
+		<item identifier="osgiServiceTracker" isvisible="true" identifierref="resource_osgiServiceTracker">
+			<title>osgiServiceTracker</title>
+		</item>		
+
+		<item identifier="osgiServiceBinder" isvisible="true" identifierref="resource_osgiServiceBinder">
+			<title>osgiServiceBinder</title>
+		</item>		
+
+		<item identifier="equinoxUsageTutorial" isvisible="true" identifierref="resource_equinoxUsageTutorial">
+			<title>equinoxUsageTutorial</title>
+		</item>		
+
+		<item identifier="realizzareBundle" isvisible="true" identifierref="resource_realizzareBundle">
+			<title>realizzareBundle</title>
+		</item>		
+
+		<item identifier="introMdsd" isvisible="true" identifierref="resource_introMdsd">
+			<title>introMdsd</title>
+		</item>		
+
+		<item identifier="introUml2" isvisible="true" identifierref="resource_introUml2">
+			<title>introUml2</title>
+		</item>		
+
+		<item identifier="razionaleMOF" isvisible="true" identifierref="resource_razionaleMOF">
+			<title>razionaleMOF</title>
+		</item>		
+
+		<item identifier="riusoInMOF" isvisible="true" identifierref="resource_riusoInMOF">
+			<title>riusoInMOF</title>
+		</item>		
+
+		<item identifier="introEMOFCMOF" isvisible="true" identifierref="resource_introEMOFCMOF">
+			<title>introEMOFCMOF</title>
+		</item>		
+
+		<item identifier="mdsd" isvisible="true" identifierref="resource_mdsd">
+			<title>mdsd</title>
+		</item>		
+
+		<item identifier="oaw" isvisible="true" identifierref="resource_oaw">
+			<title>oaw</title>
+		</item>		
+
+		<item identifier="oawExample" isvisible="true" identifierref="resource_oawExample">
+			<title>oawExample</title>
+		</item>		
+
+		<item identifier="lexerBundle" isvisible="true" identifierref="resource_lexerBundle">
+			<title>lexerBundle</title>
+		</item>		
+
+		<item identifier="fabbricaBundle" isvisible="true" identifierref="resource_fabbricaBundle">
+			<title>fabbricaBundle</title>
+		</item>		
+
+		<item identifier="dslComm" isvisible="true" identifierref="resource_dslComm">
+			<title>dslComm</title>
+		</item>		
+
+		<item identifier="piattaformaComm" isvisible="true" identifierref="resource_piattaformaComm">
+			<title>piattaformaComm</title>
+		</item>		
+
+		<item identifier="semanticaContact" isvisible="true" identifierref="resource_semanticaContact">
+			<title>semanticaContact</title>
+		</item>		
+
+		<item identifier="agentWorld" isvisible="true" identifierref="resource_agentWorld">
+			<title>agentWorld</title>
+		</item>		
+
+		<item identifier="agentiArchitetturaSocieta" isvisible="true" identifierref="resource_agentiArchitetturaSocieta">
+			<title>agentiArchitetturaSocieta</title>
+		</item>		
+
+		<item identifier="agentiArchitetturaAmbiente" isvisible="true" identifierref="resource_agentiArchitetturaAmbiente">
+			<title>agentiArchitetturaAmbiente</title>
+		</item>		
+
+		<item identifier="aUMLIntro" isvisible="true" identifierref="resource_aUMLIntro">
+			<title>aUMLIntro</title>
+		</item>		
+
+		<item identifier="f_aUMLProtocolli" isvisible="true" identifierref="resource_f_aUMLProtocolli">
+			<title>f_aUMLProtocolli</title>
+		</item>		
+
+		<item identifier="aUMLProtocolliRuoliMultipli" isvisible="true" identifierref="resource_aUMLProtocolliRuoliMultipli">
+			<title>aUMLProtocolliRuoliMultipli</title>
+		</item>		
+
+		<item identifier="aUMLProtocolliMessaggi" isvisible="true" identifierref="resource_aUMLProtocolliMessaggi">
+			<title>aUMLProtocolliMessaggi</title>
+		</item>		
+
+		<item identifier="aUMLProtocolliVincoli" isvisible="true" identifierref="resource_aUMLProtocolliVincoli">
+			<title>aUMLProtocolliVincoli</title>
+		</item>		
+
+		<item identifier="aUMLProtocolliAlternativi" isvisible="true" identifierref="resource_aUMLProtocolliAlternativi">
+			<title>aUMLProtocolliAlternativi</title>
+		</item>		
+
+		<item identifier="aUMLProtocolliCombinati" isvisible="true" identifierref="resource_aUMLProtocolliCombinati">
+			<title>aUMLProtocolliCombinati</title>
+		</item>		
+
+		<item identifier="aUMLLingComm" isvisible="true" identifierref="resource_aUMLLingComm">
+			<title>aUMLLingComm</title>
+		</item>		
+
+		<item identifier="bibliografia" isvisible="true" identifierref="resource_bibliografia">
+			<title>bibliografia</title>
+		</item>		
+
+		<item identifier="mapProcess" isvisible="true" identifierref="resource_mapProcess">
+			<title>mapProcess</title>
+		</item>		
+
+		<item identifier="mapModelling" isvisible="true" identifierref="resource_mapModelling">
+			<title>mapModelling</title>
+		</item>		
+
+		<item identifier="mapWorkflow" isvisible="true" identifierref="resource_mapWorkflow">
+			<title>mapWorkflow</title>
+		</item>		
+
+		<item identifier="mapProcessActivity" isvisible="true" identifierref="resource_mapProcessActivity">
+			<title>mapProcessActivity</title>
+		</item>		
+		</organization>
+	</organizations>
+	<resources>
+
+		<resource identifier="resource_introduzione" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introduzione.html">
+			<title>introduzione</title>
+		</resource>		
+
+		<resource identifier="resource_crisiSoftware" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_crisiSoftware.html">
+			<title>crisiSoftware</title>
+		</resource>		
+
+		<resource identifier="resource_dimAlgoritmica" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_dimAlgoritmica.html">
+			<title>dimAlgoritmica</title>
+		</resource>		
+
+		<resource identifier="resource_dimSistemistica" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_dimSistemistica.html">
+			<title>dimSistemistica</title>
+		</resource>		
+
+		<resource identifier="resource_ingSoftware" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_ingSoftware.html">
+			<title>ingSoftware</title>
+		</resource>		
+
+		<resource identifier="resource_metodoMetodologia" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_metodoMetodologia.html">
+			<title>metodoMetodologia</title>
+		</resource>		
+
+		<resource identifier="resource_storiaDelleMetodologie" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_storiaDelleMetodologie.html">
+			<title>storiaDelleMetodologie</title>
+		</resource>		
+
+		<resource identifier="resource_cmm" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_cmm.html">
+			<title>cmm</title>
+		</resource>		
+
+		<resource identifier="resource_processiSviluppoSoftware" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_processiSviluppoSoftware.html">
+			<title>processiSviluppoSoftware</title>
+		</resource>		
+
+		<resource identifier="resource_qualita" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_qualita.html">
+			<title>qualita</title>
+		</resource>		
+
+		<resource identifier="resource_processiACasscata" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_processiACasscata.html">
+			<title>processiACasscata</title>
+		</resource>		
+
+		<resource identifier="resource_processiASpirale" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_processiASpirale.html">
+			<title>processiASpirale</title>
+		</resource>		
+
+		<resource identifier="resource_processiBasatiSuModelli" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_processiBasatiSuModelli.html">
+			<title>processiBasatiSuModelli</title>
+		</resource>		
+
+		<resource identifier="resource_processiAgili" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_processiAgili.html">
+			<title>processiAgili</title>
+		</resource>		
+
+		<resource identifier="resource_xpPratiche" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_xpPratiche.html">
+			<title>xpPratiche</title>
+		</resource>		
+
+		<resource identifier="resource_qualeProcesso" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_qualeProcesso.html">
+			<title>qualeProcesso</title>
+		</resource>		
+
+		<resource identifier="resource_versoUnProcesso" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_versoUnProcesso.html">
+			<title>versoUnProcesso</title>
+		</resource>		
+
+		<resource identifier="resource_paradigmi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_paradigmi.html">
+			<title>paradigmi</title>
+		</resource>		
+
+		<resource identifier="resource_sintassiSemantica" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sintassiSemantica.html">
+			<title>sintassiSemantica</title>
+		</resource>		
+
+		<resource identifier="resource_macchineBase" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_macchineBase.html">
+			<title>macchineBase</title>
+		</resource>		
+
+		<resource identifier="resource_macchineAstratte" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_macchineAstratte.html">
+			<title>macchineAstratte</title>
+		</resource>		
+
+		<resource identifier="resource_funzioniProcedure" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_funzioniProcedure.html">
+			<title>funzioniProcedure</title>
+		</resource>		
+
+		<resource identifier="resource_moduliOggetti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_moduliOggetti.html">
+			<title>moduliOggetti</title>
+		</resource>		
+
+		<resource identifier="resource_oggetti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_oggetti.html">
+			<title>oggetti</title>
+		</resource>		
+
+		<resource identifier="resource_daOggettiAUML" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_daOggettiAUML.html">
+			<title>daOggettiAUML</title>
+		</resource>		
+
+		<resource identifier="resource_componentiSoftware" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_componentiSoftware.html">
+			<title>componentiSoftware</title>
+		</resource>		
+
+		<resource identifier="resource_inversioneControllo" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_inversioneControllo.html">
+			<title>inversioneControllo</title>
+		</resource>		
+
+		<resource identifier="resource_paradigmaAgenti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_paradigmaAgenti.html">
+			<title>paradigmaAgenti</title>
+		</resource>		
+
+		<resource identifier="resource_agenti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_agenti.html">
+			<title>agenti</title>
+		</resource>		
+
+		<resource identifier="resource_agentiVsOggetti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_agentiVsOggetti.html">
+			<title>agentiVsOggetti</title>
+		</resource>		
+
+		<resource identifier="resource_umlFirst" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_umlFirst.html">
+			<title>umlFirst</title>
+		</resource>		
+
+		<resource identifier="resource_concettoDiModello" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_concettoDiModello.html">
+			<title>concettoDiModello</title>
+		</resource>		
+
+		<resource identifier="resource_introUml" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introUml.html">
+			<title>introUml</title>
+		</resource>		
+
+		<resource identifier="resource_layerUml" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_layerUml.html">
+			<title>layerUml</title>
+		</resource>		
+
+		<resource identifier="resource_introMOF" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introMOF.html">
+			<title>introMOF</title>
+		</resource>		
+
+		<resource identifier="resource_diagrammiAM" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_diagrammiAM.html">
+			<title>diagrammiAM</title>
+		</resource>		
+
+		<resource identifier="resource_introUMLProfili" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introUMLProfili.html">
+			<title>introUMLProfili</title>
+		</resource>		
+
+		<resource identifier="resource_umlComeLinguaggio" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_umlComeLinguaggio.html">
+			<title>umlComeLinguaggio</title>
+		</resource>		
+
+		<resource identifier="resource_introUMLAction" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introUMLAction.html">
+			<title>introUMLAction</title>
+		</resource>		
+
+		<resource identifier="resource_introOCL" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introOCL.html">
+			<title>introOCL</title>
+		</resource>		
+
+		<resource identifier="resource_architettureSistemi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_architettureSistemi.html">
+			<title>architettureSistemi</title>
+		</resource>		
+
+		<resource identifier="resource_stileArchitetturale" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_stileArchitetturale.html">
+			<title>stileArchitetturale</title>
+		</resource>		
+
+		<resource identifier="resource_mda" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_mda.html">
+			<title>mda</title>
+		</resource>		
+
+		<resource identifier="resource_dimensioniSistemi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_dimensioniSistemi.html">
+			<title>dimensioniSistemi</title>
+		</resource>		
+
+		<resource identifier="resource_struttura" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_struttura.html">
+			<title>struttura</title>
+		</resource>		
+
+		<resource identifier="resource_interazione" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_interazione.html">
+			<title>interazione</title>
+		</resource>		
+
+		<resource identifier="resource_comportamento" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_comportamento.html">
+			<title>comportamento</title>
+		</resource>		
+
+		<resource identifier="resource_strutturaIntro" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_strutturaIntro.html">
+			<title>strutturaIntro</title>
+		</resource>		
+
+		<resource identifier="resource_classi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_classi.html">
+			<title>classi</title>
+		</resource>		
+
+		<resource identifier="resource_package" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_package.html">
+			<title>package</title>
+		</resource>		
+
+		<resource identifier="resource_strutComp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_strutComp.html">
+			<title>strutComp</title>
+		</resource>		
+
+		<resource identifier="resource_componentiD" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_componentiD.html">
+			<title>componentiD</title>
+		</resource>		
+
+		<resource identifier="resource_deploymentD" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_deploymentD.html">
+			<title>deploymentD</title>
+		</resource>		
+
+		<resource identifier="resource_interazioneIntro" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_interazioneIntro.html">
+			<title>interazioneIntro</title>
+		</resource>		
+
+		<resource identifier="resource_sequenzaIntro" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sequenzaIntro.html">
+			<title>sequenzaIntro</title>
+		</resource>		
+
+		<resource identifier="resource_messaggio" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_messaggio.html">
+			<title>messaggio</title>
+		</resource>		
+
+		<resource identifier="resource_combinedfragment" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_combinedfragment.html">
+			<title>combinedfragment</title>
+		</resource>		
+
+		<resource identifier="resource_esempiInterazione" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_esempiInterazione.html">
+			<title>esempiInterazione</title>
+		</resource>		
+
+		<resource identifier="resource_sincroni" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sincroni.html">
+			<title>sincroni</title>
+		</resource>		
+
+		<resource identifier="resource_asincroni" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_asincroni.html">
+			<title>asincroni</title>
+		</resource>		
+
+		<resource identifier="resource_conclusioni" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_conclusioni.html">
+			<title>conclusioni</title>
+		</resource>		
+
+		<resource identifier="resource_comportamentoIntro" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_comportamentoIntro.html">
+			<title>comportamentoIntro</title>
+		</resource>		
+
+		<resource identifier="resource_stato" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_stato.html">
+			<title>stato</title>
+		</resource>		
+
+		<resource identifier="resource_attivita" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_attivita.html">
+			<title>attivita</title>
+		</resource>		
+
+		<resource identifier="resource_introPattern" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introPattern.html">
+			<title>introPattern</title>
+		</resource>		
+
+		<resource identifier="resource_ruoloPattern" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_ruoloPattern.html">
+			<title>ruoloPattern</title>
+		</resource>		
+
+		<resource identifier="resource_insiemiDiPattern" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_insiemiDiPattern.html">
+			<title>insiemiDiPattern</title>
+		</resource>		
+
+		<resource identifier="resource_patternLanguages" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_patternLanguages.html">
+			<title>patternLanguages</title>
+		</resource>		
+
+		<resource identifier="resource_piattaforme" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_piattaforme.html">
+			<title>piattaforme</title>
+		</resource>		
+
+		<resource identifier="resource_processoLogico" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_processoLogico.html">
+			<title>processoLogico</title>
+		</resource>		
+
+		<resource identifier="resource_impostazioneGenerale" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_impostazioneGenerale.html">
+			<title>impostazioneGenerale</title>
+		</resource>		
+
+		<resource identifier="resource_sitoApplicazione" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sitoApplicazione.html">
+			<title>sitoApplicazione</title>
+		</resource>		
+
+		<resource identifier="resource_workflowRequisiti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_workflowRequisiti.html">
+			<title>workflowRequisiti</title>
+		</resource>		
+
+		<resource identifier="resource_ieeeRequisiti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_ieeeRequisiti.html">
+			<title>ieeeRequisiti</title>
+		</resource>		
+
+		<resource identifier="resource_analisiRequisiti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_analisiRequisiti.html">
+			<title>analisiRequisiti</title>
+		</resource>		
+
+		<resource identifier="resource_useCase" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_useCase.html">
+			<title>useCase</title>
+		</resource>		
+
+		<resource identifier="resource_relazioniUsecases" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_relazioniUsecases.html">
+			<title>relazioniUsecases</title>
+		</resource>		
+
+		<resource identifier="resource_scenari" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_scenari.html">
+			<title>scenari</title>
+		</resource>		
+
+		<resource identifier="resource_requisitNonFunzionali" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_requisitNonFunzionali.html">
+			<title>requisitNonFunzionali</title>
+		</resource>		
+
+		<resource identifier="resource_workflowAnalisi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_workflowAnalisi.html">
+			<title>workflowAnalisi</title>
+		</resource>		
+
+		<resource identifier="resource_analisiProblema" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_analisiProblema.html">
+			<title>analisiProblema</title>
+		</resource>		
+
+		<resource identifier="resource_architetturaLogica" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_architetturaLogica.html">
+			<title>architetturaLogica</title>
+		</resource>		
+
+		<resource identifier="resource_schemiArchitettura" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_schemiArchitettura.html">
+			<title>schemiArchitettura</title>
+		</resource>		
+
+		<resource identifier="resource_layers" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_layers.html">
+			<title>layers</title>
+		</resource>		
+
+		<resource identifier="resource_analisiRischi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_analisiRischi.html">
+			<title>analisiRischi</title>
+		</resource>		
+
+		<resource identifier="resource_pianoCollaudo" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_pianoCollaudo.html">
+			<title>pianoCollaudo</title>
+		</resource>		
+
+		<resource identifier="resource_pianoLavoro" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_pianoLavoro.html">
+			<title>pianoLavoro</title>
+		</resource>		
+
+		<resource identifier="resource_workflowProgetto" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_workflowProgetto.html">
+			<title>workflowProgetto</title>
+		</resource>		
+
+		<resource identifier="resource_progettazione" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_progettazione.html">
+			<title>progettazione</title>
+		</resource>		
+
+		<resource identifier="resource_sviluppoBottomUp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sviluppoBottomUp.html">
+			<title>sviluppoBottomUp</title>
+		</resource>		
+
+		<resource identifier="resource_piattaformeFramework" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_piattaformeFramework.html">
+			<title>piattaformeFramework</title>
+		</resource>		
+
+		<resource identifier="resource_applicationFramework" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_applicationFramework.html">
+			<title>applicationFramework</title>
+		</resource>		
+
+		<resource identifier="resource_sviluppoTopDown" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sviluppoTopDown.html">
+			<title>sviluppoTopDown</title>
+		</resource>		
+
+		<resource identifier="resource_projectByPattern" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_projectByPattern.html">
+			<title>projectByPattern</title>
+		</resource>		
+
+		<resource identifier="resource_implementazione" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_implementazione.html">
+			<title>implementazione</title>
+		</resource>		
+
+		<resource identifier="resource_workflowCollaudo" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_workflowCollaudo.html">
+			<title>workflowCollaudo</title>
+		</resource>		
+
+		<resource identifier="resource_deployment" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_deployment.html">
+			<title>deployment</title>
+		</resource>		
+
+		<resource identifier="resource_maintenance" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_maintenance.html">
+			<title>maintenance</title>
+		</resource>		
+
+		<resource identifier="resource_esempioModelBased" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_esempioModelBased.html">
+			<title>esempioModelBased</title>
+		</resource>		
+
+		<resource identifier="resource_analisiRequisitiExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_analisiRequisitiExp.html">
+			<title>analisiRequisitiExp</title>
+		</resource>		
+
+		<resource identifier="resource_modelloDominioExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_modelloDominioExp.html">
+			<title>modelloDominioExp</title>
+		</resource>		
+
+		<resource identifier="resource_modelloTokenExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_modelloTokenExp.html">
+			<title>modelloTokenExp</title>
+		</resource>		
+
+		<resource identifier="resource_modelloExpExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_modelloExpExp.html">
+			<title>modelloExpExp</title>
+		</resource>		
+
+		<resource identifier="resource_pianoCollaudoExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_pianoCollaudoExp.html">
+			<title>pianoCollaudoExp</title>
+		</resource>		
+
+		<resource identifier="resource_sintassiAstrattaExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sintassiAstrattaExp.html">
+			<title>sintassiAstrattaExp</title>
+		</resource>		
+
+		<resource identifier="resource_genCodeToolsExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_genCodeToolsExp.html">
+			<title>genCodeToolsExp</title>
+		</resource>		
+
+		<resource identifier="resource_analisiProblemaExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_analisiProblemaExp.html">
+			<title>analisiProblemaExp</title>
+		</resource>		
+
+		<resource identifier="resource_archLogicaExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_archLogicaExp.html">
+			<title>archLogicaExp</title>
+		</resource>		
+
+		<resource identifier="resource_archLogicaStruttura" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_archLogicaStruttura.html">
+			<title>archLogicaStruttura</title>
+		</resource>		
+
+		<resource identifier="resource_archLogicaInterazione" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_archLogicaInterazione.html">
+			<title>archLogicaInterazione</title>
+		</resource>		
+
+		<resource identifier="resource_archLogicaComportamento" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_archLogicaComportamento.html">
+			<title>archLogicaComportamento</title>
+		</resource>		
+
+		<resource identifier="resource_comportamentoSistema" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_comportamentoSistema.html">
+			<title>comportamentoSistema</title>
+		</resource>		
+
+		<resource identifier="resource_pianoLavoroExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_pianoLavoroExp.html">
+			<title>pianoLavoroExp</title>
+		</resource>		
+
+		<resource identifier="resource_progettoExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_progettoExp.html">
+			<title>progettoExp</title>
+		</resource>		
+
+		<resource identifier="resource_inputDev08Project" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_inputDev08Project.html">
+			<title>inputDev08Project</title>
+		</resource>		
+
+		<resource identifier="resource_lexer08Project" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_lexer08Project.html">
+			<title>lexer08Project</title>
+		</resource>		
+
+		<resource identifier="resource_parser08Project" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_parser08Project.html">
+			<title>parser08Project</title>
+		</resource>		
+
+		<resource identifier="resource_evaluator08Project" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_evaluator08Project.html">
+			<title>evaluator08Project</title>
+		</resource>		
+
+		<resource identifier="resource_implementazioneExp" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_implementazioneExp.html">
+			<title>implementazioneExp</title>
+		</resource>		
+
+		<resource identifier="resource_inputDevImplementation" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_inputDevImplementation.html">
+			<title>inputDevImplementation</title>
+		</resource>		
+
+		<resource identifier="resource_lexer08Implementation" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_lexer08Implementation.html">
+			<title>lexer08Implementation</title>
+		</resource>		
+
+		<resource identifier="resource_parser08Implementation" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_parser08Implementation.html">
+			<title>parser08Implementation</title>
+		</resource>		
+
+		<resource identifier="resource_evaluatorImplementation" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_evaluatorImplementation.html">
+			<title>evaluatorImplementation</title>
+		</resource>		
+
+		<resource identifier="resource_sysExpImplementation" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_sysExpImplementation.html">
+			<title>sysExpImplementation</title>
+		</resource>		
+
+		<resource identifier="resource_introTecnologie" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introTecnologie.html">
+			<title>introTecnologie</title>
+		</resource>		
+
+		<resource identifier="resource_componenti" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_componenti.html">
+			<title>componenti</title>
+		</resource>		
+
+		<resource identifier="resource_osgi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_osgi.html">
+			<title>osgi</title>
+		</resource>		
+
+		<resource identifier="resource_bundle" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_bundle.html">
+			<title>bundle</title>
+		</resource>		
+
+		<resource identifier="resource_bundleDependency" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_bundleDependency.html">
+			<title>bundleDependency</title>
+		</resource>		
+
+		<resource identifier="resource_classLoading" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_classLoading.html">
+			<title>classLoading</title>
+		</resource>		
+
+		<resource identifier="resource_bundleLifeCycle" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_bundleLifeCycle.html">
+			<title>bundleLifeCycle</title>
+		</resource>		
+
+		<resource identifier="resource_bundleObject" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_bundleObject.html">
+			<title>bundleObject</title>
+		</resource>		
+
+		<resource identifier="resource_bundleContext" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_bundleContext.html">
+			<title>bundleContext</title>
+		</resource>		
+
+		<resource identifier="resource_osgiServices" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_osgiServices.html">
+			<title>osgiServices</title>
+		</resource>		
+
+		<resource identifier="resource_osgiServiceDependency" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_osgiServiceDependency.html">
+			<title>osgiServiceDependency</title>
+		</resource>		
+
+		<resource identifier="resource_osgiServiceTracker" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_osgiServiceTracker.html">
+			<title>osgiServiceTracker</title>
+		</resource>		
+
+		<resource identifier="resource_osgiServiceBinder" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_osgiServiceBinder.html">
+			<title>osgiServiceBinder</title>
+		</resource>		
+
+		<resource identifier="resource_equinoxUsageTutorial" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_equinoxUsageTutorial.html">
+			<title>equinoxUsageTutorial</title>
+		</resource>		
+
+		<resource identifier="resource_realizzareBundle" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_realizzareBundle.html">
+			<title>realizzareBundle</title>
+		</resource>		
+
+		<resource identifier="resource_introMdsd" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introMdsd.html">
+			<title>introMdsd</title>
+		</resource>		
+
+		<resource identifier="resource_introUml2" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introUml2.html">
+			<title>introUml2</title>
+		</resource>		
+
+		<resource identifier="resource_razionaleMOF" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_razionaleMOF.html">
+			<title>razionaleMOF</title>
+		</resource>		
+
+		<resource identifier="resource_riusoInMOF" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_riusoInMOF.html">
+			<title>riusoInMOF</title>
+		</resource>		
+
+		<resource identifier="resource_introEMOFCMOF" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_introEMOFCMOF.html">
+			<title>introEMOFCMOF</title>
+		</resource>		
+
+		<resource identifier="resource_mdsd" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_mdsd.html">
+			<title>mdsd</title>
+		</resource>		
+
+		<resource identifier="resource_oaw" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_oaw.html">
+			<title>oaw</title>
+		</resource>		
+
+		<resource identifier="resource_oawExample" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_oawExample.html">
+			<title>oawExample</title>
+		</resource>		
+
+		<resource identifier="resource_lexerBundle" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_lexerBundle.html">
+			<title>lexerBundle</title>
+		</resource>		
+
+		<resource identifier="resource_fabbricaBundle" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_fabbricaBundle.html">
+			<title>fabbricaBundle</title>
+		</resource>		
+
+		<resource identifier="resource_dslComm" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_dslComm.html">
+			<title>dslComm</title>
+		</resource>		
+
+		<resource identifier="resource_piattaformaComm" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_piattaformaComm.html">
+			<title>piattaformaComm</title>
+		</resource>		
+
+		<resource identifier="resource_semanticaContact" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_semanticaContact.html">
+			<title>semanticaContact</title>
+		</resource>		
+
+		<resource identifier="resource_agentWorld" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_agentWorld.html">
+			<title>agentWorld</title>
+		</resource>		
+
+		<resource identifier="resource_agentiArchitetturaSocieta" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_agentiArchitetturaSocieta.html">
+			<title>agentiArchitetturaSocieta</title>
+		</resource>		
+
+		<resource identifier="resource_agentiArchitetturaAmbiente" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_agentiArchitetturaAmbiente.html">
+			<title>agentiArchitetturaAmbiente</title>
+		</resource>		
+
+		<resource identifier="resource_aUMLIntro" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_aUMLIntro.html">
+			<title>aUMLIntro</title>
+		</resource>		
+
+		<resource identifier="resource_f_aUMLProtocolli" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_f_aUMLProtocolli.html">
+			<title>f_aUMLProtocolli</title>
+		</resource>		
+
+		<resource identifier="resource_aUMLProtocolliRuoliMultipli" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_aUMLProtocolliRuoliMultipli.html">
+			<title>aUMLProtocolliRuoliMultipli</title>
+		</resource>		
+
+		<resource identifier="resource_aUMLProtocolliMessaggi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_aUMLProtocolliMessaggi.html">
+			<title>aUMLProtocolliMessaggi</title>
+		</resource>		
+
+		<resource identifier="resource_aUMLProtocolliVincoli" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_aUMLProtocolliVincoli.html">
+			<title>aUMLProtocolliVincoli</title>
+		</resource>		
+
+		<resource identifier="resource_aUMLProtocolliAlternativi" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_aUMLProtocolliAlternativi.html">
+			<title>aUMLProtocolliAlternativi</title>
+		</resource>		
+
+		<resource identifier="resource_aUMLProtocolliCombinati" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_aUMLProtocolliCombinati.html">
+			<title>aUMLProtocolliCombinati</title>
+		</resource>		
+
+		<resource identifier="resource_aUMLLingComm" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_aUMLLingComm.html">
+			<title>aUMLLingComm</title>
+		</resource>		
+
+		<resource identifier="resource_bibliografia" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_bibliografia.html">
+			<title>bibliografia</title>
+		</resource>		
+
+		<resource identifier="resource_mapProcess" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_mapProcess.html">
+			<title>mapProcess</title>
+		</resource>		
+
+		<resource identifier="resource_mapModelling" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_mapModelling.html">
+			<title>mapModelling</title>
+		</resource>		
+
+		<resource identifier="resource_mapWorkflow" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_mapWorkflow.html">
+			<title>mapWorkflow</title>
+		</resource>		
+
+		<resource identifier="resource_mapProcessActivity" type="webcontent" adlcp:scormtype="sco"
+			href="Envelope_mapProcessActivity.html">
+			<title>mapProcessActivity</title>
+		</resource>		
+	</resources>
+</manifest>

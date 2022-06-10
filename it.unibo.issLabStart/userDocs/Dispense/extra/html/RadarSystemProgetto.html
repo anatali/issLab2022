@@ -1,0 +1,970 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Progettazione e sviluppo &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Supporti per comunicazioni" href="RadarSystemSupporti.html" />
+    <link rel="prev" title="Prodotti della analisi" href="RadarSystemProdottiAnalisi.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="progettazione-e-sviluppo">
+<h1>Progettazione e sviluppo<a class="headerlink" href="#progettazione-e-sviluppo" title="Permalink to this headline">¶</a></h1>
+<p>Iniziamo il nostro progetto affrontando il primo punto del piano di lavoro proposto dall’analisi
+(si veda <a class="reference internal" href="RadarSystemProdottiAnalisi.html#pianolavoro"><span class="std std-ref">Piano di lavoro</span></a>)</p>
+<ol class="arabic simple">
+<li><p>definizione dei componenti software di base legati ai dispositivi di I/O (Sonar, RadarDisplay e Led);</p></li>
+</ol>
+<p>Si tratta dunque  di realizzare i componenti indiicati nella
+<a class="reference internal" href="RadarSystemProdottiAnalisi.html#architettura-logica-del-sistema"><span class="std std-ref">Architettura logica del sistema</span></a>, che qui riportiamo:</p>
+<a class="reference internal image-reference" href="_images/ArchLogicaOOP1.PNG"><img alt="_images/ArchLogicaOOP1.PNG" class="align-center" src="_images/ArchLogicaOOP1.PNG" style="width: 60%;" /></a>
+<p>Usando la terminologia <span class="blue">SCRUM</span>, associamo questo obiettivo al primo <span class="blue">SPRINT</span> dello sviluppo, al termine del  quale
+la prevista <span class="blue">Srint Review</span> farà il punto della situazione con il committente e getterà le basi per
+il passo successivo, che potrà coincidere o meno con quello pianificato nell’analisi.</p>
+<p>Impostiamo il progetto Java organizzato come in figura:</p>
+<a class="reference internal image-reference" href="_images/domainProject.PNG"><img alt="_images/domainProject.PNG" class="align-center" src="_images/domainProject.PNG" style="width: 70%;" /></a>
+<section id="sprint1-componenti-per-i-dispositivi-di-i-o">
+<h2>SPRINT1: Componenti per i dispositivi di I/O<a class="headerlink" href="#sprint1-componenti-per-i-dispositivi-di-i-o" title="Permalink to this headline">¶</a></h2>
+<p>Il primo <span class="blue">SPRINT</span> del nostro sviluppo bottom-up consiste nel realizzare componenti-base
+per i dispositivi di I/O, partendo dalle interfacce introdotte nella analisi.</p>
+<section id="devicefactory-e-file-di-configurazione">
+<h3>DeviceFactory e file di configurazione<a class="headerlink" href="#devicefactory-e-file-di-configurazione" title="Permalink to this headline">¶</a></h3>
+<p>Per agevolare la messa a punto di una applicazione, conviene spesso introdurre Mock-objects, cioè
+dispositivi simulati che riproducono il comportamento dei dispositivi reali in modo controllato.</p>
+<p>Inoltre, per facilitare la costruzione di dispositivi senza dover denotare in modo esplicito le classi
+di implementazione, conviene introdurre una <strong>Factory</strong>:</p>
+<div class="highlight-java notranslate" id="devicefactory"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DeviceFactory</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ILed</span> <span class="nf">createLed</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ISonar</span> <span class="nf">createSonar</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">IRadarGui</span> <span class="nf">createRadarGui</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p id="domainsystemconfig">Ciascun metodo di <code class="docutils literal notranslate"><span class="pre">DeviceFactory</span></code> restitusce una istanza di dispositivo reale o Mock in accordo alle specifiche
+contenute in un file di Configurazione (<code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.json</span></code>) che qui ipotizziamo scritto in JSon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;simulation&quot;</span>       <span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+ <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Questo file di configurazione viene letto dal metodo <em>setTheConfiguration</em> di un singleton <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig</span></code>
+che inizializza variabili <code class="docutils literal notranslate"><span class="pre">static</span></code> accessibili all’applicazione:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DomainSystemConfig</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">boolean</span> <span class="n">simulation</span><span class="p">;</span> <span class="c1">//set by setTheConfiguration</span>
+  <span class="p">...</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">setTheConfiguration</span><span class="p">(</span> <span class="n">String</span> <span class="n">resourceName</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="n">fis</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileInputStream</span><span class="p">(</span><span class="k">new</span> <span class="n">File</span><span class="p">(</span><span class="n">resourceName</span><span class="p">));</span>
+    <span class="n">JSONTokener</span> <span class="n">tokener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JSONTokener</span><span class="p">(</span><span class="n">fis</span><span class="p">);</span>
+    <span class="n">JSONObject</span> <span class="n">object</span>   <span class="o">=</span> <span class="k">new</span> <span class="n">JSONObject</span><span class="p">(</span><span class="n">tokener</span><span class="p">);</span>
+    <span class="n">simulation</span> <span class="o">=</span> <span class="n">object</span><span class="p">.</span><span class="na">getBoolean</span><span class="p">(</span><span class="s">&quot;simulation&quot;</span><span class="p">);</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="utilita">
+<h3>Utilità<a class="headerlink" href="#utilita" title="Permalink to this headline">¶</a></h3>
+<p>Introduciamo un paio di classi che contegono metodi utili per visualizzare messaggi colorati
+e per visualizzare informazioni sul sistema in esecuzione.</p>
+<section id="la-classe-colorsout">
+<h4>La classe <code class="docutils literal notranslate"><span class="pre">ColorsOut</span></code><a class="headerlink" href="#la-classe-colorsout" title="Permalink to this headline">¶</a></h4>
+<p>La classe <span class="blue">ColorsOut</span> è una utility per scrivere su standard ouput messaggi colorati.
+Il metodo <code class="docutils literal notranslate"><span class="pre">ColorsOut.outerr</span></code> visualizza un messaggio in colore rosso,
+mentre <code class="docutils literal notranslate"><span class="pre">ColorsOut.out</span></code> lo fa (con colore blu o con un colore specificato esplicitamente come parametro)
+quando il parametro di configurazione “tracing” vale “true”.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s2">&quot;simulation&quot;</span>       <span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="s2">&quot;tracing&quot;</span>          <span class="p">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+ <span class="o">...</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Per ottenere messaggi colorati in Eclipse, occorre installare il plugin  <em>ANSI-Escape in Console</em>.</p>
+</section>
+<section id="la-classe-basicutils">
+<h4>La classe <code class="docutils literal notranslate"><span class="pre">BasicUtils</span></code><a class="headerlink" href="#la-classe-basicutils" title="Permalink to this headline">¶</a></h4>
+<p>Quesat classe definisce un singleton che fornisce vari metodi tra cui:</p>
+<ul class="simple">
+<li><p><em>public static void</em> <strong>showSystemInfo()</strong> : visualizza la memoria disponibile e il numero di processori</p></li>
+<li><p><em>public static void</em> <strong>delay(int dt)</strong> : sospende il Thread corrente per dt millisecondi</p></li>
+<li><p><em>public static void</em> <strong>waitTheUser()</strong> : blocca l’esecuzione in attesa che l’utente batta un tasto</p></li>
+<li><p><em>public static void</em> <strong>aboutThreads(String msg)</strong> : visualizza <strong>msg</strong> seguito dal nome del Thread corrente e il numero totale
+dei Thread attivi .</p></li>
+</ul>
+</section>
+</section>
+<section id="dispositivi-reali-e-mock">
+<h3>Dispositivi reali e Mock<a class="headerlink" href="#dispositivi-reali-e-mock" title="Permalink to this headline">¶</a></h3>
+<p>Per essere certi che un dispositivo Mock possa essere un sostituto efficace di un dispositivo reale,
+introduciamo per ogni dispositivo una <strong>classe astratta</strong> comune alle due tipologie,
+che funga anche da Factory specifica per quel tipo di dispositivo.</p>
+<p>Partiamo ovviamente tenendo conto delle specifiche sulle interfacce introdotte in fase di analisi:
+<a class="reference internal" href="RadarSystemProdottiAnalisi.html#modellooggettidominio"><span class="std std-ref">Modello ad oggetti del dominio</span></a>.</p>
+<section id="il-led">
+<span id="led"></span><h4>Il Led<a class="headerlink" href="#il-led" title="Permalink to this headline">¶</a></h4>
+<p>Un Led è un dispositivo di output che può essere modellato e gestito realizzando i metodi di <code class="docutils literal notranslate"><span class="pre">ILed</span></code>
+(vedi <a class="reference internal" href="RadarSystemProdottiAnalisi.html#iled"><span class="std std-ref">Le interfacce ILed e IRadarDisplay</span></a>) come <em>getter/setter</em> di uno stato interno.</p>
+<section id="la-classe-astratta-ledmodel">
+<span id="ledmodel"></span><h5>La classe astratta LedModel<a class="headerlink" href="#la-classe-astratta-ledmodel" title="Permalink to this headline">¶</a></h5>
+<p>La classe astratta relativa al Led introduce un metodo <span class="blue">abstract</span> denominato <code class="docutils literal notranslate"><span class="pre">ledActivate</span></code>
+cui è demandata la responsabilità di accendere/spegnere il Led.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">LedModel</span> <span class="kd">implements</span> <span class="n">ILed</span><span class="p">{</span>
+  <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">state</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+  <span class="c1">//Factory methods</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ILed</span> <span class="nf">create</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">ILed</span> <span class="n">led</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="p">)</span> <span class="n">led</span> <span class="o">=</span> <span class="n">createLedMock</span><span class="p">();</span>
+    <span class="k">else</span> <span class="n">led</span> <span class="o">=</span> <span class="n">createLedConcrete</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ILed</span> <span class="nf">createLedMock</span><span class="p">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">LedMock</span><span class="p">();</span>  <span class="p">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ILed</span> <span class="nf">createLedConcrete</span><span class="p">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">LedConcrete</span><span class="p">();}</span>
+
+  <span class="c1">//Abstract methods</span>
+  <span class="kd">protected</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">ledActivate</span><span class="p">(</span> <span class="kt">boolean</span> <span class="n">val</span><span class="p">);</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setState</span><span class="p">(</span> <span class="kt">boolean</span> <span class="n">val</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
+    <span class="n">ledActivate</span><span class="p">(</span> <span class="n">state</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnOn</span><span class="p">(){</span> <span class="n">setState</span><span class="p">(</span> <span class="kc">true</span> <span class="p">);</span> <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnOff</span><span class="p">()</span> <span class="p">{</span> <span class="n">setState</span><span class="p">(</span> <span class="kc">false</span> <span class="p">);</span> <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">getState</span><span class="p">(){</span>  <span class="k">return</span> <span class="n">state</span><span class="p">;</span>  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La variabile locale booleana <code class="docutils literal notranslate"><span class="pre">state</span></code> viene posta a <code class="docutils literal notranslate"><span class="pre">true</span></code> quando il Led è acceso.</p>
+</section>
+<section id="il-ledmock">
+<span id="ledmock"></span><h5>Il LedMock<a class="headerlink" href="#il-ledmock" title="Permalink to this headline">¶</a></h5>
+<p>In pratica il <code class="docutils literal notranslate"><span class="pre">LedModel</span></code> è già un <code class="docutils literal notranslate"><span class="pre">LedMock</span></code>, in quanto tiene traccia dello stato corrente nella variabile
+<code class="docutils literal notranslate"><span class="pre">state</span></code>.</p>
+<p>Poichè il metodo <code class="docutils literal notranslate"><span class="pre">ledActivate</span></code> ha la responsabilità di definire il codice specifico per
+accedendere/spegnere il Led, a livello di Mock possiamo rendere visibile lo stato del Led
+sullo standard output.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedMock</span> <span class="kd">extends</span> <span class="n">LedModel</span> <span class="kd">implements</span> <span class="n">ILed</span><span class="p">{</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">ledActivate</span><span class="p">(</span><span class="kt">boolean</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>    <span class="n">showState</span><span class="p">();</span> <span class="p">}</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">showState</span><span class="p">(){</span>
+    <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outappl</span><span class="p">(</span><span class="s">&quot;LedMock state=&quot;</span> <span class="o">+</span> <span class="n">getState</span><span class="p">(),</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">MAGENTA</span> <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Una implementazione più user-friendly potrebbe
+introdurre una GUI che cambia di colore e/o dimensione a seconda che il Led sia acceso o spento.
+A questo scopo introduciamo anche la classe <code class="docutils literal notranslate"><span class="pre">LedMockWithGui</span></code>, il cui codice è lasciato al lettore.</p>
+</section>
+<section id="il-ledconcrete">
+<span id="ledconcrete"></span><h5>Il LedConcrete<a class="headerlink" href="#il-ledconcrete" title="Permalink to this headline">¶</a></h5>
+<p>Il componente che realizza la gestione di un Led concreto, connesso a un RaspberryPi, si può avvalere
+del software reso disponibile dal committente:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedConcrete</span> <span class="kd">extends</span> <span class="n">LedModel</span> <span class="kd">implements</span> <span class="n">ILed</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">Runtime</span> <span class="n">rt</span>  <span class="o">=</span> <span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">();</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">ledActivate</span><span class="p">(</span><span class="kt">boolean</span> <span class="n">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">val</span> <span class="p">)</span> <span class="n">rt</span><span class="p">.</span><span class="na">exec</span><span class="p">(</span> <span class="s">&quot;sudo bash led25GpioTurnOn.sh&quot;</span> <span class="p">);</span>
+      <span class="k">else</span> <span class="n">rt</span><span class="p">.</span><span class="na">exec</span><span class="p">(</span> <span class="s">&quot;sudo bash led25GpioTurnOff.sh&quot;</span> <span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">IOException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-del-dispositivo-led">
+<h5>Testing del dispositivo Led<a class="headerlink" href="#testing-del-dispositivo-led" title="Permalink to this headline">¶</a></h5>
+<p>Un test automatizzato di tipo <strong>Unit-test</strong> (si veda <a class="reference internal" href="CostruireSoftware.html#il-testing"><span class="std std-ref">Il testing</span></a>) sul Led può essere espresso usando JUnit come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestLed</span> <span class="p">{</span>
+  <span class="nd">@Before</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">up</span><span class="p">(){</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;up&quot;</span><span class="p">);</span> <span class="p">}</span>
+  <span class="nd">@After</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">down</span><span class="p">(){</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;down&quot;</span><span class="p">);</span> <span class="p">}</span>
+  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testLedMock</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="n">ILed</span> <span class="n">led</span> <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createLed</span><span class="p">();</span>
+    <span class="n">assertTrue</span><span class="p">(</span> <span class="o">!</span> <span class="n">led</span><span class="p">.</span><span class="na">getState</span><span class="p">()</span> <span class="p">);</span>
+
+    <span class="n">led</span><span class="p">.</span><span class="na">turnOn</span><span class="p">();</span>
+    <span class="n">assertTrue</span><span class="p">(</span>  <span class="n">led</span><span class="p">.</span><span class="na">getState</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">Utils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>                <span class="c1">//to see the ledgui</span>
+
+    <span class="n">led</span><span class="p">.</span><span class="na">turnOff</span><span class="p">();</span>
+    <span class="n">assertTrue</span><span class="p">(</span>  <span class="o">!</span> <span class="n">led</span><span class="p">.</span><span class="na">getState</span><span class="p">()</span> <span class="p">);</span>
+    <span class="n">Utils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>                <span class="c1">//to see the ledgui</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Un test sul <code class="docutils literal notranslate"><span class="pre">LedConcrete</span></code> ha la stessa struttura del test sul <code class="docutils literal notranslate"><span class="pre">LedMock</span></code>, ma bisogna avere l’avvertenza
+di eseguirlo sul RaspberryPi. Eseguendo il test sul PC non vengono segnalati errori (in quanto
+il Led ‘funziona’ da un punto di vista logico) ma compaiono messaggi del tipo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LedConcrete</span> <span class="o">|</span> <span class="n">ERROR</span> <span class="n">Cannot</span> <span class="n">run</span> <span class="n">program</span> <span class="s2">&quot;sudo&quot;</span><span class="p">:</span> <span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="il-sonar">
+<span id="sonar"></span><h4>Il Sonar<a class="headerlink" href="#il-sonar" title="Permalink to this headline">¶</a></h4>
+<p>Un Sonar è un dispositivo di input che deve fornire dati, in modo autonomo o quando richiesto dalla applicazione.</p>
+<p>Il software fornito dal committente per l’uso di un Sonar reale <code class="docutils literal notranslate"><span class="pre">HC-SR04</span></code> introduce
+logicamente un componente attivo, che produce sul dispositivo standard di output,
+con una certa frequenza, una sequenza di valori (interi) di distanza.
+Nella nostra analisi, invece, il Sonar è un dispositivo produttore di dati di tipo
+<code class="docutils literal notranslate"><span class="pre">IDistance</span></code> (si veda:  <a class="reference internal" href="RadarSystemProdottiAnalisi.html#idistance"><span class="std std-ref">Le interfacce IDistance e ISonar</span></a>).</p>
+<p>La modellazione di un componente produttore di dati è più complicata di quella di un dispositivo di output
+in quanto occorre affrontare un classico <a class="reference external" href="https://it.wikipedia.org/wiki/Problema_del_produttore/consumatore">Problema produttore-consumatore</a>.</p>
+<section id="la-classe-astratta-sonarmodel">
+<span id="sonarmodel"></span><h5>La classe astratta SonarModel<a class="headerlink" href="#la-classe-astratta-sonarmodel" title="Permalink to this headline">¶</a></h5>
+<p>La classe astratta relativa al Sonar introduce due metodi <span class="blue">abstract</span>,  uno per specificare il modo di <strong>inizializzare</strong> il sonar
+(metodo <code class="docutils literal notranslate"><span class="pre">sonarSetUp</span></code>) e uno per specificare il modo di <strong>produzione dei dati</strong> (metodo <code class="docutils literal notranslate"><span class="pre">sonarProduce</span></code>).
+Inoltre, essa definisce due metodi <code class="docutils literal notranslate"><span class="pre">create</span></code> che costituiscono Factory-methods per un sonar Mock e un sonar reale.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">SonarModel</span> <span class="kd">implements</span> <span class="n">ISonar</span><span class="p">{</span>
+  <span class="kd">protected</span> <span class="kt">boolean</span> <span class="n">stopped</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span> <span class="c1">//se true il sonar si ferma</span>
+  <span class="kd">protected</span>  <span class="n">IDistance</span> <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+  <span class="c1">//Factory methods</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ISonar</span> <span class="nf">create</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="p">)</span>  <span class="k">return</span> <span class="n">createSonarMock</span><span class="p">();</span>
+    <span class="k">else</span>  <span class="k">return</span> <span class="n">createSonarConcrete</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="kd">protected</span> <span class="nf">SonarModel</span><span class="p">()</span> <span class="p">{</span> <span class="c1">//hidden costructor, to force setup</span>
+    <span class="n">sonarSetUp</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ISonar</span> <span class="nf">createSonarMock</span><span class="p">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">SonarMock</span><span class="p">();}</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="n">ISonar</span> <span class="nf">createSonarConcrete</span><span class="p">(){</span><span class="k">return</span> <span class="k">new</span> <span class="n">SonarConcrete</span><span class="p">();}</span>
+</pre></div>
+</div>
+<p>Il Sonar viene modellato come un processo che produce dati di un tipo
+che potrebbe essere:</p>
+<ol class="arabic simple">
+<li><p><strong>int</strong>: è il tipo di dato prodotto dal core-code del Sonar;</p></li>
+<li><p><strong>String</strong>: come rappresentazione del valore  ;</p></li>
+<li><p><strong>IDistance</strong>: è il tipo di dato prodotto dal Sonar a livello logico, come espresso dalla interfaccia <a class="reference internal" href="RadarSystemProdottiAnalisi.html#isonar"><span class="std std-ref">ISonar</span></a>.</p></li>
+</ol>
+<p>Poichè i consumtori si aspettano valori di distanza, siamo qui indotti ad optare per la terza opzione
+<code class="docutils literal notranslate"><span class="pre">IDistance</span></code>. Tuttavia, motivi di efficienza potrebbero farci optare per la prima e
+motivi di flessibilità e di interoperabilità per la seconda.</p>
+</section>
+<section id="la-classe-distance">
+<h5>La classe Distance<a class="headerlink" href="#la-classe-distance" title="Permalink to this headline">¶</a></h5>
+<p>La classe che implementa <a class="reference internal" href="RadarSystemProdottiAnalisi.html#idistance"><span class="std std-ref">IDistance</span></a> viene definita come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Distance</span> <span class="kd">implements</span> <span class="n">IDistance</span><span class="p">{</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="nf">Distance</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">)</span> <span class="p">{</span> <span class="n">v</span><span class="o">=</span><span class="n">d</span><span class="p">;</span>       <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getVal</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">v</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="p">(){</span> <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">v</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ricordiamo che l’interfaccia <a class="reference internal" href="RadarSystemProdottiAnalisi.html#idistance"><span class="std std-ref">IDistance</span></a> non prevede metodi per modificare un dato di questo tipo,
+una volta creato.</p>
+</section>
+<section id="la-produzione-dei-dati">
+<h5>La produzione dei dati<a class="headerlink" href="#la-produzione-dei-dati" title="Permalink to this headline">¶</a></h5>
+<p>Il codice relativo alla produzione dei dati viene incapsulato in un metodo abstract <code class="docutils literal notranslate"><span class="pre">sonarProduce</span></code>
+che dovrà essere definito in modo diverso da un <code class="docutils literal notranslate"><span class="pre">SonarMock</span></code> e un <code class="docutils literal notranslate"><span class="pre">SonarConcrete</span></code>, così come il
+metodo di inizializzazione <code class="docutils literal notranslate"><span class="pre">sonarSetUp</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">//Abstract methods</span>
+<span class="kd">protected</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">sonarSetUp</span><span class="p">()</span> <span class="p">;</span>
+<span class="kd">protected</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">sonarProduce</span><span class="p">(</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>Il processo di produzione risulta attivo  quando la variabile locale <code class="docutils literal notranslate"><span class="pre">stopped</span></code> è <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+Di qui le seguenti definizioni:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deactivate</span><span class="p">()</span> <span class="p">{</span> <span class="n">stopped</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isActive</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="o">!</span> <span class="n">stopped</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Con queste premesse, il metodo <code class="docutils literal notranslate"><span class="pre">activate</span></code> deve
+attivare un Thread interno di produzione di dati:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">stopped</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="k">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">while</span><span class="p">(</span> <span class="o">!</span> <span class="n">stopped</span>  <span class="p">)</span> <span class="p">{</span> <span class="n">sonarProduce</span><span class="p">();</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La parte applicativa che funge da consumatore dei dati prodotti dal Sonar dovrà invocare il metodo
+<code class="docutils literal notranslate"><span class="pre">geDistance</span></code> che viene definito in modo da restituire il valore corrente prodotto da Sonar:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span> <span class="nd">@Override</span>
+ <span class="kd">public</span> <span class="n">IDistance</span> <span class="nf">getDistance</span><span class="p">()</span> <span class="p">{</span>
+   <span class="k">return</span> <span class="n">curVal</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>La variabile <code class="docutils literal notranslate"><span class="pre">curVal</span></code> dovrebbe essere logicamente protetta da un meccanismo di <strong>mutua esclusione</strong>.
+Tuttavia i dati sono in continuo aggiornamento e l’eventuale lettura di un valore non completamente modificato
+non è qui un problema.</p>
+</section>
+<section id="il-sonarmock">
+<span id="sonarmock"></span><h5>Il SonarMock<a class="headerlink" href="#il-sonarmock" title="Permalink to this headline">¶</a></h5>
+<p>Un Mock-sonar che produce valori di distanza da <code class="docutils literal notranslate"><span class="pre">90</span></code> a <code class="docutils literal notranslate"><span class="pre">0</span></code> può quindi ora essere definito come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarMock</span> <span class="kd">extends</span> <span class="n">SonarModel</span> <span class="kd">implements</span> <span class="n">ISonar</span><span class="p">{</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">delta</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarSetUp</span><span class="p">(){</span>  <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>  <span class="p">}</span>
+
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarProduce</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">updateDistance</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="p">);</span>
+      <span class="n">stopped</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>  <span class="c1">//one shot</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+      <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">curVal</span><span class="p">.</span><span class="na">getVal</span><span class="p">()</span> <span class="o">-</span> <span class="n">delta</span><span class="p">;</span>
+      <span class="n">updateDistance</span><span class="p">(</span> <span class="n">v</span> <span class="p">);</span>
+      <span class="n">stopped</span> <span class="o">=</span> <span class="p">(</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">);</span>
+      <span class="n">Utils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span><span class="p">);</span> <span class="c1">//avoid fast generation</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Si noti che:</p>
+<ul class="simple">
+<li><p>viene definito un nuovo parametro di configurazione <code class="docutils literal notranslate"><span class="pre">testing</span></code> che, quando <code class="docutils literal notranslate"><span class="pre">true</span></code>,  denota che
+il sonar sta lavorando in una fase di testing, per cui produce un solo valore dato dal
+parametro <code class="docutils literal notranslate"><span class="pre">testingDistance</span></code>. Ciò al fine di controllare il Sonar come emettitore di un dato noto.</p></li>
+<li><p>viene definito un nuovo parametro di configurazione <code class="docutils literal notranslate"><span class="pre">DLIMIT</span></code> per permettere il setting di <code class="docutils literal notranslate"><span class="pre">testingDistance</span></code>
+in funzione di un valore prefissato (si veda <a class="reference internal" href="#testing-del-dispositivo-sonar"><span class="std std-ref">Testing del dispositivo Sonar</span></a>).</p></li>
+<li><p>viene definito un nuovo parametro di configurazione <code class="docutils literal notranslate"><span class="pre">sonarDelay</span></code> per un rallentamento
+della frequenza di generazione dei dati.</p></li>
+</ul>
+<p>Il file  <a class="reference internal" href="#domainsystemconfig"><span class="std std-ref">DomainSystemConfig.json</span></a> si arricchisce di specifiche:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="s">&quot;simulation&quot;</span>       <span class="p">:</span> <span class="s">&quot;true&quot;</span><span class="p">,</span>
+ <span class="p">...</span>
+<span class="s">&quot;DLIMIT&quot;</span>           <span class="p">:</span> <span class="s">&quot;15&quot;</span><span class="p">,</span>
+<span class="s">&quot;testing&quot;</span>          <span class="p">:</span> <span class="s">&quot;false&quot;</span>
+<span class="s">&quot;testingDistance&quot;</span>  <span class="p">:</span> <span class="s">&quot;10&quot;</span> <span class="p">,</span>
+<span class="s">&quot;sonarDelay&quot;</span>       <span class="p">:</span> <span class="s">&quot;100&quot;</span>
+<span class="s">&quot;sonarDistanceMax&quot;</span> <span class="p">:</span> <span class="s">&quot;150&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="il-sonarconcrete">
+<h5>Il SonarConcrete<a class="headerlink" href="#il-sonarconcrete" title="Permalink to this headline">¶</a></h5>
+<p>Il componente che realizza la gestione di un Sonar concreto, connesso a un RaspberryPi,
+si può avvalere del programma <code class="docutils literal notranslate"><span class="pre">SonarAlone.c</span></code> fornito dal committente.</p>
+<div class="highlight-java notranslate" id="sonarconcrete"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarConcrete</span> <span class="kd">extends</span> <span class="n">SonarModel</span> <span class="kd">implements</span> <span class="n">ISonar</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">Process</span> <span class="n">p</span> <span class="p">;</span>
+<span class="kd">private</span>  <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="p">;</span>
+
+<span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarSetUp</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">p</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">p</span><span class="o">=</span><span class="n">Runtime</span><span class="p">.</span><span class="na">getRuntime</span><span class="p">().</span><span class="na">exec</span><span class="p">(</span><span class="s">&quot;sudo ./SonarAlone&quot;</span><span class="p">);</span>
+    <span class="n">reader</span><span class="o">=</span><span class="k">new</span> <span class="n">BufferedReader</span><span class="p">(</span> <span class="k">new</span> <span class="n">InputStreamReader</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="na">getInputStream</span><span class="p">()));</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="kd">super</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarProduce</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">data</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="na">readLine</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">data</span> <span class="o">==</span> <span class="kc">null</span> <span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">lastSonarVal</span> <span class="o">=</span> <span class="n">curVal</span><span class="p">.</span><span class="na">getVal</span><span class="p">();</span>
+    <span class="c1">//Eliminiamo dati del tipo 3430</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">lastSonarVal</span> <span class="o">!=</span> <span class="n">v</span> <span class="o">&amp;&amp;</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDistanceMax</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">updateDistance</span><span class="p">(</span> <span class="n">v</span> <span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span><span class="k">catch</span><span class="p">(</span> <span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">deactivate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">curVal</span>            <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">p</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">p</span><span class="p">.</span><span class="na">destroy</span><span class="p">();</span>
+    <span class="n">p</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">super</span><span class="p">.</span><span class="na">deactivate</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-del-dispositivo-sonar">
+<h5>Testing del dispositivo Sonar<a class="headerlink" href="#testing-del-dispositivo-sonar" title="Permalink to this headline">¶</a></h5>
+<p>Il testing di un sonar riguarda due aspetti distinti:</p>
+<ol class="arabic simple">
+<li><p>il test sul corretto funzionamento del dispositivo in quanto tale. Supponendo di porre
+di fronte al Sonar un ostacolo a distanza <span class="math notranslate nohighlight">\(D\)</span>, il Sonar deve emettere dati di valore
+<span class="math notranslate nohighlight">\(D \pm \epsilon\)</span>.</p></li>
+<li><p>il test sul corretto funzionamento del componente software responsabile della trasformazione del dispositivo
+in un produttore di dati consumabili da un altro componente.</p></li>
+</ol>
+<p>Ovviamente qui ci dobbiamo occupare della seconda parte, supponendo che la prima sia soddisfatta. A tal fine
+possiamo procedere come segue:</p>
+<ul class="simple">
+<li><p>per il <em>SonardMock</em>, poichè siamo noi a generare la sequenza di valori, possiamo
+verificare che un <strong>unico</strong> consumatore riceva dal metodo <code class="docutils literal notranslate"><span class="pre">getDistance</span></code> i valori nella giusta sequenza;</p></li>
+<li><p>per il <em>SonarConcrete</em>, poniamo uno schermo a distanza prefissata <span class="math notranslate nohighlight">\(D\)</span>  e verifichiamo che
+un consumatore riceva dal  metodo <code class="docutils literal notranslate"><span class="pre">getDistance</span></code> valori <span class="math notranslate nohighlight">\(D \pm \epsilon\)</span>.</p></li>
+</ul>
+<p>Un processo consumatore di dati emessi dal sonar può essere definito verificando l’aspettativa
+di ricevere dati nell’intervallo di confidenza stabilito:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">SonarConsumerForTesting</span> <span class="kd">extends</span> <span class="n">Thread</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">delta</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="nf">SonarConsumerForTesting</span><span class="p">(</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">,</span> <span class="kt">int</span> <span class="n">delta</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">sonar</span> <span class="o">=</span> <span class="n">sonar</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="na">delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">v0</span> <span class="o">=</span> <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">getVal</span><span class="p">();</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">sonar</span><span class="p">.</span><span class="na">isActive</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">BasicUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span> <span class="c1">//non perdere dati</span>
+      <span class="n">IDistance</span> <span class="n">d</span>      <span class="o">=</span> <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">();</span>
+      <span class="kt">int</span> <span class="n">v</span>            <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="na">getVal</span><span class="p">();</span>
+      <span class="kt">int</span> <span class="n">vexpectedMin</span> <span class="o">=</span> <span class="n">v0</span><span class="o">-</span><span class="n">delta</span><span class="p">;</span>
+      <span class="kt">int</span> <span class="n">vexpectedMax</span> <span class="o">=</span> <span class="n">v0</span><span class="o">+</span><span class="n">delta</span><span class="p">;</span>
+      <span class="n">assertTrue</span><span class="p">(</span>  <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">vexpectedMax</span> <span class="o">&amp;&amp;</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="n">vexpectedMin</span> <span class="p">);</span>
+      <span class="n">v0</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Una TestUnit automatizzata per il <code class="docutils literal notranslate"><span class="pre">SonarMock</span></code> può essere quindi definita in JUnit come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSonarMock</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">//quite fast generation...</span>
+  <span class="kt">int</span> <span class="n">delta</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+  <span class="n">ISonar</span> <span class="n">sonar</span> <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createSonar</span><span class="p">();</span>
+  <span class="k">new</span> <span class="n">SonarConsumerForTesting</span><span class="p">(</span> <span class="n">sonar</span><span class="p">,</span> <span class="n">delta</span> <span class="p">).</span><span class="na">start</span><span class="p">();</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+  <span class="k">while</span><span class="p">(</span> <span class="n">sonar</span><span class="p">.</span><span class="na">isActive</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span><span class="n">Utils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);}</span>  <span class="c1">//avoid premature exit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Una TestUnit per il <code class="docutils literal notranslate"><span class="pre">SonarConcrete</span></code> è simile, una volta fissato il valore <span class="math notranslate nohighlight">\(delta=\epsilon\)</span>
+di varianza sulla distanza-base.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="sprint1-l-applicazione">
+<h2>SPRINT1: L’applicazione<a class="headerlink" href="#sprint1-l-applicazione" title="Permalink to this headline">¶</a></h2>
+<p>Reimpostiamo il progetto Java <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22</span></code> organizzandolo come in figura:</p>
+<a class="reference internal image-reference" href="_images/ApplRadarProject.PNG"><img alt="_images/ApplRadarProject.PNG" class="align-center" src="_images/ApplRadarProject.PNG" style="width: 70%;" /></a>
+<section id="il-controller">
+<span id="controller"></span><h3>Il Controller<a class="headerlink" href="#il-controller" title="Permalink to this headline">¶</a></h3>
+<p>Il componente che realizza la logica applicativa in ambiente locale con dispositivi Mock o concreti
+può essere definito partendo dal modello introdotto
+nella fase di analisi (<a class="reference internal" href="RadarSystemProdottiAnalisi.html#controllerlogic"><span class="std std-ref">La logica del Controller</span></a>) , attivando un Thread che realizza lo schema <em>read-eval-print</em>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Controller</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">ILed</span> <span class="n">led</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">IRadarDisplay</span> <span class="n">radar</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">ActionFunction</span> <span class="n">endFun</span><span class="p">;</span>
+
+<span class="c1">//Factory method</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">Controller</span> <span class="nf">create</span><span class="p">(</span>
+      <span class="n">ILed</span> <span class="n">led</span><span class="p">,</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">,</span><span class="n">IRadarDisplay</span> <span class="n">radar</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">new</span> <span class="n">Controller</span><span class="p">(</span> <span class="n">led</span><span class="p">,</span>  <span class="n">sonar</span><span class="p">,</span> <span class="n">radar</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//Constructor</span>
+<span class="kd">private</span> <span class="nf">Controller</span><span class="p">(</span> <span class="n">ILed</span> <span class="n">led</span><span class="p">,</span> <span class="n">ISonar</span> <span class="n">sonar</span><span class="p">,</span><span class="n">IRadarDisplay</span> <span class="n">radar</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">led</span>    <span class="o">=</span> <span class="n">led</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">sonar</span>  <span class="o">=</span> <span class="n">sonar</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">radar</span>  <span class="o">=</span> <span class="n">radar</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="p">(</span> <span class="n">ActionFunction</span> <span class="n">endFun</span><span class="p">,</span> <span class="kt">int</span> <span class="n">limit</span>  <span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">endFun</span> <span class="o">=</span> <span class="n">endFun</span><span class="p">;</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">(</span> <span class="n">limit</span> <span class="p">);</span>
+  <span class="n">activate</span><span class="p">(</span> <span class="n">limit</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il Controller riceve in ingresso i (riferimenti ai) componenti del sistema e può essere attivato
+invocando il metodo <code class="docutils literal notranslate"><span class="pre">start</span></code> il cui argomento <code class="docutils literal notranslate"><span class="pre">limit</span></code> fissa un limite massimo al numero delle iterazioni.</p>
+<section id="azioni-di-fine-lavoro">
+<h4>Azioni di fine lavoro<a class="headerlink" href="#azioni-di-fine-lavoro" title="Permalink to this headline">¶</a></h4>
+<p>Il primo argomento (<code class="docutils literal notranslate"><span class="pre">endFun</span></code>) del metodo <code class="docutils literal notranslate"><span class="pre">start</span></code> del Controller è una <strong>funzione di callback</strong>
+che implementa la seguente interfaccia:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ActionFunction</span> <span class="p">{</span>
+  <span class="kt">void</span> <span class="nf">run</span><span class="p">(</span><span class="n">String</span> <span class="n">result</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Una funzione di questo tipo verrà invocata al termine delle attività del Controller, che si presenta come un oggetto attivo.</p>
+<p>Poichè vale che:</p>
+<p><span class="remark">la funzione di callback è una chiusura lessicale sul chiamante</span></p>
+<p>l’invocazione della funzione permette al chiamante della operazione <code class="docutils literal notranslate"><span class="pre">start</span></code> di utilizzare nel suo contesto computazionale
+eventuali risultati prodotti dal controller, quando questi termina l’esecuzione. Si noti però che questa attività verrà
+svolta nel Thread del Controller.</p>
+</section>
+<section id="il-funzionamento-del-controller">
+<h4>Il funzionamento del Controller<a class="headerlink" href="#il-funzionamento-del-controller" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">start</span></code> attiva il Sonar e lancia un Thread interno di lavoro.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">(</span> <span class="kt">int</span> <span class="n">limit</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">new</span> <span class="n">Thread</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+          <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+          <span class="c1">//while( sonarActive() ) {</span>
+          <span class="k">if</span><span class="p">(</span> <span class="n">sonar</span><span class="p">.</span><span class="na">isActive</span><span class="p">()</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">limit</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//meglio per il testing</span>
+              <span class="n">IDistance</span> <span class="n">d</span> <span class="o">=</span> <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">();</span>
+              <span class="k">if</span><span class="p">(</span> <span class="n">radar</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="n">RadarGuiUsecase</span><span class="p">.</span><span class="na">doUseCase</span><span class="p">(</span><span class="n">radar</span><span class="p">,</span><span class="n">d</span><span class="p">);</span>
+              <span class="n">LedAlarmUsecase</span><span class="p">.</span><span class="na">doUseCase</span><span class="p">(</span> <span class="n">led</span><span class="p">,</span>  <span class="n">d</span>  <span class="p">);</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+          <span class="n">sonar</span><span class="p">.</span><span class="na">deactivate</span><span class="p">();</span>
+          <span class="n">endFun</span><span class="p">.</span><span class="na">run</span><span class="p">(</span><span class="s">&quot;Controller | BYE &quot;</span><span class="p">);</span><span class="c1">//CALLBACK</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span>  <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}.</span><span class="na">start</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Si noti che il Controller realizza ciascun requisito invocando uno specifico componente
+(<a class="reference internal" href="#radarguiusecase"><span class="std std-ref">RadarGuiUsecase</span></a> e <a class="reference internal" href="#ledalarmusecase"><span class="std std-ref">LedAlarmUsecase</span></a>).</p>
+<p>Logicamente, la computazione prosegue fintanto che il Sonar è attivo; tuttavia,
+la messa a punto del sistema (e il testing) può essere agevolato
+limitando a priori il numero di iterazioni.</p>
+<p>Notiamo anche che il Controller evita (al momento) di realizzare il requisito <code class="docutils literal notranslate"><span class="pre">radarGui</span></code>
+(si veda <a class="reference internal" href="SonarObservable.html#requirements"><span class="std std-ref">SonarObservable: Requisiti</span></a>) se riceve in ingresso un riferimento nullo al <code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>.</p>
+</section>
+<section id="ledalarmusecase">
+<h4>LedAlarmUsecase<a class="headerlink" href="#ledalarmusecase" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LedAlarmUsecase</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">doUseCase</span><span class="p">(</span><span class="n">ILed</span> <span class="n">led</span><span class="p">,</span> <span class="n">IDistance</span> <span class="n">d</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="n">d</span><span class="p">.</span><span class="na">getVal</span><span class="p">()</span> <span class="o">&lt;</span>  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span> <span class="p">)</span> <span class="n">led</span><span class="p">.</span><span class="na">turnOn</span><span class="p">();</span>
+      <span class="k">else</span>  <span class="n">led</span><span class="p">.</span><span class="na">turnOff</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="radarguiusecase">
+<h4>RadarGuiUsecase<a class="headerlink" href="#radarguiusecase" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarGuiUsecase</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">doUseCase</span><span class="p">(</span> <span class="n">IRadarDisplay</span> <span class="n">radar</span><span class="p">,</span> <span class="n">IDistance</span> <span class="n">d</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">radar</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">d</span><span class="p">.</span><span class="na">getVal</span><span class="p">(),</span> <span class="s">&quot;90&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="il-sistema-in-locale">
+<span id="radarsystemsprint1main"></span><h2>Il sistema in locale<a class="headerlink" href="#il-sistema-in-locale" title="Permalink to this headline">¶</a></h2>
+<p>La prima, semplice versione del sistema da eseguire e testare lavora su un singolo computer
+(PC o Raspberry) con dispositivi simulati o (nel caso di Raspberry) reali.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemSprint1Main</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">ISonar</span> <span class="n">sonar</span>        <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">ILed</span> <span class="n">led</span>            <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">IRadarDisplay</span> <span class="n">radar</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">Controller</span> <span class="n">controller</span><span class="p">;</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">(){</span> <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="na">getClass</span><span class="p">().</span><span class="na">getName</span><span class="p">();</span> <span class="p">}</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span><span class="n">String</span> <span class="n">domainConfig</span><span class="p">,</span> <span class="n">String</span> <span class="n">systemConfig</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">setup</span><span class="p">(</span><span class="n">domainConfig</span><span class="p">,</span> <span class="n">systemConfig</span><span class="p">);</span>
+  <span class="n">configure</span><span class="p">();</span>
+  <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>
+    <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="n">terminate</span><span class="p">();</span>
+  <span class="p">};</span>
+  <span class="c1">//start</span>
+  <span class="n">controller</span><span class="p">.</span><span class="na">start</span><span class="p">(</span><span class="n">endFun</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">terminate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">BasicUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before deactivation | &quot;</span><span class="p">);</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">deactivate</span><span class="p">();</span>
+  <span class="n">System</span><span class="p">.</span><span class="na">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+  <span class="p">...</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="p">{</span>
+  <span class="k">new</span> <span class="n">RadarSystemSprint1Main</span><span class="p">().</span><span class="na">doJob</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="kc">null</span><span class="p">);</span> <span class="c1">//su</span>
+  <span class="cm">/*</span>
+<span class="cm">  //su Rasp:</span>
+<span class="cm">  new RadarSystemSprint1Main().doJob(</span>
+<span class="cm">         &quot;DomainSystemConfig.json&quot;,&quot;RadarSystemSprint1Main&quot;);</span>
+<span class="cm">  */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="l-interfaccia-iapplication">
+<span id="iapplication"></span><h2>L’interfaccia IApplication<a class="headerlink" href="#l-interfaccia-iapplication" title="Permalink to this headline">¶</a></h2>
+<p>Poichè dovremo realizzare diverse versioni/configurazioni del sistema, sia in locale sia
+in distribuito, introduciamo qui il vincolo che ciascuna
+delle versioni del sistema dovrà implementare l’interfaccia che segue.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IApplication</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">doJob</span><span class="p">(</span><span class="n">String</span> <span class="n">configFileName</span><span class="p">,</span> <span class="n">String</span> <span class="n">systemConfig</span><span class="p">);</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Ogni versione del sistema dovrà duque fornire un nome (con cui potrà essere selezionata) e un metodo <code class="docutils literal notranslate"><span class="pre">doJob</span></code>
+che riceve in ingresso il file di configurazione del dominio e il file di configurazione del sistema.</p>
+<p><span class="worktodo">WORKTODO: Programma di selezione applicazioni</span></p>
+<ul class="simple">
+<li><p>Definire un programma che offre ad un utente un elenco di nomi di applicazioni da cui l’utente può scegliere
+per attivarne una.</p></li>
+</ul>
+<section id="fase-di-setup">
+<h3>Fase di setup<a class="headerlink" href="#fase-di-setup" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setup</span></code> del Main applicativo fissa i parametri di  configurazione leggendo i file di configurazione
+oppure assegnando loro un valore a livello di programma.
+Osserviamo che:</p>
+<ul class="simple">
+<li><p>Quando attiaviamo il sistema su PC usando un IDE (Eclipse o IntelliJ), conviene fissare i parametri di
+configurazione all’interno del codice.</p></li>
+<li><p>Quando attiviamo il sistema su Raspberry usando come  distribuzione un file <code class="docutils literal notranslate"><span class="pre">jar</span></code>, conviene
+fissare i parametri di  configurazione utilizzando il file <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.json</span></code>.</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemSprint1Main</span> <span class="kd">implements</span> <span class="n">IApplication</span><span class="p">{</span>
+
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="n">String</span> <span class="n">domainConfig</span><span class="p">,</span><span class="n">String</span> <span class="n">systemConfig</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">domainConfig</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">){</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">domainConfig</span><span class="p">);</span>
+              <span class="p">}</span><span class="k">if</span><span class="p">(</span> <span class="n">systemConfig</span> <span class="o">!=</span> <span class="kc">null</span> <span class="p">)</span> <span class="p">{</span>
+                      <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">setTheConfiguration</span><span class="p">(</span><span class="n">systemConfig</span><span class="p">);</span>
+              <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">domainConfig</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="n">systemConfig</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>        <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span>       <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+    <span class="c1">//Su PC</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span>     <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span>                 <span class="o">=</span> <span class="mi">70</span><span class="p">;</span>
+    <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">ledGui</span>           <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">RadarGuiRemote</span>    <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="c1">//Su Raspberry (nei files di configurazione)</span>
+    <span class="c1">//DomainSystemConfig.simulation    = false;</span>
+    <span class="c1">//DomainSystemConfig.DLIMIT        = 12;</span>
+    <span class="c1">//DomainSystemConfig.ledGui        = false;</span>
+    <span class="c1">//RadarSystemConfig.RadarGuiRemote = true;</span>
+  <span class="p">}</span>
+<span class="p">}</span><span class="c1">//setup</span>
+ <span class="p">...</span>
+<span class="p">}</span><span class="c1">//RadarSystemMainLocal</span>
+</pre></div>
+</div>
+</section>
+<section id="fase-di-configurazione">
+<h3>Fase di configurazione<a class="headerlink" href="#fase-di-configurazione" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">configure</span></code> crea i dispositivi simulati concreti a seconda dei parametri di
+configurazione.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">//Dispositivi di Input</span>
+    <span class="n">sonar</span>      <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createSonar</span><span class="p">();</span>
+  <span class="c1">//Dispositivi di Output</span>
+    <span class="n">led</span>        <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createLed</span><span class="p">();</span>
+    <span class="n">radar</span>      <span class="o">=</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">RadarGuiRemote</span> <span class="o">?</span>
+                     <span class="kc">null</span> <span class="p">:</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createRadarGui</span><span class="p">();</span>
+  <span class="n">BasicUtils</span><span class="p">.</span><span class="na">aboutThreads</span><span class="p">(</span><span class="s">&quot;Before Controller creation | &quot;</span><span class="p">);</span>
+  <span class="c1">//Controller</span>
+  <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span> <span class="n">terminate</span><span class="p">();</span> <span class="p">};</span>
+  <span class="n">controller</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="n">led</span><span class="p">,</span> <span class="n">sonar</span><span class="p">,</span> <span class="n">radar</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><span class="worktodo">WORKTODO: Analisi dei Thread</span></p>
+<ul class="simple">
+<li><p>Avvalersi della utility <code class="docutils literal notranslate"><span class="pre">BasicUtils.aboutThreads</span></code> per osservare i thread al lavoro
+nelle varie fasi di attività del sistema.</p></li>
+</ul>
+</section>
+<section id="utilita-per-il-testing">
+<h3>Utilità per il testing<a class="headerlink" href="#utilita-per-il-testing" title="Permalink to this headline">¶</a></h3>
+<p>Inseriamo nel main program  metodi che restitusicono un riferimento ai componenti del sistema, in modo
+da poterne referenziare le proprietà durante il testing automatizzato:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RadarSystemMainLocal</span> <span class="p">{</span>
+  <span class="p">...</span>
+  <span class="kd">public</span> <span class="n">IRadarDisplay</span> <span class="nf">getRadarGui</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">radar</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kd">public</span> <span class="n">ILed</span> <span class="nf">getLed</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">led</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kd">public</span> <span class="n">ISonar</span> <span class="nf">getSonar</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">sonar</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kd">public</span> <span class="n">Controller</span> <span class="nf">getController</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">controller</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing-su-pc">
+<h2>Testing (su PC)<a class="headerlink" href="#testing-su-pc" title="Permalink to this headline">¶</a></h2>
+<p>La testUnit introduce un metodo di setup per definire i parametri di configurazione
+(in modo da non dipendere da files esterni) e per costruire il sistema.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestSystemAtSprint1</span> <span class="p">{</span>
+<span class="kd">private</span> <span class="n">RadarSystemMainLocal</span> <span class="n">sys</span><span class="p">;</span>
+  <span class="nd">@Before</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;setUp&quot;</span><span class="p">);</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="n">sys</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RadarSystemSprint1Main</span><span class="p">();</span>
+      <span class="n">sys</span><span class="p">.</span><span class="na">setup</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="kc">null</span><span class="p">);</span><span class="c1">//non usiamo i files di config</span>
+      <span class="n">sys</span><span class="p">.</span><span class="na">configure</span><span class="p">();</span>
+      <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span>   <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">fail</span><span class="p">(</span><span class="s">&quot;setup ERROR &quot;</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="na">getMessage</span><span class="p">()</span> <span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Come anticipato in fase di analisi dei requisiti, impostiamo un test nel caso in cui
+il Sonar produca un valore <code class="docutils literal notranslate"><span class="pre">d&gt;DLIMIT</span></code> e un altro test per il Sonar che produce un valore <code class="docutils literal notranslate"><span class="pre">d&lt;DLIMIT</span></code>.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testFarDistance</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="o">=</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span> <span class="o">+</span> <span class="mi">20</span><span class="p">;</span>
+  <span class="n">testTheDistance</span><span class="p">(</span> <span class="kc">false</span> <span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testNearDistance</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="o">=</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span> <span class="o">-</span> <span class="mi">5</span><span class="p">;</span>
+  <span class="n">testTheDistance</span><span class="p">(</span> <span class="kc">true</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">testTheDistance</span><span class="p">(</span> <span class="kt">boolean</span> <span class="n">ledStateExpected</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">RadarDisplay</span> <span class="n">radar</span> <span class="o">=</span> <span class="n">RadarDisplay</span><span class="p">.</span><span class="na">getRadarDisplay</span><span class="p">();</span>  <span class="c1">//singleton</span>
+  <span class="n">ActionFunction</span> <span class="n">endFun</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span>  <span class="c1">//eseguita quando il Controller termina</span>
+    <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+    <span class="kt">boolean</span> <span class="n">ledState</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="na">getLed</span><span class="p">().</span><span class="na">getState</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">radarDisplayedDistance</span> <span class="o">=</span> <span class="n">radar</span><span class="p">.</span><span class="na">getCurDistance</span><span class="p">();</span>
+    <span class="n">assertTrue</span><span class="p">(</span>  <span class="n">ledState</span> <span class="o">==</span> <span class="n">ledStateExpected</span>
+      <span class="o">&amp;&amp;</span> <span class="n">radarDisplayedDistance</span> <span class="o">==</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span><span class="p">);</span>
+              <span class="p">};</span>
+  <span class="n">sys</span><span class="p">.</span><span class="na">getController</span><span class="p">().</span><span class="na">start</span><span class="p">(</span> <span class="n">endFun</span><span class="p">,</span> <span class="mi">1</span> <span class="p">);</span> <span class="c1">//one-shot</span>
+  <span class="n">Utils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span> <span class="p">;</span> <span class="c1">//give time to work ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="sprint1-deployment-su-raspberrypi">
+<h2>SPRINT1: Deployment su RaspberryPi<a class="headerlink" href="#sprint1-deployment-su-raspberrypi" title="Permalink to this headline">¶</a></h2>
+<p>Per fare il deployment del sistema su RaspberryPi ed eseguire l’applicazione <a class="reference internal" href="#radarsystemsprint1main"><span class="std std-ref">Il sistema in locale</span></a>
+dobbiamo eseguire quanto riportato qui di seguito:</p>
+<ol class="arabic">
+<li><p>Impostazione del main file in <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mainClassName</span> <span class="o">=</span> <span class="s1">&#39;it.unibo.radarSystem22.sprint1.RadarSystemSprint1Main&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Creazione del file di distribuzione</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gradle</span> <span class="n">distZip</span> <span class="o">-</span><span class="n">x</span> <span class="n">test</span>
+</pre></div>
+</div>
+</li>
+<li><p>Trasferimento del file <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22-0.1.zip</span></code> su RaspberryPi e unzipping</p></li>
+<li><p>Posizionamento nella directory di lavoro:  <code class="docutils literal notranslate"><span class="pre">it.unibo.radarSystem22-0.1/bin</span></code></p></li>
+<li><p>Copia nella directory di lavoro del codice richiesto per l’uso dei dispositivi concreti</p></li>
+<li><p>Impostazione dei parametri di configurazione nel file <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.json</span></code> e <code class="docutils literal notranslate"><span class="pre">RadarSystemConfig.json</span></code></p></li>
+<li><p>nella directory di lavoro</p></li>
+<li><p>Esecuzione di <code class="docutils literal notranslate"><span class="pre">./it.unibo.radarSystem22-0.1</span></code></p></li>
+</ol>
+</section>
+<section id="un-sistema-piu-reattivo">
+<h2>Un sistema più reattivo<a class="headerlink" href="#un-sistema-piu-reattivo" title="Permalink to this headline">¶</a></h2>
+<p>L’uso di un Sonar osservabile permette di eseguire la business logic del Controller all’interno di un
+componente che riceve i dati dal Sonar non appena vengono prodotti.</p>
+<p><span class="worktodo">WORKTODO: Sonar osservabile</span></p>
+<ul class="simple">
+<li><p>Definire un componente <code class="docutils literal notranslate"><span class="pre">SonarObservable</span></code> secondo quanto prospettato in <a class="reference internal" href="RadarSystemAnalisi.html#patternobserver"><span class="std std-ref">Il pattern observer</span></a>
+e definire il relativo (piano di) test.</p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Progettazione e sviluppo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sprint1-componenti-per-i-dispositivi-di-i-o">SPRINT1: Componenti per i dispositivi di I/O</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#devicefactory-e-file-di-configurazione">DeviceFactory e file di configurazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utilita">Utilità</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#la-classe-colorsout">La classe <code class="docutils literal notranslate"><span class="pre">ColorsOut</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#la-classe-basicutils">La classe <code class="docutils literal notranslate"><span class="pre">BasicUtils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dispositivi-reali-e-mock">Dispositivi reali e Mock</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#il-led">Il Led</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#la-classe-astratta-ledmodel">La classe astratta LedModel</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#il-ledmock">Il LedMock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#il-ledconcrete">Il LedConcrete</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#testing-del-dispositivo-led">Testing del dispositivo Led</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#il-sonar">Il Sonar</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#la-classe-astratta-sonarmodel">La classe astratta SonarModel</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#la-classe-distance">La classe Distance</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#la-produzione-dei-dati">La produzione dei dati</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#il-sonarmock">Il SonarMock</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#il-sonarconcrete">Il SonarConcrete</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#testing-del-dispositivo-sonar">Testing del dispositivo Sonar</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sprint1-l-applicazione">SPRINT1: L’applicazione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#il-controller">Il Controller</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#azioni-di-fine-lavoro">Azioni di fine lavoro</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#il-funzionamento-del-controller">Il funzionamento del Controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ledalarmusecase">LedAlarmUsecase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#radarguiusecase">RadarGuiUsecase</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#il-sistema-in-locale">Il sistema in locale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#l-interfaccia-iapplication">L’interfaccia IApplication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fase-di-setup">Fase di setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fase-di-configurazione">Fase di configurazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utilita-per-il-testing">Utilità per il testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-su-pc">Testing (su PC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sprint1-deployment-su-raspberrypi">SPRINT1: Deployment su RaspberryPi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#un-sistema-piu-reattivo">Un sistema più reattivo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="RadarSystemProdottiAnalisi.html" title="previous chapter">Prodotti della analisi</a></li>
+      <li>Next: <a href="RadarSystemSupporti.html" title="next chapter">Supporti per comunicazioni</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/RadarSystemProgetto.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

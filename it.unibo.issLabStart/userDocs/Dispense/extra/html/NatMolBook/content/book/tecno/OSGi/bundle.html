@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Il bundle e il suo manifest" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/tecno/OSGi/osgi.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Il bundle e il suo manifest</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Il bundle e il suo manifest</h1>
+
+<div>
+
+<p>
+Il bundle è l'unità fondamentale di progettazione e distribuzione del software 
+nel framework OSGi. Un bundle è costituito da
+un <tt>jar</tt> (file <tt>Java Archive</tt>) contenente il codice 
+e le risorse (ad esempio file <tt>HTML, gif</tt> etc.) necessarie al suo funzionamento nel framework. 
+</p>
+<p>
+Fra le varie classi implementate all'interno di un bundle
+deve essere presente una classe <tt>Activator</tt> 
+che esegue l'inizializzazione dei parametri del bundle in fase di attivazione 
+(metodo <tt>start</tt>) 
+e il rilascio di risorse (clean up)
+in fase di disattivazione (<tt>stop</tt>).
+</p>
+<p>
+Ogni bundle deve avere al suo 
+interno un file manifest (<tt>./META-INF/MANIFEST.MF</tt>) che ne
+descrive il contenuto 
+e fornisce tutte le informazioni necessarie al 
+framework per la sua corretta installazione e attivazione. 
+Ad esempio nel manifest sono elencate le dipendenze da altre risorse (package, bundle ect.) 
+che devono essere disponibili per il bundle prima che venga attivato. 
+</p>
+
+
+<div class="section"><h2 class="sectiontitle">Il manifest</h2>
+<p>
+Di seguito si riporta un esempio delle voci principali
+che compaiono nel file manifest di un bundle: 
+</p>
+
+<dl>
+
+
+<dt class="dlterm"><strong>La versione del framework</strong></dt>
+
+<dd>
+<tt>Bundle-ManifestVersion:2</tt>  </dd>
+
+<dd class="ddexpand">Specifica la versione del framework OSGI adottata (<tt>2</tt> per la release <tt>4</tt> di OSGi,
+<tt>1</tt> per le quelle precedenti).
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>Il nome simbolico </strong> </dt>
+
+<dd>
+
+</dd>
+
+
+
+
+<dt class="dlterm"><strong> </strong> </dt>
+
+<dd>
+<tt>Bundle-SymbolicName:it.unibo.MyBundle</tt> </dd>
+
+<dd class="ddexpand">
+Il nome simbolico deve essere unico all'interno del sistema (per una istanza del framework) 
+e permette di identificare univocamente ciascun bundle. Ogni bundle è univocamente identificabile 
+all'interno del framework tramite la coppia <tt>SymbolicName-Version</tt>. 
+Specificando la direttiva <tt>singleton</tt> di seguito al nome simbolico si stabilisce 
+che il bundle può esistere nel framework in un'unica versione: in questo caso il nome simbolico 
+da solo è sufficiente per identificare il bundle. 
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>La versione del bundle  </strong> </dt>
+
+<dd>
+<tt>Bundle-Version:1.2.0</tt>:</dd>
+
+<dd class="ddexpand">La versione, insieme al nome simbolico, costituisce un identificativo unico per i bundle. 
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>Il nome </strong> </dt>
+
+<dd>
+<tt>Bundle-Name:MyBundle </tt></dd>
+
+<dd class="ddexpand">
+E' il nome  assegnato al Bundle (non può contenere caratteri spazio). 
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>La descrizione  </strong> </dt>
+
+<dd>
+<tt>Bundle-Description:a bundle description </tt></dd>
+
+<dd class="ddexpand">
+Fornisce una breve descrizione del bundle. 
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>Il class path </strong> </dt>
+
+<dd>
+<tt>Bundle-ClassPath:.,jar/htttp.jar </tt></dd>
+
+<dd class="ddexpand">
+Definisce una lista di file <tt>jar</tt> e directory (interne al bundle), 
+separate da virgola, contenenti classi e risorse. 
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>L'activator </strong> </dt>
+
+<dd>
+
+</dd>
+
+
+
+
+<dt class="dlterm"><strong> </strong> </dt>
+
+<dd>
+<tt>Bundle-Activator:it.unibo.env.Activator </tt></dd>
+
+<dd class="ddexpand">
+Specifica il nome della classe che attiva (<tt>start</tt>) e disattiva (<tt>stop</tt>) il bundle. 
+
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>La lista dei package importati </strong> </dt>
+
+<dd>  
+<tt>Import-Package:org.osgi.util.tracker;version=1.3 </tt></dd>
+
+<dd class="ddexpand">
+Insieme dei package richiesti dal bundle per poter funzionare.
+La direttiva <tt>version</tt> 
+permette di distinguere anche tra più versioni dello stesso package. 
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>La lista dei package esportati </strong> </dt>
+
+<dd>
+<tt>Export-Package:org.osgi.util.tracker;version=1.3 </tt></dd>
+
+<dd class="ddexpand">
+Insieme dei package esportati dal bundle. 
+
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>La lista dei package importati dinamicamente </strong> </dt>
+
+<dd>
+<tt>DinamicImport-Package:com.acme.plugin.* </tt></dd>
+
+<dd class="ddexpand">
+Insieme dei package importati dinamicamente quando necessario. 
+
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>URL per l'aggiornamento </strong> </dt>
+
+<dd>
+<tt>Bundle-UpdateLocation://www.deis.unibo.it/bndl.jar </tt></dd>
+
+<dd class="ddexpand">
+Specifica l'URL da cui è possibile scaricare gli aggiornamenti. 
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>L'ambiente di esecuzione richiesto </strong> </dt>
+
+<dd>
+<tt>Bundle-RequiredExecutionEnvironment: CDC-1.0/Foundation-1.0 </tt></dd>
+
+<dd class="ddexpand">
+Specifica l'ambiente di esecuzione necessario per il funzionamento del bundle. 
+Per applicazioni pensate per lavorare sulla <tt>J2ME</tt> l'ambiente di esecuzione si 
+specifica con la coppia configurazione-profilo. Ad esempio <tt>CDC1.0/Foundation-1.0</tt> 
+specifica l'ambiente di esecuzione della <tt>J2ME</tt> con 
+<tt>Connected Device Configuration</tt> e profilo <tt>Foundation-1.0</tt>. 
+
+</dd>
+
+
+
+
+<dt class="dlterm"><strong>Lista dei bundle richiesti  </strong> </dt>
+
+<dd>
+<tt>Require-Bundle:it.unibo.deis.myBundle </tt></dd>
+
+<dd class="ddexpand">
+Contiene un elenco di bundle (denotati dal loro nome simbolico) 
+che devono essere installati sul framework 
+prima che il bundle possa essere posto in esecuzione. 
+
+</dd>
+
+
+
+
+ 
+
+</dl>
+
+ 
+
+</div>
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/tecno/OSGi/osgi.html">Open Service Gateway</a></div>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Il SonarObservable &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Attori" href="Attori.html" />
+    <link rel="prev" title="Contesti-contenitori" href="ContestiContenitori.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="il-sonarobservable">
+<h1>Il SonarObservable<a class="headerlink" href="#il-sonarobservable" title="Permalink to this headline">¶</a></h1>
+<p>Tenendo conto di quanto detto in <em>Indicazioni-sul-processo-di-produzione</em> (<a class="reference internal" href="CostruireSoftware.html"><span class="doc">Costruire software</span></a>),
+impostiamo un processo di produzione del software relativo a un nuovo insieme di requisiti.</p>
+<section id="sonarobservable-requisiti">
+<span id="requirements"></span><h2>SonarObservable: Requisiti<a class="headerlink" href="#sonarobservable-requisiti" title="Permalink to this headline">¶</a></h2>
+<p>Si desidera realizzare una versione osservabile (<em>SonarObservable</em>) del dispositivo Sonar introdotto in <a class="reference internal" href="RadarSystemProgetto.html#il-sonar"><span class="std std-ref">Il Sonar</span></a> che soddisfi i seguenti
+requisiti:</p>
+<ul class="simple">
+<li><p>il <em>SonarObservable</em> deve inviare informazioni a tutti componenti software interessati alla rilevazione
+dei valori di distanza;</p></li>
+<li><p>il <em>SonarObservable</em> deve fornire valori di distanza solo quando questi si modificano in modo significativo;</p></li>
+<li><p>i componenti interessati ai valori di distanza prodotti dal <em>SonarObservable</em> sono denominati <em>Observer</em>
+e pssono risiedere sullo stesso nodo del <em>SonarObservable</em> (cioè sul RaspberryPi) o su un nodo remoto
+(ad esempio sul PC);</p></li>
+<li><p>il funzionamento del <em>SonarObservable</em> deve essere testato in modo automatizzato ponendo un ostacolo
+a distanza fissa <code class="docutils literal notranslate"><span class="pre">DTESTING1</span></code> davanti
+ad esso, controllando che tutti gli <em>Observers</em> ricevano il valore <code class="docutils literal notranslate"><span class="pre">DTESTING1</span></code>. Dopo un qualche tempo, si modifica
+la posizione dell’ostacolo a una nuova distanza <code class="docutils literal notranslate"><span class="pre">DTESTING2</span></code> e si controlla che gli tutti gli <em>Observers</em>
+ricevano il valore <code class="docutils literal notranslate"><span class="pre">DTESTING2</span></code>.</p></li>
+</ul>
+<section id="sonarobservable-analisi-dei-requisiti">
+<h3>SonarObservable: analisi dei requisiti<a class="headerlink" href="#sonarobservable-analisi-dei-requisiti" title="Permalink to this headline">¶</a></h3>
+<p><span class="worktodo">Chiarire, interagendo con il committente, i punti ritenuti oscuri nel testo dei requisiti.</span></p>
+</section>
+<section id="sonarobservable-analisi-del-problema">
+<h3>SonarObservable: analisi del problema<a class="headerlink" href="#sonarobservable-analisi-del-problema" title="Permalink to this headline">¶</a></h3>
+<p>La transizione ad un Sonar osservabile prospettata in <a class="reference internal" href="RadarSystemAnalisi.html#patternobserver"><span class="std std-ref">Il pattern observer</span></a> può essere affrontata pensando il
+<em>SonarObservable</em> in due modi:</p>
+<ul class="simple">
+<li><p>modo1: …</p></li>
+<li><p>modo2: …</p></li>
+</ul>
+<p><span class="worktodo">Discutere, come analisti, quale sono i due modi e quale è preferibile, dando le motivazioni.</span></p>
+<p>Prima di procedere osserviamo quanto segue:</p>
+<ul class="simple">
+<li><p>una adeguata analisi del problema è premessa indispensabile ad ogni progetto e ad ogni produzione di software;</p></li>
+<li><p>le considerazioni introdotte in fase di analisi (e la loro formalizzazione) sono spesso oggetto delle domande
+citate in <a class="reference internal" href="Introduzione.html#dettagli-sul-colloquio-orale"><span class="std std-ref">Dettagli sul colloquio orale</span></a>;</p></li>
+<li><p>il Sonar è un <em>dispositivo di misura</em> che <em>produce valori</em> di distanza;</p></li>
+<li><p>cosa significa <strong>osservare un dispositivo</strong>? Significa osservare i valori prodotti o il suo stato interno
+(carica delle batterie, temperatura interna, rate di generazione dei dati, etc.)?</p></li>
+<li><p>si può dire che il valore della distanza sia una proprietà del dispositivo di misura (cioè del Sonar)?</p></li>
+<li><p>se siamo convinti che si debbano osservare i valori prodotti pittosto che il dispositivo in sè,
+come <strong>formalizzare</strong> questo approccio nel caso del SonarObservable?</p></li>
+</ul>
+<section id="la-distanza-misurata-come-risorsa-osservabile">
+<h4>La distanza misurata come risorsa osservabile<a class="headerlink" href="#la-distanza-misurata-come-risorsa-osservabile" title="Permalink to this headline">¶</a></h4>
+<p>Optiaando per l’idea che il Sonar  sia un processo che aggiorna
+il valore  di una distanza, introduciamo il concetto di <strong>distanza misurata</strong> formalizzandolo con una
+interfaccia.</p>
+<section id="idistancemeasured">
+<h5>IDistanceMeasured<a class="headerlink" href="#idistancemeasured" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IDistanceMeasured</span> <span class="kd">extends</span> <span class="n">IDistance</span><span class="p">,</span> <span class="n">IObservable</span><span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setVal</span><span class="p">(</span> <span class="n">IDistance</span> <span class="n">d</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>L’interfaccia <code class="docutils literal notranslate"><span class="pre">IDistanceMeasured</span></code> dice che una <em>distanza misurata</em> è una distanza <a class="reference internal" href="RadarSystemProdottiAnalisi.html#idistance"><span class="std std-ref">IDistance</span></a>
+il cui valore può essere modificato. Inoltre è anche un observable in quanto
+estende  <a class="reference internal" href="#iobservable"><span class="std std-ref">IObservable</span></a> permettendo la
+registrazione/rimozione di <em>Observer</em> che implementano l’interfaccia <a class="reference internal" href="#iobserver"><span class="std std-ref">IObserver</span></a>.</p>
+</section>
+<section id="iobservable">
+<h5>IObservable<a class="headerlink" href="#iobservable" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IObservable</span><span class="p">{</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span> <span class="p">);</span><span class="c1">//implemented by Observable</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">);</span><span class="c1">//implemented by Observable</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="iobserver">
+<h5>IObserver<a class="headerlink" href="#iobserver" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IObserver</span> <span class="kd">extends</span> <span class="n">Observer</span><span class="p">{</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span> <span class="n">String</span> <span class="n">value</span> <span class="p">);</span>
+ <span class="c1">//From Observer: public void update(Observable o, Object news)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="sonarobservable-progetto">
+<h3>SonarObservable: progetto<a class="headerlink" href="#sonarobservable-progetto" title="Permalink to this headline">¶</a></h3>
+<p>Il progetto consiste nel realizzare i seguenti componenti:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#distancemeasured"><span class="std std-ref">DistanceMeasured</span></a> : implementa <a class="reference internal" href="#idistancemeasured"><span class="std std-ref">IDistanceMeasured</span></a> utlizzando la classe <code class="docutils literal notranslate"><span class="pre">java.util.Observable</span></code> per
+le gestione degli Observer;</p></li>
+<li><p><a class="reference internal" href="#sonarmockforobs"><span class="std std-ref">SonarMockForObs</span></a> : specializza <a class="reference internal" href="RadarSystemProgetto.html#sonarmodel"><span class="std std-ref">La classe astratta SonarModel</span></a> realizzando un Sonar mock orientato alla
+osservabilità dei dati, in quanto produttore di valori di  <em>distanza misurata osservabile</em>.</p></li>
+<li><p><a class="reference internal" href="#sonarconcreteforobs"><span class="std std-ref">SonarConcreteForObs</span></a> : specializza  <a class="reference internal" href="RadarSystemProgetto.html#sonarmodel"><span class="std std-ref">La classe astratta SonarModel</span></a> realizzando un Sonar concreto orientato alla
+osservabilità dei dati, in quanto produttore di valori di  <em>distanza misurata osservabile</em>.</p></li>
+</ul>
+<section id="distancemeasured">
+<h4>DistanceMeasured<a class="headerlink" href="#distancemeasured" title="Permalink to this headline">¶</a></h4>
+<p>La casse <span class="blue">DistanceMeasured</span> che realizza il concetto di <span class="blue">distanza misurata osservabile</span> può essere definita
+come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DistanceMeasured</span>
+      <span class="kd">extends</span> <span class="n">java</span><span class="p">.</span><span class="na">util</span><span class="p">.</span><span class="na">Observable</span> <span class="kd">implements</span> <span class="n">IDistanceMeasured</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">IDistance</span> <span class="n">d</span><span class="p">;</span>
+<span class="kd">public</span> <span class="nf">DistanceMeasured</span><span class="p">()</span> <span class="p">{}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setVal</span><span class="p">(</span> <span class="n">IDistance</span> <span class="n">v</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+    <span class="n">setChanged</span><span class="p">();</span> <span class="c1">//IMPORTANT!!</span>
+    <span class="n">notifyObservers</span><span class="p">(</span> <span class="n">d</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">IDistance</span> <span class="nf">getDistance</span><span class="p">(</span>   <span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="n">d</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getVal</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">d</span><span class="p">.</span><span class="na">getVal</span><span class="p">();</span> <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">+</span> <span class="n">getVal</span><span class="p">();</span> <span class="p">}</span>
+      <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">addObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">.</span><span class="na">addObserver</span><span class="p">(</span><span class="n">obs</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nd">@Override</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteObserver</span><span class="p">(</span><span class="n">IObserver</span> <span class="n">obs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">super</span><span class="p">.</span><span class="na">deleteObserver</span><span class="p">(</span><span class="n">obs</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="sonarmockforobs">
+<h4>SonarMockForObs<a class="headerlink" href="#sonarmockforobs" title="Permalink to this headline">¶</a></h4>
+<p>Simile a <a class="reference internal" href="RadarSystemProgetto.html#il-sonarmock"><span class="std std-ref">SonarMock</span></a>, con la differenza che i valori correnti di distanza sono di tipo <a class="reference internal" href="#idistancemeasured"><span class="std std-ref">IDistanceMeasured</span></a>
+e che implementa il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">IDistanceMeasured</span> <span class="pre">getDistance()</span></code>.</p>
+</section>
+<section id="sonarconcreteforobs">
+<h4>SonarConcreteForObs<a class="headerlink" href="#sonarconcreteforobs" title="Permalink to this headline">¶</a></h4>
+<p>Simile a <a class="reference internal" href="RadarSystemProgetto.html#il-sonarconcrete"><span class="std std-ref">SonarConcrete</span></a>, con la differenza che i valori correnti di distanza sono di tipo <a class="reference internal" href="#idistancemeasured"><span class="std std-ref">IDistanceMeasured</span></a>
+e che implementa il metodo <code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">IDistanceMeasured</span> <span class="pre">getDistance()</span></code>.</p>
+</section>
+<section id="aggiornamento-di-devicefactory">
+<h4>Aggiornamento di DeviceFactory<a class="headerlink" href="#aggiornamento-di-devicefactory" title="Permalink to this headline">¶</a></h4>
+<p>La nascita del nuovo tipo di Sonar induce a introdurre nuovi metodi in <a class="reference internal" href="RadarSystemProgetto.html#devicefactory"><span class="std std-ref">DeviceFactory</span></a>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="n">ISonarObservable</span> <span class="nf">createSonarForObs</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span><span class="p">)</span>  <span class="p">{</span> <span class="k">return</span> <span class="k">new</span> <span class="n">SonarMockForObs</span><span class="p">();</span>
+  <span class="p">}</span><span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="n">SonarConcreteForObs</span><span class="p">();</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-del-sonar-osservabile">
+<h4>Testing del Sonar ‘osservabile’<a class="headerlink" href="#testing-del-sonar-osservabile" title="Permalink to this headline">¶</a></h4>
+<p>Il testing sul <code class="docutils literal notranslate"><span class="pre">SonarMockObservable</span></code> viene qui impostato nel modo che segue:</p>
+<ul class="simple">
+<li><p>si regola il Sonar in modo che produca un valore costante definito in <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.testingDistance</span></code></p></li>
+<li><p>si introduce (almeno) un observer che controlla che il dato osservato sia quello emesso</p></li>
+</ul>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSingleshotSonarForObsMock</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testing</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span>      <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="o">=</span> <span class="mi">22</span><span class="p">;</span>
+  <span class="kt">boolean</span> <span class="n">oneShot</span>           <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="n">ISonarForObs</span>  <span class="n">sonar</span>       <span class="o">=</span> <span class="n">DeviceFactory</span><span class="p">.</span><span class="na">createSonarForObs</span><span class="p">();</span>
+  <span class="n">IObserver</span> <span class="n">obs1</span>            <span class="o">=</span> <span class="k">new</span> <span class="n">SonarObserverFortesting</span><span class="p">(</span>
+                                  <span class="s">&quot;obs1&quot;</span><span class="p">,</span><span class="n">sonar</span><span class="p">,</span><span class="n">oneShot</span><span class="p">)</span> <span class="p">;</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">addObserver</span><span class="p">(</span> <span class="n">obs1</span> <span class="p">);</span>
+  <span class="n">sonar</span><span class="p">.</span><span class="na">activate</span><span class="p">();</span>
+  <span class="n">BasicUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">v0</span> <span class="o">=</span> <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">getVal</span><span class="p">();</span>
+  <span class="n">assertTrue</span><span class="p">(</span>  <span class="n">v0</span> <span class="o">==</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="un-observer-per-il-testing">
+<h5>Un observer per il testing<a class="headerlink" href="#un-observer-per-il-testing" title="Permalink to this headline">¶</a></h5>
+<p>L’<em>observer</em> viene impostato in modo da controllare anche dati emessi da un sonar reale
+che opera con ostacolo fisso posto davanti ad esso, alla distanza prefissata.</p>
+<div class="highlight-java notranslate" id="sonarobserverfortesting"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">SonarObserverFortesting</span> <span class="kd">implements</span> <span class="n">IObserver</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">boolean</span> <span class="n">oneShot</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">v0</span>          <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="kd">private</span> <span class="kt">int</span> <span class="n">delta</span>       <span class="o">=</span>  <span class="mi">1</span><span class="p">;</span>
+<span class="kd">private</span> <span class="n">ISonarObservable</span> <span class="n">sonar</span><span class="p">;</span>
+
+<span class="kd">public</span> <span class="nf">SonarObserverFortesting</span><span class="p">(</span>
+        <span class="n">String</span> <span class="n">name</span><span class="p">,</span><span class="n">ISonarObservable</span> <span class="n">sonar</span><span class="p">,</span><span class="kt">boolean</span> <span class="n">oneShot</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">name</span>    <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="na">oneShot</span> <span class="o">=</span> <span class="n">oneShot</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nd">@Override</span>  <span class="c1">//from java.util.Observer</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">Observable</span> <span class="n">source</span><span class="p">,</span> <span class="n">Object</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="na">toString</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+<span class="nd">@Override</span> <span class="c1">//from IObserver</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">oneShot</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">assertTrue</span><span class="p">(</span> <span class="n">value</span> <span class="o">==</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">testingDistance</span> <span class="p">);</span>
+  <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">vs</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">v0</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">{</span><span class="c1">//set the first value observed</span>
+      <span class="n">v0</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+      <span class="kt">int</span> <span class="n">vexpectedMin</span> <span class="o">=</span> <span class="n">v0</span><span class="o">-</span><span class="n">delta</span><span class="p">;</span>
+      <span class="kt">int</span> <span class="n">vexpectedMax</span> <span class="o">=</span> <span class="n">v0</span><span class="o">+</span><span class="n">delta</span><span class="p">;</span>
+      <span class="n">assertTrue</span><span class="p">(</span><span class="n">value</span><span class="o">&lt;=</span><span class="n">vexpectedMax</span> <span class="o">&amp;&amp;</span> <span class="n">value</span><span class="o">&gt;=</span><span class="n">vexpectedMin</span> <span class="p">);</span>
+      <span class="n">v0</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+    <span class="cm">/*</span>
+<span class="cm">    //Elimino l&#39;observer</span>
+<span class="cm">      if( v0 == 70 &amp;&amp; name.equals(&quot;obs1&quot;))</span>
+<span class="cm">        sonar.getDistance().deleteObserver(this);</span>
+<span class="cm">      if( v0 == 50 &amp;&amp; name.equals(&quot;obs2&quot;))</span>
+<span class="cm">        sonar.getDistance().deleteObserver(this);</span>
+<span class="cm">    */</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">}</span><span class="c1">//SonarObserverFortesting</span>
+</pre></div>
+</div>
+<p>Si noti che observer di questo tipo vengono di norma eseguiti all’interno del Thread dell’observable che sta operando
+per conto di un qualche client.</p>
+</section>
+</section>
+</section>
+</section>
+<section id="verso-gli-eventi">
+<span id="ledosservabile"></span><h2>Verso gli eventi<a class="headerlink" href="#verso-gli-eventi" title="Permalink to this headline">¶</a></h2>
+<p>Il classico <a class="reference internal" href="RadarSystemAnalisi.html#patternobserver"><span class="std std-ref">Il pattern observer</span></a> prevede che la sorgente di informazione (nel nostro caso <a class="reference internal" href="#distancemeasured"><span class="std std-ref">DistanceMeasured</span></a>)
+offra metodi per la registrazione dei riferimenti agli oggetti Observer interessati agli aggiornamenti.
+Inoltre ogni Observer deve implementare un metodo (<code class="docutils literal notranslate"><span class="pre">update</span></code>) che viene invocato dal Sonar all’interno del suo
+Thread di lavoro o mediante altro Thread appositamente creato. L’aggiornamento degli Observer pone infatti un
+problema:</p>
+<ul class="simple">
+<li><p>se la sorgente invoca l’update degli observer nel suo Thread di lavoro, essa può subire un ritardo che
+dipende dal tempo di esecuzione dell’Observer; se un Observer entra in loop, la sorgente di blocca;</p></li>
+<li><p>se la sorgente invoca l’update degli observer in un Thread creato ad hoc, vi può essere un prolificazione
+non tollerabile di Thread nel caso di molti observer.</p></li>
+</ul>
+<p>Ci sentiamo quindi indotti a introdurre un principio:</p>
+<p><span class="remark">una sorgente osservabile non dovrebbe essere influenzata dalla presenza di Observer</span></p>
+<p>Secondo questo principio, dovremmo escludere anche la possibilità di rendere il Sonar osservabile
+a livello applicativo attraverso
+l’uso di un protocollo <em>publish-subscribe</em>, in quanto dipenderebbe da uno specifico protocollo,
+con relativa libreria e con riferimenti espliciti a un broker.</p>
+<p>Da un punto di vista concettuale, una sorgente di informazione dovrebbe risultare osservabile in quanto capace di
+emettere informazione percebibile da un numero qualsiasi di osservatori interessati,
+grazie a meccanismi che non alterano il funzionamento della sorgente.</p>
+<p>Questa idea fa sorgere un <strong>abstraction gap</strong>, e suggerisce un nuovo modello:</p>
+<p><span class="remark">una sorgente è osservabile quando emette informazione in forma di evento</span></p>
+<p>Il concetto di <strong>evento</strong> è stato introdotto in <a class="reference internal" href="CostruireSoftware.html#terminologia-di-riferimento"><span class="std std-ref">Terminologia di riferimento</span></a>
+come un messaggio che non ha un preciso destinatario; una sua implementazione è descritta in <a class="reference internal" href="Eventi.html#eventi"><span class="std std-ref">Eventi</span></a></p>
+</section>
+<section id="il-sonar-come-attore-che-emette-eventi">
+<h2>Il Sonar come attore che emette eventi<a class="headerlink" href="#il-sonar-come-attore-che-emette-eventi" title="Permalink to this headline">¶</a></h2>
+<p>Nel package <code class="docutils literal notranslate"><span class="pre">unibo.actor22.events</span></code> della directory <code class="docutils literal notranslate"><span class="pre">test</span></code> del progetto <code class="docutils literal notranslate"><span class="pre">unibo.actor22</span></code>, riportiamo la classe <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code>
+che definisce il Sonar come un <strong>attore proattivo e reattivo</strong>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SonarActor22</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+<span class="kd">private</span> <span class="n">IDistance</span> <span class="n">curVal</span> <span class="p">;</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="p">)</span>  <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+    <span class="k">else</span> <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span><span class="mi">90</span><span class="p">);</span>
+  <span class="p">}</span>
+      <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isRequest</span><span class="p">()</span> <span class="p">)</span> <span class="n">elabRequest</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="k">else</span> <span class="n">elabCmd</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<section id="parte-reattiva">
+<h3>Parte reattiva<a class="headerlink" href="#parte-reattiva" title="Permalink to this headline">¶</a></h3>
+<p>La parte reattiva consiste nella eleborazione dei messaggi di attivazione/deattivazione e di richieste
+sul valore corrente della distanza. I messaggi assumono queste forme:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">msg(cmd,dispatch,controller,sonar,activate,N)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">msg(ask,request,controller,sonar,getDistance,N)</span></code></p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabCmd</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+<span class="n">String</span> <span class="n">msgCmd</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+  <span class="k">switch</span><span class="p">(</span> <span class="n">msgCmd</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">cmdActivate</span>  <span class="p">:</span> <span class="n">sonarActivate</span><span class="p">();</span>  <span class="k">break</span><span class="p">;</span>
+  <span class="k">case</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">cmdDectivate</span> <span class="p">:</span> <span class="n">sonarDeactivate</span><span class="p">();</span><span class="k">break</span><span class="p">;</span>
+  <span class="k">default</span><span class="p">:</span> <span class="n">ColorsOut</span><span class="p">.</span><span class="na">outerr</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span>  <span class="o">+</span> <span class="s">&quot; | unknown &quot;</span> <span class="o">+</span> <span class="n">msgCmd</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabRequest</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+  <span class="n">sendReply</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">reply</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarActivate</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">simulation</span> <span class="p">)</span> <span class="n">sonarStepAsMock</span><span class="p">();</span>
+  <span class="k">else</span> <span class="n">sonarStepAsConcrete</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>In questa versione, <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code> non riusa gli oggetti del dominio ma realizza un diverso comportamento interno
+(Mock o concreto), in funzione del valore del parametro di configurazione <code class="docutils literal notranslate"><span class="pre">DomainSystemConfig.simulation</span></code>.</p>
+</section>
+<section id="parte-proattiva">
+<h3>Parte proattiva<a class="headerlink" href="#parte-proattiva" title="Permalink to this headline">¶</a></h3>
+<p>La parte proattiva  consiste nella continua rilevazione della distanza e nella emissione di eventi con il valore della distanza-misurata.
+Questi eventi assumono la forma che segue:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(distance,event,sonar,_,D,N)</span></code></p>
+</div></blockquote>
+<p>ove <code class="docutils literal notranslate"><span class="pre">D</span></code> è il valore della distanza misurata.</p>
+<p>Quando il messaggio viene emesso, il campo <strong>receiver</strong> (si veda <a class="reference internal" href="ContestiContenitori.html#struttura-dei-messaggi-applicativi"><span class="std std-ref">Struttura dei messaggi applicativi</span></a>) non è specificato.</p>
+<p>L’operazione di emissione <a class="reference internal" href="Eventi.html#emit-di-un-evento"><span class="std std-ref">emit</span></a> si avvale del componente <a class="reference internal" href="Eventi.html#eventmsghandler"><span class="std std-ref">EventMsgHandler</span></a> interno della infrastruttura
+per creare tanti messaggi quanti gli ossservatori registrati, ciascuno col campo <strong>receiver</strong> settato al nome del destinatario.
+Questi messaggi hanno la forma:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">msg(distance,event,sonar,OBSERVER,D,N)</span></code></p>
+</div></blockquote>
+<p>Dove <code class="docutils literal notranslate"><span class="pre">OBSERVER</span></code> è il nome dell’attore-osservatore che ha dichiarato il suo interesse all’evento <code class="docutils literal notranslate"><span class="pre">distance</span></code>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarStepAsMock</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="n">curVal</span><span class="p">.</span><span class="na">getVal</span><span class="p">()</span> <span class="o">-</span> <span class="n">delta</span><span class="p">;</span>
+  <span class="n">updateDistance</span><span class="p">(</span> <span class="n">v</span> <span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="n">stopped</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">CommUtils</span><span class="p">.</span><span class="na">delay</span><span class="p">(</span> <span class="n">DomainSystemConfig</span><span class="p">.</span><span class="na">sonarDelay</span> <span class="p">);</span>
+    <span class="n">stopped</span> <span class="o">=</span> <span class="p">(</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="p">);</span>
+    <span class="n">autoMsg</span><span class="p">(</span><span class="n">ApplData</span><span class="p">.</span><span class="na">activateSonar</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">sonarStepAsConcrete</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">//Interazione con SonarAlone</span>
+  <span class="p">...</span>
+  <span class="n">updateDistance</span><span class="p">(</span> <span class="n">v</span> <span class="p">);</span>
+  <span class="p">...</span>
+  <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">stopped</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">autoMsg</span><span class="p">(</span><span class="n">ApplData</span><span class="p">.</span><span class="na">activateSonar</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notiamo come l’attore <code class="docutils literal notranslate"><span class="pre">SonarActor22</span></code> trasmetta a se sè stesso il messaggio di attivazione al termine di ogni
+passo di elaborazione. Ciò per consentire l’esecuzione degli altri attori, in quanto
+<strong>gli attori sono eseguiti all’interno di uno stesso Thread Java</strong>.</p>
+</section>
+<section id="emissione-di-eventi">
+<h3>Emissione di eventi<a class="headerlink" href="#emissione-di-eventi" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">updateDistance</span></code> provvede ad emettere eventi che rendono osservabile la distanza rilevata.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">updateDistance</span><span class="p">(</span> <span class="kt">int</span> <span class="n">d</span> <span class="p">)</span> <span class="p">{</span>
+ <span class="n">curVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Distance</span><span class="p">(</span> <span class="n">d</span> <span class="p">);</span>
+ <span class="k">if</span><span class="p">(</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">sonarObservable</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">IApplMessage</span> <span class="n">dEvent</span><span class="o">=</span>
+      <span class="n">Qak22Util</span><span class="p">.</span><span class="na">buildEvent</span><span class="p">(</span><span class="n">getName</span><span class="p">()</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">evDistance</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">d</span><span class="p">);</span>
+    <span class="n">emit</span><span class="p">(</span><span class="n">dEvent</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="controllerforsonaractor">
+<h3>ControllerForSonarActor<a class="headerlink" href="#controllerforsonaractor" title="Permalink to this headline">¶</a></h3>
+<p>I messaggi al Sonar sono inviati dall’attore <code class="docutils literal notranslate"><span class="pre">ControllerForSonarActor</span></code> che assume il ruolo di osservatore nel caso in cui si ponga</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">RadarSystemConfig.sonarObservable</span> <span class="pre">=</span> <span class="pre">true</span></code></p>
+</div></blockquote>
+<p>In caso contrario, il <code class="docutils literal notranslate"><span class="pre">ControllerForSonarActor</span></code> lavora ‘a polling’ inviando richeste <code class="docutils literal notranslate"><span class="pre">getDistance</span></code>.</p>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ControllerForSonarActor</span> <span class="kd">extends</span> <span class="n">QakActor22</span><span class="p">{</span>
+  <span class="p">...</span>
+  <span class="nd">@Override</span>
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">handleMsg</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isEvent</span><span class="p">()</span> <span class="p">)</span>        <span class="n">elabEvent</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isDispatch</span><span class="p">())</span> <span class="n">elabCmd</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isReply</span><span class="p">()</span> <span class="p">)</span>   <span class="n">elabReply</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabCmd</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">msgCmd</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">msgCmd</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">ApplData</span><span class="p">.</span><span class="na">cmdActivate</span><span class="p">)</span>  <span class="p">)</span> <span class="p">{</span>
+        <span class="n">sendMsg</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">activateSonar</span><span class="p">);</span>
+        <span class="n">doControllerWork</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doControllerWork</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="o">!</span> <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">sonarObservable</span><span class="p">)</span>
+            <span class="n">request</span><span class="p">(</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">askDistance</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="elaborazione-delle-risposte">
+<h4>Elaborazione delle risposte<a class="headerlink" href="#elaborazione-delle-risposte" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabReply</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">dStr</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+  <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">dStr</span><span class="p">);</span>
+              <span class="n">radar</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">dStr</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">);</span>
+              <span class="k">if</span><span class="p">(</span> <span class="n">d</span> <span class="o">&lt;</span>  <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span> <span class="p">)</span> <span class="p">{</span>
+                      <span class="n">forward</span><span class="p">(</span><span class="n">ApplData</span><span class="p">.</span><span class="na">deactivateSonar</span><span class="p">);</span>
+              <span class="p">}</span>
+              <span class="k">else</span> <span class="p">{</span>
+              <span class="n">doControllerWork</span><span class="p">();</span>
+              <span class="p">}</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="elaborazione-degli-eventi">
+<h4>Elaborazione degli eventi<a class="headerlink" href="#elaborazione-degli-eventi" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">elabEvent</span><span class="p">(</span><span class="n">IApplMessage</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">msg</span><span class="p">.</span><span class="na">isEvent</span><span class="p">()</span>  <span class="p">)</span> <span class="p">{</span>  <span class="c1">//defensive</span>
+    <span class="n">String</span> <span class="n">dstr</span> <span class="o">=</span> <span class="n">msg</span><span class="p">.</span><span class="na">msgContent</span><span class="p">();</span>
+    <span class="kt">int</span> <span class="n">d</span>       <span class="o">=</span> <span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">dstr</span><span class="p">);</span>
+    <span class="n">radar</span><span class="p">.</span><span class="na">update</span><span class="p">(</span><span class="n">dstr</span><span class="p">,</span> <span class="s">&quot;60&quot;</span><span class="p">);</span>
+                      <span class="k">if</span><span class="p">(</span> <span class="n">d</span> <span class="o">&lt;</span>  <span class="n">RadarSystemConfig</span><span class="p">.</span><span class="na">DLIMIT</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="n">forward</span><span class="p">(</span><span class="n">ApplData</span><span class="p">.</span><span class="na">deactivateSonar</span><span class="p">);</span>
+    <span class="p">}</span>
+              <span class="p">}</span>
+      <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configurazione-lato-raspberry">
+<h3>Configurazione lato Raspberry<a class="headerlink" href="#configurazione-lato-raspberry" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ActorLocal</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span>      <span class="p">{</span><span class="s">&quot;led&quot;</span><span class="p">,</span> <span class="s">&quot;sonar&quot;</span>  <span class="p">},</span>
+    <span class="n">implement</span> <span class="o">=</span> <span class="p">{</span> <span class="n">LedActor</span><span class="p">.</span><span class="na">class</span><span class="p">,</span>  <span class="n">SonarActor22</span><span class="p">.</span><span class="na">class</span> <span class="p">}</span>
+<span class="p">)</span>
+<span class="nd">@ActorRemote</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>   <span class="p">{</span><span class="s">&quot;controller&quot;</span> <span class="p">},</span>
+    <span class="n">host</span><span class="o">=</span>    <span class="p">{</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">pcAddr</span> <span class="p">},</span>
+    <span class="n">port</span><span class="o">=</span>    <span class="p">{</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxPcPort</span> <span class="p">},</span>
+    <span class="n">protocol</span><span class="o">=</span><span class="p">{</span> <span class="s">&quot;TCP&quot;</span>   <span class="p">}</span>
+<span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DeviceActorsOnRasp</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="configurazione-lato-pc">
+<h3>Configurazione lato PC<a class="headerlink" href="#configurazione-lato-pc" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="nd">@ActorLocal</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>     <span class="p">{</span><span class="s">&quot;controller&quot;</span> <span class="p">},</span>
+          <span class="n">implement</span> <span class="o">=</span> <span class="p">{</span><span class="n">unibo</span><span class="p">.</span><span class="na">radarSystem22</span><span class="p">.</span><span class="na">actors</span><span class="p">.</span><span class="na">ControllerActor</span><span class="p">.</span><span class="na">class</span> <span class="p">})</span>
+<span class="nd">@ActorRemote</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span>   <span class="p">{</span><span class="s">&quot;led&quot;</span><span class="p">,</span><span class="s">&quot;sonar&quot;</span><span class="p">},</span>
+            <span class="n">host</span><span class="o">=</span>    <span class="p">{</span><span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">,</span> <span class="n">ApplData</span><span class="p">.</span><span class="na">raspAddr</span><span class="p">},</span>
+            <span class="n">port</span><span class="o">=</span>    <span class="p">{</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxRaspPort</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">ApplData</span><span class="p">.</span><span class="na">ctxRaspPort</span><span class="p">},</span>
+            <span class="n">protocol</span><span class="o">=</span><span class="p">{</span> <span class="s">&quot;TCP&quot;</span> <span class="p">,</span> <span class="s">&quot;TCP&quot;</span> <span class="p">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ControllerActorOnPc</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Il SonarObservable</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sonarobservable-requisiti">SonarObservable: Requisiti</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sonarobservable-analisi-dei-requisiti">SonarObservable: analisi dei requisiti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sonarobservable-analisi-del-problema">SonarObservable: analisi del problema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#la-distanza-misurata-come-risorsa-osservabile">La distanza misurata come risorsa osservabile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#idistancemeasured">IDistanceMeasured</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#iobservable">IObservable</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#iobserver">IObserver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sonarobservable-progetto">SonarObservable: progetto</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#distancemeasured">DistanceMeasured</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sonarmockforobs">SonarMockForObs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sonarconcreteforobs">SonarConcreteForObs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aggiornamento-di-devicefactory">Aggiornamento di DeviceFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#testing-del-sonar-osservabile">Testing del Sonar ‘osservabile’</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#un-observer-per-il-testing">Un observer per il testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#verso-gli-eventi">Verso gli eventi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#il-sonar-come-attore-che-emette-eventi">Il Sonar come attore che emette eventi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parte-reattiva">Parte reattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parte-proattiva">Parte proattiva</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emissione-di-eventi">Emissione di eventi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#controllerforsonaractor">ControllerForSonarActor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#elaborazione-delle-risposte">Elaborazione delle risposte</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elaborazione-degli-eventi">Elaborazione degli eventi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configurazione-lato-raspberry">Configurazione lato Raspberry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configurazione-lato-pc">Configurazione lato PC</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ContestiContenitori.html" title="previous chapter">Contesti-contenitori</a></li>
+      <li>Next: <a href="Attori.html" title="next chapter">Attori</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/SonarObservable.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

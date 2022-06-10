@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="FIPA ACL" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/agenti/aUMLIntro.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>FIPA ACL</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">FIPA ACL</h1>
+
+<div>
+<p>
+Lo scopo di <tt>FIPA</tt> ACL è quello di fornire una logica conversazionale 
+agli agenti in modo tale da alzare il livello semantico delle comunicazioni
+tra agenti rispetto a livello di comunicazione supportato dalle altre tecnologie, 
+come per esempio le comunicazioni basate sugli eventi.
+A tal fine, ogni primitiva di comunicazione in <tt>FIPA</tt> ACL (chiamata 
+"atto di comunicazione") possiede una precisa semantica fornita attraverso
+pre- e post-condizioni espresse attraverso la logica modale del primo ordine.
+Con questa semantica l'agente è in grado di esprimere le sue attitudini personali 
+(credenze, incertezze, scelte, intezioni,..) riguardo alla sua
+conoscenza acquisita piuttosto che semantica della conoscenza stessa.
+</p>
+
+<p>
+Un messaggio <tt>FIPA</tt> ACL contiene uno o più parametri il cui numero varia 
+a seconda dello specifico contesto della comunicazione. L'unico parametro che è 
+obbligatorio in tutti i messaggi è il parametro <em>performative</em> che identifica 
+l'atto della comunicazione, anche se è buona norma che i
+messaggi contengano anche parametri come <em>sender</em>, <em>receiver</em> e <em>content</em>.
+L'elenco completo dei parametri è riportato nella tabella sottostante. 
+</p>
+
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr>
+<th valign="bottom" align="left" id="N1005B" width="20%">Parametro</th>
+
+<th valign="bottom" align="left" id="N10061" width="20%">Categoria del Parametro</th>
+
+<th valign="bottom" align="left" id="N10067" width="60%">Descrizione</th>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">performative</td>
+
+<td valign="top" headers="N10061">tipo di atto comunicativo</td>
+
+<td valign="top" headers="N10067">denota il tipo di atto comunicativo</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">sender</td>
+
+<td valign="top" headers="N10061">partecipante della comunicazione</td>
+
+<td valign="top" headers="N10067">denota l'identità del mittente del messaggio, cioè il nome dell'agente</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">receiver</td>
+
+<td valign="top" headers="N10061">partecipante della comunicazione</td>
+
+<td valign="top" headers="N10067">denota il ricevente del messaggio che può essere rappresentato da uno 
+o più agenti nel caso di un multi-cast</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">reply-to</td>
+
+<td valign="top" headers="N10061">partecipante della comunicazione</td>
+
+<td valign="top" headers="N10067">denota a chi devono essere spedite le risposte al messaggio</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">content</td>
+
+<td valign="top" headers="N10061">contenuto del messaggio</td>
+
+<td valign="top" headers="N10067">denota il contenuto del messaggio, cioè l'oggetto dell'azione</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">language</td>
+
+<td valign="top" headers="N10061">descrizione del contenuto</td>
+
+<td valign="top" headers="N10067">specifica il linguaggio in cui il contenuto è espresso</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">encoding</td>
+
+<td valign="top" headers="N10061">descrizione del contenuto</td>
+
+<td valign="top" headers="N10067">specifica il tipo di encoding supportato dal linguaggio adottato</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">ontology</td>
+
+<td valign="top" headers="N10061">descrizione del contenuto</td>
+
+<td valign="top" headers="N10067">specifica quali ontologie sono usate al fine di fornire il giusto 
+significato semantico ai simboli del linguaggio</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">protocol</td>
+
+<td valign="top" headers="N10061">controllo della conversazione</td>
+
+<td valign="top" headers="N10067">specifica il protocollo di interazione che il mittente sta usando</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">conversation-id</td>
+
+<td valign="top" headers="N10061">controllo della conversazione</td>
+
+<td valign="top" headers="N10067">usato per specificare la sequenza dei messaggi all'interno di una conversazione</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">reply-with</td>
+
+<td valign="top" headers="N10061">controllo della conversazione</td>
+
+<td valign="top" headers="N10067">introduce una espressione che dovrà essere usata nella risposta per 
+identificare questo messaggio</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">in-reply-to</td>
+
+<td valign="top" headers="N10061">controllo della conversazione</td>
+
+<td valign="top" headers="N10067">denota una espressione che referenzia un'azione precedente di cui questo 
+messaggio rappresenta la risposta</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N1005B">reply-by</td>
+
+<td valign="top" headers="N10061">controllo della conversazione</td>
+
+<td valign="top" headers="N10067">specifica una espressione di  tempo o data che indica l'ultima volta 
+nella quale il mittente ha voluto ricevere una risposta</td>
+
+</tr>
+
+</table>
+
+
+<p>
+La tabella sottostante riporta invece i tipi di atti comunicativi ammessi, cioè 
+i valori che può assumere il parametro performative.
+</p>
+
+
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr>
+<th valign="bottom" align="left" id="N101B8" width="20%">Tipo di atto</th>
+
+<th valign="bottom" align="left" id="N101BE" width="60%">Descrizione</th>
+
+<th valign="bottom" align="left" id="N101C4" width="20%">Risposta a</th>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">accept-proposal</td>
+
+<td valign="top" headers="N101BE">rappresenta l'accettazione ad una proposta inviata in precedenza</td>
+
+<td valign="top" headers="N101C4">propose</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">agree</td>
+
+<td valign="top" headers="N101BE">atto di accettazione all'esecuzione un'azione</td>
+
+<td valign="top" headers="N101C4">request</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">cancek</td>
+
+<td valign="top" headers="N101BE">permette ad un agente i di informare l'agente j che i non è più 
+interessato che j esegua l'azione che aveva richiesto in precedenza.
+J è comunque libero di eseguire o meno l'azione</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">cfp</td>
+
+<td valign="top" headers="N101BE">indica un processo di negoziazione attraverso una richiesta di 
+proposte all'esecuzione di una data azione</td>
+
+<td valign="top" headers="N101C4">risposta attraverso una serie di proposte che soddisfano le condizioni espresse nel messaggio</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">confirm</td>
+
+<td valign="top" headers="N101BE">il mittente informa il ricevente che la proposizione sulla quale 
+il ricevente aveva dubbi è vera</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">disconfirm</td>
+
+<td valign="top" headers="N101BE">il mittente informa il ricevente che la proposizione sulla quale 
+il ricevente aveva dubbi è falsa</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">failure</td>
+
+<td valign="top" headers="N101BE">specifica ad un altro agente che una azione è stata tentata, ma 
+il tentativo è fallito</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">inform</td>
+
+<td valign="top" headers="N101BE">il mittente informa il destinatario che una data proposizione è vera</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">inform-if</td>
+
+<td valign="top" headers="N101BE">è una abbreviazione per informare se una proposizione è creduta 
+vera o meno</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">inform-ref</td>
+
+<td valign="top" headers="N101BE">permette al mittente di informare il destinatario riguardo ad un 
+oggetto che il mittente crede corrispondere ad un descrittore</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">not-understood</td>
+
+<td valign="top" headers="N101BE">permette di informare il destinatario che il mittende percepisce 
+che il destinatario ha fatto una qualche azione ma che il 
+mittente non è in grado di capire.</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">propagate</td>
+
+<td valign="top" headers="N101BE">il mittente vuole che il destinatario recuperi gli identificativi 
+degli agenti a cui il messaggio è veramente stato indirizzato
+e spedisca a questi il messaggio come se fosse stato inviato direttamente dal mittente</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">propose</td>
+
+<td valign="top" headers="N101BE">l'azione di sottoporre una proposta di esecuzione di una particolare 
+azione date certe precondizioni</td>
+
+<td valign="top" headers="N101C4">cfp</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">proxy</td>
+
+<td valign="top" headers="N101BE">il mittete desidera che il ricevente selezioni gli agenti denotati 
+da un descrittore e che mandi a questi il messaggio contenuto</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">query-if</td>
+
+<td valign="top" headers="N101BE">l'azione di richiedere ad un altro agente se una proposizione 
+è vera o falsa</td>
+
+<td valign="top" headers="N101C4">confirm o disconfirm</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">query-ref</td>
+
+<td valign="top" headers="N101BE">l'azione di richiedere ad un altro agente riguardo all'oggetto 
+specificato attraverso una espressione referenziale</td>
+
+<td valign="top" headers="N101C4">inform-ref</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">refuse</td>
+
+<td valign="top" headers="N101BE">rifiuto di eseguire una azione e spiegazione del motivo</td>
+
+<td valign="top" headers="N101C4">request</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">reject-proposal</td>
+
+<td valign="top" headers="N101BE">rifiuto di eseguire una determinata azione nel contesto di una 
+negoziazione</td>
+
+<td valign="top" headers="N101C4">cfp</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">request</td>
+
+<td valign="top" headers="N101BE">il mittende richiede al ricevente di eseguire una specifica azione</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">request-when</td>
+
+<td valign="top" headers="N101BE">il mittende informa il ricevente che una data azione deve essere 
+eseguita appena una data precondizione si verifica</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+<tr>
+<td valign="top" headers="N101B8">request-whenever</td>
+
+<td valign="top" headers="N101BE">il mittende informa il ricevente che una data azione deve essere 
+eseguita appena una data precondizione si verifica, quando la
+precondizione diventa falsa tale azione deve essere rieseguita non appena 
+la precondizione torna ad essere vera</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+
+<tr>
+<td valign="top" headers="N101B8">subscribe</td>
+
+<td valign="top" headers="N101BE">il mittente richiede di essere notificato ogni volta che 
+l'oggetto denotato cambia stato</td>
+
+<td valign="top" headers="N101C4">-</td>
+
+</tr>
+
+</table>
+
+
+ 
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/agenti/aUMLIntro.html">Agent UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

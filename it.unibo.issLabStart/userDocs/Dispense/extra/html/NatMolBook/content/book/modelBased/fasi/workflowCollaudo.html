@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Collaudo" />
+<meta scheme="URI" name="DC.Relation" content="../../../../content/book/wkflow/processoLogico.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="workflowCollaudo" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Collaudo</title>
+</head>
+<body id="workflowCollaudo"><a name="workflowCollaudo"><!-- --></a>
+
+
+<h1 class="topictitle1">Collaudo</h1>
+
+<div>
+<p>
+Il collaudo inizia non appena il progetto produce informazioni sufficienti
+a trasformare le specifiche parziali del piano di collaudo 
+(si veda <a href="pianoCollaudo.html">Piano di collaudo</a>
+in una specifica di collaudo vera e propria e non appena è disponibile codice
+di implementazione.
+</p>
+<p>
+Si dice <strong>functional testing</strong> il collaudo relativo alle funzionalità
+che si suppone il sistema debba compiere, mentre si dice 
+<strong>structural testing</strong> il collaudo basato sulla struttura del codice.
+</p><p>
+Una classificazione:
+
+
+<ul>
+<li>Unit Testing: testing single units of work</li>
+<li><tt>Integration Testing</tt>: testing how different units of work interact</li>
+<li><tt>Functional Testing</tt>: testing subsystems (usually on a boundary API)</li>
+<li><tt>Stress/Load Testing</tt>: testing the system performance</li>
+<li><tt>(User) Acceptance Testing</tt>: testing the system as a user</li>
+</ul>
+
+Un' altra classificazione:
+
+<ul>
+<li><tt>White box testing</tt>: testing with knowledge of the target source code</li>
+<li><tt>Black box testing</tt>: testing on the target public API without knowledge of the target source code</li>
+</ul>
+
+Note:
+
+<ul>
+<li>I tipi di test e i confini tra di essi sono spesso motivo di dibattito</li>
+<li>Gli unit test sono sempre a white box, gli altri tipi di test possono essere a black box</li>
+<li>In linea di principio, per realizzare uno unit test di un'unità di lavoro che dipende da altre unità di 
+lavoro è necessario sostituire le unità di lavoro da cui la prima dipende con degli <em>Stub</em> o utilizzare
+i <em>Mock Objects</em> (altrimenti è necessario considerare il test almeno come un integration test)</li>
+<li>Un indicatore relativo al testing è il <tt>Test Coverage</tt>; in caso di white box testing il Test Coverage
+può essere dedotto dalla percentuale di righe di codice applicativo eseguite dalla suite di test; in caso di black 
+box testing esso può essere dedotto dal numero di metodi eseguiti sulle unità testate</li>
+</ul>
+    
+Myers [Myers04] denomina <strong>failure</strong> la situazione in cui il software opera in contrasto con le
+specifiche e <strong>fault</strong> l'elemento del software che causa una failure.
+</p>
+<p>
+Un functional testing potrebbe  dare risultato positivo anche se lo stato interno del
+sistema è erroneo. D'altra parte
+un piano di collaudo basato su testing strutturale può distogliere l'attenzione su cosa investigare.
+(il <em>code coverage</em> non sempre garantisce di raggiungere <em>functional coverage</em>).
+La <em>structural coverage</em> può essere usata come una misura di adeguatezza di collaudi funzionali.
+</p>
+<div class="p">
+Marick propone [Marick94] la seguente metodologia:
+<ul>
+<li>I test funzionali sono generati dai requisiti o dalle specifiche e dal progetto,
+con l'intento di individuare le situazioni di fallimento.</li>
+
+<li>La copertura strutturale è esaminata solo dopo che i test funzionali sono stati tutti 
+soddisfatti.</li>
+
+<li>Nel caso la coperatura strutturale sia da completare, il collaudatore non si lascia guidare
+dal sistema software, ma cerca di generare nuove situazioni a livello funzionale.</li>
+
+</ul>
+
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Organizzare il collaudo </h2>
+<div class="p">
+Il collaudo è una fase molto impegnativa, il cui approfondimento richiede
+un testo specializzato. Come quadro di riferimento generale
+può essere utile tenere presenti i punti indicati nella tabella che segue.
+
+<table summary="" cellspacing="0" cellpadding="4" border="1" class="simpletableborder">
+<tr><td valign="top" width="25%"><p>Cosa si propone  il collaudo</p>
+</td>
+
+<td valign="top" width="75%"><div class="p">
+<ul>
+<li>Individuare la presenza di difetti in un tempo pianificato e a costi minimali.</li>
+
+<li>Cercare di scoprire che i <em>modi</em> di un sistema non sono quanto è stato specificato debbano essere,
+
+La garanzia di assenza di errore richiede tecniche complementari quali
+ispezione del codice e prove formali di correttezza.</li>
+
+<li><em>Lo scopo del testing del software è trovare failures così che, una volta
+che il software ha fallito un collaudo, si possano trovare ed eliminare i faults
+responsabili della failure.</em></li>
+
+</ul>
+
+</div>
+
+</td>
+
+</tr>
+
+<tr><td valign="top"><p>Cosa collaudo</p>
+</td>
+
+<td valign="top"><div class="p">
+<ul>
+<li>Quello che costruisco:
+funzioni, moduli (classi), sottosistemi (package)
+più integrazione di sottosistemi, integrazione di sistema </li>
+
+<li><strong>System testing</strong>: sollecito con ingressi nel dominio dell'utenza</li>
+
+<li><strong>Unit testing:</strong> sollecito le parti per individuare le responsabilità delle failures e
+correggerle. </li>
+
+</ul>
+
+</div>
+
+
+</td>
+
+
+</tr>
+
+<tr><td valign="top"><p>Come collaudo</p>
+</td>
+
+<td valign="top"><div class="p">
+<ul>
+<li>Scelgo tra <strong>black box</strong>, <strong>white box</strong>, <strong>gray box</strong>. </li>
+
+<li>Distinguo tra testing di<em> unità</em>, di <em>oggetti</em> e di <em>sottosistemi</em></li>
+
+<li>Partiziono gli ingressi in classi di equivalenza</li>
+
+<li>Determino le risposte attese o i <strong>test oracle</strong>.
+Indago le <em>boundary conditions</em> tra le classi di equivalenza</li>
+
+<li>Mi assicuro che tutti gli statement siano percorsi</li>
+
+<li>Mi assicuro che tutte le alternative (branch) siano percorse (decision coverage)</li>
+
+<li>Genero <em>sequenze</em> di ingressi utili a sollecitare sottosistemi</li>
+
+<li>Genero input casuali</li>
+
+</ul>
+
+</div>
+
+</td>
+
+</tr>
+
+<tr><td valign="top"><p>Quando collaudo</p>
+</td>
+
+<td valign="top"><div class="p"><ul><li>Appena possibile, in modo continuo.
+Per agire il più precocemente possibile posso usare <em>stubs</em> cioè
+componenti chiamati vuoti, oppure che simulano le risposte anche chiedendole
+all'utente. 
+</li>
+</ul>
+</div>
+</td>
+
+</tr>
+
+<tr><td valign="top"><p>Come pianifico</p>
+</td>
+
+<td valign="top"><div class="p"><ul>
+<li>Decido la fllosofia del testing </li>
+
+<li>Decido la forma di documentazione</li>
+
+<li>Determino la estensione del testing</li>
+
+<li>Decido quando e come acquisire i dati di input</li>
+
+<li>Stimo le risorse richieste</li>
+
+
+</ul>
+</div>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+<p>
+Utili sono anche le raccomandazioni di Humphrey [Humphrey89] per quanto riguarda
+il collaudo delle funzioni.
+</p>
+<div class="p">
+<ol>
+<li>Verifica le operazioni con valori normali degli  argomenti (black box)</li>
+
+<li>Verifica le operazioni con valori  degli  argomenti ai limiti (black box)</li>
+
+<li>Verifica le operazioni con valori  degli  argomenti fuori dal range (black box)</li>
+
+<li>Assicurare che tutti le istruzioni siano eseguite (statement coverage)</li>
+
+<li>Controllare tutti i percorsi, su entrambe le linee decisionali (branch coverage)</li>
+
+<li>Controllare l'uso di tutti gli oggetti chiamati</li>
+
+<li>Verificare la gestione di tutte le strutture di dati</li>
+
+<li>Verificare la gestione di tutti i files</li>
+
+<li>Controllare la normale terminazione di tutti i cicli (in cooperazione con <em>prove di
+correttezza</em>)</li>
+
+<li>Controllare la  terminazione anomala di tutti i cicli</li>
+
+<li>Controllare la normale terminazione di tutte le ricorsioni</li>
+
+<li>Verificare la gestione delle condizioni di errore</li>
+
+<li>Controllare i vincoli di tempo e le sincronizzazioni</li>
+
+<li>Verificare tutte le dipendenze dall'hardware</li>
+
+</ol>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../../content/book/wkflow/processoLogico.html">Un percorso di riferimento</a></div>
+</div>
+</div>
+
+</body>
+</html>

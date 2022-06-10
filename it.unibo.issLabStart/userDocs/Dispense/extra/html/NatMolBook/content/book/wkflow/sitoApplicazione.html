@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Sito dell'applicazione" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/wkflow/processoLogico.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="wkf1" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Sito dell'applicazione</title>
+</head>
+<body id="wkf1"><a name="wkf1"><!-- --></a>
+
+
+<h1 class="topictitle1">Sito dell'applicazione</h1>
+
+<div>
+<p>  
+In base alle considerazioni precedenti sul processo di produzione
+del software, possiamo dire che non si tratta solo di costruire un prodotto 
+</p>
+<p> ... ma di porre attenzione al <em>processo</em> di produzione ...
+</p>
+<p> ... costruendo <em>artefatti</em> (prevalentemente 
+in forma di modelli UML) ...
+</p>
+<p> ... con particolare riguardo agli artefatti di analisi e di progetto ...
+</p>
+<p> ... al fine di promuovere e sostenere 
+un'organizzazione cooperativa ed evolutiva del lavoro.
+</p>
+<p>
+
+Per impostare il processo può essere conveniente introdurre uno schema
+di riferimento con il supporto di un <strong>sito dell'applicazione</strong> 
+in cui mantenere una rappresentazione aggiornata degli artefatti  
+e da usare per lo scambio di conoscenze tra i diversi attori
+(analisti, progetti, realizzatori, etc) coinvolti nel processo.
+Un esempio per un possibile sito di processo è definito come
+xref href="desktop-application-archetype-1.0.zip" format="zip"&gt;archetipo/xref&gt;
+per il framework xref href="http://maven.apache.org" format="html"&gt;Maven/xref&gt;;
+questo archetipo fornisce uno schema di riferimento iniziale per
+la descrizione e l'organizzazione degli artefatti
+nel contesto di un processo di tipo iterativo 
+(si veda xref href="../processi/ProcessiASpirale.dita"/&gt;).
+</p>
+<p>
+L'archetipo cui faremo riferimento in questa sede introduce l'insieme di voci
+qui di seguito elencate.
+</p>
+
+
+
+<div class="section"><h2 class="sectiontitle">Visione</h2>
+<p>
+L'artefatto relativo alla visione può essere un documento (<tt>html, word, xml</tt>, etc)
+che descrive le motivazioni generali (sociali, economiche, personali, etc)
+che hanno indotto una persona, un gruppo o un'azienda ad impegnarsi nello sviluppo 
+dell'applicazione, evidenziando i benefici che si prevede scaturiscano dalla applicazione
+stessa. 
+</p>
+<p>
+<em>Esempio</em>: lo sviluppo di un'applicazione basata su dispositivi mobili per il monitoraggio
+di temperatura, pressione, etc di un paziente  e per l'invio di tali dati via
+connessioni wireless a centri specializzati può promuovere l'assistenza di persone sole, anziani ed
+evitare lunghi e costosi ricoveri fuori dalle loro abitazioni.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Obiettivi</h2>
+<p>
+L'artefatto relativo agli obiettivi può essere un documento che illustra
+gli obiettivi  concreti 
+che si vogliono raggiungere grazie alla costruzione dell'applicazione 
+o in conseguenza dei suoi utilizzi o degli sviluppi futuri. 
+</p>
+<p>
+<em>Esempio</em>: l'applicazione "monitoraggio dati di un paziente" intende 
+produrre dispositivi 
+mobili a basso costo  capaci di emettere-ricevere dati in modo interoperabile
+con i web server o i web services di centri specializzati
+di gestione dei pazienti.
+</p>
+<p>
+Collegato agli obiettivi vi può essere anche 
+un <em>modello del business</em>, per esprimere il contesto in cui deve operare il sistema e per definire
+un vocabolario di termini e concetti di riferimento utili nella fase di analisi
+dei requisiti.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Requisiti</h2>
+<p>
+Si tratta qui di un insieme di artefatti che devono definire i requisiti funzionali 
+e non funzionali (si veda xref href="../wflow/requisitNonFunzionalii.dita"/&gt;) 
+che devono essere soddisfatti dall'applicazione.
+ 
+I requisiti vengono normalmente espressi da documenti scrtti in
+linguaggio naturale. In particolari contesti applicativi (ad esempio nei
+<em>sistemi real time</em>) questa descrizione deve essere completata da
+specifiche formali.
+</p>
+<p>
+Una pratica ormai diffusa è definire
+</p>
+<div class="p">
+<ul> 
+<li>un <em>glossario</em>  che riporta una spiegazione/definizione dei termini usati
+nel testo che descrive i requisiti;</li>
+
+<li>una traduzione dei requisiiti in modelli UML dei <em>casi d'uso</em> 
+(si veda xref href="../wflow/useCase.dita"/&gt;); </li>
+
+<li>documenti volti a descrivere <em>scenari</em> 
+(si veda xref href="../wflow/scenari.dita"/&gt;)
+che illustrano  le attività connesse ad un caso d'uso con dati reali.</li>
+
+</ul>
+
+</div>
+<p>
+Con questi artefatti l'analista dei requisiti  cerca di chiarire il significato
+delle richieste del committente,
+ponendosi anche dal punto di vista dell'utilizzatore finale dell'applicazione, in modo 
+da evitare ambiguità, incomprensioni e omissioni. 
+</p>
+<p>
+Un importante artefatto che può accompagnare il modello dei requisiti è
+costituito da una prima versione del <em>modello del dominio</em>, che sarà poi
+sviluppata nella fase dell'analisi del problema.
+</p>
+<p>
+
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Analisi del problema</h2>
+<p>
+Il <em>modello dell'analisi</em> 
+(si veda xref href="../wflow/workflowAnalisi.dita"/&gt;) 
+è costituito da un insieme di diagrammi UML
+costruiti per definire una struttura concettuale del sistema robusta e modificabile. 
+Con questo modello
+l'analista del problema esprime fatti il più possibile "oggettivi" sul problema
+(<em><strong>non sulla soluzione</strong></em>)
+focalizzando l'attenzione su <em>sottosistemi, ruoli e responsabilità</em> insiti
+negli scenari prospettati durante la descrizione dei requisiti.  
+</p>
+<p>
+Idealmente, se l'analisi fosse svolta in modo contemporaneo
+da più gruppi di analisti diversi non comunicanti tra loro, i modelli
+proposti da ciascun gruppo dovrebbero risultare "semanticamente equivalenti"; 
+in caso contrario il problema sarebbe mal definito e ogni fase successiva
+sarebbe compromessa fin dall'inizio.
+</p>
+<p>
+Un artefatto di sintesi dell'analisi è costituito dall'<strong>architettura logica</strong> del sistema
+(si veda xref href="workflowArchitetturaLogica.dita"/&gt;) costituita da
+una collezione di modelli UML che descrive la struttura (insieme delle parti), 
+il comportamento atteso (dal tutto e da ciascuna parte) e
+le interazioni tra le parti così come possono essere dedotte dai requisiti, dalle caratteristiche
+del problema e del dominio applicativo, senza alcun
+riferimento alle tecnologie realizzative.
+</p>
+<p>
+L'architettura logica del sistema da realizzare
+costituisce il punto di riferimento per l'analisi dei rischi,
+la pianificazione del lavoro, la pianificazione del collaudo e per
+la selezione (o lo sviluppo) delle tecnologie da utilizzare nella fase di progetto.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Piano di lavoro</h2>
+<p>
+Il piano di lavoro esprime l'articolazione delle attività in termini di risorse
+umane, temporali, di elaborazione etc. necessarie allo sviluppo del prodotto in base
+ai risultati dell'analisi del problema.
+ (si veda xref href="workflowPianoLavoro.dita"/&gt; ).
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Piano di collaudo</h2>
+<p>
+Il piano di collaudo definisce l'insieme dei risultati attesi (congruenti con i requisiti)
+da ogni parte (sottosistema, componente, etc)
+definito nell'architettura logica in base
+al comportamento osservabile di ciascuna parte (ignorando il comportamento interno)
+in relazione a specifiche sollecitazioni stimolo-risposta prevista
+(si veda xref href="workflowPianoCollaudo.dita"/&gt;).
+ </p>
+<p>
+Si parla di piano di collaudo in quanto il passaggio ad
+una specifica completa di collaudo potrà avvenire solo dopo la fase
+di progettazione. La definzione di un piano di collaudo risulta
+utile per definire meglio l'insieme delle operazioni di ciascun
+componente logico, per anticipare ragionamenti sulla integrazione di sistema
+e per chiarire il comportamento di ciascuna operazione in relazione
+ai requisiti.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Progetto</h2>
+<p>
+Gli artefatti relativi al progetto sono in gran parte
+costituiti da diagrammi UML che, nel loro insieme,
+definiscono l'organizzazione logica della soluzione, cioè
+l'architettura di un sistema che soddisfa tutti i requisiti.
+</p>
+<p>
+L'<em>architettura di progetto</em> può essere ottenuta in modo sistematico
+da una progressiva trasformazione dell'architettura logica in 
+forme più articolate che preservano i vincoli stabiliti al livello precedente.
+Un ruolo strategico in questo processo di trasformazione,
+è costituito dall'uso dai pattern e dai pattern languages
+(si veda xref href="../pattern/PatternLanguages.dita"/&gt;)
+che promuove una motivazione sistematica delle scelte che progressivamente
+portano al raffinamento dell'architettura, fino alla sua forma finale
+</p>
+<p>
+L'architettura di progetto dovrebbe scaturire come punto di equilibrio tra le forze
+in gioco nel problema e quindi dovrebbe risultare
+ancora il più possibile indipendente dalle tecnologie realizzative.
+
+Nel caso siano disponibili generatori / configuratori automatici di codice,
+la forma finale dell'architettura di progetto costituisce "il sistema".
+In caso contrario essa costituisce l'artefatto chiave con cui validare la soluzione
+prima di passare alla costosa fase di implementazione / codifica.
+
+
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Realizzazione</h2>
+<p>
+Gli artefatti relativi alla realizzazione sono rappresentati
+dal codice relativo ad una specifica piattaforma operativa.
+Il  codice tende ad essere oggi costituito in misura crescente
+da specifiche di configurazione e da specifiche di proprietà 
+(si veda xref href="../processi/SviluppoConFramework.dita"/&gt;)
+(entrambe espresse di solito in XML)
+e in misura decrescente da codice imperativo di controllo,
+</p>
+<p>
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Collaudo (testing)</h2>
+<p>
+Gli artefatti di collaudo sono costituiti da codice esguibile
+in modo automatizzato da framework specializzati come ad esempio JUnit.
+(si veda xref href="workflowCollaudo.dita"/&gt;).
+</p>
+
+</div>
+
+ 
+<div class="section"><h2 class="sectiontitle">Distribuzione (deployment)</h2>
+<p>
+Gli artefatti di distribuzione consistono nelle diverse
+forme di packaging previste dalla specifica piattaforma di implementazione
+per la instalazione, esecuzione e gestione del prodotto. 
+</p>
+
+</div>
+
+
+ 
+
+ 
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/wkflow/processoLogico.html">Un percorso di riferimento</a></div>
+</div>
+</div>
+
+</body>
+</html>

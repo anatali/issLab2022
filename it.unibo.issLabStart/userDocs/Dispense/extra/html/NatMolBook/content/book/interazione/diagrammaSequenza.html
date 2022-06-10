@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Diagramma di Sequenza" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/interazione.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/messaggio.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/combinedfragment.html" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/esempiInterazione.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Diagramma di Sequenza</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Diagramma di Sequenza</h1>
+
+<div>
+
+<p>
+Il tipo più comune di diagramma di interazione è il <em>Diagramma di sequenza</em> che si concentra sullo scambio di 
+<em>messaggi</em> tra un numero di <em>Lifeline</em>.
+</p>
+
+<p>
+Nella parte restante di questa sezione presenteremo la struttura dei diagrammi di sequenza, tralasciando volutamente la 
+descrizione dei Messaggi e dei Combined fragment (novità introdotta in UML 2.0) che rappresentano il cuore dei diagrammi
+e saranno illustrati nelle sezioni successive. Il capitolo si concluderà con la presentazione di alcuni esempi di
+modellazione che metteranno in luce punti di forza e di debolezza dei diagrammi di sequenza. 
+</p>
+
+ 
+
+<div class="section"><h2 class="sectiontitle">Partecipanti</h2> 
+
+<p>
+In un diagramma di sequenza, i partecipanti solitamente sono istanze di classi UML caratterizzate da un
+nome. La loro vita, cioè il tempo che intercorre dalla loro creazione alla
+loro distruzione, è rappresentata da una <em>Lifeline</em>, cioè una linea tratteggiata verticale ed etichettata, 
+in modo che sia possibile comprendere a quale componente del sistema si riferisce.
+</p>
+
+<p>
+In alcuni casi il partecipante non è un'entità semplice, ma composta: è
+possibile modellare la comunicazione fra più sottosistemi, assegnando una
+lifeline ad ognuno di essi. Il dettaglio di ciascuna parte viene poi definito
+utilizzando altri diagrammi, che mostrano come ogni elemento costituente il
+gruppo concorre alla gestione dello stimolo ricevuto; questa pratica è definita
+decomposizione.
+</p>
+
+<div class="p">
+Dalla specifica UML SuperStructure (pag. 490) la definizione di <em>Lifeline</em> risulta essere la seguente:
+
+<blockquote>A lifeline represents an individual participant in the Interaction. While Parts and StructuralFeatures may 
+have multiplicity greater than 1, Lifelines represent only one interacting entity. Lifeline is a specialization 
+of NamedElement. If the referenced ConnectableElement is multivalued (i.e, has a multiplicity &gt; 1), 
+then the Lifeline may have an expression (the "selector") that specifies which particular part is 
+represented by this Lifeline. If the selector is omitted, this means that an arbitrary representative 
+of the multivalued ConnectableElement is chosen.</blockquote>
+
+</div>
+
+<p>
+Il meta-modello della Lifeline è riportato nella figura sottostante.
+</p>
+
+<div class="fignone"><span class="figcap">Figure 1. Meta-modello Lifeline (tratto da UML SuperStructure pag. 461)</span>
+<br /><img src="../images/UML/DSequenza/LifeLine.jpg" alt="Meta-modello Lifeline" /><br />
+</div>
+
+<p>
+L'ordine in cui delle OccurrenceSpercification (cioè l'invio e la ricezione di eventi) avvengono lungo la Lifeline
+rappresenta esattamente l'ordine in cui tali eventi di verificano. D'altra parte la distanza (in termini grafici) tra 
+due eventi non ha rilevanza dal punto di vista semantico. La semantica di una Lifeline (all'interno di una Interazione)
+è la semantica dell'Interazione nella quale vengono selezionati solo gli OccurrenceSpecification relativi alla Lifeline
+in esame.
+</p>
+
+<p>
+Dal punto di vista notazionale, una Lifeline è rappresentata da un un rettangolo che costituisce la "testa" seguito da 
+una linea verticale (che può essere tratteggiata) che rappresenta il tempo di vita del partecipante. Le informazioni
+che identificano il partecipante sono mostrate all'interno del rettangolo.
+E' interessante notare che nella sezione della notazione, viene indicato espressamente che il "rettangolino" 
+che viene apposto sulla Lifeline rappresenta l'attivazione di un metodo 
+(chiamata nella specifica ExecutionSpecification). In particolare la specifica afferma che:
+ <span class="q">"To depict method activations we apply a thin grey or white  rectangle that covers the Lifeline line."</span>
+Tale precisazione lega ovviamente questi diagrammi strettamente al paradigma object-oriented.
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">State invariant</h2>
+
+<p>
+In alcuni casi, per poter ritenere valida un'interazione, è necessario specificare
+che alcuni vincoli devono essere soddisfatti. Allo scopo UML 2.0 fornisce la
+possibilità di inserire, in una Lifeline, una <em>Invariant</em>. Se il comportamento
+dell'entità in questione è descritto anche da uno <em>Statechart</em> è possibile usare
+gli stati del diagramma degli stati per definire le invarianti da rispettare; in tal caso si avrà
+una State Invariant.
+</p>
+
+</div>
+
+
+
+<div class="section"><h2 class="sectiontitle">Riferimenti ad altri diagrammi</h2>
+
+<p>
+Spesso i diagrammi di sequenza possono assumere una certa complessità, si può quindi rivelare molto utile 
+poter definire tali comportamenti più articolati come composizione di nuclei di interazione più semplici, 
+oppure, se una sequenza di eventi ricorre spesso, potrebbe essere utile definirla una volta e
+richiamarla dove necessario. 
+</p>
+
+<p>
+Per questa ragione, oltre alla decomposizione
+vista in precedenza nella sezione relativa alle Lifeline, UML 2.0 permette di inserire riferimenti ad altri diagrammi 
+e passare loro degli argomenti; ovviamente ha senso sfruttare quest'ultima opzione solo se il diagramma accetta dei 
+parametri sui quali calibrare l'evoluzione del sistema.
+Questi riferimenti prendono il nome di <em>InteractionOccurrences</em> o di <em>InteractionUse</em>, mentre i punti di connessione
+tra i due diagrammi prendono il nome di <em>Gate</em>. 
+</p>
+
+<p>
+Un Gate rappresenta un punto di interconnessione che mette in relazione un messaggio al di fuori del frammento di interazione,
+con uno all'interno del frammento. 
+</p>
+
+</div>
+
+
+<div class="section"><h2 class="sectiontitle">Vincoli temporali</h2>
+
+<p>
+Per modellare sistemi real-time, o comunque qualsiasi altra tipologia di sistema in cui la temporizzazione 
+è critica, è necessario specificare un istante in cui un messaggio deve essere inviato, oppure quanto tempo deve 
+intercorrere fra un'interazione ed un'altra. Grazie, rispettivamente, a <em>Time Constraint</em> e
+<em>Duration Constraint</em> è possibile definire questo genere di vincoli.
+</p>
+
+<p>
+La notazione utilizzata per esprime tali vincoli è riporata nela Figura sottostante.
+</p>
+
+<div class="fignone"><span class="figcap">Figure 2. Notazione per Vincoli temporali (tratto da UML Superstructure pag. 507)</span>
+<br /><img src="../images/UML/DSequenza/TimeConstraint.jpg" alt="Notazione vincoli temporali" /><br />
+</div>
+
+</div>
+
+
+
+</div>
+
+<div>
+<ul class="ullinks">
+<li class="ulchildlink"><strong><a href="../../../content/book/interazione/messaggio.html">Specifica dei Messaggi in UML 2.0</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/interazione/combinedfragment.html">Combined Fragment</a></strong><br />
+</li>
+<li class="ulchildlink"><strong><a href="../../../content/book/interazione/esempiInterazione.html">Esempi di Interazione con i diagrammi di sequenza</a></strong><br />
+</li>
+</ul>
+
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/interazione/interazione.html">Interazione in UML 2.0</a></div>
+</div>
+</div>
+
+</body>
+</html>

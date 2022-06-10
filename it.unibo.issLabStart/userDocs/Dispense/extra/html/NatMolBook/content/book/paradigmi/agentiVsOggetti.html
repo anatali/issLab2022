@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Agenti vs. oggetti" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/paradigmi/paradigmaAgenti.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Agenti vs. oggetti</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Agenti vs. oggetti</h1>
+
+<div>
+
+<p>
+
+Anche se ci sono certe somiglianze tra gli approcci orientati agli oggetti e quelli 
+orientati agli agenti (entrambi adottano il principio dell'information hiding e 
+riconoscono l'importanza cruciale della modellazione dello spazio delle interazioni) 
+ci sono anche svariate importanti differenze  [Jennings01].
+Primo, gli oggetti sono generalmente passivi: necessitano di ricevere un messaggio 
+(o una chiamata a metodo) per ottenere il controllo dell'esecuzione, gli agenti 
+invece sono entità attive. Secondo, anche se gli oggetti incapsulano lo stato 
+e la realizzazione del comportamento essi non incapsulano l'attivazione del 
+comportamento (scelta delle azioni): l'oggetto può così invocare ogni metodo 
+pubblico di ogni altro oggetto e una volta invocato il metodo le azioni associate 
+ad esso possono essere eseguite, è invece parte della natura degli agenti la 
+scelta del tipo di azione da eseguire e se eseguire tale azione.
+</p>
+<p>
+In più, il paradigma orientato agli oggetti fallisce nel fornire una adeguato insieme di 
+concetti e meccanismi per modellare i sistemi complessi: per questo tipo di sistemi 
+come ricorda Booch [Booch94] <em>le classi, gli oggetti e i moduli forniscono  essenziali 
+ma insufficienti astrazioni</em>.
+Gli oggetti individuali presentano comportamenti a grana troppo fine e l'invocazione 
+di metodi è un meccanismo troppo primitivo per descrivere il tipo di interazioni 
+che avvengono nei sistemi complessi. Il riconoscimento di queste mancanze ha portato 
+allo sviluppo di più potenti meccanismi di astrazione a supporto della progettazione 
+dei sistema complessi come per esempio i design pattern, i framework applicativi e le 
+tecnologie a componenti. 
+</p>
+<p>
+Anche se questi sono stati indubbiamenti passi avanti 
+si sono presto rivelati non del tutto adatti nel soddisfacimento delle caratteristiche 
+necessarie per lo sviluppo dei sistemi complessi: la focalizzazione sulle funzionalità 
+generiche e i rigidi pattern di interazione si scontrano con la natura impredicibile 
+e dinamica dei sistemi complessi.   
+Inoltre, gli approcci orientati agli oggetti forniscono solo un supporto minimale per 
+specificare e gestire le relazioni organizzazionali. 
+</p>
+<p>
+Riassumendo, la visione tradizionale dei sistemi orientati agli oggetti e quella 
+orientata agli agenti hanno almeno tre differenze cruciali  [Wooldridge00]:
+</p>
+<div class="p">
+<ul>
+<li>gli agenti incorporano una forte nozione di autonomia rispetto agli oggetti, 
+in particolare essi decidono autonomamente se eseguire o meno azioni in risposta 
+a richieste provenienti da altri agenti</li>
+
+<li>gli agenti sono capaci di esibire un comportamento (reattivo, proattivo, sociale,..) 
+flessibile mentre gli oggetti tipicamente forniscono un comportamento rigido</li>
+
+<li>i sistemi multi-agente sono intrisecamente multi-thread, quindi ogni agente ha il 
+proprio flusso di controllo, nei sistemi ad oggetti questo non è sempre il caso in 
+quanto tipicamente il flusso controllo passa da un oggetto ad un altro.</li>
+
+</ul>
+ 
+</div>
+
+ 
+
+</div>
+
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/paradigmi/paradigmaAgenti.html">Il paradigma ad agenti</a></div>
+</div>
+</div>
+
+</body>
+</html>

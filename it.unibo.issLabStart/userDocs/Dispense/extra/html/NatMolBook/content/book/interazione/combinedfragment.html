@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Combined Fragment" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/interazione/diagrammaSequenza.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Combined Fragment</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Combined Fragment</h1>
+
+<div>
+
+ 
+<p>
+La specifica di UML 2.0 permette di esprimere comportamenti più  complessi rispetto a quanto era possibile fare 
+con UML 1.x, ad esempio è ora possibile rappresentare l'esecuzione atomica di una serie di interazioni, 
+oppure che un messaggio deve essere inviato solo in determinate condizioni.
+A tale scopo UML 2.0 mette a disposizione
+gli <em>Interaction Fragment</em>. Inseriti in un <em>Combined Fragment</em>, cioè un contenitore atto a delimitare 
+l'area d'interesse, essi servono per spiegare che una certa catena di eventi, racchiusa in 
+uno o più operandi, si verificherà in base alla semantica dell'operatore associato.
+</p>
+
+<div class="p">
+Dalla specifica UML SuperStructure (pag. 467) la definizione di <em>Combined fragment</em> risulta essere la seguente:
+
+<blockquote>A combined fragment defines an expression of interaction fragments. A combined fragment is defined by an interaction
+operator and corresponding interaction operands. Through the use of CombinedFragments the user will be able to describe
+a number of traces in a compact and concise manner.
+CombinedFragment is a specialization of InteractionFragment.</blockquote>
+
+</div>
+
+<p>
+Il meta-modello del Combined fragment è riportato nella figura sottostante.
+</p>
+
+<div class="fignone"><span class="figcap">Figure 1. Meta-modello Combined fragment (tratto da UML SuperStructure pag. 464)</span>
+<br /><img src="../../images/UML/DSequenza/Fragment.jpg" alt="Meta-modello Combined Fragment" /><br />
+</div>
+
+<div class="p">
+Gli operatori a disposizione sono:
+<ul>
+<li> <em>Loop</em>: specifica che quello che  è racchiuso nell'operando sarà eseguito ciclicamente finchè la guardia, 
+una condizione booleana associata all'operando stesso, sarà verificata;</li>
+
+<li> <em>Alternatives (alt)</em>: indica che sarà eseguito il contenuto di uno solo
+degli operandi, quello la cui guardia risulta verificata;</li>
+
+<li> <em>Optional (opt)</em>: indica che l'esecuzione del contenuto dell'operando sarà
+eseguita solo se la guardia è verificata;</li>
+
+<li> <em>Break (break)</em>: ha la stessa semantica di opt, con la differenza che in
+seguito l'interazione sarà terminata;</li>
+
+<li> <em> Critical </em>: specifica un Atomic Execution Block;</li>
+
+<li> <em>Parallel (par)</em>: specifica che il contenuto del primo operando può essere
+eseguito in parallelo a quello del secondo;</li>
+
+<li> <em>Weak Sequencing (seq)</em>: specifica che il risultato complessivo può essere
+una qualsiasi combinazione delle interazioni contenute negli operandi,
+purchè: (1) l'ordinamento stabilito in ciascun operando sia mantenuto
+nel complesso; (3) eventi che riguardano gli stessi destinatari devono
+rispettare anche l'ordine degli operandi, cioè i messaggi del primo operando hanno precedenza su quelli del secondo;
+ (3) eventi che riguardano
+destinatari differenti non hanno vincoli di precedenza vicendevole;</li>
+
+<li> <em>Strict Sequencing (strict)</em>: indica che il contenuto deve essere eseguito
+nell'ordine in cui è specificato, anche rispetto agli operandi;</li>
+
+<li> <em> Ignore</em>: indica che alcuni messaggi, importanti ai fini del funzionamento
+del sistema, non sono stati rappresentati, perchè non utili ai fini della
+comprensione dell'interazione;</li>
+
+<li> <em>Consider</em>: è complementare ad ignore;</li>
+
+<li> <em> Negative (neg)</em>: racchiude una sequenza di eventi che non deve mai
+verificarsi;</li>
+
+<li> <em>Assertion (assert)</em>: racchiude quella che è considerata l'unica sequenza
+di eventi valida. Di solito è associata all'utilizzo di uno State Invariant
+come rinforzo.</li>
+
+</ul>
+
+</div>
+
+ 
+
+<div class="section"><h2 class="sectiontitle"> Rappresentazione dei Combined fragment </h2>
+
+<p>
+Un Combined fragment è rappresentato attraverso un rettangolo (vedi fiura sottostante). L'operatore è inserito in un
+pentagono nell'angolo in alto a sinistra. E' possibile inserire inserire più di un operatore nel pentagono. Questo 
+rappresenta una abbreviazione di rappresentazione per Combined fragment innestati. 
+Per esempio se inseriamo "loop strict" nel pentagono ha il medesimo significato di due Combined fragment innestati, il più
+esterno con operando "loop" e il più interno con operando "strict".
+Gli operandi di un combined fragment sono mostrati attraverso l'ausilio di linee tratteggiate per dividere il diagramma
+in diverse regioni corrispondenti agli operandi.
+Per i dettagli della rappresentazione di ciascun operando si rimanda il lettore alla specifica UML SuperStructure pagg.471 e seguenti.
+</p>
+
+<div class="fignone"><span class="figcap">Figure 2. Notazione dei Combined fragment (tratto da UML SuperStructure pag. 506)</span>
+<br /><img src="../../images/UML/DSequenza/FragmentNotation.jpg" alt="Notazione Combined Fragment" /><br />
+</div>
+
+</div>
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/interazione/diagrammaSequenza.html">Diagramma di Sequenza</a></div>
+</div>
+</div>
+
+</body>
+</html>

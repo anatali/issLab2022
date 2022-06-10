@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us" xml:lang="en-us">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta name="copyright" content="(C) Copyright 2005" />
+<meta name="DC.rights.owner" content="(C) Copyright 2005" />
+<meta content="concept" name="DC.Type" />
+<meta name="DC.Title" content="Profili" />
+<meta scheme="URI" name="DC.Relation" content="../../../content/book/uml/umlFirst.html" />
+<meta content="XHTML" name="DC.Format" />
+<meta content="concept" name="DC.Identifier" />
+<meta content="en-us" name="DC.Language" />
+<link href="../../../css/commonltr.css" type="text/css" rel="stylesheet" />
+<title>Profili</title>
+</head>
+<body id="concept"><a name="concept"><!-- --></a>
+
+
+<h1 class="topictitle1">Profili</h1>
+
+<div>
+<p>
+Gli elementi di <tt>UML</tt> permettono di esprimere un insieme di concetti general purpose. 
+L'<tt>OMG</tt>, nell'ambito di MDA, affronta anche il problema di definire metamodelli
+per specifici domini, in forma di profili, denominati <strong>core models</strong>. Sono
+esempi di core models <tt>UML profile for EAI</tt>, relativo alle <em>Enterprise Application Integration</em>
+o <tt>UML</tt> profile for <tt>EDOC</tt> per sistemi distribuiti d'impresa.
+ </p>
+<p>
+ Il concetto di profilo è stato introdotto in <tt>UML</tt> per permettere 
+l'adattamento o l'estensione di <tt>UML</tt> verso specifiche esigenze professionali o tecniche.
+I profili si basano su tre tipi di artefatti: <tt>stereotipi</tt>, <tt>tagged values</tt> e <tt>vincoli</tt>.
+(<tt>constaints</tt>).
+ 
+Nell'ambito di un profilo lo <strong>stereotype</strong> introduce un nuovo elmento, mentre
+un <strong>tagged value</strong> permette di introdurre proprietà aggiuntive.
+</p>
+<p>
+Un  profilo puà essere visto come un linguaggio concreto nell'ambito della famiglia di linguaggi
+costituita da <tt>UML</tt>.
+</p>
+<p>
+Un profilo dipende sempre da un reference metamodel, che può essere <tt>UML</tt> o un
+altro profilo. Un profilo non può modificare o rimuovere i vincoli del suo
+reference metamodel, ma solo restringerli ulteriormente.
+I vincoli sono espressi in <tt>OCL</tt>; ovviamente un vincolo definito in <tt>OCL</tt>
+in un modello di livello <tt>N</tt> riguarda le istanze del modello, cioè
+il livello <tt>N-1</tt>.
+I vincoli definiti a livello della definizione di uno stereotipo sono intesi che debbano essere applicati
+a tutte le classi in cui lo stereotipo è applicato.
+</p>
+<p>
+Il concetti di profilo è definito in modo formale in <tt>UML2.0</tt> (il che non è per <tt>UML1</tt>)
+che introduce anche notazioni specifiche, tra cui un simbolo per denotare
+l'<strong>estensione</strong>, un concetto del tutto nuovo che non deve essere confuso
+con l'associazione, la dipendenza o l'ereditariteà.
+</p>
+<p>
+
+</p>
+
+
+
+
+</div>
+
+<div>
+<div class="familylinks">
+<div class="parentlink"><strong>Parent topic:</strong> <a href="../../../content/book/uml/umlFirst.html">Il linguaggio UML</a></div>
+</div>
+</div>
+
+</body>
+</html>

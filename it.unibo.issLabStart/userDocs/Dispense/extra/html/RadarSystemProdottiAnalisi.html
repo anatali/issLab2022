@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>Prodotti della analisi &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Progettazione e sviluppo" href="RadarSystemProgetto.html" />
+    <link rel="prev" title="Analisi del problema" href="RadarSystemAnalisi.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="prodotti-della-analisi">
+<h1>Prodotti della analisi<a class="headerlink" href="#prodotti-della-analisi" title="Permalink to this headline">¶</a></h1>
+<p>Importanti prodotti, al termine della fase di analisi dei requisiti e del problema sono:</p>
+<ul class="simple">
+<li><p>la definizione di una <span class="blue">architettura logica</span> di riferimento che tiene conto dei vincoli posti
+dai requisiti e dal problema che ne consegue;</p></li>
+<li><p>la proposta di un <span class="blue">piano di lavoro</span> per lo sviluppo del sistema.</p></li>
+</ul>
+<section id="architettura-logica-come-modello-di-riferimento">
+<h2>Architettura logica come modello di riferimento<a class="headerlink" href="#architettura-logica-come-modello-di-riferimento" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="CostruireSoftware.html#l-architettura-logica"><span class="std std-ref">L’architettura logica</span></a> di un sistema costituisce un <span class="blue">modello del sistema</span> ispirato dai requisiti funzionali
+e dalle forze in gioco nel dominio applicativo o nella specifica applicazione e mira ad identificare
+i macro-sottosistemi in cui il <strong>problema stesso</strong> suggerisce di articolare il sistema risolvente.</p>
+<p>L’architettura logica è il più possibile <strong>indipendente da ogni ipotesi sull’ambiente di implementazione</strong>.</p>
+<p>Un modo per <em>valutare la qualità</em> di una architettura logica e la <em>coerenza con i requisiti</em>
+è dare risposta a opportune domande, come le seguenti:</p>
+<ul>
+<li><p>Se nel modello compaiono entità denotate da <strong>termini non definiti</strong> nel glossario costruito
+dall’analista dei requisiti, quale è la motivazione della loro presenza?
+Sono elementi realmente necessari o siamo di fronte ad una prematura anticipazione di elementi di progettazione?</p></li>
+<li><p>Se nel modello <strong>non compaiono</strong> entità corrispondenti a termini definiti nel glossario,
+quale è la motivazione della loro mancanza? Siamo di fronte a una dimenticanza
+o vi sono ragioni reali per non includere questi elementi?</p></li>
+<li><p>Le dipendenze tra le parti sono state impostate a livello logico o riflettono (erroneamente, in questa fase)
+una <em>visione implementativa</em>?</p></li>
+<li><p>E’ possibile addentrarsi nei dettagli dell’architettura procedendo <span class="blue">incrementalmente</span>
+a livelli di astrazione via via descrescenti (con tecniche di raffinamento e <span class="blue">zooming</span>)
+o siamo di fronte a un ammasso non organizzato di parti, come quello della figura?</p>
+<a class="reference internal image-reference" href="_images/bigballofmud.png"><img alt="_images/bigballofmud.png" class="align-center" src="_images/bigballofmud.png" style="width: 30%;" /></a>
+</li>
+</ul>
+<section id="architettura-ad-oggetti">
+<h3>Architettura ad oggetti<a class="headerlink" href="#architettura-ad-oggetti" title="Permalink to this headline">¶</a></h3>
+<p>Se astraiamo dalla distribuzione (supponendo ad esempio che tutto il sistema possa
+essere supportato sul RaspberryPi), l’architettura logica del sistema risulta
+riconducibile a un classico schema <span class="blue">read-eval-print</span> in cui:</p>
+<blockquote class="epigraph">
+<div><p>Il componente <code class="docutils literal notranslate"><span class="pre">Controller</span></code> deve leggere dati dal <code class="docutils literal notranslate"><span class="pre">Sonar</span></code>
+come dispositivo di input e inviare comandi al <code class="docutils literal notranslate"><span class="pre">Led</span></code> e al <code class="docutils literal notranslate"><span class="pre">RadarDisplay</span></code>
+come dispositvi di output.</p>
+</div></blockquote>
+<p><span class="remark">Il sistema presenta quattro componenti: tre Dispositivi di I/O e un Controller che li gestisce</span></p>
+<p>Per rendere comprensibile questa architettura anche alla ‘macchina’ senza entrare in dettagli
+implementativi, possiamo introdurre opportuni <span class="blue">modelli dei componenti</span> utlizzando un linguaggio
+di programmazione.</p>
+<p>Nel caso di Java, il costrutto interface può essere usato per denotare un componente catturandone
+come aspetto essenziale le funzionalità che esso deve offrire e una sorta di <span class="blue">contratto</span>
+sull’uso del componente.</p>
+<section id="modello-ad-oggetti-del-dominio">
+<span id="modellooggettidominio"></span><h4>Modello ad oggetti del dominio<a class="headerlink" href="#modello-ad-oggetti-del-dominio" title="Permalink to this headline">¶</a></h4>
+<p>I modelli iniziali dei componenti descritti da interfacce Java per il <em>Led,
+il Sonar e il RadarDisplay</em> costuiscono il nostro attuale <span class="blue">modello del dominio</span>.
+Ispirandoci agli schemi <a class="reference external" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">port-adapter</a> e <a class="reference external" href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">clean-architecture</a>:</p>
+<p><span class="remark">il modello del dominio sarà al centro della architettura del sistema</span></p>
+<p><span class="remark">il software relativo dominio sarà scritto in un progetto dedicato</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">it</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">radarSystem22</span><span class="o">.</span><span class="n">domain</span>
+</pre></div>
+</div>
+<p><span class="remark">il software dell’applicazione sarà scritto in un progetto dedicato</span></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">it</span><span class="o">.</span><span class="n">unibo</span><span class="o">.</span><span class="n">radarSystem22</span>
+</pre></div>
+</div>
+</section>
+<section id="le-interfacce-iled-e-iradardisplay">
+<span id="iradardisplay"></span><span id="iled"></span><h4>Le interfacce ILed e IRadarDisplay<a class="headerlink" href="#le-interfacce-iled-e-iradardisplay" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Led</p></td>
+<td><p>RadarDisplay</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ILed</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnOn</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">turnOff</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">getState</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IRadarDisplay</span><span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="p">(</span><span class="n">String</span> <span class="n">d</span><span class="p">,</span> <span class="n">String</span> <span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="le-interfacce-idistance-e-isonar">
+<span id="isonar"></span><span id="idistance"></span><h4>Le interfacce IDistance e ISonar<a class="headerlink" href="#le-interfacce-idistance-e-isonar" title="Permalink to this headline">¶</a></h4>
+<table class="colwidths-given docutils align-default" style="width: 100%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Distance</p></td>
+<td><p>Sonar</p></td>
+</tr>
+<tr class="row-even"><td><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">IDistance</span> <span class="p">{</span>
+ <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getVal</span><span class="p">(</span>   <span class="p">);</span>
+ <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="p">(</span>   <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+<td><div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ISonar</span> <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">activate</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deactivate</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="n">IDistance</span> <span class="nf">getDistance</span><span class="p">();</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isActive</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>In quanto dispositivo-generatore di dati, <code class="docutils literal notranslate"><span class="pre">ISonar</span></code> offre metodi per attivare/disattivare il dispositivo e il
+metodo <code class="docutils literal notranslate"><span class="pre">getDistance</span></code> per fornire il valore corrente di distanza misurata.</p>
+<p>La interfaccia <code class="docutils literal notranslate"><span class="pre">IDistance</span></code> è introdotta per reppresentare il concetto di distanza, in modo
+da non appiattire questo concetto su un tipo predefinito, come <code class="docutils literal notranslate"><span class="pre">int</span></code>. Notiamo che, come per
+tutti i valori numerici, non vi sono metodi per modificare una distanza,
+ma solo metodi per fornirne una rappresentazione in termini di tipi primitivi, tra cui mettiamo in evidenza
+il metodo che fornisce una rappresentazione in termini di <strong>String</strong>.</p>
+<p>Notiamo invece che, per il Led, abbiamo ‘ridotto’ il concetto di stato del Led al
+tipo predefinito  <code class="docutils literal notranslate"><span class="pre">boolean</span></code> in quanto questo tipo di dato è aderente alla logica del problema.</p>
+</section>
+</section>
+<section id="architettura-logica-del-sistema">
+<h3>Architettura logica del sistema<a class="headerlink" href="#architettura-logica-del-sistema" title="Permalink to this headline">¶</a></h3>
+<p>La <span class="blue">architettura logica</span> suggerita dal problema è rappresentabile con la figura che segue:</p>
+<a class="reference internal image-reference" href="_images/ArchLogicaOOP.PNG"><img alt="_images/ArchLogicaOOP.PNG" class="align-center" src="_images/ArchLogicaOOP.PNG" style="width: 50%;" /></a>
+<p><span class="remark">Non vi sono (al momento) situazioni di uso concorrente di risorse.</span></p>
+<section id="la-logica-del-controller">
+<span id="controllerlogic"></span><h4>La logica del Controller<a class="headerlink" href="#la-logica-del-controller" title="Permalink to this headline">¶</a></h4>
+<p>A questo punto possiamo anche esprimere il funzionamento logico del <code class="docutils literal notranslate"><span class="pre">Controller</span></code> come segue:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">ISonar</span>        <span class="n">sonar</span><span class="p">;</span>
+<span class="n">ILed</span>          <span class="n">led</span><span class="p">;</span>
+<span class="n">IRadarDisplay</span> <span class="n">radar</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="k">while</span><span class="p">(</span> <span class="n">sonar</span><span class="p">.</span><span class="na">isactive</span><span class="p">()</span> <span class="p">){</span>
+  <span class="n">IDistance</span> <span class="n">d</span> <span class="o">=</span> <span class="n">sonar</span><span class="p">.</span><span class="na">getDistance</span><span class="p">();</span> <span class="c1">//Acquisizione di un dato dal sonar</span>
+  <span class="k">if</span><span class="p">(</span> <span class="n">d</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">getVal</span><span class="p">())</span> <span class="o">&lt;</span> <span class="n">DLIMIT</span> <span class="p">)</span>        <span class="c1">//Elaborazione del dato</span>
+    <span class="n">Led</span><span class="p">.</span><span class="na">turnOn</span><span class="p">()</span> <span class="k">else</span> <span class="n">Led</span><span class="p">.</span><span class="na">turnOff</span>  <span class="c1">//Gestione del Led</span>
+  <span class="n">radar</span><span class="p">.</span><span class="na">update</span><span class="p">(</span> <span class="s">&quot;&quot;</span><span class="o">+</span><span class="n">d</span><span class="p">.</span><span class="na">getDistance</span><span class="p">().</span><span class="na">getVal</span><span class="p">(),</span> <span class="s">&quot;90&quot;</span><span class="p">)</span> <span class="c1">//Visualizzazione su RadarDisplay</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il <span class="blue">come</span> avviene l’interazione tra le parti relativa alla acquisizione dei dati e all’invio dei comandi
+non è specificato al momento.
+Come analisti del problema possiamo però evidenziare che il <code class="docutils literal notranslate"><span class="pre">Controller</span></code>
+può acquisire i dati del Sonar in  modi diversi:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>inviando una richiesa al Sonar, che gli fornisce un dato come risposta;</p></li>
+<li><p>agendo come un componente <em>observer</em> di un Sonar <em>observable</em>;</p></li>
+<li><p>agendo com un <em>subscriber</em> su una <em>topic</em> di un broker su cui il Sonar pubblica i suoi dati.</p></li>
+</ol>
+</div></blockquote>
+<p>Poichè abbiamo in precedenza escluso forme di interazione <em>publish-subscribe</em>, ci concentriamo al momento
+sui casi 2.1 e 2.2.</p>
+<p>Questo modello sembra portare intrinsecamente in sè l’idea di una classica applicazione
+ad oggetti che deve essere eseguita su un singolo elaboratore (o una singola Java virtual machine).
+Ma forse non è proprio così.</p>
+</section>
+</section>
+</section>
+<section id="dagli-oggetti-alla-distribuzione-i-design-patterns">
+<h2>Dagli oggetti alla distribuzione: i design patterns<a class="headerlink" href="#dagli-oggetti-alla-distribuzione-i-design-patterns" title="Permalink to this headline">¶</a></h2>
+<p>Il fatto di avere espresso il <code class="docutils literal notranslate"><span class="pre">Controller</span></code> con riferimento a interfacce e non ad oggetti concreti,
+significa che il progettista si può avvalere di appropriati <span class="blue">design pattern</span> per
+implementare i componenti in modo che possano scambiare informazione via rete.</p>
+<ul class="simple">
+<li><p>Il <strong>Proxy</strong> può essere utilizzato per accedere ad un un oggetto complesso tramite un oggetto semplice
+o quando si desidera  nascondere il fatto che si sta chiamando un servizio remoto.</p></li>
+<li><p>Il <strong>Decorator</strong> (anche chiamato <strong>‘Smart Proxy’</strong>) viene utilizzato quando si desidera aggiungere funzionalità
+a un oggetto, senza usare l’ereditarietà.</p></li>
+<li><p>L’<strong>Adapter</strong> viene utilizzato quando si desidera mappare un oggetto con una certa
+interfaccia su un altro oggetto che ha un ruolo funzionale simile, ma  interfaccia diversa.</p></li>
+<li><p>Il <strong>Bridge</strong> è molto simile a Adapter, ma definisce sia l’interfaccia
+che l’implementazione sottostante.</p></li>
+<li><p>La <strong>Facade</strong> è un’interfaccia di livello superiore (più semplice) per un sottosistema
+di una o più classi.</p></li>
+<li><p>Il <strong>Singleton</strong> evita di creare più di una istanza di una classe e può risultare utile per creare supporti
+alla comunicazione.</p></li>
+</ul>
+<section id="l-interfaccia-interaction2021">
+<span id="interaction2021"></span><h3>L’interfaccia <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code><a class="headerlink" href="#l-interfaccia-interaction2021" title="Permalink to this headline">¶</a></h3>
+<p>Astraendo dallo specifico protocollo, osserviamo che tutti i principali protocolli punto-a-punto
+sono in grado di stabilire una <span class="blue">connessione</span> stabile sulla quale inviare e ricevere messaggi.</p>
+<p>Questo concetto può essere realizzato da un oggetto che rende disponibile opportuni metodi, come quelli definiti
+nella seguente interfaccia:</p>
+<div class="highlight-Java notranslate" id="conn2021"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nc">Interaction2021</span>  <span class="p">{</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">forward</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">request</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">receiveMsg</span><span class="p">(</span>  <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">reply</span><span class="p">(</span>  <span class="n">String</span> <span class="n">msg</span> <span class="p">)</span> <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="p">(</span> <span class="p">)</span>  <span class="kd">throws</span> <span class="n">Exception</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">forward</span></code> è un metodo di trasmissione <span class="blue">‘fire-and-forget’</span>, mentre il metodo <code class="docutils literal notranslate"><span class="pre">request</span></code> denota
+l’invio di informazione cui deve corrispondere una <em>ack</em> o una <em>response</em> da parte del server.
+Concettualmente, un server che invia una <em>response/ack</em> sulla connessione con un client effettua una operazione
+di <code class="docutils literal notranslate"><span class="pre">reply</span></code> che assimiliamo alla <em>forward</em> di un messaggio con appropriato contenuto informativo.</p>
+<p>L’informazione scambiata è rappresenta da una <code class="docutils literal notranslate"><span class="pre">String</span></code> che è un tipo di dato presente in tutti
+i linguaggi di programmazione.
+Non viene introdotto un tipo  diverso (ad esempio <code class="docutils literal notranslate"><span class="pre">Message</span></code>) perchè non si vuole stabilire
+il vincolo che gli end-points della connessione siano componenti codificati nello medesimo linguaggio di programmazione</p>
+<p>La <code class="docutils literal notranslate"><span class="pre">String</span></code> restituita dal metodo <code class="docutils literal notranslate"><span class="pre">receiveMsg</span></code> può rappresentare una risposta a un messaggio
+inviato in precedenza con <code class="docutils literal notranslate"><span class="pre">forward</span></code>.</p>
+<p>Ovviamente la definizione di questa interfaccia potrà essere estesa e modificata in futuro,
+a partire dalla fase di progettazione, ma rappresenta una forte indicazione dell’analista di
+pensare alla costruzione di componenti software che possano ridurre il costo delle applicazioni future.</p>
+</section>
+<section id="il-concetto-di-oggetto-enabler">
+<span id="concettodienabler"></span><h3>Il concetto di ‘oggetto enabler’<a class="headerlink" href="#il-concetto-di-oggetto-enabler" title="Permalink to this headline">¶</a></h3>
+<p>Traendo ispirazione dal  <a class="reference external" href="https://it.wikipedia.org/wiki/Decorator">pattern-decorator</a>, possiamo evidenziare, come analisti, la necessità
+di introdurre un nuovo tipo di ente, che denominiamo <span class="blue">enabler</span>,
+che ha come scopo quello di incapsulare software ‘convenzionale’ utile e
+testato ma non adatto alla distribuzione (che denominiamo <span class="blue">core-code</span>)
+all’interno di un involucro capace di ricevere e trasmettere informazione.</p>
+<p>Nel caso specifico,  supponendo che il Controller sia allocato sul PC; abbiamo bisogno</p>
+<ul class="simple">
+<li><p>di un enabler per il <cite>core-code</cite> del Sonar</p></li>
+<li><p>di un enabler per il <cite>core-code</cite> del Led</p></li>
+</ul>
+<p>Ad esempio, il <code class="docutils literal notranslate"><span class="pre">Controller</span></code> su PC potrebbe utilizzare un <em>proxy tipo-server</em> con interfaccia
+<code class="docutils literal notranslate"><span class="pre">ISonar</span></code> che riceverà i dati da un <em>enabler tipo-client</em> del Sonar posto sul Raspberry.
+Inoltre, il <code class="docutils literal notranslate"><span class="pre">Controller</span></code> potrebbe utilizzare un <em>proxy tipo-client</em>
+con interfaccia <code class="docutils literal notranslate"><span class="pre">ILed</span></code> che trasmetterà i comandi a un <em>enabler tipo-server</em> del Led sul Raspberry.</p>
+<a class="reference internal image-reference" href="_images/ArchLogicaOOPEnablers.PNG"><img alt="_images/ArchLogicaOOPEnablers.PNG" class="align-center" src="_images/ArchLogicaOOPEnablers.PNG" style="width: 50%;" /></a>
+<p>Tuttavia, come analisti, riteniamo sia opportuno  limitare il traffico di rete,
+evitando di inviare i dati del sonar anche quando non
+sono richiesti dal sever.  Per cui, una architettura migliore è porre sul PC, ad uso
+del <code class="docutils literal notranslate"><span class="pre">Controller</span></code>, due  <em>proxy tipo-client</em>, uno per il Led e uno per il Sonar, che interagiranno cone due
+<em>enabler tipo-server</em> complementari posti sul RaspberryPi, inviando su  <a class="reference internal" href="#interaction2021">Interaction2021</a>:</p>
+<ul class="simple">
+<li><p>messaggi interpretabili come <span class="blue">comandi</span> (ad esempio <code class="docutils literal notranslate"><span class="pre">activate</span></code>, <code class="docutils literal notranslate"><span class="pre">turnOff</span></code>)</p></li>
+<li><p>messaggi interpretabili cone <span class="blue">richieste</span> (ad esempio <code class="docutils literal notranslate"><span class="pre">getDistance</span></code>, <code class="docutils literal notranslate"><span class="pre">getState</span></code>)</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/ArchLogicaOOPEnablersBetter.PNG"><img alt="_images/ArchLogicaOOPEnablersBetter.PNG" class="align-center" src="_images/ArchLogicaOOPEnablersBetter.PNG" style="width: 50%;" /></a>
+<p>Notiamo che questo schema architettrurale è valido anche nel caso in cui il Sonar sia
+un dispositivo-observable:</p>
+<a class="reference internal image-reference" href="_images/ArchLogicaOOPSonarObservable.PNG"><img alt="_images/ArchLogicaOOPSonarObservable.PNG" class="align-center" src="_images/ArchLogicaOOPSonarObservable.PNG" style="width: 50%;" /></a>
+<p>L’idea di <span class="blue">enabler</span>, unitamente all’idea di <em>proxy</em>, sembra dunque promettente
+per un passaggio graduale e sistematico dalla programmazione tradizionale ad oggetti
+alla programmazione distribuita.
+Siamo di fornte ai primi passi relativi a un</p>
+<p><span class="remark">nuovo paradigma di programmazione per sistemi distribuiti</span></p>
+<p>che troverà più avanti un suo pieno sviluppo con i concetti di <span class="blue">attore</span> e di <a class="reference external" href="https://en.wikipedia.org/wiki/Microservices">microservizio</a>.</p>
+</section>
+</section>
+<section id="piano-di-lavoro">
+<span id="pianolavoro"></span><h2>Piano di lavoro<a class="headerlink" href="#piano-di-lavoro" title="Permalink to this headline">¶</a></h2>
+<p>Trattandosi di uno sviluppo di tipo bottm-up, il piano di lavoro parte dallo sviluppo dei componenti,
+seguito da un opportuno ‘assemblaggio’ degli stessi in modo da formare il sistema che soddisfa i requisiti.</p>
+<p>Poichè il nostro obiettivo è anche quello di riusare <span class="blue">core-code</span> fornito dal committente,
+procediamo come segue:</p>
+<ol class="arabic simple">
+<li><p>definizione dei componenti software di base legati ai dispositivi di I/O (Sonar, RadarDisplay e Led);</p></li>
+<li><p>definizione di alcuni supporti TCP per componenti lato client e lato server, con l’obiettivo di
+formare un insieme riusabile anche in applicazioni future;</p></li>
+<li><p>definizione di componenti  <span class="blue">enabler</span>  capaci di abilitare
+alle comunicazioni (via TCP o mediante altri tipi di protocollo) i componenti-base;</p></li>
+<li><p>assemblaggio dei componenti  per formare il sistema distribuito.</p></li>
+</ol>
+<p>Il punto 2 relativo ai supporti non è indispensabile, ma, come detto, può costituire un elemento strategico
+a livello aziendale.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Prodotti della analisi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architettura-logica-come-modello-di-riferimento">Architettura logica come modello di riferimento</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#architettura-ad-oggetti">Architettura ad oggetti</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modello-ad-oggetti-del-dominio">Modello ad oggetti del dominio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#le-interfacce-iled-e-iradardisplay">Le interfacce ILed e IRadarDisplay</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#le-interfacce-idistance-e-isonar">Le interfacce IDistance e ISonar</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#architettura-logica-del-sistema">Architettura logica del sistema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#la-logica-del-controller">La logica del Controller</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dagli-oggetti-alla-distribuzione-i-design-patterns">Dagli oggetti alla distribuzione: i design patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#l-interfaccia-interaction2021">L’interfaccia <code class="docutils literal notranslate"><span class="pre">Interaction2021</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#il-concetto-di-oggetto-enabler">Il concetto di ‘oggetto enabler’</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#piano-di-lavoro">Piano di lavoro</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="RadarSystemAnalisi.html" title="previous chapter">Analisi del problema</a></li>
+      <li>Next: <a href="RadarSystemProgetto.html" title="next chapter">Progettazione e sviluppo</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/RadarSystemProdottiAnalisi.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
