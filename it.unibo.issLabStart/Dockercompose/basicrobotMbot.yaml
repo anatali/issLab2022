@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mbot:
+    image: docker.io/natbodocker/imageforarm:1.1
+    ports:
+      - 8020:8020/tcp
+      - 8020:8020/udp
+    privileged: true
+
+## docker-compose -f basicrobotMbot.yaml run --service-ports mbot   /bin/bash
+## docker-compose -f basicrobotMbot.yaml run --service-ports mbot /bin/bash  CONNETTO MA PERDO Arduino
