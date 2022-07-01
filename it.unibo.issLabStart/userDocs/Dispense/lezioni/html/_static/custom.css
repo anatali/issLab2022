@@ -10,6 +10,15 @@ body {
   .red {
     color:red;
   }
+
+  .brown {
+    color:#990000;
+  }
+
+  .green {
+    color:#006600;
+  }
+
   .remark{
     background-color: #E3F2FD;
       border: 2px solid green;

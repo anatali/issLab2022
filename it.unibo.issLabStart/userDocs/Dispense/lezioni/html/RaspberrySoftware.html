@@ -16,7 +16,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="RaspBasicCode" href="RaspBasicCode.html" />
-    <link rel="prev" title="Analisi del problema" href="RadarSystemAnalisi.html" />
+    <link rel="prev" title="Annotazioni" href="Annotazioni.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -406,8 +406,7 @@ fswebcam -r 320×240 image3.jpg     #crea immagine 320×240
 <span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
 </pre></div>
 </div>
-<p>Attivazione e prova:
-.. code:</p>
+<p>Attivazione e prova:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">start</span><span class="o">.</span><span class="n">sh</span>     <span class="ow">or</span> <span class="n">bash</span> <span class="n">start</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">stream</span><span class="o">.</span><span class="n">html</span>
@@ -415,8 +414,7 @@ fswebcam -r 320×240 image3.jpg     #crea immagine 320×240
 </div>
 <p>Se la <span class="red">webcam si ferma</span> dopo qualche secondo, modificare
 in <code class="docutils literal notranslate"><span class="pre">/boot/config.txt</span></code>  da gpu_mem=128 a <span class="blue">gpu_mem=256</span>.</p>
-<p>Altro codice di attivazione:
-.. code:</p>
+<p>Altro codice di attivazione:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mjpg_streamer</span> <span class="o">-</span><span class="n">i</span> <span class="s2">&quot;input_uvc.so -r 1280x720  -d /dev/video0 -f 30&quot;</span> <span class="o">-</span><span class="n">o</span> <span class="s2">&quot;output_http.so -p 8085  -w /usr/local/share/mjpg-streamer/www&quot;</span>
 
 <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8085</span><span class="o">/</span><span class="n">stream</span><span class="o">.</span><span class="n">html</span>
@@ -539,8 +537,18 @@ Test
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">RaspberrySoftware</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#azioni-preliminari">Azioni Preliminari</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#se-non-abbiamo-wifi">Se non abbiamo WIFI</a></li>
@@ -584,13 +592,32 @@ Test
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo2022.html">demo2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Architetture.html">Architetture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConclusioniISS22.html">ConclusioniISS22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webRobot22.html">webrobot22</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="RadarSystemAnalisi.html" title="previous chapter">Analisi del problema</a></li>
+      <li>Previous: <a href="Annotazioni.html" title="previous chapter">Annotazioni</a></li>
       <li>Next: <a href="RaspBasicCode.html" title="next chapter">RaspBasicCode</a></li>
   </ul></li>
 </ul>

@@ -12,6 +12,7 @@
 .. _DockerRepo : https://hub.docker.com/repositories
 .. _Dispense Ingegneria del software: ./NatMolBook/bookEntry.html  
 .. _SCRUM :   https://scrumguides.org/
+.. _YAGNI: https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it
 .. _Sprint review : https://www.agileway.it/sprint-review-meeting/
 .. _FSM : https://en.wikipedia.org/wiki/Finite-state_machine
 .. _MealyMachines : https://en.wikipedia.org/wiki/Mealy_machine
@@ -633,11 +634,14 @@ SCRUM
 
  
 
-Un approccio INCREMENTALE (in stile SCRUM, ma non solo) è utile per 
+Un approccio :blue:INCREMENTALE (in stile SCRUM, ma non solo) è utile per 
 aggredire la complessità del problema e per
 mettere in luce in primis LE COSE
 PIU' IMPORTANTI e PIU' CRITICHE senza perdersi in dettagli che possono distogliere
 l'attenzione per formare un quadro generale di riferimento.
+
+Questo modo di procedere può essere correlato anche al principio `YAGNI`_ (*You aren't gonna need it*).
+
 
 I vari SPRINT dovrebbero effettuare uno ZOOMING entro MACRO-COMPONENTI
 innescando un processo ITERATIVO di analisi, progetto , sviluppo e testing di

@@ -45,7 +45,7 @@
 
 
 .. _radarsysystem22analisi.qak: ../../../../../unibo.radarsystemqak22/src/radarsysystem22analisi.qak
-.. _Sprint Review: :https://www.agileway.it/sprint-review-meeting/
+.. _SprintReview: https://www.agileway.it/sprint-review-meeting/
 .. _Opinionated Software: https://www.baeldung.com/cs/opinionated-software-design
 
 
@@ -331,7 +331,7 @@ che può essere rappresentato, :blue:`in modo formale ed eseguibile`, dal modell
 RadarSystem: una diversa analisi
 +++++++++++++++++++++++++++++++++++
 
-Durante la `Sprint Review`_ (si vedano le note su :ref:`SCRUM`) qualcuno osserva che si potrebbe concepire il sistema
+Durante la `SprintReview`_ (si vedano le note su :ref:`SCRUM`) qualcuno osserva che si potrebbe concepire il sistema
 in modo diverso, evitando la introduzione di un *Controller* che conosce i (nomi dei) componenti *Led* e *Radar*.
 
 In particolare viene asserito che:

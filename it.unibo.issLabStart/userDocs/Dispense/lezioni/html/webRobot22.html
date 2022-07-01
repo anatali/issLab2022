@@ -1,0 +1,998 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>webrobot22 &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="TemaFinaleNote" href="TemaFinaleNote.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="webrobot22">
+<h1>webrobot22<a class="headerlink" href="#webrobot22" title="Permalink to this headline">¶</a></h1>
+<p>Lo scopo di questo lavoro è usare <a class="reference external" href="https://spring.io/projects/spring-boot">SpringBoot</a>  per costruire una applicazione Web che fornisca una console di comando
+per  il  <a class="reference internal" href="BasicRobot22.html#una-prima-architettura"><span class="std std-ref">BasicRobot22</span></a>.</p>
+<p>Procederemo in due passi:</p>
+<ol class="arabic simple">
+<li><p>Come primo passo, costruiremo la <em>‘parte statica’</em> dell’applicazione che riguarda la impostazione della pagina HTML.</p></li>
+<li><p>Come secondo passo, costruiremo la <em>‘parte dinamica’</em> che permette all’applicazione Web di interagire da un lato
+con utente umano (attraverso un Browser) e da un altro lato con l’<a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">attore Qak</span></a>
+che realizza il  <a class="reference internal" href="BasicRobot22.html#impostazione-del-modello"><span class="std std-ref">bascirobot22</span></a>.</p></li>
+</ol>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/webRobot22ComeSistDistr.PNG"><img alt="_images/webRobot22ComeSistDistr.PNG" class="align-center" src="_images/webRobot22ComeSistDistr.PNG" style="width: 40%;" /></a>
+</div></blockquote>
+<p><span class="brown">Creazione del progetto</span></p>
+<ol class="arabic simple">
+<li><p>Iniziamo il <strong>progetto webrobot22</strong> <a class="reference internal" href="#webrobot22-startup"><span class="std std-ref">webrobot22: startup</span></a></p></li>
+</ol>
+<p><span class="brown">Parte statica</span></p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#usiamo-bootstrap5"><span class="std std-ref">Usiamo Bootstrap5</span></a> per impostare la pagina usando <a class="reference external" href="https://www.w3schools.com/bootstrap5/">Bootstrap5</a></p></li>
+<li><p><a class="reference internal" href="#visualizziamo-la-pagina-statica"><span class="std std-ref">Visualizziamo la pagina statica</span></a>, come primo passo di un processo di <a class="reference external" href="https://it.wikipedia.org/wiki/User_experience_design">User experience design</a>.</p></li>
+</ol>
+<section id="interazioni-tra-i-componenti">
+<h2>Interazioni tra i componenti<a class="headerlink" href="#interazioni-tra-i-componenti" title="Permalink to this headline">¶</a></h2>
+<p><span class="brown">Parte dinamica</span></p>
+<ol class="arabic">
+<li><p>Impostiamo l’organizzazione di un <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> lato server.</p></li>
+<li><p><span class="green">PgToRc</span>: Realizziamo l’interazione sincrona <span class="blue">Pagina-RobotController</span>  via HTTP</p></li>
+<li><p><span class="green">RcToBr</span>: Realizziamo l’interazione <span class="blue">RobotController-basicrobot22</span> usando un protocollo specificato dall’utente.</p></li>
+<li><p><span class="green">BrToRc</span>: Realizziamo l’interazione <span class="blue">basicrobot22-RobotController</span> per far giungere
+alla applicazione Web informazioni  sullo stato del sistema.</p></li>
+<li><p><span class="green">RcToPg</span>: Realizziamo l’interazione asincrona <span class="blue">RobotController-Pagina</span> per visualizzare sulla pagina HTML
+le informazioni sullo stato del sistema, con la mediazione del <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a>.</p>
+<a class="reference internal image-reference" href="_images/webRobot22Interactions.PNG"><img alt="_images/webRobot22Interactions.PNG" class="align-center" src="_images/webRobot22Interactions.PNG" style="width: 60%;" /></a>
+</li>
+</ol>
+<p>In linea di princpio, una pagina HTML potrebbe anche agire come osservatore diretto (via CoAP) del <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a>.
+Tuttavia, notiamo che:</p>
+<p><span class="remark">I Browser non supportano API JavaScript per CoAP per motivi di sicurezza (legate a UDP)</span></p>
+<p>Questo rende necessario che il <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> funga da mediatore tra le informazioni emesse via CoAP da
+<a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> e la pagina, attraverso le interazioni <code class="docutils literal notranslate"><span class="pre">BrToRc</span></code> e <code class="docutils literal notranslate"><span class="pre">RcToPg</span></code>.</p>
+</section>
+<section id="webrobot22-startup">
+<h2>webrobot22: startup<a class="headerlink" href="#webrobot22-startup" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Costruiamo il file <code class="docutils literal notranslate"><span class="pre">webRobot22.zip</span></code> in accordo a <a class="reference internal" href="WebApplications.html#primi-passi-con-springboot"><span class="std std-ref">Primi passi con SpringBoot</span></a>.</p></li>
+</ol>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/webRobot22Springio.PNG"><img alt="_images/webRobot22Springio.PNG" class="align-center" src="_images/webRobot22Springio.PNG" style="width: 70%;" /></a>
+</div></blockquote>
+<ol class="arabic">
+<li><p>Scompattiamo il file <code class="docutils literal notranslate"><span class="pre">webRobot22.zip</span></code>  nella nostra cartella di lavoro.</p></li>
+<li><p>Modifichiamo   <code class="docutils literal notranslate"><span class="pre">7.4.1</span></code> in <code class="docutils literal notranslate"><span class="pre">7.4.2</span></code> nel file <code class="docutils literal notranslate"><span class="pre">webRobot22\gradle\wrapper\gradle-wrapper.properties</span></code></p></li>
+<li><p>Aggiungiamo il file <code class="docutils literal notranslate"><span class="pre">gradle.properties</span></code> con il contenuto:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kotlinVersion</span> <span class="o">=</span> <span class="mf">1.6</span><span class="o">.</span><span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Aggiungiamo il file <code class="docutils literal notranslate"><span class="pre">banner.txt</span></code> in <code class="docutils literal notranslate"><span class="pre">src\main\resources\</span></code> usando <a class="reference external" href="https://manytools.org/hacker-tools/ascii-banner/">bannerOnline</a> (<em>small</em> font)</p></li>
+<li><p>Nel file  <code class="docutils literal notranslate"><span class="pre">application.properties</span></code> di <code class="docutils literal notranslate"><span class="pre">src\main\resources\</span></code> inseriamo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spring</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">webRobot22</span>
+<span class="n">spring</span><span class="o">.</span><span class="n">banner</span><span class="o">.</span><span class="n">location</span>  <span class="o">=</span> <span class="n">classpath</span><span class="p">:</span><span class="n">banner</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">server</span><span class="o">.</span><span class="n">port</span>             <span class="o">=</span> <span class="mi">8085</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<section id="enable-springboot-live-devtools">
+<h3>Enable SpringBoot live DevTools<a class="headerlink" href="#enable-springboot-live-devtools" title="Permalink to this headline">¶</a></h3>
+<p>La feature di auto-restart mediante <em>Spring Developer Tools</em> non sembra abilitata di default
+in Intellij   (come avviene invece in Eclipse).
+Per provare ad attivarla manualmente, si consulti la rete, ad esempio :
+<a class="reference external" href="https://medium.com/javarevisited/spring-boot-developer-tools-and-intellij-b16c7e5f39e4">https://medium.com/javarevisited/spring-boot-developer-tools-and-intellij-b16c7e5f39e4</a></p>
+</section>
+<section id="build-gradle-di-webrobot22">
+<h3>build.gradle di webRobot22<a class="headerlink" href="#build-gradle-di-webrobot22" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Aggiorniamo <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plugins</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="nb">id</span> <span class="s1">&#39;application&#39;</span>
+<span class="p">}</span>
+
+<span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+<span class="n">sourceCompatibility</span> <span class="o">=</span> <span class="s1">&#39;11&#39;</span>
+
+<span class="n">repositories</span> <span class="p">{</span>
+    <span class="n">mavenCentral</span><span class="p">()</span>
+    <span class="n">flatDir</span> <span class="p">{</span>   <span class="n">dirs</span> <span class="s1">&#39;../unibolibs&#39;</span>  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">dependencies</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="o">//</span><span class="n">Libreria</span> <span class="n">Kotlin</span><span class="o">-</span><span class="n">runtime</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.jetbrains.kotlin:kotlin-stdlib-jdk8&#39;</span>
+
+    <span class="o">//</span><span class="n">Per</span> <span class="n">comunicazioni</span> <span class="n">WebSocket</span> <span class="n">NOSTOMP</span> <span class="n">della</span> <span class="n">pagina</span> <span class="n">HTML</span>
+    <span class="n">implementation</span><span class="p">(</span><span class="s2">&quot;org.springframework:spring-websocket:5.3.14&quot;</span><span class="p">)</span>
+
+    <span class="o">//</span><span class="n">webjars</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.webjars:webjars-locator-core&#39;</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.webjars:bootstrap:5.1.3&#39;</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.webjars:jquery:3.6.0&#39;</span>
+
+    <span class="o">/*</span> <span class="n">UNIBO</span> <span class="o">**********************************</span> <span class="o">*/</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;uniboInterfaces&#39;</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;2p301&#39;</span>
+          <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.comm22-1.1&#39;</span>
+          <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.qakactor22-2.8&#39;</span>  <span class="o">//</span><span class="n">per</span> <span class="n">ApplMessage</span>
+<span class="p">}</span>
+<span class="n">mainClassName</span> <span class="o">=</span> <span class="s1">&#39;unibo.webRobot22.WebRobot22Application&#39;</span>
+<span class="n">jar</span> <span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;executing jar&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">sourceSets.main.allSource</span>
+    <span class="n">manifest</span> <span class="p">{</span>
+        <span class="n">attributes</span> <span class="s1">&#39;Main-Class&#39;</span><span class="p">:</span> <span class="s2">&quot;$mainClassName&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>I <a class="reference external" href="https://mvnrepository.com/artifact/org.webjars">WebJars</a> sono stati introdotti in <a class="reference internal" href="WebApplications.html#bootstrap-e-webjars"><span class="std std-ref">Bootstrap  e webJars</span></a>.</p></li>
+<li><p>La libreria <code class="docutils literal notranslate"><span class="pre">unibo.comm22-1.1.jar</span></code> è costruita nel progetto  <span class="blue">it.unibo.comm22</span></p></li>
+<li><p>La libreria <code class="docutils literal notranslate"><span class="pre">unibo.qakactor22-2.8</span></code> è costruita nel progetto <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">QActor (meta)model</span></a>
+e utilizza la libreria precedente per le comunicazioni.</p></li>
+</ul>
+</section>
+</section>
+<section id="id1">
+<h2>basicrobot22Gui.html<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Avvalendoci di <a class="reference external" href="https://www.w3schools.com/bootstrap5/">Bootstrap5</a>, impostiamo una pagina HTML (nel file <a class="reference external" href="../../../../../webRobot22/src/main/resources/templates/basicrobot22Gui.html">basicrobot22Gui.html</a> in <code class="docutils literal notranslate"><span class="pre">src/main/resources/templates</span></code>)
+in modo che presenti le aree mostrate in figura:</p>
+<a class="reference internal image-reference" href="_images/webRobot22GuiStructure.PNG"><img alt="_images/webRobot22GuiStructure.PNG" class="align-center" src="_images/webRobot22GuiStructure.PNG" style="width: 70%;" /></a>
+<ul class="simple">
+<li><p><a class="reference internal" href="#configurationarea-and-data"><span class="std std-ref">ConfigurationArea and Data</span></a>: area che include campi di input per la configurazione del sistema
+e campi di output che mostrano i valori dei dati di configurazione fissati dall’utente.</p></li>
+<li><p><a class="reference internal" href="#robotcmdarea"><span class="std std-ref">RobotCmdArea</span></a>: area di input con pulsanti per inviare comandi di movimento al robot.</p></li>
+<li><p><a class="reference internal" href="#infodisplay"><span class="std std-ref">infoDisplay</span></a>: area di output  che visualizza informazioni di sistema.</p></li>
+<li><p><a class="reference internal" href="#robotdisplay"><span class="std std-ref">robotDisplay</span></a>: area di output  che visualizza informazioni relative al robot o al suo ambiente.</p></li>
+<li><p><a class="reference internal" href="#webcamarea"><span class="std std-ref">Ip Webcam Android</span></a>: area di output  che visualizza lo stream prodotto da un telecamera posta su Android (ad esempio <a class="reference external" href="https://play.google.com/store/apps/details?id=nfo.webcam&amp;hl=it&amp;gl=US">IpWebcam</a>) o su PC.
+Viene introdotta per chi non abbia un robot fisico dotato di telecamera.</p></li>
+<li><p><a class="reference internal" href="#webcamarea"><span class="std std-ref">WebCam robot</span></a>: area di output che visualizza lo stream prodotto da un telecamera posta sul robot fisico.</p></li>
+</ul>
+<p>Avvalendoci di <a class="reference external" href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html">Thymeleaf</a>,  impostiamo la pagina come un template che presenta alcuni campi
+(<em>protocol, robotip, webcamip</em>)
+che corrispondo a quanto definito nella <a class="reference internal" href="#specifica-dei-dati-applicativi"><span class="std std-ref">Specifica dei dati applicativi</span></a>, i cui valori verranno fissati
+dal <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> nella fase di costruzione della pagina (si veda <a class="reference internal" href="#buildthepage"><span class="std std-ref">buildThePage</span></a>).</p>
+<section id="usiamo-bootstrap5">
+<h3>Usiamo Bootstrap5<a class="headerlink" href="#usiamo-bootstrap5" title="Permalink to this headline">¶</a></h3>
+<p>Abilitiamo l’uso di <a class="reference external" href="https://www.w3schools.com/bootstrap5/">Bootstrap5</a>, nella sezione <code class="docutils literal notranslate"><span class="pre">head</span></code> del file <a class="reference external" href="../../../../../webRobot22/src/main/resources/templates/basicrobot22Gui.html">basicrobot22Gui.html</a> e poi impostiamo la struttura
+del contenuto della pagina:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;head&gt;
+ &lt;meta charset=&quot;UTF-8&quot;&gt;
+ &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+ &lt;title&gt;basicrobot22Gui&lt;/title&gt;
+ &lt;link href=
+ &quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+ &lt;script src=
+ &quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+ &lt;link rel=&quot;stylesheet&quot; href=&quot;css/issSpec.css&quot;&gt;     &lt;!-- stili custom --&gt;
+ &lt;link rel=
+ &quot;shortcut icon&quot; href=&quot;images/mbotIot.png&quot; type=&quot;image/x-icon&quot;&gt; &lt;!-- ICONA su browser --&gt;
+ &lt;/head&gt;
+</pre></div>
+</div>
+</section>
+<section id="contenuto-della-pagina">
+<h3>Contenuto della pagina<a class="headerlink" href="#contenuto-della-pagina" title="Permalink to this headline">¶</a></h3>
+<p>La pagina viene suddivisa in due <a class="reference external" href="https://getbootstrap.com/docs/5.0/layout/containers/">Containers</a> di tipo <em>fluid</em>, uno per il titolo e uno per il contenuto vero e proprio.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;body&gt;
+    &lt;div class=&quot;container-fluid pt-1 bg-primary text-white text-center&quot;&gt;
+        &lt;h1&gt;basicrobot22 console&lt;/h1&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;container-fluid&quot;&gt;
+        &lt;!-- Contenuto della pagina --&gt;
+    &lt;/div&gt;
+
+    &lt;footer&gt;
+        &lt;!-- FOOTER --&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+</pre></div>
+</div>
+<p>Il contenuto della pagina viene organizzato entro una riga (di <code class="docutils literal notranslate"><span class="pre">12</span></code> colonne, come indicato in <a class="reference external" href="https://www.w3schools.com/bootstrap5/bootstrap_grid_basic.php">Grids</a> )
+che contiene due colonne: la colonna di sinistra (di ampiezza <code class="docutils literal notranslate"><span class="pre">7</span></code>)
+è riservata alla area di I/O, mentre la  la colonna di destra (di ampiezza <code class="docutils literal notranslate"><span class="pre">5</span></code>)  è dedicata
+alla visualizzazione degli stream di dati delle telecamere.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- Contenuto della pagina --&gt;
+&lt;div class=&quot;row&quot;&gt; &lt;!-- Page main row --&gt;
+    &lt;div class=&quot;col-7&quot;&gt;  &lt;!-- I/O area col  --&gt;
+         &lt;!-- CONFIGURATION Area and Data   --&gt;
+         &lt;!-- ROBOTCmdArea                  --&gt;
+         &lt;!-- INFO display                  --&gt;
+         &lt;!-- ROBOT display                 --&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;col-5&quot;&gt;  &lt;!-- Webcam area col  --&gt;
+        &lt;!-- IPWebcam Android  --&gt;
+        &lt;!-- Webcam robot      --&gt;
+    &lt;/div&gt;
+&lt;/div&gt; &lt;!-- Page main row --&gt;
+</pre></div>
+</div>
+<section id="schema-delle-aree-di-i-o">
+<h4>Schema delle aree di I/O<a class="headerlink" href="#schema-delle-aree-di-i-o" title="Permalink to this headline">¶</a></h4>
+<p>Le aree entro le colonne sono organizzate usando le  <a class="reference external" href="https://www.w3schools.com/bootstrap5/bootstrap_cards.php">Cards</a> secondo lo schema:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;div class=&quot;card BGSTYLE TEXTCOLOR&quot;&gt;
+    &lt;div class=&quot;card-header px-1&quot;&gt; ... &lt;/div&gt;
+    &lt;div class=&quot;card-content px-1&quot;&gt;
+         &lt;!-- CARDCONTENT --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre></div>
+</div>
+<p>Per le specifiche del tipo <code class="docutils literal notranslate"><span class="pre">px-N</span></code>, si veda <a class="reference external" href="https://getbootstrap.com/docs/5.0/utilities/spacing/">Spacing</a>.</p>
+<p>Per i colori del testo (<code class="docutils literal notranslate"><span class="pre">TEXTCOLOR</span></code>) faremo riferimento agli standard <a class="reference external" href="https://getbootstrap.com/docs/4.0/utilities/colors/">Colors</a>, mentre
+per lo stile di background (<code class="docutils literal notranslate"><span class="pre">BGSTYLE</span></code>) faremo riferimento a definizioni custom.</p>
+</section>
+<section id="stili-custom-issspec-css">
+<h4>Stili custom: issSpec.css<a class="headerlink" href="#stili-custom-issspec-css" title="Permalink to this headline">¶</a></h4>
+<p>La specifica degli stili custom si trova nel file <a class="reference external" href="../../../../../webRobot22/src/main/resources/static/css/issSpec.css">issSpec.css</a>.
+Tutte le definizioni iniziano con il prefisso <span class="brown">iss-</span>.</p>
+</section>
+</section>
+<section id="webcamarea">
+<h3>WebcamArea<a class="headerlink" href="#webcamarea" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/webRobot22GuiWebCams.PNG"><img alt="_images/webRobot22GuiWebCams.PNG" class="align-center" src="_images/webRobot22GuiWebCams.PNG" style="width: 30%;" /></a>
+<p>Riportiamo la specifica della colonna relativa all’area di output che visualizza
+gli stream (<code class="docutils literal notranslate"><span class="pre">Ip</span> <span class="pre">Webcam</span> <span class="pre">Android</span></code> e <code class="docutils literal notranslate"><span class="pre">WebCam</span> <span class="pre">robot</span></code>) prodotti dalle telecamere.</p>
+<p>Per la visualizzazione, sfrutteremo la specifica <em>Protocol-relative-URL</em> (<code class="docutils literal notranslate"><span class="pre">th:src</span></code>) di <a class="reference external" href="https://www.thymeleaf.org/doc/articles/standardurlsyntax.html">ThymeleafSyntax</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;div class=&quot;col-5&quot;&gt;  &lt;!-- webcam col --&gt;
+  &lt;div class=&quot;card iss-bg-webcamarea px-1 border&quot;&gt;
+   &lt;div class=&quot;card-body&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+       &lt;img class=&quot;img-fluid&quot;
+          th:src=&quot;@{${ &#39;http://&#39;+webcamip+&#39;:8080/video&#39;} }&quot;
+          alt=&quot;androidcam&quot; style=&quot;border-spacing: 0; border: 1px solid black;&quot;&gt;
+    &lt;/div&gt;
+     &lt;div class=&quot;row&quot;&gt;
+       &lt;img class=&quot;img-fluid&quot;
+          th:src=&quot;@{${ &#39;http://&#39;+robotip+&#39;:8080/?action=stream&#39;}}&quot;
+          alt=&quot;raspicam&quot; style=&quot;border-spacing: 0; border: 1px solid black;&quot;&gt;
+    &lt;/div&gt;
+   &lt;/div&gt; &lt;!-- card body --&gt;
+   &lt;/div&gt; &lt;!-- card --&gt;
+ &lt;/div&gt;&lt;!-- webcam col --&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il simbolo <span class="brown">webcamip</span> denota un campo del Model che viene fissato dal <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> al valore immesso
+dall’utente nella <a class="reference internal" href="#area-webcam-android"><span class="std std-ref">AREA WEBCAM Android</span></a>   della sezione <a class="reference internal" href="#configurationarea-and-data"><span class="std std-ref">ConfigurationArea and Data</span></a>.</p></li>
+<li><p>Il simbolo <span class="brown">robotip</span> denota un campo del Model che viene fissato dal <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> al valore immesso
+dall’utente nella <a class="reference internal" href="#area-robot-address"><span class="std std-ref">AREA ROBOT ADDRESS</span></a>   della sezione <a class="reference internal" href="#configurationarea-and-data"><span class="std std-ref">ConfigurationArea and Data</span></a>.</p></li>
+</ul>
+</section>
+<section id="configurationarea-and-data">
+<h3>ConfigurationArea and Data<a class="headerlink" href="#configurationarea-and-data" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/webRobot22GuiConfigurationArea.PNG"><img alt="_images/webRobot22GuiConfigurationArea.PNG" class="align-center" src="_images/webRobot22GuiConfigurationArea.PNG" style="width: 30%;" /></a>
+<p>La parte <span class="blue">CONFIGURATION Area and Data</span> del <a class="reference internal" href="#contenuto-della-pagina"><span class="std std-ref">Contenuto della pagina</span></a>  viene organizzata come una <em>card</em> suddivisa
+in aree:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- CONFIGURATION Area and Data   --&gt;
+ &lt;div class=&quot;card iss-bg-inputarea&quot;&gt;
+   &lt;div class=&quot;card-body&quot;&gt;
+      &lt;!-- AREA PROTOCOL       --&gt;
+      &lt;!-- AREA WEBCAM Android --&gt;
+      &lt;!-- AREA ROBOT ADDRESS  --&gt;
+  &lt;/div&gt;
+ &lt;/div&gt;
+</pre></div>
+</div>
+<section id="struttura-generale-delle-aree-di-i-o">
+<h4>Struttura generale delle aree di I/O<a class="headerlink" href="#struttura-generale-delle-aree-di-i-o" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- AREA ...         --&gt;
+&lt;div class=&quot;row&quot;&gt;
+ &lt;div class=&quot;col-7&quot;&gt;
+   &lt;!--   InputArea   --&gt;
+    ...
+ &lt;/div&gt;
+ &lt;div class=&quot;col-5 text-primary&quot;&gt;
+   &lt;!--   DataArea      --&gt;
+   ...
+ &lt;/div&gt;
+&lt;/div&gt; &lt;!-- row --&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Le aree di input sono espresse mediante   <a class="reference external" href="https://www.w3schools.com/html/html_forms.asp">FormHTML</a> con campi <a class="reference external" href="https://www.w3schools.com/tags/tag_input.asp">InputHTML</a>.</p></li>
+<li><p>Quando l’utente immette un dato in una Form di input e lo invia al server, il <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a>
+memorizza il dato e lo ritrasmetta alla pagina aggiornando il modello con <code class="docutils literal notranslate"><span class="pre">setConfigParams</span></code>, come
+indicato in <a class="reference internal" href="#interazione-pgtorc-pagina-robotcontroller"><span class="std std-ref">Interazione PgToRc (Pagina-RobotController)</span></a>.</p></li>
+</ul>
+<section id="specifica-dei-dati-applicativi">
+<h5>Specifica dei dati applicativi<a class="headerlink" href="#specifica-dei-dati-applicativi" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p>Il file <a class="reference external" href="../../../../../webRobot22/src/main/resources/application.properties">application.properties</a> definisce i valori iniziali dei campi di input che vengono visualizzati nella
+pagina.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">robot22</span><span class="o">.</span><span class="n">protocol</span>   <span class="o">=</span> <span class="n">coap</span>
+<span class="n">robot22</span><span class="o">.</span><span class="n">robotip</span>    <span class="o">=</span> <span class="ow">not</span> <span class="n">connected</span>
+<span class="n">robot22</span><span class="o">.</span><span class="n">webcamip</span>   <span class="o">=</span> <span class="n">unknown</span>
+</pre></div>
+</div>
+</li>
+<li><p>I dati sono visualizzati in campi con identificatori referenziabili nel <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> mediante
+<strong>Model</strong>, come indicato in   <a class="reference internal" href="#interazione-pgtorc-pagina-robotcontroller"><span class="std std-ref">Interazione PgToRc (Pagina-RobotController)</span></a>.</p></li>
+</ul>
+<p>Vediamo nel dettaglio le parti di I/O per la configurazione del sistema.</p>
+</section>
+</section>
+<section id="area-protocol">
+<h4>AREA PROTOCOL<a class="headerlink" href="#area-protocol" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!--   PROTOCOL InputArea   --&gt;
+&lt;form action=&quot;setprotocol&quot; method=&quot;post&quot;&gt;
+  &lt;input type=&quot;text&quot; size=&quot;10&quot; id=&quot;protocolspec&quot; name=&quot;protocol&quot; value=&quot;coap&quot;&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;protocol&quot;&gt;
+ &lt;/form&gt;
+
+&lt;!--   PROTOCOL DataArea      --&gt;
+  &lt;b&gt;&lt;span th:text=&quot;${protocol}&quot;&gt;tcp&lt;/span&gt;&lt;/b&gt;
+</pre></div>
+</div>
+<p>Il valore immesso dall’utente viene inviato via <code class="docutils literal notranslate"><span class="pre">HTTP-POST</span></code> al <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> che lo
+gestisce col metodo <a class="reference internal" href="#setprotocol"><span class="std std-ref">setprotocol</span></a> memorizzando nel Model (si veda <a class="reference internal" href="#setconfigparams"><span class="std std-ref">setConfigParams</span></a>) e di qui, via <a class="reference external" href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html">Thymeleaf</a>,
+nel parametro <code class="docutils literal notranslate"><span class="pre">protocol</span></code>  del template della pagina (si veda <a class="reference internal" href="#buildthepage"><span class="std std-ref">buildThePage</span></a>).</p>
+</section>
+<section id="area-webcam-android">
+<h4>AREA WEBCAM Android<a class="headerlink" href="#area-webcam-android" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!--WEBCAM Android InputArea  --&gt;
+  &lt;form action=&quot;setwebcamip&quot; method=&quot;post&quot;&gt;
+     &lt;input type=&quot;text&quot; size=&quot;10&quot; id=&quot;webcamspec&quot; name=&quot;ipaddr&quot; value=&quot;&quot;&gt;
+     &lt;input type=&quot;submit&quot; value=&quot;camip&quot;&gt;
+  &lt;/form&gt;
+
+&lt;!--WEBCAM Android DataArea  --&gt;
+  &lt;b&gt;&lt;span th:text=&quot;${webcamip}&quot; id=&quot;webcamipaddr&quot;&gt;unknown&lt;/span&gt;&lt;/b&gt;
+</pre></div>
+</div>
+<p>Il valore immesso dall’utente viene inviato via <code class="docutils literal notranslate"><span class="pre">HTTP-POST</span></code> al <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> che lo
+gestisce col metodo <a class="reference internal" href="#setwebcamip"><span class="std std-ref">setwebcamip</span></a> memorizzando nel Model (si veda <a class="reference internal" href="#setconfigparams"><span class="std std-ref">setConfigParams</span></a>) e di qui, via <a class="reference external" href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html">Thymeleaf</a>,
+nel parametro <code class="docutils literal notranslate"><span class="pre">webcamip</span></code>  del template della pagina (si veda <a class="reference internal" href="#buildthepage"><span class="std std-ref">buildThePage</span></a>).</p>
+</section>
+<section id="area-robot-address">
+<h4>AREA ROBOT ADDRESS<a class="headerlink" href="#area-robot-address" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- ROBOT ADDRESS InputArea --&gt;
+  &lt;form action=&quot;setrobotip&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;text&quot; size=&quot;10&quot; id=&quot;configurespec&quot; name=&quot;ipaddr&quot; value=&quot;localhost&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;robotip&quot;&gt;
+  &lt;/form&gt;
+
+&lt;!-- ROBOT ADDRESS DataArea  --&gt;
+   &lt;b&gt;&lt;span th:text=&quot;${robotip}&quot;&gt;not connected&lt;/span&gt;&lt;/b&gt;
+</pre></div>
+</div>
+<p>Il valore immesso dall’utente viene inviato via <code class="docutils literal notranslate"><span class="pre">HTTP-POST</span></code> al <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> che lo
+gestisce col metodo <a class="reference internal" href="#setrobotip"><span class="std std-ref">setrobotip</span></a> memorizzando nel Model (si veda <a class="reference internal" href="#setconfigparams"><span class="std std-ref">setConfigParams</span></a>) e di qui, via <a class="reference external" href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html">Thymeleaf</a>,
+nel parametro <code class="docutils literal notranslate"><span class="pre">robotip</span></code>  del template della pagina (si veda <a class="reference internal" href="#buildthepage"><span class="std std-ref">buildThePage</span></a>).</p>
+</section>
+</section>
+<section id="robotcmdarea">
+<h3>RobotCmdArea<a class="headerlink" href="#robotcmdarea" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/webRobot22GuiRobotCmdArea.PNG"><img alt="_images/webRobot22GuiRobotCmdArea.PNG" class="align-center" src="_images/webRobot22GuiRobotCmdArea.PNG" style="width: 30%;" /></a>
+<p>Queta area presenta <a class="reference external" href="https://www.w3schools.com/tags/tag_button.asp">ButtonHTML</a>  per inviare a <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> comandi per muovere il robot.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;div class=&quot;card  iss-bg-cmdarea text-primary&quot;&gt; &lt;!--  command card --&gt;
+   &lt;div class=&quot;card-header&quot;&gt;
+    &lt;h6&gt;Commands&lt;/h6&gt;
+   &lt;/div&gt;
+  &lt;div class=&quot;card-content&quot;&gt; &lt;!--  pb-4 --&gt;
+   &lt;!--  See https://getbootstrap.com/docs/4.1/components/buttons/ --&gt;
+   &lt;div class=&quot;row&quot;&gt;  &lt;!-- w,s,h commands row --&gt;
+     &lt;div class=&quot;col&quot;&gt;&lt;button class=&quot;btn btn-block iss-btn-ligthblue border&quot; id=&#39;w&#39;&gt;w &lt;i&gt;(ahead)&lt;/i&gt;&lt;/button&gt;&lt;/div&gt; &lt;!--class=&#39;btn btn-block btn-light-primary font-bold border&#39; --&gt;
+     &lt;div class=&quot;col&quot;&gt;&lt;button class=&#39;btn btn-block iss-btn-ligthblue  border&#39; id=&#39;s&#39;&gt;s (back) &lt;/button&gt;&lt;/div&gt;
+     &lt;div class=&quot;col&quot;&gt;&lt;button class=&#39;btn btn-danger  btn-block border&#39; id=&#39;h&#39;&gt;h (halt) &lt;/button&gt;&lt;/div&gt;
+    &lt;/div&gt; &lt;!-- w,s,h commands row --&gt;
+
+   &lt;div class=&quot;row&quot;&gt; &lt;!-- p,l,r commands row --&gt;
+       &lt;div class=&quot;col&quot;&gt;&lt;button class=&#39;btn btn-block iss-btn-ligthgreen border&#39; id=&#39;l&#39;&gt;l (left)  &lt;/button&gt;&lt;/div&gt;
+       &lt;div class=&quot;col&quot;&gt;&lt;button class=&#39;btn btn-block iss-btn-ligthgreen border&#39; id=&#39;r&#39;&gt;r (rigth) &lt;/button&gt;&lt;/div&gt;
+       &lt;div class=&quot;col&quot;&gt;&lt;button class=&#39;btn btn-warning btn-block border&#39; id=&#39;p&#39;&gt;p (step) &lt;/button&gt;&lt;/div&gt;
+   &lt;/div&gt; &lt;!-- p,l,r commands row --&gt;
+  &lt;/div&gt; &lt;!-- command card-content --&gt;
+&lt;/div&gt; &lt;!--  command card --&gt;
+</pre></div>
+</div>
+<p>Il conando immesso dall’utente con un <em>button</em> viene inviato via <code class="docutils literal notranslate"><span class="pre">HTTP-POST</span></code> al <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> che lo
+gestisce col metodo <a class="reference internal" href="#domove"><span class="std std-ref">doMove</span></a>.</p>
+</section>
+<section id="infodisplay">
+<h3>infoDisplay<a class="headerlink" href="#infodisplay" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/webRobot22GuiInfoDisplay.PNG"><img alt="_images/webRobot22GuiInfoDisplay.PNG" class="align-center" src="_images/webRobot22GuiInfoDisplay.PNG" style="width: 30%;" /></a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;card iss-bg-infoarea text-primary&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;card-header px-1&quot;</span><span class="o">&gt;</span><span class="n">Info</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;card-content px-1&quot;</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">span</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;display&quot;</span><span class="o">&gt;...&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il contenuto del campo denotato dall’dentificatore <span class="blue">display</span> è dinamicamente modificato da <a class="reference internal" href="#ioutils-js"><span class="std std-ref">ioutils.js</span></a>
+e da <a class="reference internal" href="#wsminimal-js-in-webrobo22"><span class="std std-ref">wsminimal.js</span></a>.</p></li>
+</ul>
+</section>
+<section id="robotdisplay">
+<h3>robotDisplay<a class="headerlink" href="#robotdisplay" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/webRobot22GuiRobotDisplay.PNG"><img alt="_images/webRobot22GuiRobotDisplay.PNG" class="align-center" src="_images/webRobot22GuiRobotDisplay.PNG" style="width: 30%;" /></a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;card iss-bg-robotarea text-dark&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;card-header px-1&quot;</span><span class="o">&gt;</span><span class="n">Robot</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;card-content px-1&quot;</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">span</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;robotDisplay&quot;</span> <span class="o">&gt;...&lt;/</span><span class="n">span</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il contenuto del campo denotato dall’dentificatore <code class="docutils literal notranslate"><span class="pre">robotDisplay</span></code> è dinamicamente definito da da <a class="reference internal" href="#wsminimal-js-in-webrobo22"><span class="std std-ref">wsminimal.js</span></a>.</p></li>
+</ul>
+</section>
+<section id="pagina-finale">
+<h3>Pagina finale<a class="headerlink" href="#pagina-finale" title="Permalink to this headline">¶</a></h3>
+<a class="reference internal image-reference" href="_images/webRobot22GuiAnnot.PNG"><img alt="_images/webRobot22GuiAnnot.PNG" class="align-center" src="_images/webRobot22GuiAnnot.PNG" style="width: 100%;" /></a>
+<section id="visualizziamo-la-pagina-statica">
+<h4>Visualizziamo la pagina statica<a class="headerlink" href="#visualizziamo-la-pagina-statica" title="Permalink to this headline">¶</a></h4>
+<p>Eseguo <code class="docutils literal notranslate"><span class="pre">gradlew</span> <span class="pre">bootRun</span></code> e apro un browser su <code class="docutils literal notranslate"><span class="pre">localhost:8085</span></code></p>
+</section>
+</section>
+</section>
+<section id="parte-dinamica">
+<h2>Parte dinamica<a class="headerlink" href="#parte-dinamica" title="Permalink to this headline">¶</a></h2>
+<p>La realizzazione della parte dinamica si avvale di supporti sia nella pagina Web sia nel server:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/webRobot22Arch.PNG"><img alt="_images/webRobot22Arch.PNG" class="align-center" src="_images/webRobot22Arch.PNG" style="width: 80%;" /></a>
+</div></blockquote>
+<ul class="simple">
+<li><p>Pagina HTML: <a class="reference internal" href="#wsminimal-js-in-webrobo22"><span class="std std-ref">wsminimal.js</span></a>, <a class="reference internal" href="#ioutils-js"><span class="std std-ref">ioutils.js</span></a>
+(e anche <a class="reference internal" href="#stili-custom-issspec-css"><span class="std std-ref">Stili custom: issSpec.css</span></a>).</p></li>
+<li><p>Server: <a class="reference internal" href="#robotutils-java"><span class="std std-ref">RobotUtils.java</span></a></p></li>
+</ul>
+</section>
+<section id="robotcontroller">
+<h2>RobotController<a class="headerlink" href="#robotcontroller" title="Permalink to this headline">¶</a></h2>
+<p>Il Controller definisce i valori di alcune variabili locali, che comprendono gli attributi usati nel <em>Model</em>.</p>
+<p>Il <strong>Model</strong> utilizzato dal <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> opera come un contenitore per dati applicativi, che vengono
+aggiornati, prima dell’invio della pagina di risposta, utilizzando il metodo <a class="reference internal" href="#setconfigparams"><span class="std std-ref">setConfigParams</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Controller</span>
+<span class="n">public</span> <span class="k">class</span> <span class="nc">RobotController</span> <span class="p">{</span>
+  <span class="n">protected</span> <span class="n">String</span> <span class="n">robotName</span>  <span class="o">=</span> <span class="s2">&quot;basicrobot&quot;</span><span class="p">;</span>
+  <span class="n">protected</span> <span class="n">String</span> <span class="n">mainPage</span>   <span class="o">=</span> <span class="s2">&quot;basicrobot22Gui&quot;</span><span class="p">;</span>
+
+  <span class="o">//</span><span class="n">Settaggio</span> <span class="n">di</span> <span class="n">variabili</span> <span class="n">relative</span> <span class="n">ad</span> <span class="n">attributi</span> <span class="k">del</span> <span class="n">modello</span>
+  <span class="nd">@Value</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{robot22.protocol}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="n">String</span> <span class="n">protocol</span><span class="p">;</span>
+  <span class="nd">@Value</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{robot22.webcamip}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="n">String</span> <span class="n">webcamip</span><span class="p">;</span>
+  <span class="nd">@Value</span><span class="p">(</span><span class="s2">&quot;$</span><span class="si">{robot22.robotip}</span><span class="s2">&quot;</span><span class="p">)</span>
+  <span class="n">String</span> <span class="n">robotip</span><span class="p">;</span>
+
+  <span class="o">//</span><span class="n">Metodi</span> <span class="n">di</span> <span class="n">INTERAZIONE</span> <span class="o">...</span>
+
+  <span class="nd">@ExceptionHandler</span>
+  <span class="n">public</span> <span class="n">ResponseEntity</span> <span class="n">handle</span><span class="p">(</span><span class="ne">Exception</span> <span class="n">ex</span><span class="p">)</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Il <em>Settaggio degli attributi del modello</em> avviene con riferimento alla <a class="reference internal" href="#specifica-dei-dati-applicativi"><span class="std std-ref">Specifica dei dati applicativi</span></a>.</p></li>
+</ul>
+<section id="interazione-pgtorc-pagina-robotcontroller">
+<h3>Interazione PgToRc (Pagina-RobotController)<a class="headerlink" href="#interazione-pgtorc-pagina-robotcontroller" title="Permalink to this headline">¶</a></h3>
+<p>La pagina <a class="reference internal" href="#id1"><span class="std std-ref">basicrobot22Gui.html</span></a> viene dotata di supporti utili per la interazione con il server attraverso
+codice JavaScript, contenuto nei files <a class="reference internal" href="#ioutils-js"><span class="std std-ref">ioutils.js</span></a> e <a class="reference internal" href="#wsminimal-js-in-webrobo22"><span class="std std-ref">wsminimal.js</span></a>.</p>
+<section id="javascript-di-supporto-nella-pagina">
+<h4>JavaScript di supporto nella pagina<a class="headerlink" href="#javascript-di-supporto-nella-pagina" title="Permalink to this headline">¶</a></h4>
+<section id="ioutils-js">
+<h5>ioutils.js<a class="headerlink" href="#ioutils-js" title="Permalink to this headline">¶</a></h5>
+<p>Il file  <code class="docutils literal notranslate"><span class="pre">ioutils.js</span></code> definisce operazioni (<code class="docutils literal notranslate"><span class="pre">setMessageToWindow</span></code> e <code class="docutils literal notranslate"><span class="pre">addMessageToWindow</span></code>) utili
+a inserire messaggi in aree denotate dall’argomento <code class="docutils literal notranslate"><span class="pre">outfield</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function setMessageToWindow(outfield, message) {
+    var output = message.replace(&quot;\n&quot;,&quot;&lt;br/&gt;&quot;)
+    outfield.innerHTML = `&lt;tt&gt;${output}&lt;/tt&gt;`
+}
+</pre></div>
+</div>
+<p>Aree in cui inserire messaggi sono ad esempio <a class="reference internal" href="#infodisplay"><span class="std std-ref">infoDisplay</span></a> e <a class="reference internal" href="#robotdisplay"><span class="std std-ref">robotDisplay</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">infoDisplay</span>   <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">getElementById</span><span class="p">(</span><span class="s2">&quot;display&quot;</span><span class="p">);</span>
+<span class="n">const</span> <span class="n">robotDisplay</span>  <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">getElementById</span><span class="p">(</span><span class="s2">&quot;robotDisplay&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Si defnisce una funzione che usa Ajax per inviare via HTTP comandi POST al server e per visualizzare
+nell’area <a class="reference internal" href="#infodisplay"><span class="std std-ref">infoDisplay</span></a> un messaggio di successo/falimento dell’invio .</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function callServerUsingAjax(message) {
+    $.ajax({
+      type: &quot;POST&quot;,
+      url: &quot;robotmove&quot;,        //Dove  inviare i dati
+      data: &quot;move=&quot; + message, //Dati da inviare
+      dataType: &quot;html&quot;,
+      success: function(msg){
+        setMessageToWindow(infoDisplay,message+&quot; done&quot;)
+      },
+      error: function(){
+        alert(&quot;Chiamata fallita, si prega di riprovare...&quot;);
+      }
+    });
+}
+</pre></div>
+</div>
+</section>
+<section id="wsminimal-js-in-webrobo22">
+<h5>wsminimal.js in webrobo22<a class="headerlink" href="#wsminimal-js-in-webrobo22" title="Permalink to this headline">¶</a></h5>
+<p>Il file <cite>wsminimal.js</cite>, è già stato introdotto in <a class="reference internal" href="RobotCleanerWeb.html#wsminimal-js"><span class="std std-ref">RobotCleanerWeb</span></a> e
+in <a class="reference internal" href="WebApplications.html#lo-script-wsminimal-js"><span class="std std-ref">WebApplication con SpringBoot</span></a>.
+Esso definisce funzioni che realizzano la connessione via socket con il server e funzioni di I/O che permettono di inviare
+un messaggio al server e di visualizzare la risposta.</p>
+<p>Si riporta qui il codice della funzione <code class="docutils literal notranslate"><span class="pre">connect</span></code> che crea una WebSocket usando l’URL
+<code class="docutils literal notranslate"><span class="pre">ws://SERVERHOSTIP/socket</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>function connect(){
+  var host       =  document.location.host;
+    var pathname =  &quot;/&quot;
+    var addr     = &quot;ws://&quot; +host  + pathname + &quot;socket&quot;  ;
+    // Assicura che sia aperta un unica connessione
+    if(socket !== undefined &amp;&amp; socket.readyState !== WebSocket.CLOSED){
+         alert(&quot;WARNING: Connessione WebSocket già stabilita&quot;);
+    }
+    socket = new WebSocket(addr);
+
+    socket.onopen = function (event) {
+        setMessageToWindow(infoDisplay,&quot;Connected to &quot; + addr);
+    };
+
+    socket.onmessage = function (event) {
+        console.log(&quot;ws-status:&quot; + `${event.data}`);
+        console.log(&quot;&quot;+`${event.data}`);
+        setMessageToWindow(robotDisplay,&quot;&quot;+`${event.data}`);
+    };
+}//connect
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>La proprietà <code class="docutils literal notranslate"><span class="pre">socket.onopen</span></code> definisce l’handler invocato alla apertura della socket. Questo handler
+invoca   <code class="docutils literal notranslate"><span class="pre">setMessageToWindow</span></code> di <a class="reference internal" href="#ioutils-js"><span class="std std-ref">ioutils.js</span></a> per visualizzare nell’area <a class="reference internal" href="#infodisplay"><span class="std std-ref">infoDisplay</span></a>
+l’avventuta apertura.</p></li>
+<li><p>La proprietà <code class="docutils literal notranslate"><span class="pre">socket.onmessage</span></code> definisce l’handler invocato alla ricezione di un messaggio. Questo handler
+invoca <code class="docutils literal notranslate"><span class="pre">setMessageToWindow</span></code> di <a class="reference internal" href="#ioutils-js"><span class="std std-ref">ioutils.js</span></a> per visualizzare il messaggio nell’area <a class="reference internal" href="#robotdisplay"><span class="std std-ref">robotDisplay</span></a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="chiamate-http-al-controller">
+<h4>Chiamate HTTP al Controller<a class="headerlink" href="#chiamate-http-al-controller" title="Permalink to this headline">¶</a></h4>
+<p>La interazione tra il Browser che contiene la pagina HTML e il Controller della Web application
+è relativa a richieste:</p>
+<ul>
+<li><p>di tipo <span class="blue">GET</span>, iniviata dal Browser all’inizio della connessione;</p></li>
+<li><p>di tipo <span class="blue">POST</span>, provenienti dalle parti di input della <a class="reference internal" href="#configurationarea-and-data"><span class="std std-ref">ConfigurationArea and Data</span></a>.</p>
+<table class="colwidths-given docutils align-default" style="width: 80%">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="_images/webRobot22GuiConfigCmds.PNG"><img alt="_images/webRobot22GuiConfigCmds.PNG" class="align-center" src="_images/webRobot22GuiConfigCmds.PNG" style="width: 100%;" /></a>
+</td>
+<td><a class="reference internal image-reference" href="_images/webRobot22GuiRobotCmds.PNG"><img alt="_images/webRobot22GuiRobotCmds.PNG" class="align-center" src="_images/webRobot22GuiRobotCmds.PNG" style="width: 100%;" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">Metodi</span> <span class="n">di</span> <span class="n">INTERAZIONE</span> <span class="o">...</span>
+
+  <span class="nd">@GetMapping</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+  <span class="n">public</span> <span class="n">String</span> <span class="n">entry</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">buildThePage</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="o">//</span><span class="n">Richieste</span> <span class="n">di</span> <span class="n">configurazione</span>
+  <span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setprotocol&quot;</span><span class="p">)</span>
+  <span class="n">public</span> <span class="n">String</span> <span class="n">setprotocol</span><span class="p">(</span><span class="n">Model</span> <span class="n">m</span><span class="p">,</span><span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">protocol</span><span class="p">){</span><span class="o">...</span><span class="p">}</span>
+
+  <span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setwebcamip&quot;</span><span class="p">)</span>
+  <span class="n">public</span> <span class="n">String</span> <span class="n">setwebcamip</span><span class="p">(</span><span class="n">Model</span> <span class="n">m</span><span class="p">,</span><span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">ipaddr</span><span class="p">){</span><span class="o">...</span><span class="p">}</span>
+
+  <span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setrobotip&quot;</span><span class="p">)</span>
+  <span class="n">public</span> <span class="n">String</span> <span class="n">setrobotip</span><span class="p">(</span><span class="n">Model</span> <span class="n">m</span><span class="p">,</span><span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">ipaddr</span><span class="p">){</span><span class="o">...</span><span class="p">}</span>
+
+
+  <span class="o">//</span><span class="n">Comandi</span> <span class="n">al</span> <span class="n">robot</span>
+  <span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/robotmove&quot;</span><span class="p">))</span>
+  <span class="n">public</span> <span class="n">String</span> <span class="n">doMove</span><span class="p">(</span><span class="n">Model</span> <span class="n">m</span><span class="p">,</span><span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">move</span> <span class="p">){</span><span class="o">...</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Al termine della elaborazione di ciascuna richiesta, il Controller risponde al Browser
+come descritto in <a class="reference internal" href="#creazione-della-pagina-di-risposta"><span class="std std-ref">Creazione della pagina di risposta</span></a>.</p>
+</section>
+<section id="creazione-della-pagina-di-risposta">
+<h4>Creazione della pagina di risposta<a class="headerlink" href="#creazione-della-pagina-di-risposta" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo  <code class="docutils literal notranslate"><span class="pre">buildThePage</span></code> restituisce la pagina di risposta partendo dal template referenziato
+dalla variabile <code class="docutils literal notranslate"><span class="pre">mainPage</span></code>. Questo template include campi che vengono
+aggiornati da <a class="reference external" href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html">Thymeleaf</a> con i valori correnti degli attibuti del Model
+(metodo <a class="reference internal" href="#setconfigparams"><span class="std std-ref">setConfigParams</span></a>).</p>
+<section id="buildthepage">
+<h5>buildThePage<a class="headerlink" href="#buildthepage" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">String</span> <span class="n">buildThePage</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">setConfigParams</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="setconfigparams">
+<h5>setConfigParams<a class="headerlink" href="#setconfigparams" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">void</span> <span class="n">setConfigParams</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">){</span>
+  <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;protocol&quot;</span><span class="p">,</span> <span class="n">protocol</span><span class="p">);</span>
+  <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;webcamip&quot;</span><span class="p">,</span> <span class="n">webcamip</span><span class="p">);</span>
+  <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;robotip&quot;</span><span class="p">,</span>  <span class="n">robotip</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="setprotocol">
+<h3>setprotocol<a class="headerlink" href="#setprotocol" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setprotocol</span></code> del Controller tiene traccia nel Model del protocollo che l’utente intende usare
+per le interazioni tra <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a>  e il <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span> <span class="n">boolean</span> <span class="n">usingTcp</span>  <span class="o">=</span> <span class="n">false</span><span class="p">;</span>
+
+  <span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setprotocol&quot;</span><span class="p">)</span>
+  <span class="n">public</span> <span class="n">String</span> <span class="n">setprotocol</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">protocol</span>  <span class="p">){</span>
+      <span class="n">this</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">protocol</span><span class="p">;</span>
+      <span class="n">usingTcp</span>      <span class="o">=</span> <span class="n">protocol</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="s2">&quot;tcp&quot;</span><span class="p">);</span>
+      <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;protocol&quot;</span><span class="p">,</span> <span class="n">protocol</span><span class="p">);</span>
+      <span class="k">return</span> <span class="n">buildThePage</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>L’utente può scegliere tra <code class="docutils literal notranslate"><span class="pre">TCP</span></code> e <code class="docutils literal notranslate"><span class="pre">CoAP</span></code>. In ogni caso, il protocollo CoAP viene comunque usato
+per realizzare la <a class="reference internal" href="#interazione-brtorc-basicrobot22-robotcontroller"><span class="std std-ref">Interazione BrToRc (basicrobot22-RobotController)</span></a>.</p>
+</section>
+<section id="setwebcamip">
+<h3>setwebcamip<a class="headerlink" href="#setwebcamip" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setwebcamip</span></code> del Controller tiene traccia nel Model dell’indirzzo IP della WebCam su Android (o su PC).
+Lo stream prodotto da questa WebCam (una volta attivata) viene visualizzato nella card superiore della <a class="reference internal" href="#webcamarea"><span class="std std-ref">WebcamArea</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setwebcamip&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="n">String</span> <span class="n">setwebcamip</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">ipaddr</span>  <span class="p">){</span>
+    <span class="n">webcamip</span> <span class="o">=</span> <span class="n">ipaddr</span><span class="p">;</span>
+    <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;webcamip&quot;</span><span class="p">,</span> <span class="n">webcamip</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">buildThePage</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="setrobotip">
+<h3>setrobotip<a class="headerlink" href="#setrobotip" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setrobotip</span></code> del Controller tiene traccia nel Model dell’indirzzo IP del robot (<code class="docutils literal notranslate"><span class="pre">ipaddr</span></code>) immesso dall’utente
+e inizializza una connessione con <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> usando il protocollo selezionato dall’utente con <a class="reference internal" href="#setprotocol"><span class="std std-ref">setprotocol</span></a>.</p>
+<p>Per realizzare le connessioni, usiamo la libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.comm2022-2.0.jar</span></code> costruita dal progetto
+<code class="docutils literal notranslate"><span class="pre">it.unibo.comm2022</span></code> descritto in <a class="reference internal" href="RadarSystemSupporti.html#supporti-per-comunicazioni"><span class="std std-ref">Supporti per comunicazioni</span></a>.</p>
+<p>In ogni caso, inizializza anche una connessione CoAP con il robot, associando ad essa un
+<a class="reference internal" href="#robotcoapobserver"><span class="std std-ref">RobotCoapObserver</span></a> che ha lo scopo di realizzare la <a class="reference internal" href="#interazione-rctopg-robotcontroller-pagina"><span class="std std-ref">Interazione RcToPg (RobotController-Pagina)</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setrobotip&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="n">String</span> <span class="n">setrobotip</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">ipaddr</span>  <span class="p">){</span>
+    <span class="n">robotip</span> <span class="o">=</span> <span class="n">ipaddr</span><span class="p">;</span>
+     <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;robotip&quot;</span><span class="p">,</span> <span class="n">robotip</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">usingTcp</span> <span class="p">)</span> <span class="n">RobotUtils</span><span class="o">.</span><span class="n">connectWithRobotUsingTcp</span><span class="p">(</span><span class="n">ipaddr</span><span class="o">+</span><span class="s2">&quot;:8020&quot;</span><span class="p">);</span>
+    <span class="o">//</span><span class="n">Attivo</span> <span class="n">comunque</span> <span class="n">una</span> <span class="n">connessione</span> <span class="n">CoAP</span> <span class="n">per</span> <span class="n">osservare</span> <span class="n">basicrobot22</span>
+    <span class="n">CoapConnection</span> <span class="n">conn</span> <span class="o">=</span> <span class="n">RobotUtils</span><span class="o">.</span><span class="n">connectWithRobotUsingCoap</span><span class="p">(</span><span class="n">ipaddr</span><span class="o">+</span><span class="s2">&quot;:8020&quot;</span><span class="p">);</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">observeResource</span><span class="p">(</span> <span class="n">new</span> <span class="n">RobotCoapObserver</span><span class="p">()</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">buildThePage</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="robotutils-java">
+<h4>RobotUtils.java<a class="headerlink" href="#robotutils-java" title="Permalink to this headline">¶</a></h4>
+<p>La classe <code class="docutils literal notranslate"><span class="pre">RobotUtils</span></code> è una utility class che fornisce le operazioni di connessione che costruiscono
+oggetti di tipo <a class="reference internal" href="RadarSystemProdottiAnalisi.html#interaction2021"><span class="std std-ref">L’interfaccia Interaction2021</span></a> (di cui <a class="reference internal" href="OltreTcp.html#coapconnection"><span class="std std-ref">CoapConnection</span></a> è una specializzazione).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">RobotUtils</span> <span class="p">{</span>
+  <span class="n">public</span> <span class="n">static</span> <span class="n">final</span> <span class="nb">int</span> <span class="n">robotPort</span>  <span class="o">=</span> <span class="mi">8020</span><span class="p">;</span>
+  <span class="n">private</span> <span class="n">static</span> <span class="n">Interaction2021</span> <span class="n">conn</span><span class="p">;</span>
+
+ <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">connectWithRobotUsingTcp</span><span class="p">(</span><span class="n">String</span> <span class="n">addr</span><span class="p">){</span>
+  <span class="o">...</span>
+  <span class="n">conn</span> <span class="o">=</span> <span class="n">TcpClientSupport</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">robotPort</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+ <span class="p">}</span>
+ <span class="n">public</span> <span class="n">static</span> <span class="n">CoapConnection</span> <span class="n">connectWithRobotUsingCoap</span><span class="p">(</span><span class="n">String</span> <span class="n">addr</span><span class="p">){</span>
+  <span class="o">...</span>
+  <span class="n">String</span> <span class="n">ctxqakdest</span>       <span class="o">=</span> <span class="s2">&quot;ctxbasicrobot&quot;</span><span class="p">;</span>
+  <span class="n">String</span> <span class="n">qakdestination</span>       <span class="o">=</span> <span class="s2">&quot;basicrobot&quot;</span><span class="p">;</span>
+  <span class="n">String</span> <span class="n">path</span>   <span class="o">=</span> <span class="n">ctxqakdest</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">qakdestination</span><span class="p">;</span>
+  <span class="n">conn</span> <span class="o">=</span> <span class="n">new</span> <span class="n">CoapConnection</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">path</span><span class="p">);</span>
+  <span class="n">retunr</span> <span class="p">(</span><span class="n">CoapConnection</span><span class="p">)</span>  <span class="n">conn</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="interazione-rctobr-robotcontroller-basicrobot22">
+<h3>Interazione RcToBr (RobotController-basicrobot22)<a class="headerlink" href="#interazione-rctobr-robotcontroller-basicrobot22" title="Permalink to this headline">¶</a></h3>
+<p>La interazione tra il Controller e il robot viene attivata dall’utente usando i <em>button</em>
+della <a class="reference internal" href="#robotcmdarea"><span class="std std-ref">RobotCmdArea</span></a>, la cui pressione provoca la esecuzione del metodo <code class="docutils literal notranslate"><span class="pre">doMOve</span></code>
+del <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a>.</p>
+<section id="domove">
+<h4>doMove<a class="headerlink" href="#domove" title="Permalink to this headline">¶</a></h4>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">doMove</span></code> del Controller non modifica il Model,
+ma realizza la interazione con <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a>
+invocando il metodo <a class="reference internal" href="#robotutils-sendmsg"><span class="std std-ref">RobotUtils.sendMsg</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/robotmove&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="n">String</span> <span class="n">doMove</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span> <span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">move</span> <span class="p">){</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="n">RobotUtils</span><span class="o">.</span><span class="n">sendMsg</span><span class="p">(</span><span class="n">robotName</span><span class="p">,</span><span class="n">move</span><span class="p">);</span>
+    <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ColorsOut</span><span class="o">.</span><span class="n">outerr</span><span class="p">(</span><span class="s2">&quot;RobotController | doMove ERROR:&quot;</span><span class="o">+</span><span class="n">e</span><span class="o">.</span><span class="n">getMessage</span><span class="p">());</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">mainPage</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="robotutils-sendmsg">
+<h5>RobotUtils.sendMsg<a class="headerlink" href="#robotutils-sendmsg" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">RobotUtils</span> <span class="p">{</span>
+ <span class="n">public</span> <span class="n">static</span>  <span class="n">IApplMessage</span> <span class="n">moveAril</span><span class="p">(</span><span class="n">String</span> <span class="n">robotName</span><span class="p">,</span> <span class="n">String</span> <span class="n">cmd</span>  <span class="p">)</span> <span class="p">{</span>
+    <span class="o">//</span><span class="n">costruisce</span> <span class="n">dispatch</span> <span class="n">o</span> <span class="n">request</span>
+ <span class="p">}</span>
+ <span class="n">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">sendMsg</span><span class="p">(</span><span class="n">String</span> <span class="n">robotName</span><span class="p">,</span> <span class="n">String</span> <span class="n">cmd</span><span class="p">){</span>
+      <span class="k">try</span> <span class="p">{</span>
+          <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span>  <span class="n">moveAril</span><span class="p">(</span><span class="n">robotName</span><span class="p">,</span><span class="n">cmd</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+          <span class="n">conn</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span> <span class="n">msg</span> <span class="p">);</span>
+      <span class="p">}</span> <span class="n">catch</span> <span class="p">(</span><span class="ne">Exception</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">moveAril</span></code> restituisce:</p>
+<ul class="simple">
+<li><p>un dispatch in relazione ai comandi <span class="blue">w,s,l,r,h</span></p></li>
+<li><p>una request in relazione al comando <span class="blue">p</span> (step)</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="interazione-brtorc-basicrobot22-robotcontroller">
+<h3>Interazione BrToRc (basicrobot22-RobotController)<a class="headerlink" href="#interazione-brtorc-basicrobot22-robotcontroller" title="Permalink to this headline">¶</a></h3>
+<p>Avviene sfruttando il fatto che   <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> è una risorsa <em>CoAP-observable</em>
+(si veda <a class="reference internal" href="AttoriCoap.html#attori-come-risorse-coap"><span class="std std-ref">Attori come risorse CoAP</span></a>) che aggiorna i suoi <em>CoAP-observers</em> utilizzando
+l’operazione built-in <em>updateResource</em> per le  informazioni connesse al <a class="reference internal" href="BasicRobot22.html#requisito-observable"><span class="std std-ref">requisito  observable</span></a>.</p>
+<p>Per ricevere e gestire queste informazioni (messaggi di stato), viene introdotto il POJO <em>RobotCoapObserver</em>.</p>
+<section id="robotcoapobserver">
+<h4>RobotCoapObserver<a class="headerlink" href="#robotcoapobserver" title="Permalink to this headline">¶</a></h4>
+<p>Il <em>RobotCoapObserver</em> è un POJO che usa <a class="reference internal" href="WebApplications.html#configurazione-con-websocketconfigurer"><span class="std std-ref">WebSocketConfiguration</span></a>
+per inviare i messaggi di stato a tutti i client HTTP connessi al server.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">RobotCoapObserver</span> <span class="n">implements</span> <span class="n">CoapHandler</span><span class="p">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">onLoad</span><span class="p">(</span><span class="n">CoapResponse</span> <span class="n">response</span><span class="p">)</span> <span class="p">{</span>
+        <span class="o">//</span><span class="n">send</span> <span class="n">info</span> <span class="n">over</span> <span class="n">the</span> <span class="n">websocket</span>
+        <span class="n">WebSocketConfiguration</span><span class="o">.</span><span class="n">wshandler</span><span class="o">.</span><span class="n">sendToAll</span><span class="p">(</span>
+          <span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="n">response</span><span class="o">.</span><span class="n">getResponseText</span><span class="p">());</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="n">public</span> <span class="n">void</span> <span class="n">onError</span><span class="p">()</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="interazione-rctopg-robotcontroller-pagina">
+<h3>Interazione RcToPg (RobotController-Pagina)<a class="headerlink" href="#interazione-rctopg-robotcontroller-pagina" title="Permalink to this headline">¶</a></h3>
+<p>Il <a class="reference internal" href="#robotcoapobserver"><span class="std std-ref">RobotCoapObserver</span></a> si avvake del <code class="docutils literal notranslate"><span class="pre">WebSocketHandler</span></code> gia introdotto
+in <a class="reference internal" href="WebApplications.html#il-gestore-websockethandler"><span class="std std-ref">WebApplication con SpringBoot</span></a> per
+inviare i messaggi di stato a tutti i client HTTP connessi al server.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">public</span> <span class="k">class</span> <span class="nc">WebSocketHandler</span> <span class="n">extends</span> <span class="n">AbstractWebSocketHandler</span> <span class="n">implements</span> <span class="n">IWsHandler</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="n">public</span> <span class="n">void</span> <span class="n">sendToAll</span><span class="p">(</span><span class="n">TextMessage</span> <span class="n">message</span><span class="p">)</span> <span class="n">throws</span> <span class="n">IOException</span><span class="p">{</span>
+      <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">WebSocketSession</span><span class="o">&gt;</span> <span class="nb">iter</span> <span class="o">=</span> <span class="n">sessions</span><span class="o">.</span><span class="n">iterator</span><span class="p">();</span>
+      <span class="k">while</span><span class="p">(</span> <span class="nb">iter</span><span class="o">.</span><span class="n">hasNext</span><span class="p">()</span> <span class="p">){</span>
+          <span class="nb">iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">(</span><span class="n">message</span><span class="p">);</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo2022.html">demo2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Architetture.html">Architetture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConclusioniISS22.html">ConclusioniISS22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">webrobot22</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#interazioni-tra-i-componenti">Interazioni tra i componenti</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#webrobot22-startup">webrobot22: startup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enable-springboot-live-devtools">Enable SpringBoot live DevTools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-gradle-di-webrobot22">build.gradle di webRobot22</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">basicrobot22Gui.html</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usiamo-bootstrap5">Usiamo Bootstrap5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contenuto-della-pagina">Contenuto della pagina</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#schema-delle-aree-di-i-o">Schema delle aree di I/O</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stili-custom-issspec-css">Stili custom: issSpec.css</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#webcamarea">WebcamArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configurationarea-and-data">ConfigurationArea and Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#struttura-generale-delle-aree-di-i-o">Struttura generale delle aree di I/O</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#specifica-dei-dati-applicativi">Specifica dei dati applicativi</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#area-protocol">AREA PROTOCOL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#area-webcam-android">AREA WEBCAM Android</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#area-robot-address">AREA ROBOT ADDRESS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#robotcmdarea">RobotCmdArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#infodisplay">infoDisplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#robotdisplay">robotDisplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pagina-finale">Pagina finale</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#visualizziamo-la-pagina-statica">Visualizziamo la pagina statica</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#parte-dinamica">Parte dinamica</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robotcontroller">RobotController</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#interazione-pgtorc-pagina-robotcontroller">Interazione PgToRc (Pagina-RobotController)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#javascript-di-supporto-nella-pagina">JavaScript di supporto nella pagina</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ioutils-js">ioutils.js</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#wsminimal-js-in-webrobo22">wsminimal.js in webrobo22</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#chiamate-http-al-controller">Chiamate HTTP al Controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creazione-della-pagina-di-risposta">Creazione della pagina di risposta</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#buildthepage">buildThePage</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#setconfigparams">setConfigParams</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setprotocol">setprotocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setwebcamip">setwebcamip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setrobotip">setrobotip</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#robotutils-java">RobotUtils.java</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interazione-rctobr-robotcontroller-basicrobot22">Interazione RcToBr (RobotController-basicrobot22)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#domove">doMove</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#robotutils-sendmsg">RobotUtils.sendMsg</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interazione-brtorc-basicrobot22-robotcontroller">Interazione BrToRc (basicrobot22-RobotController)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#robotcoapobserver">RobotCoapObserver</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interazione-rctopg-robotcontroller-pagina">Interazione RcToPg (RobotController-Pagina)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="TemaFinaleNote.html" title="previous chapter">TemaFinaleNote</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/webRobot22.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

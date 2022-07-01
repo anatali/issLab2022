@@ -18,7 +18,7 @@
 .. _motors: ../../../../../unibo.basicrobot22/resources/robotNano/Motors.c
 .. _mbotSupport: ../../../../../it.unibo.qak21.basicrobot/userDocs/Mbot2020.html
 
-
+.. _build.gradle: ../../../../../unibo.basicrobot22/build.gradle
 
 .. _wssupportAsActorKotlin: ../../../../../it.unibo.kotlinSupports/userDocs/wssupportAsActorKotlin.html
 .. _RobotService: ../../../../../it.unibo.kotlinSupports/userDocs/RobotService.html
@@ -355,7 +355,7 @@ La fase di progettazione parte dal :ref:`modello dell'analisi<Impostazione del m
 il codice necessario al soddisfacimento dei requisiti che l'analisi ha omesso.
 Per parti di basso livello definite in Kotlin, può essere utile consultare `kotlinUnibo`_.
 
-Anche in questa fase però miriamo  a definire nel modello gli **aspetti essenziali della 'business logic'** del robot, 
+Anche in questa fase però, miriamo  a definire nel modello gli **aspetti essenziali della 'business logic'** del robot, 
 lasciando ai :ref:`supporti<BasicRobot22: supporti>` 
 il compito di occuparsi dei dettagli tecnologici relativi ai diversi :ref:`tipi di robot<requisito  *tipidirobot*>`.
  
@@ -520,9 +520,26 @@ Per provocare interazioni usando MQTT, occorre
 .. 2022: il progetto it.unibo.qak21.robots è stato incluso in it.unibo.qak21.basicrobot
 
 
+
+
+
+
 ----------------------------
 Distribuzione
 ----------------------------
+
+++++++++++++++++++++++++++
+Dipendenze unibo
+++++++++++++++++++++++++++
+
+Le librerie richieste dal progetto sono definite nel file `build.gradle`_ e comprendono i seguenti supporti 
+sviluppati da unibo:
+
+- implementation name: :blue:`'uniboInterfaces'` : interfacce 'storiche' 
+- implementation name: :blue:`'2p301'` : tuProlog (necessario per qak) 
+- implementation name: :blue:`'unibo.comm22-1.1'` : comunicazioni 2022 
+- implementation name: :blue:`'unibo.qakactor22-2.8'` :  versione qak 2022 che usa le comunicazioni 2022
+
 
 +++++++++++++++++++++++++++++++++
 BasicRobot22: Dockerfile

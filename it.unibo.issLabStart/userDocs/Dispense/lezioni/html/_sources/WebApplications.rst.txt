@@ -57,7 +57,7 @@ Nel caso dei framework nel dominio delle applicazioni Web, troviamo un insieme d
 
 Lo schema di funzionamento può essere riassunto come segue:
 
-#. un operatire umano usa un Browser per collegarsi via HTTP a una certa porta di un nodo remoto, usata come porta
+#. un operatore umano usa un Browser per collegarsi via HTTP a una certa porta di un nodo remoto, usata come porta
    di ingresso dal WebServer
 #. l'infrastruttura del framework effettua una prima gestione del messaggio in arrivo in modo da confezionare
    oggetti computazionali (richieste e/o risposte) da trasferire ad opportuni metodi del :blue:`Controller` 

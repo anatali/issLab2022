@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>basicrobot22Gui</title>
+ <link rel="stylesheet" href="css/bootstrap.css">
+ <link rel="stylesheet" href="css/app.css">
+ <!-- <link rel="shortcut icon" href="images/favicon.svg" type="image/x-icon"> -->
+
+
+</head>
+
+<body>
+<!--
+  <div id="app">
+      <div id="sidebar" class="active">
+       <div class="sidebar-wrapper active">
+        <div class="sidebar-header">
+         <div class="d-flex justify-content-between">
+          <div class="logo">
+           <a th:href="@{/index}"><img src="images/logo/realrobots.PNG" alt="Logo" width="60" height="60"></a>
+          </div>
+         </div>
+        </div>
+        <div class="sidebar-menu">
+         <ul class="menu">
+            <li class="sidebar-title">Menu</li>
+         </ul>
+        </div>
+  </div>   app -->
+
+  <div>
+    <form action="configure" method="post">
+     <label for="configurespec">address</label>
+     <input type="text" id="configurespec" name="move" value="">
+     <input type="submit" value="connect">
+     <!-- the form-data is sent to the page specified in the action attribute -->
+    </form>
+  </div>
+
+<hr/>
+
+  <div id="main">
+   <header class="mb-3">
+    <a href="#" class="burger-btn d-block d-xl-none">
+     <i class="bi bi-justify fs-3"></i>
+    </a>
+   </header>
+
+     <div class="page-heading">
+       <h3>Dashboard</h3>
+     </div>
+      <div class="page-content">
+
+       <div class="card">
+        <div class="card-header">
+         <h4>Commands</h4>
+        </div>
+        <div class="card-content pb-4">
+         <div class="px-4">
+          <button class='btn btn-block btn-light-primary font-bold' id='w'><i class="fa-regular fa-arrow-up"></i> Step Ahead</button>
+         </div>
+         <div class="row px-4">
+          <div class="col-6">
+           <button class='btn btn-block btn-light-primary font-bold mt-3' id='l'><i class="fa-regular fa-rotate-left"></i> Turn Left</button>
+           <button class='btn btn-block btn-light-primary font-bold mt-3' id='z'><i class="fa-regular fa-arrow-rotate-left"></i> Turn Left 90</button>
+           <button class='btn btn-block btn-light-primary font-bold mt-3' id='s'><i class="fa-regular fa-arrow-down"></i> Backward</button>
+          </div>
+          <div class="col-6">
+           <button class='btn btn-block btn-light-primary font-bold mt-3' id="r">Turn Right <i class="fa-regular fa-rotate-right"></i></button>
+           <button class='btn btn-block btn-light-primary font-bold mt-3' id='x'>Turn Right 90 <i class="fa-regular fa-arrow-rotate-right"></i></button>
+           <button class='btn btn-block btn-light-primary font-bold mt-3' id='h'>Stop <i class="fa-regular fa-ban"></i></button>
+          </div>
+         </div>
+        </div>
+       </div>
+       </div>
+
+
+     <div class="row">
+      <div class="col-md-4">
+       <div class="stats-icon blue">
+        <i class="fa-regular fa-user-robot"></i>
+       </div>
+      </div>
+      <div class="col-md-8">
+         <h6 class="text-muted font-semibold">CmdResult</h6>
+         <div id="CmdResult">
+          <h6 class="text-overflow font-extrabold mb-0" id="statewaiter">home</h6>
+         </div>
+        </div>
+     </div>
+
+
+
+
+   <hr/>
+   <h3>DISPLAY AREA</h3>
+   <div id = "display"></div>
+  </div>
+
+   <footer>
+    <hr/>
+    <div class="footer clearfix mb-0 text-muted">
+     <div class="float-start">
+      <p>basicrobotGui</p>
+     </div>
+     <div class="float-end">
+      <p>Crafted by <a href="https://www.unibo.it/sitoweb/antonio.natali">AN-DISI</a> </p>
+     </div>
+    </div>
+    </footer>
+  </div>  <!-- main -->
+
+
+
+
+<script src="vendors/jquery/jquery.min.js"></script>
+<script src="sockjs.min.js"></script>
+<script src="wsminimal.js"></script>
+<script src="cmdpageutils.js"></script>
+<script>connect()</script>
+</body>
+</html>

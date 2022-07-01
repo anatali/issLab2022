@@ -290,7 +290,7 @@ che possono emettere informazioni sulle azioni che stanno compiendo e sul propri
 <p>La fase di progettazione parte dal <a class="reference internal" href="#impostazione-del-modello"><span class="std std-ref">modello dell’analisi</span></a> e lo raffina introducendo
 il codice necessario al soddisfacimento dei requisiti che l’analisi ha omesso.
 Per parti di basso livello definite in Kotlin, può essere utile consultare <a class="reference external" href="../../../../../it.unibo.kotlinIntro/userDocs/LabIntroductionToKotlin.html">kotlinUnibo</a>.</p>
-<p>Anche in questa fase però miriamo  a definire nel modello gli <strong>aspetti essenziali della ‘business logic’</strong> del robot,
+<p>Anche in questa fase però, miriamo  a definire nel modello gli <strong>aspetti essenziali della ‘business logic’</strong> del robot,
 lasciando ai <a class="reference internal" href="#basicrobot22-supporti"><span class="std std-ref">supporti</span></a>
 il compito di occuparsi dei dettagli tecnologici relativi ai diversi <a class="reference internal" href="#requisito-tipidirobot"><span class="std std-ref">tipi di robot</span></a>.</p>
 <section id="basicrobot22-configurazione">
@@ -428,6 +428,17 @@ in <code class="docutils literal notranslate"><span class="pre">it.unibo.issLabS
 </section>
 <section id="distribuzione">
 <h2>Distribuzione<a class="headerlink" href="#distribuzione" title="Permalink to this headline">¶</a></h2>
+<section id="dipendenze-unibo">
+<h3>Dipendenze unibo<a class="headerlink" href="#dipendenze-unibo" title="Permalink to this headline">¶</a></h3>
+<p>Le librerie richieste dal progetto sono definite nel file <a class="reference external" href="../../../../../unibo.basicrobot22/build.gradle">build.gradle</a> e comprendono i seguenti supporti
+sviluppati da unibo:</p>
+<ul class="simple">
+<li><p>implementation name: <span class="blue">‘uniboInterfaces’</span> : interfacce ‘storiche’</p></li>
+<li><p>implementation name: <span class="blue">‘2p301’</span> : tuProlog (necessario per qak)</p></li>
+<li><p>implementation name: <span class="blue">‘unibo.comm22-1.1’</span> : comunicazioni 2022</p></li>
+<li><p>implementation name: <span class="blue">‘unibo.qakactor22-2.8’</span> :  versione qak 2022 che usa le comunicazioni 2022</p></li>
+</ul>
+</section>
 <section id="basicrobot22-dockerfile">
 <h3>BasicRobot22: Dockerfile<a class="headerlink" href="#basicrobot22-dockerfile" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="n">openjdk</span><span class="p">:</span><span class="mf">12.0</span><span class="o">.</span><span class="mi">2</span>
@@ -594,6 +605,7 @@ da cui dipende <code class="docutils literal notranslate"><span class="pre">Basi
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#distribuzione">Distribuzione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dipendenze-unibo">Dipendenze unibo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#basicrobot22-dockerfile">BasicRobot22: Dockerfile</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tagging-and-register-on-dockerhub">Tagging and register on Dockerhub</a></li>
 </ul>
@@ -613,6 +625,7 @@ da cui dipende <code class="docutils literal notranslate"><span class="pre">Basi
 <li class="toctree-l1"><a class="reference internal" href="ConclusioniISS22.html">ConclusioniISS22</a></li>
 <li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
 <li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webRobot22.html">webrobot22</a></li>
 </ul>
 
 <div class="relations">

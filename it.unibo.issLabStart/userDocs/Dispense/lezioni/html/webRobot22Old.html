@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+    <title>webrobot22 &#8212; iss22 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="webrobot22">
+<h1>webrobot22<a class="headerlink" href="#webrobot22" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#webrobot22-startup"><span class="std std-ref">webrobot22: startup</span></a></p></li>
+<li><p>Preparazione della pagina con <a class="reference external" href="https://www.w3schools.com/bootstrap5/">Bootstrap5</a></p></li>
+<li><p>Sezione area comandi</p></li>
+<li><p>Sezione cam</p></li>
+<li><p>Connessione Ws con il server</p></li>
+<li><p>Connessione TCP/CoAP con il robot (o applicazione)</p></li>
+<li><p>Risposta js ai comandi</p></li>
+<li><p>Azioni del controller in seguito a un comando</p></li>
+</ol>
+<section id="webrobot22-startup">
+<h2>webrobot22: startup<a class="headerlink" href="#webrobot22-startup" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Estraggo <code class="docutils literal notranslate"><span class="pre">webRobot22.zip</span></code> in webRobot22</p></li>
+<li><p>Cambio da <code class="docutils literal notranslate"><span class="pre">7.4.1</span></code> a <code class="docutils literal notranslate"><span class="pre">7.4.2</span></code> in <code class="docutils literal notranslate"><span class="pre">webRobot22\gradle\wrapper\gradle-wrapper.properties</span></code></p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code> modifico:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+<span class="n">sourceCompatibility</span> <span class="o">=</span> <span class="s1">&#39;11&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Aggiungo il file <code class="docutils literal notranslate"><span class="pre">gradle.properties</span></code> con il contenuto:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kotlinVersion</span> <span class="o">=</span> <span class="mf">1.6</span><span class="o">.</span><span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Inserisco <code class="docutils literal notranslate"><span class="pre">banner.txt</span></code> in <em>srcmainresources* usando `bannerOnline`_ (*small</em> font)</p></li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">application.properties</span></code> in <em>srcmainresources* inserisco</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spring</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">webRobot22</span>
+<span class="n">spring</span><span class="o">.</span><span class="n">banner</span><span class="o">.</span><span class="n">location</span>  <span class="o">=</span> <span class="n">classpath</span><span class="p">:</span><span class="n">banner</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">server</span><span class="o">.</span><span class="n">port</span>             <span class="o">=</span> <span class="mi">8085</span>
+</pre></div>
+</div>
+</li>
+<li><p>In <code class="docutils literal notranslate"><span class="pre">build.gradle</span></code> inserisco:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plugins</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="nb">id</span> <span class="s1">&#39;application&#39;</span>
+<span class="p">}</span>
+<span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+<span class="n">sourceCompatibility</span> <span class="o">=</span> <span class="s1">&#39;11&#39;</span>
+<span class="n">repositories</span> <span class="p">{</span>
+    <span class="n">mavenCentral</span><span class="p">()</span>
+    <span class="n">flatDir</span> <span class="p">{</span>   <span class="n">dirs</span> <span class="s1">&#39;../unibolibs&#39;</span>  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">dependencies</span> <span class="p">{</span>
+    <span class="o">...</span>
+    <span class="o">//</span><span class="n">Libreria</span> <span class="n">Kotlin</span><span class="o">-</span><span class="n">runtime</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.jetbrains.kotlin:kotlin-stdlib-jdk8&#39;</span>
+
+    <span class="o">//</span><span class="n">Per</span> <span class="n">comunicazioni</span> <span class="n">WebSocket</span> <span class="n">NOSTOMP</span> <span class="n">della</span> <span class="n">pagina</span> <span class="n">HTML</span>
+    <span class="n">implementation</span><span class="p">(</span><span class="s2">&quot;org.springframework:spring-websocket:5.3.14&quot;</span><span class="p">)</span>
+
+    <span class="o">//</span><span class="n">webjars</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.webjars:webjars-locator-core&#39;</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.webjars:bootstrap:5.1.3&#39;</span>
+    <span class="n">implementation</span> <span class="s1">&#39;org.webjars:jquery:3.6.0&#39;</span>
+
+    <span class="o">/*</span> <span class="n">UNIBO</span> <span class="o">**********************************</span> <span class="o">*/</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;uniboInterfaces&#39;</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;2p301&#39;</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;it.unibo.qakactor-2.7&#39;</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibonoawtsupports&#39;</span>  <span class="o">//</span><span class="n">required</span> <span class="n">by</span> <span class="n">the</span> <span class="n">old</span> <span class="n">infrastructure</span>
+    <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.actor22-1.1&#39;</span>   <span class="o">//</span><span class="n">using</span> <span class="n">actor22comm</span> <span class="ow">in</span> <span class="n">ConnQakBase</span>
+<span class="p">}</span>
+<span class="n">mainClassName</span> <span class="o">=</span> <span class="s1">&#39;unibo.webRobot22.WebRobot22Application&#39;</span>
+<span class="n">jar</span> <span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">&quot;executing jar&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">sourceSets.main.allSource</span>
+    <span class="n">manifest</span> <span class="p">{</span>
+        <span class="n">attributes</span> <span class="s1">&#39;Main-Class&#39;</span><span class="p">:</span> <span class="s2">&quot;$mainClassName&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Eseguo <code class="docutils literal notranslate"><span class="pre">gradlew</span> <span class="pre">run</span></code> e apro un browser su <code class="docutils literal notranslate"><span class="pre">localhost:8085</span></code></p></li>
+</ul>
+</section>
+<section id="webrobot22-pagina">
+<h2>webrobot22: pagina<a class="headerlink" href="#webrobot22-pagina" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="WebApplications.html#webapplication-con-springboot"><span class="std std-ref">WebApplication con SpringBoot</span></a></p></li>
+<li><p><a class="reference internal" href="WebApplications.html#configurazione-con-websocketconfigurer"><span class="std std-ref">Configurazione con WebSocketConfigurer</span></a></p></li>
+<li><p><a class="reference internal" href="WebApplications.html#trasferimento-di-immagini-indexalsoimages-html"><span class="std std-ref">Trasferimento di immagini: indexAlsoImages.html</span></a></p></li>
+<li><p><a class="reference internal" href="WebApplications.html#bootstrap-e-webjars"><span class="std std-ref">Bootstrap  e webJars</span></a></p></li>
+<li><p><a class="reference internal" href="WebApplications.html#websocket-in-springboot-versione-stomp"><span class="std std-ref">WebSocket in SpringBoot: versione STOMP</span></a></p></li>
+<li><p><a class="reference internal" href="WebApplications.html#client-in-java-per-programmi"><span class="std std-ref">Client (in Java per programmi)</span></a></p></li>
+</ul>
+<section id="costruzione-della-pagina">
+<h3>Costruzione della pagina<a class="headerlink" href="#costruzione-della-pagina" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>static/css/bootstrap.css</p></li>
+<li><p>Creo <code class="docutils literal notranslate"><span class="pre">RobotController.java</span></code> in <em>srcmainjavaituniborobotWeb2020</em></p></li>
+<li><p>Inserisco <code class="docutils literal notranslate"><span class="pre">BasicRobotCmdGui.html</span></code> in <em>srcmainresourcestemplates</em></p></li>
+<li><p>Aggiungo <code class="docutils literal notranslate"><span class="pre">wsminimal.js</span></code> in resources</p></li>
+<li><p>static/vendors</p></li>
+<li><p>Robots/common/IWsHandler e WebSocketConfiguration</p></li>
+<li><p>preprazione della pagina</p></li>
+<li><p>definizione delle azioni</p></li>
+<li><p>wsminimal.js</p></li>
+</ul>
+</section>
+</section>
+<section id="comandare-il-robot">
+<h2>Comandare il robot<a class="headerlink" href="#comandare-il-robot" title="Permalink to this headline">¶</a></h2>
+<p>Handler dispatch failed; nested exception is java.lang.NoClassDefFoundError: kotlin/jvm/internal/Intrinsics</p>
+<section id="bootstrap">
+<h3>Bootstrap<a class="headerlink" href="#bootstrap" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Bootstrap 4 was released in 2018</p></li>
+<li><p>Bootstrap 5 has switched to JavaScript instead of jQuery.</p></li>
+<li><p>W3.CSS is an excellent alternative to Bootstrap 5.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">jsDelivr</span></code> provides CDN support for Bootstrap’s CSS and JavaScript:</p></li>
+</ul>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!-- Latest compiled and minified CSS --&gt;
+&lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot;&gt;
+
+&lt;!-- Latest compiled JavaScript --&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+</pre></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p>There are two container classes to choose from: <code class="docutils literal notranslate"><span class="pre">.container</span></code> (fixed width)  <code class="docutils literal notranslate"><span class="pre">.container-fluid</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.container-sm|md|lg|xl</span></code> classes to determine when the container should be responsive</p></li>
+<li><p>By default, containers have left and right padding, with no top or bottom padding.</p></li>
+<li><p>The Bootstrap <a class="reference external" href="https://www.w3schools.com/bootstrap5/bootstrap_grid_basic.php">Grids</a> system has four classes: xs (phones), sm (tablets), md (desktops), and lg (larger desktops).</p></li>
+<li><p>Bootstrap’s <a class="reference external" href="https://www.w3schools.com/bootstrap5/bootstrap_grid_basic.php">Grids</a> system is built with flexbox and allows up to 12 columns across the page.</p></li>
+<li><p>The Bootstrap 5 <a class="reference external" href="https://www.w3schools.com/bootstrap5/bootstrap_grid_basic.php">Grids</a> system has six classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.col-</span></code> (extra small devices - screen width less than 576px)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.col-sm-</span></code> (small devices - screen width equal to or greater than 576px)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.col-md-</span></code> (medium devices - screen width equal to or greater than 768px)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.col-lg-</span></code> (large devices - screen width equal to or greater than 992px)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.col-xl-</span></code> (xlarge devices - screen width equal to or greater than 1200px)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.col-xxl-</span></code> (xxlarge devices - screen width equal to or greater than 1400px)</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><a class="reference external" href="https://www.w3schools.com/bootstrap5/bootstrap_cards.php">Cards</a>: bordered box with some padding around its content.
+It includes options for headers, footers, content, colors, etc.</p></li>
+<li><p>Responsive images automatically adjust to fit the size of the screen.
+<code class="docutils literal notranslate"><span class="pre">img-fluid</span></code> class applies max-width: 100%; and height: auto; to the image.
+The image will then scale nicely to the parent element.</p></li>
+</ul>
+</section>
+<section id="card-with-webcam">
+<h3>Card with webcam<a class="headerlink" href="#card-with-webcam" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Open Windows Settings and choose Devices</p></li>
+<li><p>Click the Windows Start Menu Button.</p></li>
+<li><p>Click Camera</p></li>
+<li><p>ipwecab e SimpleMjpegView</p></li>
+</ul>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">script</span><span class="o">&gt;</span>
+<span class="n">function</span> <span class="n">myFunction</span><span class="p">()</span> <span class="p">{</span>
+<span class="n">window</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;https://www.w3schools.com&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="thymeleaf-url-syntax">
+<h3>Thymeleaf URL Syntax<a class="headerlink" href="#thymeleaf-url-syntax" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://www.thymeleaf.org/doc/articles/standardurlsyntax.html">https://www.thymeleaf.org/doc/articles/standardurlsyntax.html</a></p>
+<ul>
+<li><p>Absolute URLs</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">a</span> <span class="n">th</span><span class="p">:</span><span class="n">href</span><span class="o">=</span><span class="s2">&quot;@{http://www.thymeleaf/documentation.html}&quot;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Context-relative URLs</p></li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p>Server-relative URLs</p>
+<blockquote>
+<div><p>&lt;a th:href=”&#64;{~/billing-app/showDetails.htm}”&gt;</p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+<section id="enable-springboot-live-devtools">
+<h2>Enable SpringBoot live DevTools<a class="headerlink" href="#enable-springboot-live-devtools" title="Permalink to this headline">¶</a></h2>
+<p>settings(ctrl +alt+s) -&gt; Build,Execution,Deployment -&gt; compiler, check “Build project automatically”
+Enable option ‘allow auto-make to start even if developed application is currently running’ in
+Settings -&gt; Advanced Settings under compiler</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/logo-unibo.gif" alt="Logo"/>
+    
+    <h1 class="logo logo-name">iss22</h1>
+    
+  </a>
+</p>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Introduzione.html">Introduzione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CostruireSoftware.html">Costruire software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WorkspaceSetup.html">WorkspaceSetup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystem.html">RadarSystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemAnalisi.html">Analisi del problema</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProdottiAnalisi.html">Prodotti della analisi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemProgetto.html">Progettazione e sviluppo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RadarSystemSupporti.html">Supporti per comunicazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Enablers.html">Abilitatori di comunicazione</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ContestiContenitori.html">Contesti-contenitori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SonarObservable.html">Il SonarObservable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Attori.html">Attori</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Eventi.html">Eventi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Annotazioni.html">Annotazioni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspberrySoftware.html">RaspberrySoftware</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RaspBasicCode.html">RaspBasicCode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualRobot.html">VirtualRobot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Actors22.html">Actors22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleaner.html">RobotCleaner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotCleanerWeb.html">RobotCleanerWeb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsoDiunPlanner.html">Uso di un planner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RobotExplorer.html">RobotExplorer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebApplications.html">WebApplication con SpringBoot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AttoriCoap.html">Attori come risorse CoAP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OltreTcp.html">Oltre TCP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QakIntro.html">QActor (meta)model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BasicRobot22.html">BasicRobot22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Applicazioni22.html">Applicazioni 2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KotlinNotes.html">KotlinNotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo2022.html">demo2022</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Architetture.html">Architetture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConclusioniISS22.html">ConclusioniISS22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinale22.html">TemaFinale22</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemaFinaleNote.html">TemaFinaleNote</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webRobot22.html">webrobot22</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Antonio Natali.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/webRobot22Old.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

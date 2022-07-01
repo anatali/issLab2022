@@ -1,0 +1,69 @@
+System wasteservice
+
+Request depositrequest : depositrequest(MATERIAL, TRUCKLOAD)
+Reply loadaccept       : loadaccept(MATERIAL, TRUCKLOAD)
+Reply loadrejected     : loadrejected(MATERIAL, TRUCKLOAD)
+
+Request pickup         : pickup(MATERIAL, TRUCKLOAD)
+Reply   pickupanswer   : pickupanswer(RESULT)
+
+Dispatch execute : execute(MATERIAL,TRUCKLOAD)
+
+Context ctxWasteService ip [ host="localhost" port=8013 ]
+
+QActor wasteservice context ctxWasteService {
+			[#
+				lateinit var Material  : String
+				lateinit var TruckLoad : String ;
+			#]
+	State s0 initial {
+		println("the wasteservice is waiting..")
+	}
+	Transition t0 whenRequest depositrequest -> handlerequest
+	
+	State handlerequest{
+		[# fun checkdepositpossible(MATERIAL:String,LOAD:String) : Boolean { return true } #]
+		printCurrentMessage
+		onMsg(depositrequest : depositrequest(MATERIAL, TRUCKLOAD)) {
+			[#
+				 Material 	= payloadArg(0) ;
+				 TruckLoad 	= payloadArg(1) ;
+			#]
+			if[# checkdepositpossible( Material, TruckLoad ) #]{
+				request transporttrolley -m pickup : pickup($Material,$TruckLoad)
+			} else{  
+				replyTo depositrequest with loadrejected : loadrejected($Material,$TruckLoad)
+			}		
+		}
+	}
+	Transition t0 whenReply pickupanswer -> handlepickupanswer
+	
+	
+	State handlepickupanswer{
+		printCurrentMessage
+		onMsg( pickupanswer : pickupanswer(RESULT) ){
+			[# var R = payloadArg(0); #]
+			if [# R == "done" #] {
+				replyTo depositrequest with 
+					loadaccept : loadaccept($Material,$TruckLoad)
+			}else{
+				println("FATAL ERROR")
+				replyTo depositrequest with 
+				    loadrejected : loadrejected($Material,$TruckLoad)
+			}
+		}
+	}
+}
+
+QActor transporttrolley context ctxWasteService {
+	State s0 initial {
+		println("the transporttrolley is waiting..")
+	}
+	Transition t0 whenRequest pickup -> handlepickup
+	
+	State handlepickup{
+		replyTo pickup with pickupanswer : pickupanswer( done )
+	}
+	Goto s0
+ 
+}
