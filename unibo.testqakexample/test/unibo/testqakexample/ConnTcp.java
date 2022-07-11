@@ -1,16 +1,16 @@
 package unibo.testqakexample;
 
- 
+
 import unibo.comm22.interfaces.Interaction2021;
 import unibo.comm22.tcp.TcpClientSupport;
 import unibo.comm22.utils.ColorsOut;
 
-public class ConnTcp implements Interaction2021{
+public class ConnTcp implements Interaction2021 {
     private Interaction2021 conn;
 
     public ConnTcp(String hostAddr, int port) throws Exception{
         conn = TcpClientSupport.connect(hostAddr,port,10);
-        ColorsOut.outappl("ConnTcp createConnection DONE:" + conn, ColorsOut.GREEN);
+        ColorsOut.out("ConnTcp createConnection DONE:" + conn, ColorsOut.GREEN);
      }
 
     @Override
@@ -45,4 +45,4 @@ public class ConnTcp implements Interaction2021{
     }
 
 
-}
+ }

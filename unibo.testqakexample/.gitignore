@@ -22,6 +22,3 @@ package-lock.json
 docker/
 /.metadata/
 /src-gen/
-
-# Ignore Gradle project-specific cache directory
-.gradle

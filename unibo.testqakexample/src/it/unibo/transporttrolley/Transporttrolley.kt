@@ -19,7 +19,7 @@ class Transporttrolley ( name: String, scope: CoroutineScope  ) : ActorBasicFsm(
 					action { //it:State
 						println("the transporttrolley is waiting..")
 					}
-					 transition(edgeName="t02",targetState="handlepickup",cond=whenRequest("pickup"))
+					 transition(edgeName="t03",targetState="handlepickup",cond=whenRequest("pickup"))
 				}	 
 				state("handlepickup") { //this:State
 					action { //it:State

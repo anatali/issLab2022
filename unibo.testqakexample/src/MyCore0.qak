@@ -1,29 +1,36 @@
 System wasteservice
-
+ 
 Request depositrequest : depositrequest(MATERIAL, TRUCKLOAD)
 Reply loadaccept       : loadaccept(MATERIAL, TRUCKLOAD)
 Reply loadrejected     : loadrejected(MATERIAL, TRUCKLOAD)
-
+ 
 Request pickup         : pickup(MATERIAL, TRUCKLOAD)
 Reply   pickupanswer   : pickupanswer(RESULT)
-
+ 
 Dispatch execute : execute(MATERIAL,TRUCKLOAD)
+  
+Context ctxwasteservice ip [ host="localhost" port=8013 ]
 
-Context ctxWasteService ip [ host="localhost" port=8013 ]
-
-QActor wasteservice context ctxWasteService {
+QActor wasteservice context ctxwasteservice {
 			[#
-				lateinit var Material  : String
-				lateinit var TruckLoad : String ;
-			#]
-	State s0 initial {
-		println("the wasteservice is waiting..")
+				lateinit var Material  : String //glass, plastic
+				lateinit var TruckLoad : String  
+				
+				lateinit var TrolleyPos : String   //gbox,pbox,Home,indoor,other
+			#] 
+	State s0 initial { 
+		//[# org.apache.log4j.BasicConfigurator.configure() #]
+		//https://sematext.com/blog/slf4j-tutorial/
+		[# TrolleyPos = "home" #]
+		updateResource [# "trolleyPos(home)" #]  
+		println("the wasteservice is waiting ... ")
 	}
 	Transition t0 whenRequest depositrequest -> handlerequest
 	
 	State handlerequest{
 		[# fun checkdepositpossible(MATERIAL:String,LOAD:String) : Boolean { return true } #]
 		printCurrentMessage
+		//updateResource [# "trolleyPos(home)" #]
 		onMsg(depositrequest : depositrequest(MATERIAL, TRUCKLOAD)) {
 			[#
 				 Material 	= payloadArg(0) ;
@@ -39,11 +46,15 @@ QActor wasteservice context ctxWasteService {
 	Transition t0 whenReply pickupanswer -> handlepickupanswer
 	
 	
-	State handlepickupanswer{
+	State handlepickupanswer{ 
 		printCurrentMessage
 		onMsg( pickupanswer : pickupanswer(RESULT) ){
 			[# var R = payloadArg(0); #]
 			if [# R == "done" #] {
+				//TODO
+				[# TrolleyPos = "Indoor" #]
+				//emit  ...
+				updateResource [# "trolleyPos(indoor)" #]
 				replyTo depositrequest with 
 					loadaccept : loadaccept($Material,$TruckLoad)
 			}else{
@@ -53,9 +64,19 @@ QActor wasteservice context ctxWasteService {
 			}
 		}
 	}
+	Goto dodeposit
+	
+	State dodeposit{
+		//We suppose here that the service drives  the Trolley  to do the deposit
+		//At the end the Trolley must be in the box related to the Material
+		delay 1000
+		if [# Material == "glass" #]{ updateResource [# "trolleyPos(gbox)" #]
+		}else{ updateResource [# "trolleyPos(pbox)" #] }
+	}
+	Transition t0 whenTime 5000  -> s0
 }
 
-QActor transporttrolley context ctxWasteService {
+QActor transporttrolley context ctxwasteservice {
 	State s0 initial {
 		println("the transporttrolley is waiting..")
 	}

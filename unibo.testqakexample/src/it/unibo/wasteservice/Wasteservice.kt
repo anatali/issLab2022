@@ -15,12 +15,17 @@ class Wasteservice ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		
-						lateinit var Material  : String
-						lateinit var TruckLoad : String ;
+						lateinit var Material  : String //glass, plastic
+						lateinit var TruckLoad : String  
+						
+						lateinit var TrolleyPos : String   //gbox,pbox,Home,indoor,other
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						println("the wasteservice is waiting..")
+						 TrolleyPos = "home"  
+						updateResourceRep( "trolleyPos(home)"  
+						)
+						println("the wasteservice is waiting ... ")
 					}
 					 transition(edgeName="t00",targetState="handlerequest",cond=whenRequest("depositrequest"))
 				}	 
@@ -50,7 +55,10 @@ class Wasteservice ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 var R = payloadArg(0);  
 								if(  R == "done"  
-								 ){answer("depositrequest", "loadaccept", "loadaccept($Material,$TruckLoad)"   )  
+								 ){ TrolleyPos = "Indoor"  
+								updateResourceRep( "trolleyPos(indoor)"  
+								)
+								answer("depositrequest", "loadaccept", "loadaccept($Material,$TruckLoad)"   )  
 								}
 								else
 								 {println("FATAL ERROR")
@@ -58,6 +66,23 @@ class Wasteservice ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 								 }
 						}
 					}
+					 transition( edgeName="goto",targetState="dodeposit", cond=doswitch() )
+				}	 
+				state("dodeposit") { //this:State
+					action { //it:State
+						delay(1000) 
+						if(  Material == "glass"  
+						 ){updateResourceRep( "trolleyPos(gbox)"  
+						)
+						}
+						else
+						 {updateResourceRep( "trolleyPos(pbox)"  
+						 )
+						 }
+						stateTimer = TimerActor("timer_dodeposit", 
+							scope, context!!, "local_tout_wasteservice_dodeposit", 5000.toLong() )
+					}
+					 transition(edgeName="t02",targetState="s0",cond=whenTimeout("local_tout_wasteservice_dodeposit"))   
 				}	 
 			}
 		}
