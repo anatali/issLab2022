@@ -3,7 +3,7 @@ package annotations;
 import java.lang.annotation.Annotation;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.comm22.utils.ColorsOut;
 
 @AccessSpec(
         protocol = AccessSpec.issProtocol.HTTP,

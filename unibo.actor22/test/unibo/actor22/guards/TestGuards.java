@@ -19,7 +19,7 @@ private int n = 0;
  	}
 
 	@State( name = "s0" )
-	@Transition( state = "s1" ,  msgId = SystemData.demoSysId, guard = Guard0.class )
+	@Transition( state = "s1" ,  msgId = SystemData.demoSysId, guard = "guard0" )
 	protected void s0( IApplMessage msg ) {
 		outInfo(""+msg );
 		n++;   //Uncomment to go in s1
@@ -29,9 +29,31 @@ private int n = 0;
 
 	
 	@State( name = "s1" )
+	@Transition( state = "s3" ,  guard = "noGuard0" )  //emptyMove con Guardia
+	@Transition( state = "s2" ,  guard = "guard0" )  //emptyMove con Guardia
 	protected void s1( IApplMessage msg ) {
+		outInfo(""+msg );
+	}
+	@State( name = "s2" )
+	protected void s2( IApplMessage msg ) {
 		outInfo(""+msg );
 		System.exit(0);
 	}
-
+	@State( name = "s3" )
+	protected void s3( IApplMessage msg ) {
+		outInfo(""+msg );
+		System.exit(0);
+	}
+//-------------------------------------------------------	
+	@TransitionGuard
+	protected boolean guard0() {
+		outInfo("guard0 "+ (n > 0) );
+		return n > 0;
+	}
+	
+	@TransitionGuard
+	protected boolean noGuard0() {
+		outInfo("noGuard0 "+ (n == 0) );
+		return n == 0;
+	}	
 }

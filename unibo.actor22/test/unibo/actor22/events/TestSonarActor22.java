@@ -4,8 +4,8 @@ import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 import unibo.actor22.Qak22Context;
 import unibo.actor22.Qak22Util;
 import unibo.actor22.annotations.ActorLocal;
-import unibo.actor22comm.utils.CommSystemConfig;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.CommSystemConfig;
+import unibo.comm22.utils.CommUtils;
 import unibo.actor22.common.ApplData;
 import unibo.actor22.common.EventObserver;
 import unibo.actor22.common.ControllerForSonarActor;
@@ -29,7 +29,7 @@ public class TestSonarActor22 {
 		
 		//con false, il ControllerForSonarActor chiede la distanza, 
 		//con true,  il ControllerForSonarActor agisce come observer
-		RadarSystemConfig.sonarObservable 	= false; 
+		RadarSystemConfig.sonarObservable 	= true; 
 		
 		//ALTRO Observer oltr il Controller
 // 		new EventObserver(ApplData.observerName);

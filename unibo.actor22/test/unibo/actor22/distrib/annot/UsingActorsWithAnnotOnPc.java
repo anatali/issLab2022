@@ -7,10 +7,10 @@ import unibo.actor22.annotations.ActorLocal;
 import unibo.actor22.annotations.ActorRemote;
 import unibo.actor22.common.ApplData;
 import unibo.actor22.common.EventObserver;
-import unibo.actor22comm.ProtocolType;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommSystemConfig;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.ProtocolType;
+import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommSystemConfig;
+import unibo.comm22.utils.CommUtils;
  
  
  

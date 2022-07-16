@@ -2,8 +2,8 @@ package likeLenziAnnotations;
  
 import unibo.actor22.Qak22Context;
 import unibo.actor22.annotations.*;
-import unibo.actor22comm.utils.CommSystemConfig;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.CommSystemConfig;
+import unibo.comm22.utils.CommUtils;
 
 /*
  * TestPlan: l'attore a1 deve ricevere il messaggio msg(demo,dispatch,a2,a3Pc,do,1)

@@ -3,8 +3,8 @@ package likeLenziAnnotations;
 import it.unibo.kactor.IApplMessage;
 import unibo.actor22.QakActor22;
 import unibo.actor22comm.SystemData;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommUtils;
 
 public class A2Actor22OnRasp extends QakActor22{
 

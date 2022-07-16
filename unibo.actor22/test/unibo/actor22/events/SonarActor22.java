@@ -12,8 +12,8 @@ import unibo.actor22.Qak22Util;
 import unibo.actor22.QakActor22;
 import unibo.actor22.common.ApplData;
 import unibo.actor22.common.RadarSystemConfig;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommUtils;
 
 
 /*

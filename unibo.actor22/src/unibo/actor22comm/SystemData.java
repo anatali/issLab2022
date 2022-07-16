@@ -2,7 +2,7 @@ package unibo.actor22comm;
 
 import it.unibo.kactor.IApplMessage;
 import unibo.actor22.Qak22Util;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.CommUtils;
 
 /*
  * MESSAGGI per attori come FSM

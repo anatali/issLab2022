@@ -2,7 +2,7 @@ package unibo.actor22.common;
 
 import it.unibo.kactor.IApplMessage;
 import unibo.actor22.QakActor22;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.comm22.utils.ColorsOut;
 
 public class EventObserver extends QakActor22{
 

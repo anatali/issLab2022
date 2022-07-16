@@ -5,8 +5,8 @@ import it.unibo.kactor.*;
 import unibo.actor22comm.RequestCallUtilObj;
 import unibo.actor22comm.events.EventMsgHandler;
 import unibo.actor22comm.proxy.ProxyAsClient;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommUtils;
  
 
 public  class Qak22Util   {

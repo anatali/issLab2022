@@ -2,10 +2,10 @@ package unibo.actor22.guards;
 
 import unibo.actor22.Qak22Context;
 import unibo.actor22.annotations.*;
-import unibo.actor22comm.utils.CommSystemConfig;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.CommSystemConfig;
+import unibo.comm22.utils.CommUtils;
 
-@Context22(name = "ctx", host = "localhost", port = "8083")
+@Context22(name = "ctx", host = "localhost", port = "8052")
 @Actor22(name = "a1",contextName="ctx",implement = TestGuards.class)
 public class MainTestGuards {
  

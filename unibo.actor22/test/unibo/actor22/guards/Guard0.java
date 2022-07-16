@@ -1,8 +1,8 @@
 package unibo.actor22.guards;
 
  
-import unibo.actor22comm.interfaces.IGuard;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.actor22.interfaces.IGuard;
+import unibo.comm22.utils.ColorsOut;
 
 public class Guard0 implements IGuard{
 	protected static int vn ;

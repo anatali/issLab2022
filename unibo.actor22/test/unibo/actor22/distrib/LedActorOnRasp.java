@@ -5,9 +5,9 @@ import it.unibo.radarSystem22.domain.utils.DomainSystemConfig;
 import unibo.actor22.common.ApplData;
 import unibo.actor22.common.LedActor;
 import unibo.actor22comm.context.EnablerContextForActors;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommSystemConfig;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommSystemConfig;
+import unibo.comm22.utils.CommUtils;
   
 
 public class LedActorOnRasp {

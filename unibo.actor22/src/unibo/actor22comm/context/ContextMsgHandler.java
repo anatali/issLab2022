@@ -6,9 +6,9 @@ import unibo.actor22.Qak22Util;
 import unibo.actor22.QakActor22;
 import unibo.actor22comm.ActorForReply;
 import unibo.actor22comm.ApplMsgHandler;
-import unibo.actor22comm.interfaces.IApplMsgHandler;
-import unibo.actor22comm.interfaces.Interaction2021;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.comm22.interfaces.IApplMsgHandler;
+import unibo.comm22.interfaces.Interaction2021;
+import unibo.comm22.utils.ColorsOut;
 
 
 

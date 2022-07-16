@@ -1,8 +1,8 @@
 package unibo.actor22comm;
 
 import it.unibo.kactor.IApplMessage;
-import unibo.actor22comm.interfaces.ActionFun;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.actor22.interfaces.ActionFun;
+import unibo.comm22.utils.ColorsOut;
 
 public class RequestCallUtilObj {
 	String answer = null;

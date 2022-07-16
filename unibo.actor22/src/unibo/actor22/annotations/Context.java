@@ -1,6 +1,6 @@
 package unibo.actor22.annotations;
 
-import unibo.actor22comm.ProtocolType;
+import unibo.comm22.ProtocolType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

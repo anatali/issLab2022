@@ -8,8 +8,8 @@ import java.io.Reader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import unibo.actor22comm.ProtocolType;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.comm22.ProtocolType;
+import unibo.comm22.utils.ColorsOut;
 
 
 

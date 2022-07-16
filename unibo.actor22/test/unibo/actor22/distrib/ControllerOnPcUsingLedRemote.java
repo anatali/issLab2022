@@ -7,9 +7,9 @@ import unibo.actor22.Qak22Context;
 import unibo.actor22.Qak22Util;
 import unibo.actor22.common.ApplData;
 import unibo.actor22.common.ControllerForLedActor;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommSystemConfig;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommSystemConfig;
+import unibo.comm22.utils.CommUtils;
  
  
  

@@ -1,11 +1,11 @@
 package unibo.actor22comm.context;
 
-import unibo.actor22comm.ProtocolType;
-import unibo.actor22comm.interfaces.IApplMsgHandler;
-import unibo.actor22comm.interfaces.IContext;
-import unibo.actor22comm.tcp.TcpServer;
-import unibo.actor22comm.udp.UdpServer;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.comm22.ProtocolType;
+import unibo.comm22.interfaces.IApplMsgHandler;
+import unibo.comm22.interfaces.IContext;
+import unibo.comm22.tcp.TcpServer;
+import unibo.comm22.udp.UdpServer;
+import unibo.comm22.utils.ColorsOut;
 
 public class EnablerContextForActors  implements IContext {  
 private static EnablerContextForActors myself = null;

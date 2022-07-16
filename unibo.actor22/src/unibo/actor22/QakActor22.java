@@ -1,11 +1,8 @@
 package unibo.actor22;
 
-import static org.eclipse.californium.core.coap.CoAP.ResponseCode.CHANGED;
-
-import java.net.InetAddress;
+ 
 import java.util.HashMap;
 
-import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.jetbrains.annotations.NotNull;
 import it.unibo.kactor.*;
 import kotlin.Unit;
@@ -14,8 +11,8 @@ import unibo.actor22.annotations.Context22;
 import unibo.actor22comm.SystemData;
 import unibo.actor22comm.events.EventMsgHandler;
 import unibo.actor22comm.proxy.ProxyAsClient;
-import unibo.actor22comm.utils.ColorsOut;
-import unibo.actor22comm.utils.CommUtils;
+import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommUtils;
 
 public abstract class QakActor22 extends ActorBasic{
 
@@ -27,13 +24,7 @@ protected String actorResourceRep = "unbound";
 		super(name, QakContext.Companion.createScope(), false, true, false, 50);
         if( Qak22Context.getActor(name) == null ) {
         	Qak22Context.addActor( this );
-//        	QakContext qakCtx = this.getContext();
-//        	if( qakCtx != null ) qakCtx.addActor( this ); 
-//        	else {
-//        		ColorsOut.outerr("WARNING: no qakcontext");
-//        		Qak22Context.resourceCtx.addActorResource( this ); 
-//        		
-//        	}
+ 
         	ColorsOut.outappl( getName()  + " | CREATED " , ColorsOut.CYAN);
         }
         else ColorsOut.outerr("QakActor22 | WARNING: an actor with name " + name + " already exists");	
@@ -46,15 +37,7 @@ protected String actorResourceRep = "unbound";
 		return ctx22Name ;
 	}
     
-//	protected void handleMsg(IApplMessage msg) {
-//		if( msg.isDispatch() && msg.msgId().equals(SystemData.activateActorCmd) ) {
-//			//forward( SystemData.activateActor("main", "a1") );
-//			ColorsOut.out( getName()  + " | ACTIVATED " , ColorsOut.CYAN);
-//		}else {
-//			//ColorsOut.outerr("QakActor22 | activation message error for" + getName() );
-//			elabMsg(msg);
-//		}	
-//	}
+ 
 	protected abstract void handleMsg(IApplMessage msg);
 	
 	@Override
@@ -159,38 +142,4 @@ protected String actorResourceRep = "unbound";
 //			ColorsOut.outerr( "QakActor22 handleEvent ERROR:" + e.getMessage());
 //		}
 //	}    
-/*
-    //-----------------------------------------
-    //@Override
-	public void updateResourceRep22( String v  ){
-		actorResourceRep = v;
-        ColorsOut.out("&&&&&&&&&&& updateResourceRep22 CHANGE!!! " + actorResourceRep);
-        //ColorsOut.out("&&&&&&&&&&& getActorResourceRep " + getActorResourceRep() );
-        changed();             //DO NOT FORGET!!!
-   }
-	
-	@Override
-	public void handleGET( CoapExchange exchange) {
-        ColorsOut.out("&&&&&&&&&&& handleGET " + exchange);
-        //ColorsOut.out("&&&&&&&&&&& actorResourceRep=" + actorResourceRep );
-		exchange.respond( actorResourceRep );
-	}
-	@Override
-	public void handlePOST(CoapExchange exchange) {
- 	}
- 	@Override
-	public void handlePUT(CoapExchange exchange) {
- 		ColorsOut.outappl(getName() + " | handlePUT addr=" + exchange.getSourceAddress(), ColorsOut.BgYellow );
- 		String arg = exchange.getRequestText() ;
-		elaboratePut( arg, exchange.getSourceAddress() );
-		this.actorResourceRep = arg;
-		changed();
-		ColorsOut.out(getName() + " | after handlePUT arg=" + arg + " CHANGED="+ CHANGED );
-		exchange.respond(""+CHANGED);
-	}
-
- 	protected  void elaboratePut(String req, InetAddress callerAddr) {
-		ColorsOut.out(getName() + " | elaboratePut TODO+" + req  );
- 		
- 	};*/
-}
+ }

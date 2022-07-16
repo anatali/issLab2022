@@ -8,7 +8,7 @@ plugins {
     id 'java'
     id 'eclipse'
     //id 'application'
-	id 'jacoco'
+	//id 'jacoco'
 }
 repositories {
     jcenter()
@@ -54,6 +54,8 @@ dependencies {
     implementation name: 'uniboInterfaces'
     implementation name: 'unibonoawtsupports'
 	implementation name: 'it.unibo.qakactor-2.7'
+	implementation name: 'unibo.comm22-1.1'  //Added June 2022
+	
 	
 	//RADAR (support and GUI)
 	implementation name: 'radarPojo'

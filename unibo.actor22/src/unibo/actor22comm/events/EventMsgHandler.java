@@ -7,7 +7,7 @@ import it.unibo.kactor.ApplMessage;
 import it.unibo.kactor.IApplMessage;
 import kotlin.Pair;
 import unibo.actor22.*;
-import unibo.actor22comm.utils.ColorsOut;
+import unibo.comm22.utils.ColorsOut;
 
 /*
  * Gestisce gli eventi generati da emit locali o remote
@@ -55,17 +55,16 @@ protected Vector<Pair<String,String>> eventObservers = new Vector<Pair<String,St
 	}  
 
 	public synchronized void  register(String actorName, String eventId ) {
-		ColorsOut.outappl(myName + " register:" + actorName + " for "+ eventId, ColorsOut.MAGENTA);
+		ColorsOut.out(myName + " register:" + actorName + " for "+ eventId, ColorsOut.MAGENTA);
 		eventObservers.add(new Pair( actorName , eventId ) );			
 	}
 	
 	public synchronized void unregister(String actorName, String eventId ) {
-		ColorsOut.outappl(myName + " unregister (TODO):" + actorName + " for "+ eventId, ColorsOut.MAGENTA);
-		//TODO	
+		ColorsOut.out(myName + " unregister:" + actorName + " for "+ eventId, ColorsOut.MAGENTA);
+		eventObservers.removeElement( new Pair( actorName , eventId ) );		
 	}
 	protected void updateTheObservers(IApplMessage msg) {
 		ColorsOut.out("updateTheObservers:" + msg + " eventObservers:" + eventObservers.size(), ColorsOut.MAGENTA); 
-		
 		eventObservers.forEach(
 			 obs  -> {
 				String actorName  = obs.getFirst();
