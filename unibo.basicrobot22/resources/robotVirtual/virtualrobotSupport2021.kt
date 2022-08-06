@@ -4,16 +4,12 @@ import java.io.PrintWriter
 import java.net.Socket
 import org.json.JSONObject
 import java.io.BufferedReader
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import java.io.InputStreamReader
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.Job
 import it.unibo.kactor.ActorBasic
 import it.unibo.kactor.MsgUtil
 import it.unibo.kactor.ApplMessage
+import kotlinx.coroutines.*
 import unibo.actor22comm.wshttp.WsHttpConnection
 import unibo.actor22comm.interfaces.Interaction2021
 import unibo.robot.MsgRobotUtil
@@ -79,7 +75,8 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 		if( traceOn )  println("		--- virtualrobotSupport2021 trace | $msg")
 	}
 
-    fun move(cmd: String) {	//cmd is written in application-language
+    @OptIn(ObsoleteCoroutinesApi::class)
+	fun move(cmd: String) {	//cmd is written in application-language
 		//println("		--- virtualrobotSupport2021 |  moveeeeeeeeeeeeeeeeeeeeee $cmd ")
 		val msg = translate( cmd )
 		trace("move  $msg")
@@ -89,14 +86,15 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 			return
 		}
 		//Comunicazione sincrona con il VirtualRobot via HTTP
-		val answer = support21.forward(msg) //,"$hostName:$port/api/move"
-		trace("		--- virtualrobotSupport2021 | answer=$answer")
+		val answer = support21.request(msg) //,"$hostName:$port/api/move"
+		trace("answer=$answer")
 		//REMEMBER: answer={"endmove":"true","move":"alarm"} alarm means halt
 		val ajson = JSONObject(answer)
 		if( ajson.has("endmove") && ajson.get("endmove")=="false"){
 			owner.scope.launch{  owner.emit("obstacle","obstacle(virtual)") }
 		}
-    } 
+    }
+
     //translates application-language in cril
     fun translate(cmd: String) : String{ //cmd is written in application-language
 		var jsonMsg = MsgRobotUtil.haltMsg //"{ 'type': 'alarm', 'arg': -1 }"
