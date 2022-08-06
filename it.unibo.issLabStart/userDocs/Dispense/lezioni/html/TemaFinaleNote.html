@@ -104,6 +104,10 @@ basato su un modello qak e sul fatto che gli attori qak sono risorse CoAP.</p></
 <h2>Precisazioni del commitente<a class="headerlink" href="#precisazioni-del-commitente" title="Permalink to this headline">¶</a></h2>
 <p>Riportiamo le risposte date dal committente ad alcune  domande:</p>
 <ul class="simple">
+<li><p>Il <em>Waste truck driver</em> è un operatore umano che non fa parte del sistema. Fanno invece parte del sistema i messaggi che
+questo deve inviare usando uno smart device (telefonino). Può essere opportuno simulare il <em>Waste truck driver</em> e viene
+consigliato di farlo introducendo una applicazione esterna, sviluppata ad esempio in Python. Nelle fasi preliminari
+è invece accettabile di simulare il <em>Waste truck driver</em> con un attore.</p></li>
 <li><p>Sarebbe bene mandare via il truck appena possibile.</p></li>
 <li><p>Il <em>WasteSerice</em> potrebbe ricevere un nuova richiesta mentre sta ancora eseguendo la deposit action di quella precedente.</p></li>
 <li><p>Una volta pieni, i contenitori non verranno svuotati, se non riavviando l’applicazione.</p></li>
@@ -112,16 +116,25 @@ basato su un modello qak e sul fatto che gli attori qak sono risorse CoAP.</p></
 <li><p>Il tempo di raccolta del materiale dal truck è sempre limitato e prevedibile, mentre il tempo necessario
 per il deposito potrebbe  essere anche alquanto lungo (anche in relazione al punto preceente).</p></li>
 <li><p>Il sonar/led NON sono sul trolley, ma su un RaspberryPi a parte.</p></li>
-<li><p>Il Sonar rileva oggetti che saremo noi a porgli davanti</p></li>
-<li><p>Il DDR fornito dal committente ha un sonar on-board che viene usato per rilevare ostacoli quando si muove.</p></li>
+<li><p>Il Sonar rileva oggetti che saremo noi a porgli davanti.</p></li>
+<li><p>Il blocco del trolley in conseguenza di un ‘allarme’ individuato dal Sonar dovrebbe avvenire ‘il prima possibile’.</p></li>
+<li><p>Il DDR fornito dal committente ha un sonar on-board, ma questo viene usato per rilevare ostacoli quando il robot si muove.</p></li>
 </ul>
 </section>
 <section id="note-dopo-le-interazioni-in-rete">
 <h2>Note dopo le interazioni in rete<a class="headerlink" href="#note-dopo-le-interazioni-in-rete" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p>Lo scopo del tema finale NON è (solo) risolvere il problema ma avere un caso di studio su cui ragionare sul
-processo di costruzione del software.</p></li>
-<li><p>Lo scopo della analisi dei requisiti è ridefinire il testo dato dal committente in modo ‘preciso’ (e formale, cioè
+<li><p>Lo scopo del tema finale NON è (solo) risolvere il problema ma avere un <span class="blue">caso di studio su cui ragionare sul
+processo di costruzione del software</span>.</p></li>
+<li><p>L’uso del linguaggio <strong>qak</strong> non va preso come un vincolo a priori.
+Ne va invece motivato l’uso (come per ogni altra tecnologia) in relazione alle caratteristiche del (sotto)problema esaminato.
+Poichè il lettore potrebbe non consoscere questo linguaggio, è opportuno scrivere - una volta sola - un
+(breve) documento che spiega per quali caratteristiche si ritiene opportuno usare i qak.
+Il documento dovrebbe porre in luce gli aspetti salienti, rinviando (con links) gli approfondimenti ai documenti ‘ufficiali’,
+in modo da porre in evidenza il perchè lo si propone, nel contesto del problema.</p></li>
+<li><p>I link tra i vari documenti dovrebbero essere possibilmente locali, in modo da poter leggere i documenti stessi senza
+(ove possibile) connessione di rete.</p></li>
+<li><p>Lo <span class="blue">scopo della analisi dei requisiti</span> è ridefinire il testo dato dal committente in modo ‘preciso’ (e formale, cioè
 per noi, comprensibile alla macchina). Per le varie entità menzionate nel testo, occorre dare risposta ad alcune
 precise domande, tra cui (altri tipi di domande sarebbe bene fossero individuate da voi):</p>
 <blockquote>
@@ -141,17 +154,16 @@ l’entità <em>trolley</em> e l’entità <em>DDR robot</em>?</p></li>
 </div></blockquote>
 </li>
 <li><p>Ogni fase (a partire dai requisiti) dovrebbe terminare con la specifica di un modello (anche non eseguibile)
-che costituisce l’inizio della fase successiva.</p></li>
-<li><p>I file HTML  in <em>userdocs</em> non devono essere visti come  ‘documentazione’, ma come una sorta di ‘diario del capitano’
-che appunta (in modo sintetico,  in linguaggio naturale) i punti essenziali che hanno portato a quei modelli.</p></li>
-<li><p>L’uso del linguaggio <strong>qak</strong> va motivato in relazione alle caratteristiche del (sotto)problema esaminato  e
-introdotto con un link a un documento che spiega cosa esso sia.
-Sarebbe bene che questo documento fosse scritto - una volta sola -
-da chi ne propone l’uso (con links ai documenti ‘ufficiali’), in modo da porre in evidenza il perchè
-lo si propone, nel contesto del problema (è anche un modo per ‘ripassare’ quanto fatto nel corso).</p></li>
+che costituisce l’inizio della fase successiva.  Al modello dovrebbe essere associato un insieme di TestPlan
+(ne basta anche solo uno signficativo) di tipo funzionale per chiarire cosa ci si aspetta (come ouput) dal software
+che <em>dovrà essere sviluppato per quel requisito</em>, una volta date le opportune info di ingresso.</p></li>
+<li><p>I file HTML  in <em>userdocs</em> non devono essere visti come  ‘documentazione’, ma come una sorta di <span class="blue">‘diario di bordo’</span>
+che appunta (in modo sintetico,  in linguaggio naturale e con link al codice) i punti essenziali
+che hanno portato a quei modelli.</p></li>
 <li><p>Ogni modello dovrebbe essere accompagnato da almeno un TestPlan funzionale significativo.</p></li>
-<li><p>Lo scopo della fase di analisi è definire una modello (eseguibile) della architettura logica e
-dare elementi utili per la costruzione di un <em>piano di lavoro</em>.</p></li>
+<li><p>Lo <span class="blue">scopo della fase di analisi del problema</span> è definire una modello (eseguibile) della architettura logica e
+dare elementi utili per la costruzione di un <em>piano di lavoro</em> e per la <span class="blue">suddivsione dei compiti</span> tra i componenti
+del Team.</p></li>
 <li><p>Il primo SPRINT dovrebbe scaturire dal piano di lavoro e iniziare a partire dal modello dell’analisi</p></li>
 <li><p>Ogni SPRINT dovrebbe:</p>
 <ul class="simple">
@@ -163,7 +175,7 @@ dare elementi utili per la costruzione di un <em>piano di lavoro</em>.</p></li>
 (che potrebbe anche consistere in una revisione dell’analisi, se si vede che è stata fatta male)</p></li>
 </ul>
 </li>
-<li><p>Ogni SPRINT dovrebbe terminare con una pagina di sintesi che riporta l’architettura finale
+<li><p>Il ‘documento Ogni SPRINT dovrebbe <span class="blue">terminare con una pagina di sintesi</span> che riporta l’architettura finale
 del sistema (con i link al modello e ai Test).
 Questa pagina sarà l’inizio del documento relativo allo SPRINT successivo.</p></li>
 </ol>
