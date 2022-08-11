@@ -24,7 +24,7 @@ che permette di scambiare informazioni via rete.
 Inizieremo focalizzando l'attenzione sul protocollo TCP, per verificare poi, al termine
 del lavoro, la possibilità di estendere anche ad altri protocolli i supporti creati.
 
-:remark:`il software dei supporti sarà scritto in un progetto dedicato` ``it.unibo.comm2022``
+:remark:`il software dei supporti sarà scritto in un progetto dedicato` ``unibo.comm22``
 
 Il programma di lavoro può essere così riassunto:
 
@@ -637,13 +637,13 @@ Comm2022: Deployment
 ++++++++++++++++++++++++++++++++++++++
 
 Generiamo una libreria che ci permetta di utilizzare il codice sviluppato in questo progetto 
-``it.unibo.comm2022`` nelle nostre future applicazioni distribuite.
+``unibo.comm22`` nelle nostre future applicazioni distribuite.
 
 .. code:: 
 
     gradlew jar   
 
-Questo comando genera il file ``it.unibo.comm2022\build\libs\it.unibo.comm2022-1.0.jar``.
+Questo comando genera il file ``unibo.comm22\build\libs\unibo.comm22-1.1.jar``.
 
 ---------------------------------
 SPRINT2: RadarSystem distribuito

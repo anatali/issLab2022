@@ -174,7 +174,7 @@ build.gradle di webRobot22
         implementation name: 'uniboInterfaces'
         implementation name: '2p301'
 	      implementation name: 'unibo.comm22-1.1'
-	      implementation name: 'unibo.qakactor22-2.8'  //per ApplMessage
+	      implementation name: 'unibo.qakactor-2.8'  //per ApplMessage
     }
     mainClassName = 'unibo.webRobot22.WebRobot22Application'
     jar {
@@ -187,8 +187,8 @@ build.gradle di webRobot22
  
 
 - I `WebJars`_ sono stati introdotti in :ref:`Bootstrap e webJars`.
-- La libreria ``unibo.comm22-1.1.jar`` è costruita nel progetto  :blue:`it.unibo.comm22`
-- La libreria ``unibo.qakactor22-2.8`` è costruita nel progetto :ref:`QActor (meta)model`  
+- La libreria ``unibo.comm22-1.1.jar`` è costruita nel progetto  :blue:`it.unibo.comm22` (si veda :ref:`Oltre TCP`)
+- La libreria :ref:`unibo.qakactor22-2.8.jar` è costruita nel progetto :ref:`QActor (meta)model`  
   e utilizza la libreria precedente per le comunicazioni.
 
 -----------------------------------------------------------
@@ -209,12 +209,12 @@ in modo che presenti le aree mostrate in figura:
 - :ref:`infoDisplay`: area di output  che visualizza informazioni di sistema.
 - :ref:`robotDisplay`: area di output  che visualizza informazioni relative al robot o al suo ambiente.
 - :ref:`Ip Webcam Android<WebcamArea>`: area di output  che visualizza lo stream prodotto da un telecamera posta su Android (ad esempio `IpWebcam`_) o su PC.
-  Viene introdotta per chi non abbia un robot fisico dotato di telecamera.
+  Viene introdotta come alternativa quando non si abbia un robot fisico dotato di telecamera.
 - :ref:`WebCam robot<WebcamArea>`: area di output che visualizza lo stream prodotto da un telecamera posta sul robot fisico.
 
 Avvalendoci di `Thymeleaf`_,  impostiamo la pagina come un template che presenta alcuni campi 
 (*protocol, robotip, webcamip*) 
-che corrispondo a quanto definito nella :ref:`Specifica dei dati applicativi`, i cui valori verranno fissati 
+che corrispondono a quanto definito nella :ref:`Specifica dei dati applicativi`, i cui valori verranno fissati 
 dal :ref:`RobotController` nella fase di costruzione della pagina (si veda :ref:`buildThePage`).
 
 +++++++++++++++++++++++++++++++
@@ -303,7 +303,7 @@ Le aree entro le colonne sono organizzate usando le  `Cards`_ secondo lo schema:
 Per le specifiche del tipo ``px-N``, si veda `Spacing`_.
 
 Per i colori del testo (``TEXTCOLOR``) faremo riferimento agli standard `Colors`_, mentre 
-per lo stile di background (``BGSTYLE``) faremo riferimento a definizioni custom.
+per lo stile di background (``BGSTYLE``) faremo riferimento a :ref:`Stili custom: issSpec.css`.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Stili custom: issSpec.css
@@ -817,6 +817,23 @@ setConfigParams
 .. const webcamip = document.getElementById("webcamip"); ELIMINATO
 
 +++++++++++++++++++++++++++++++++++
+setwebcamip
++++++++++++++++++++++++++++++++++++
+
+Il metodo ``setwebcamip`` del Controller tiene traccia nel Model dell'indirzzo IP della WebCam su Android (o su PC).
+Lo stream prodotto da questa WebCam (una volta attivata) viene visualizzato nella card superiore della :ref:`WebcamArea`.
+
+.. code::
+
+    @PostMapping("/setwebcamip")
+    public String setwebcamip(Model viewmodel, @RequestParam String ipaddr  ){
+        webcamip = ipaddr;
+        viewmodel.addAttribute("webcamip", webcamip);
+        return buildThePage(viewmodel);
+    }
+
+
++++++++++++++++++++++++++++++++++++
 setprotocol
 +++++++++++++++++++++++++++++++++++
 
@@ -841,30 +858,14 @@ per realizzare la :ref:`Interazione BrToRc (basicrobot22-RobotController)`.
 
 
 +++++++++++++++++++++++++++++++++++
-setwebcamip
-+++++++++++++++++++++++++++++++++++
-
-Il metodo ``setwebcamip`` del Controller tiene traccia nel Model dell'indirzzo IP della WebCam su Android (o su PC).
-Lo stream prodotto da questa WebCam (una volta attivata) viene visualizzato nella card superiore della :ref:`WebcamArea`.
-
-.. code::
-
-    @PostMapping("/setwebcamip")
-    public String setwebcamip(Model viewmodel, @RequestParam String ipaddr  ){
-        webcamip = ipaddr;
-        viewmodel.addAttribute("webcamip", webcamip);
-        return buildThePage(viewmodel);
-    }
-
-+++++++++++++++++++++++++++++++++++
 setrobotip
 +++++++++++++++++++++++++++++++++++
 
 Il metodo ``setrobotip`` del Controller tiene traccia nel Model dell'indirzzo IP del robot (``ipaddr``) immesso dall'utente
 e inizializza una connessione con :ref:`basicrobot22` usando il protocollo selezionato dall'utente con :ref:`setprotocol`.
 
-Per realizzare le connessioni, usiamo la libreria ``it.unibo.comm2022-2.0.jar`` costruita dal progetto
-``it.unibo.comm2022`` descritto in :ref:`Supporti per comunicazioni`.
+Per realizzare le connessioni, usiamo la libreria ``unibo.comm22-1.1.jar`` costruita dal progetto
+``unibo.comm2022`` descritto in :ref:`Supporti per comunicazioni`.
 
 
 In ogni caso, inizializza anche una connessione CoAP con il robot, associando ad essa un  

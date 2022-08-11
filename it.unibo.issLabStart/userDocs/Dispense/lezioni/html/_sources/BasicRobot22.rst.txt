@@ -49,8 +49,8 @@ Più specificatamente, ``BasicRobot22``:
    - **stepdone** se lo *step* è stato eseguito con successo
    - **stepfail** se lo *step* è fallito dopo il tempo :blue:`DT` (``DT<TIME``) per una qualche ragione :blue:`REASON`.
      
-     (requisito :blue:`backstep`)  In questo caso, ``BasicRobot22`` effettua uno spostamento all'indietro 
-     **'di riposizionamenmto'** con durate (approssimativa)  :blue:`DT`.
+- (requisito :blue:`backstep`)  In questo caso, ``BasicRobot22`` effettua uno spostamento all'indietro 
+  **'di riposizionamenmto'** con durata (approssimativa)  :blue:`DT`.
 - (requisito :blue:`situated`) è in grado di percepire e gestire informazioni provenienti dall'ambiente 
 - (requisito :blue:`observable`) è in grado di rendere ossevabili informazioni 
   sul suo stato funzionale corrente

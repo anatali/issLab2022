@@ -46,15 +46,14 @@ con argomento <span class="blue">MOVE = w | s | l | r | h</span> (linguaggio <a 
 <li><p>(requisito <span class="blue">cmdstep</span>) è in grado di rispondere alla richiesta di effettuare uno <strong>step</strong> in avanti per il tempo <span class="blue">TIME</span> specificato
 nell’argomento, fornendo una risposta che può essere:</p>
 <blockquote>
-<div><ul>
+<div><ul class="simple">
 <li><p><strong>stepdone</strong> se lo <em>step</em> è stato eseguito con successo</p></li>
-<li><p><strong>stepfail</strong> se lo <em>step</em> è fallito dopo il tempo <span class="blue">DT</span> (<code class="docutils literal notranslate"><span class="pre">DT&lt;TIME</span></code>) per una qualche ragione <span class="blue">REASON</span>.</p>
-<p>(requisito <span class="blue">backstep</span>)  In questo caso, <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> effettua uno spostamento all’indietro
-<strong>‘di riposizionamenmto’</strong> con durate (approssimativa)  <span class="blue">DT</span>.</p>
-</li>
+<li><p><strong>stepfail</strong> se lo <em>step</em> è fallito dopo il tempo <span class="blue">DT</span> (<code class="docutils literal notranslate"><span class="pre">DT&lt;TIME</span></code>) per una qualche ragione <span class="blue">REASON</span>.</p></li>
 </ul>
 </div></blockquote>
 </li>
+<li><p>(requisito <span class="blue">backstep</span>)  In questo caso, <code class="docutils literal notranslate"><span class="pre">BasicRobot22</span></code> effettua uno spostamento all’indietro
+<strong>‘di riposizionamenmto’</strong> con durata (approssimativa)  <span class="blue">DT</span>.</p></li>
 <li><p>(requisito <span class="blue">situated</span>) è in grado di percepire e gestire informazioni provenienti dall’ambiente</p></li>
 <li><p>(requisito <span class="blue">observable</span>) è in grado di rendere ossevabili informazioni
 sul suo stato funzionale corrente</p></li>

@@ -88,6 +88,14 @@ is done by the QActor-infrastructure with the help of the *Eclipse QActor softwa
 The metamodel is supported by the :blue:`qak-infrastructure` defined in the :blue:`project 
 it.unibo.qakactor` and deployed in **it.unibo.qakactor-2.7.jar**.
 
++++++++++++++++++++++++++++++++++++++++
+unibo.qakactor22-2.8.jar
++++++++++++++++++++++++++++++++++++++++
+
+The library of the `qak-infrastructure` has been updated to  **unibo.qakactor22-2.8.jar** in June 2002. This new library 
+exploits the communication support ``unibo.comm22-1.1.jar`` built in the project  :blue:`it.unibo.comm22`,
+that implements :ref:`Interaction2021`  using several protocolos (TCP, UDP, CoAP, ... )
+
 +++++++++++++++++++++++++++++++++++
 System description
 +++++++++++++++++++++++++++++++++++

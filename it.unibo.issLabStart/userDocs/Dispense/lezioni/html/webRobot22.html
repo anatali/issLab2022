@@ -140,7 +140,7 @@ Per provare ad attivarla manualmente, si consulti la rete, ad esempio :
     <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;uniboInterfaces&#39;</span>
     <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;2p301&#39;</span>
           <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.comm22-1.1&#39;</span>
-          <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.qakactor22-2.8&#39;</span>  <span class="o">//</span><span class="n">per</span> <span class="n">ApplMessage</span>
+          <span class="n">implementation</span> <span class="n">name</span><span class="p">:</span> <span class="s1">&#39;unibo.qakactor-2.8&#39;</span>  <span class="o">//</span><span class="n">per</span> <span class="n">ApplMessage</span>
 <span class="p">}</span>
 <span class="n">mainClassName</span> <span class="o">=</span> <span class="s1">&#39;unibo.webRobot22.WebRobot22Application&#39;</span>
 <span class="n">jar</span> <span class="p">{</span>
@@ -154,8 +154,8 @@ Per provare ad attivarla manualmente, si consulti la rete, ad esempio :
 </div>
 </li>
 <li><p>I <a class="reference external" href="https://mvnrepository.com/artifact/org.webjars">WebJars</a> sono stati introdotti in <a class="reference internal" href="WebApplications.html#bootstrap-e-webjars"><span class="std std-ref">Bootstrap  e webJars</span></a>.</p></li>
-<li><p>La libreria <code class="docutils literal notranslate"><span class="pre">unibo.comm22-1.1.jar</span></code> è costruita nel progetto  <span class="blue">it.unibo.comm22</span></p></li>
-<li><p>La libreria <code class="docutils literal notranslate"><span class="pre">unibo.qakactor22-2.8</span></code> è costruita nel progetto <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">QActor (meta)model</span></a>
+<li><p>La libreria <code class="docutils literal notranslate"><span class="pre">unibo.comm22-1.1.jar</span></code> è costruita nel progetto  <span class="blue">it.unibo.comm22</span> (si veda <a class="reference internal" href="OltreTcp.html#oltre-tcp"><span class="std std-ref">Oltre TCP</span></a>)</p></li>
+<li><p>La libreria <a class="reference internal" href="QakIntro.html#unibo-qakactor22-2-8-jar"><span class="std std-ref">unibo.qakactor22-2.8.jar</span></a> è costruita nel progetto <a class="reference internal" href="QakIntro.html#qactor-meta-model"><span class="std std-ref">QActor (meta)model</span></a>
 e utilizza la libreria precedente per le comunicazioni.</p></li>
 </ul>
 </section>
@@ -172,12 +172,12 @@ e campi di output che mostrano i valori dei dati di configurazione fissati dall�
 <li><p><a class="reference internal" href="#infodisplay"><span class="std std-ref">infoDisplay</span></a>: area di output  che visualizza informazioni di sistema.</p></li>
 <li><p><a class="reference internal" href="#robotdisplay"><span class="std std-ref">robotDisplay</span></a>: area di output  che visualizza informazioni relative al robot o al suo ambiente.</p></li>
 <li><p><a class="reference internal" href="#webcamarea"><span class="std std-ref">Ip Webcam Android</span></a>: area di output  che visualizza lo stream prodotto da un telecamera posta su Android (ad esempio <a class="reference external" href="https://play.google.com/store/apps/details?id=nfo.webcam&amp;hl=it&amp;gl=US">IpWebcam</a>) o su PC.
-Viene introdotta per chi non abbia un robot fisico dotato di telecamera.</p></li>
+Viene introdotta come alternativa quando non si abbia un robot fisico dotato di telecamera.</p></li>
 <li><p><a class="reference internal" href="#webcamarea"><span class="std std-ref">WebCam robot</span></a>: area di output che visualizza lo stream prodotto da un telecamera posta sul robot fisico.</p></li>
 </ul>
 <p>Avvalendoci di <a class="reference external" href="https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html">Thymeleaf</a>,  impostiamo la pagina come un template che presenta alcuni campi
 (<em>protocol, robotip, webcamip</em>)
-che corrispondo a quanto definito nella <a class="reference internal" href="#specifica-dei-dati-applicativi"><span class="std std-ref">Specifica dei dati applicativi</span></a>, i cui valori verranno fissati
+che corrispondono a quanto definito nella <a class="reference internal" href="#specifica-dei-dati-applicativi"><span class="std std-ref">Specifica dei dati applicativi</span></a>, i cui valori verranno fissati
 dal <a class="reference internal" href="#robotcontroller"><span class="std std-ref">RobotController</span></a> nella fase di costruzione della pagina (si veda <a class="reference internal" href="#buildthepage"><span class="std std-ref">buildThePage</span></a>).</p>
 <section id="usiamo-bootstrap5">
 <h3>Usiamo Bootstrap5<a class="headerlink" href="#usiamo-bootstrap5" title="Permalink to this headline">¶</a></h3>
@@ -248,7 +248,7 @@ alla visualizzazione degli stream di dati delle telecamere.</p>
 </div>
 <p>Per le specifiche del tipo <code class="docutils literal notranslate"><span class="pre">px-N</span></code>, si veda <a class="reference external" href="https://getbootstrap.com/docs/5.0/utilities/spacing/">Spacing</a>.</p>
 <p>Per i colori del testo (<code class="docutils literal notranslate"><span class="pre">TEXTCOLOR</span></code>) faremo riferimento agli standard <a class="reference external" href="https://getbootstrap.com/docs/4.0/utilities/colors/">Colors</a>, mentre
-per lo stile di background (<code class="docutils literal notranslate"><span class="pre">BGSTYLE</span></code>) faremo riferimento a definizioni custom.</p>
+per lo stile di background (<code class="docutils literal notranslate"><span class="pre">BGSTYLE</span></code>) faremo riferimento a <a class="reference internal" href="#stili-custom-issspec-css"><span class="std std-ref">Stili custom: issSpec.css</span></a>.</p>
 </section>
 <section id="stili-custom-issspec-css">
 <h4>Stili custom: issSpec.css<a class="headerlink" href="#stili-custom-issspec-css" title="Permalink to this headline">¶</a></h4>
@@ -651,6 +651,19 @@ aggiornati da <a class="reference external" href="https://www.thymeleaf.org/doc/
 </section>
 </section>
 </section>
+<section id="setwebcamip">
+<h3>setwebcamip<a class="headerlink" href="#setwebcamip" title="Permalink to this headline">¶</a></h3>
+<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setwebcamip</span></code> del Controller tiene traccia nel Model dell’indirzzo IP della WebCam su Android (o su PC).
+Lo stream prodotto da questa WebCam (una volta attivata) viene visualizzato nella card superiore della <a class="reference internal" href="#webcamarea"><span class="std std-ref">WebcamArea</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setwebcamip&quot;</span><span class="p">)</span>
+<span class="n">public</span> <span class="n">String</span> <span class="n">setwebcamip</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">ipaddr</span>  <span class="p">){</span>
+    <span class="n">webcamip</span> <span class="o">=</span> <span class="n">ipaddr</span><span class="p">;</span>
+    <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;webcamip&quot;</span><span class="p">,</span> <span class="n">webcamip</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">buildThePage</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 <section id="setprotocol">
 <h3>setprotocol<a class="headerlink" href="#setprotocol" title="Permalink to this headline">¶</a></h3>
 <p>Il metodo <code class="docutils literal notranslate"><span class="pre">setprotocol</span></code> del Controller tiene traccia nel Model del protocollo che l’utente intende usare
@@ -669,25 +682,12 @@ per le interazioni tra <a class="reference internal" href="#robotcontroller"><sp
 <p>L’utente può scegliere tra <code class="docutils literal notranslate"><span class="pre">TCP</span></code> e <code class="docutils literal notranslate"><span class="pre">CoAP</span></code>. In ogni caso, il protocollo CoAP viene comunque usato
 per realizzare la <a class="reference internal" href="#interazione-brtorc-basicrobot22-robotcontroller"><span class="std std-ref">Interazione BrToRc (basicrobot22-RobotController)</span></a>.</p>
 </section>
-<section id="setwebcamip">
-<h3>setwebcamip<a class="headerlink" href="#setwebcamip" title="Permalink to this headline">¶</a></h3>
-<p>Il metodo <code class="docutils literal notranslate"><span class="pre">setwebcamip</span></code> del Controller tiene traccia nel Model dell’indirzzo IP della WebCam su Android (o su PC).
-Lo stream prodotto da questa WebCam (una volta attivata) viene visualizzato nella card superiore della <a class="reference internal" href="#webcamarea"><span class="std std-ref">WebcamArea</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setwebcamip&quot;</span><span class="p">)</span>
-<span class="n">public</span> <span class="n">String</span> <span class="n">setwebcamip</span><span class="p">(</span><span class="n">Model</span> <span class="n">viewmodel</span><span class="p">,</span> <span class="nd">@RequestParam</span> <span class="n">String</span> <span class="n">ipaddr</span>  <span class="p">){</span>
-    <span class="n">webcamip</span> <span class="o">=</span> <span class="n">ipaddr</span><span class="p">;</span>
-    <span class="n">viewmodel</span><span class="o">.</span><span class="n">addAttribute</span><span class="p">(</span><span class="s2">&quot;webcamip&quot;</span><span class="p">,</span> <span class="n">webcamip</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">buildThePage</span><span class="p">(</span><span class="n">viewmodel</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
 <section id="setrobotip">
 <h3>setrobotip<a class="headerlink" href="#setrobotip" title="Permalink to this headline">¶</a></h3>
 <p>Il metodo <code class="docutils literal notranslate"><span class="pre">setrobotip</span></code> del Controller tiene traccia nel Model dell’indirzzo IP del robot (<code class="docutils literal notranslate"><span class="pre">ipaddr</span></code>) immesso dall’utente
 e inizializza una connessione con <a class="reference internal" href="BasicRobot22.html#basicrobot22"><span class="std std-ref">BasicRobot22</span></a> usando il protocollo selezionato dall’utente con <a class="reference internal" href="#setprotocol"><span class="std std-ref">setprotocol</span></a>.</p>
-<p>Per realizzare le connessioni, usiamo la libreria <code class="docutils literal notranslate"><span class="pre">it.unibo.comm2022-2.0.jar</span></code> costruita dal progetto
-<code class="docutils literal notranslate"><span class="pre">it.unibo.comm2022</span></code> descritto in <a class="reference internal" href="RadarSystemSupporti.html#supporti-per-comunicazioni"><span class="std std-ref">Supporti per comunicazioni</span></a>.</p>
+<p>Per realizzare le connessioni, usiamo la libreria <code class="docutils literal notranslate"><span class="pre">unibo.comm22-1.1.jar</span></code> costruita dal progetto
+<code class="docutils literal notranslate"><span class="pre">unibo.comm2022</span></code> descritto in <a class="reference internal" href="RadarSystemSupporti.html#supporti-per-comunicazioni"><span class="std std-ref">Supporti per comunicazioni</span></a>.</p>
 <p>In ogni caso, inizializza anche una connessione CoAP con il robot, associando ad essa un
 <a class="reference internal" href="#robotcoapobserver"><span class="std std-ref">RobotCoapObserver</span></a> che ha lo scopo di realizzare la <a class="reference internal" href="#interazione-rctopg-robotcontroller-pagina"><span class="std std-ref">Interazione RcToPg (RobotController-Pagina)</span></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@PostMapping</span><span class="p">(</span><span class="s2">&quot;/setrobotip&quot;</span><span class="p">)</span>
@@ -925,8 +925,8 @@ inviare i messaggi di stato a tutti i client HTTP connessi al server.</p>
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#setprotocol">setprotocol</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setwebcamip">setwebcamip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setprotocol">setprotocol</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setrobotip">setrobotip</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#robotutils-java">RobotUtils.java</a></li>
 </ul>
