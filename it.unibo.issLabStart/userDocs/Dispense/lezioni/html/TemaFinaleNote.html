@@ -180,6 +180,66 @@ del sistema (con i link al modello e ai Test).
 Questa pagina sarà l’inizio del documento relativo allo SPRINT successivo.</p></li>
 </ol>
 </section>
+<section id="come-organizzare-gli-sprint">
+<h2>Come organizzare gli sprint<a class="headerlink" href="#come-organizzare-gli-sprint" title="Permalink to this headline">¶</a></h2>
+<p>Lo scopo dello SPRINT0 dovrebbe essere quello di formalizzare i singoli termini del testo
+(usando un qualche linguaggio di programmazione e/o con modelli) e anche quello di fornire  una prima visione
+di insieme del sistema da realizzare.</p>
+<p>Lo SPRINT0 dovrebbe concludersi fornendo un modello delle macro-parti del sistema,
+evidenziando quali componenti sono forniti dal committente (ad esempio DDRrobot, Sonar, etc.) e quelli che invece
+bisogna sviluppare.
+I  messaggi che questi componenti si scambiano potrebbero essere veri e propri requisiti ma anche <em>solo indicativi</em>
+di chi dovrà inviare informazione e di chi dovrà riceverla.</p>
+<p>Ad esempio, si potrebbe introdurre un modello come quello che segue:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/sprint0.png"><img alt="_images/sprint0.png" class="align-center" src="_images/sprint0.png" style="width: 75%;" /></a>
+</div></blockquote>
+<p>Questa immagine viene generata in modo automatico da un  MODELLO Qak che può essere scritto
+in pochi minuti, per CATTURARE GLI ASPETTI RITENUTI ESSENZIALI
+(e certo - almeno per ora - non perchè sia eseguibile).</p>
+<p>Lo scopo di questo modello è di costituire un <span class="blue">SISTEMA LOGICO  DI RIFERIMENTO</span> e di evidenziare che:</p>
+<ul class="simple">
+<li><p>Il sistema è distribuito su almeno 3 nodi computazionali diversi (il <em>driver</em> è un simulatore).</p></li>
+<li><p>Saremo chiamati a sviluppare i macro-componenti  <em>wasteservice, transporttrolley, sonaronrasp, wastewervicewtatusgui</em>.</p></li>
+<li><p>La interazione <em>driver-wasteservice</em> è di tipo request-response ed è implicata dal testo dei requsiti.</p></li>
+<li><p>La interazione <em>sonaronrasp-transporttrolley</em> è modellata come un evento, ma non è un requisito. Dunque potrebbe essere
+modificata negli sviluppi successivi, mentre potrebbe essere ritenuto un requisito che l’informazione prodotta dal
+sottosistema su <em>ctxrasp</em> non sia di pertinenza del <em>wasteservice</em> (cosa questa da discutere e da approfondire con
+il committente).</p></li>
+<li><p>Risulta invece un requisito architetturale il fatto che il <em>wasteservice</em> ‘non vede’ il <em>basicrobot</em>
+(che è un componente dato dal committente).</p></li>
+</ul>
+<p>Questo modello dovrebbe fornire il quadro architetturale complessivo dal quale dedurre
+un possibile piano di lavoro che conduce allo SPRINT1.</p>
+<p>Ad esempio, se il team e il committente concordano sulla opportunità di affrontare in primis il
+<strong>core-business</strong> del problema, allora
+lo SPRINT1 potrebbe escludere di trattare la GUI  e la parte su Rasp (se non in modo astratto
+o simulato) e avere come <span class="blue">GOAL</span> (si veda SCRUM) quello di fornire un primo prototipo
+che realizza le funzionalità fondamentali del sistema.</p>
+<p>Lo SPRINT1  (come ogni altro sprint in futuro) dovrebbe quindi affrontare un
+<span class="blue">preciso sottoinsieme dei requisiti</span>, che va individuato  ed associato a uno o più Test-plan funzionali.</p>
+<p>Nel caso specifico, si tatta di analizzare il problema della interazione <em>wasteservice-transporttrolley-basicrobot</em>
+a partire dalla richiesta del driver.</p>
+<p>Ogni sprint deve quindi fare uno <span class="blue">ZOOMING</span> entro una parte della architettura di RIFERIMENTO,
+analizzando le problematiche poste dal sottoinsieme dei requisiti considerato. Ad esempio
+l’analista di questo SPRINT1 potrebbe :</p>
+<ul class="simple">
+<li><p>affrontarre il problema di quando sia opportuno rispondere al driver,</p></li>
+<li><p>discutere su chi abbia la responsabilità di muovere il <em>transporttrolley</em> (il <em>wasteservice</em>, inviando
+(macro) comandi o il <em>transporttrolley stesso</em> ),</p></li>
+<li><p>studiate il problema di chi debba aggiornare la gui e quando</p></li>
+<li><p>etc. etc.</p></li>
+</ul>
+<p>Alla fine della analisi del problema, il modello di riferimento avrà subito una <span class="blue">evoluzione</span> che fornisce
+una una <span class="blue">nuova architattura logica</span>, che sarà il punto di partenza per un nuovo piano di lavoro.
+Infatti sia l’analista prima che il progettista poi, potrebbero precisare la natura di alcune interazioni e
+introdurre nuovi componenti all’interno di <em>ctxwasteservice</em>.</p>
+<p>Sottolineiamo che, al termine dello SPRINT,
+un componente ptrebbe anche essere realizzato non come un QAk actor.
+Ad esempio,   la <em>WasteServiceStatusGUI</em>  potrebbe essere realizzata come web-application.
+Il componente QAk che definisce la logica di <em>wastewervicewtatusgui</em> potrebbe essere ‘dimenticato’
+o (forse, preferibilmente) <span class="blue">riusato</span> all’interno di questa web-application.</p>
+</section>
 </section>
 
 
@@ -247,6 +307,7 @@ Questa pagina sarà l’inizio del documento relativo allo SPRINT successivo.</p
 <li class="toctree-l2"><a class="reference internal" href="#aggiornamenti-del-software">Aggiornamenti del software</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#precisazioni-del-commitente">Precisazioni del commitente</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#note-dopo-le-interazioni-in-rete">Note dopo le interazioni in rete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#come-organizzare-gli-sprint">Come organizzare gli sprint</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="webRobot22.html">webrobot22</a></li>

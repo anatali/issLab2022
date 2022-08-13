@@ -161,3 +161,76 @@ Note dopo le interazioni in rete
    Questa pagina sarà l'inizio del documento relativo allo SPRINT successivo.
 
 
+--------------------------------------------
+Come organizzare gli sprint
+--------------------------------------------
+
+ 
+Lo scopo dello SPRINT0 dovrebbe essere quello di formalizzare i singoli termini del testo 
+(usando un qualche linguaggio di programmazione e/o con modelli) e anche quello di fornire  una prima visione 
+di insieme del sistema da realizzare.
+
+Lo SPRINT0 dovrebbe concludersi fornendo un modello delle macro-parti del sistema,
+evidenziando quali componenti sono forniti dal committente (ad esempio DDRrobot, Sonar, etc.) e quelli che invece 
+bisogna sviluppare.
+I  messaggi che questi componenti si scambiano potrebbero essere veri e propri requisiti ma anche *solo indicativi* 
+di chi dovrà inviare informazione e di chi dovrà riceverla.  
+
+Ad esempio, si potrebbe introdurre un modello come quello che segue:
+
+   .. image::  ./_static/img/TF22/sprint0.png 
+     :align: center 
+     :width: 75%
+
+Questa immagine viene generata in modo automatico da un  MODELLO Qak che può essere scritto 
+in pochi minuti, per CATTURARE GLI ASPETTI RITENUTI ESSENZIALI
+(e certo - almeno per ora - non perchè sia eseguibile).
+
+Lo scopo di questo modello è di costituire un :blue:`SISTEMA LOGICO  DI RIFERIMENTO` e di evidenziare che: 
+
+- Il sistema è distribuito su almeno 3 nodi computazionali diversi (il *driver* è un simulatore).
+- Saremo chiamati a sviluppare i macro-componenti  *wasteservice, transporttrolley, sonaronrasp, wastewervicewtatusgui*.
+- La interazione *driver-wasteservice* è di tipo request-response ed è implicata dal testo dei requsiti.
+- La interazione *sonaronrasp-transporttrolley* è modellata come un evento, ma non è un requisito. Dunque potrebbe essere 
+  modificata negli sviluppi successivi, mentre potrebbe essere ritenuto un requisito che l'informazione prodotta dal 
+  sottosistema su *ctxrasp* non sia di pertinenza del *wasteservice* (cosa questa da discutere e da approfondire con 
+  il committente).
+- Risulta invece un requisito architetturale il fatto che il *wasteservice* 'non vede' il *basicrobot* 
+  (che è un componente dato dal committente).
+
+  
+Questo modello dovrebbe fornire il quadro architetturale complessivo dal quale dedurre 
+un possibile piano di lavoro che conduce allo SPRINT1.
+
+Ad esempio, se il team e il committente concordano sulla opportunità di affrontare in primis il 
+**core-business** del problema, allora 
+lo SPRINT1 potrebbe escludere di trattare la GUI  e la parte su Rasp (se non in modo astratto
+o simulato) e avere come :blue:`GOAL` (si veda SCRUM) quello di fornire un primo prototipo 
+che realizza le funzionalità fondamentali del sistema.  
+
+Lo SPRINT1  (come ogni altro sprint in futuro) dovrebbe quindi affrontare un 
+:blue:`preciso sottoinsieme dei requisiti`, che va individuato  ed associato a uno o più Test-plan funzionali.
+
+Nel caso specifico, si tatta di analizzare il problema della interazione *wasteservice-transporttrolley-basicrobot*
+a partire dalla richiesta del driver.
+
+Ogni sprint deve quindi fare uno :blue:`ZOOMING` entro una parte della architettura di RIFERIMENTO,
+analizzando le problematiche poste dal sottoinsieme dei requisiti considerato. Ad esempio
+l'analista di questo SPRINT1 potrebbe :
+
+- affrontarre il problema di quando sia opportuno rispondere al driver,
+- discutere su chi abbia la responsabilità di muovere il *transporttrolley* (il *wasteservice*, inviando 
+  (macro) comandi o il *transporttrolley stesso* ), 
+- studiate il problema di chi debba aggiornare la gui e quando
+- etc. etc. 
+
+Alla fine della analisi del problema, il modello di riferimento avrà subito una :blue:`evoluzione` che fornisce 
+una una :blue:`nuova architattura logica`, che sarà il punto di partenza per un nuovo piano di lavoro.
+Infatti sia l'analista prima che il progettista poi, potrebbero precisare la natura di alcune interazioni e 
+introdurre nuovi componenti all'interno di *ctxwasteservice*.
+
+Sottolineiamo che, al termine dello SPRINT,
+un componente ptrebbe anche essere realizzato non come un QAk actor. 
+Ad esempio,   la *WasteServiceStatusGUI*  potrebbe essere realizzata come web-application.
+Il componente QAk che definisce la logica di *wastewervicewtatusgui* potrebbe essere 'dimenticato'
+o (forse, preferibilmente) :blue:`riusato` all'interno di questa web-application.
