@@ -2,6 +2,10 @@
  * ========================================================================
  * This metamodel is the basic model for a software factory that
  * aims at introducing a support for qactor-based systems 
+ * 
+ * See 
+ * https://help.eclipse.org/2020-03/index.jsp?topic=%2Forg.eclipse.xtext.doc%2Fcontents%2F301_grammarlanguage.html&cp%3D85_2_0
+ * https://zarnekow.blogspot.com/2012/11/xtext-corner-6-data-types-terminals-why.html
  * Author: Antonio Natali, DISI University of Bologna
  * ========================================================================
  */
@@ -22,7 +26,7 @@ QActorSystemSpec:
 	( context   += Context   )*
 	( actor     += QActorDeclaration    )*
 ;
-BrokerSpec : "mqttBroker" brokerHost=STRING ":" brokerPort=INT ;
+BrokerSpec : "mqttBroker" brokerHost=STRING ":" brokerPort=INT "eventTopic" eventtopic=STRING;
 /*
  * ------------------------------------------
  * MESSAGE
@@ -75,7 +79,8 @@ State :
 StateAction    : 
 	GuardedStateAction | IfSolvedAction |															//pre
 	Print | PrintCurMsg | SolveGoal |	DiscardMsg |  MemoTime | Duration |							//general
-	Forward | Emit | Demand | Answer | ReplyReq | Delay | MsgCond |	EndActor |  UpdateResource | 	//qak kotlin
+	Forward | Emit | Demand | Answer | ReplyReq | Delay | MsgCond |	EndActor |  ReturnFromInterrupt |
+	UpdateResource | 	ObserveResource |
 	CodeRun | AnyAction	| Exec																		//extra code
 ;  
 IfSolvedAction     : {IfSolvedAction} "ifSolved" "{" ( solvedactions += StateAction )*  "}" //action=ActionSequence 
@@ -105,9 +110,14 @@ DelayVref : "delayVarRef" reftime    = VarRef ;
 DelaySol  : "delaySol"    refsoltime = VarSolRef ;
 MsgCond   :	"onMsg" "(" message=[Message] ":" msg = PHead ")" "{" ( condactions += StateAction )*  "}"
 			 ("else" ifnot = NoMsgCond )? ;			 
-EndActor  : "terminate" arg=INT;			
-UpdateResource :  {UpdateResource} "updateResource" val=AnyAction      ; 
- 
+EndActor  : "terminate" arg=INT;	
+
+ReturnFromInterrupt :  {ReturnFromInterrupt}  "returnFromInterrupt" memo=STRING?;		
+UpdateResource      :  {UpdateResource}  "updateResource"  val=AnyAction       ; 
+ObserveResource     :  {ObserveResource} "observeResource" resource=[QActor] ; 
+
+
+
 NoMsgCond :	{NoMsgCond}  "{" (  notcondactions += StateAction )*  "}"  ;
 AnyAction : {AnyAction}   "[" body=KCODE "]"  ; 							//"[" body=STRING "]"; 
 
@@ -120,17 +130,19 @@ Exec      : "machineExec" action=STRING ;
 /*
  * Transition
  */
-Transition         :  EmptyTransition | NonEmptyTransition ;
+Transition         :  EmptyTransition | NonEmptyTransition  ;
 EmptyTransition    : "Goto" targetState=[State]  ("if" eguard=AnyAction "else" othertargetState=[State] )?  ;
 
-NonEmptyTransition :  "Transition" name=ID  (duration=Timeout)? ( trans += InputTransition)* ("else" elseempty=EmptyTransition)?;
-Timeout            : TimeoutInt | TimeoutVar | TimeoutSol | TimeoutVarRef;
+NonEmptyTransition :  "Transition" name=ID  (duration=Timeout)?   ( trans += InputTransition)* ("else" elseempty=EmptyTransition)?;
+Timeout            : TimeoutInt | TimeoutVar | TimeoutSol | TimeoutVarRef; //| InterruptMsg;
 TimeoutInt         : "whenTime"    msec=INT                    "->" targetState = [State]  ;   
 TimeoutVar         : "whenTimeVar"    variable   = Variable    "->" targetState = [State]  ;  
 TimeoutVarRef      : "whenTimeVarRef" refvar     = VarRef      "->" targetState = [State]  ;  
 TimeoutSol         : "whenTimeSol"    refsoltime = VarSolRef   "->" targetState = [State]  ;  
 
-InputTransition    : EventTransSwitch | MsgTransSwitch | RequestTransSwitch |  ReplyTransSwitch ;
+
+InputTransition    : EventTransSwitch | MsgTransSwitch | RequestTransSwitch |  ReplyTransSwitch | InterruptTranSwitch ;
+InterruptTranSwitch: "whenInterrupt"   message=[Dispatch] ("and"  guard=AnyAction  )?  "->"  targetState=[State]  ;
 EventTransSwitch   : "whenEvent"   message=[Event]    ("and"  guard=AnyAction  )?  "->"  targetState=[State]  ;
 MsgTransSwitch     : "whenMsg"     message=[Dispatch] ("and"  guard=AnyAction  )?  "->"  targetState=[State]  ;
 RequestTransSwitch : "whenRequest" message=[Request]  ("and"  guard=AnyAction  )?  "->"  targetState=[State]  ;
