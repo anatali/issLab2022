@@ -6,8 +6,10 @@ import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
+import unibo.comm22.interfaces.Interaction2021;
+import unibo.comm22.serial.SerialConnection;
 
-public class SerialPortConnSupport implements ISerialPortInteraction, SerialPortEventListener{
+public class SerialPortConnSupport extends SerialConnection implements SerialPortEventListener{
 final static int SPACE_ASCII = 32;
 final static int DASH_ASCII = 45;
 final static int NEW_LINE_ASCII = 10;
@@ -18,7 +20,7 @@ private List<String> list;
 private String curString = "";
 
 	public SerialPortConnSupport( SerialPort serialPort  ) {
- 		this.serialPort = serialPort;
+ 		super( serialPort );
 		init();
 	}	
 	protected void init( ){
@@ -29,7 +31,7 @@ private String curString = "";
  			e.printStackTrace();
 		}		
 	}
-	@Override
+
 	public void sendALine(String msg) throws Exception {
 		//msg = msg+"\n";
 		//System.out.println("SerialPortConnSupport sendALine ... " + msg);
@@ -45,11 +47,11 @@ private String curString = "";
 	public void sendCmd(byte[] cmd) throws Exception {
   		serialPort.writeBytes(cmd);
  	}
-	@Override
+
 	public void sendALine(String msg, boolean isAnswer) throws Exception {
 		sendALine( msg );		
  	}	
- 	@Override 
+
 	public synchronized String receiveALine() throws Exception { 	
 		//System.out.println(" SerialPortConnSupport receiveALine ...  " );
  		String result = "no data";
@@ -61,7 +63,7 @@ private String curString = "";
  		//System.out.println(" SerialPortConnSupport receiveALine " + result);
 		return result;
   	}
-	@Override
+
 	public void closeConnection() throws Exception {
 		if (serialPort != null) {
 			serialPort.removeEventListener();
@@ -98,5 +100,29 @@ private String curString = "";
 			}
 		}
 	}
-	
+
+	@Override
+	public void forward(String s) throws Exception {
+
+	}
+
+	@Override
+	public String request(String s) throws Exception {
+		return null;
+	}
+
+	@Override
+	public void reply(String s) throws Exception {
+
+	}
+
+	@Override
+	public String receiveMsg() throws Exception {
+		return null;
+	}
+
+	@Override
+	public void close() throws Exception {
+
+	}
 }

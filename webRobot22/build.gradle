@@ -49,7 +49,7 @@ dependencies {
 	implementation group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core-jvm', version: "$kotlinVersion"
 
 */
-
+	
 	/*  MQTT *************************************************************************************************************** */
 	// https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
 	implementation group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.2.5'
@@ -72,7 +72,8 @@ dependencies {
 
 	//implementation name: 'unibo.actor22-1.1'   //using actor22comm  FLAT?
 	implementation name: 'unibo.comm22-1.1'
-	implementation name: 'unibo.qakactor22-2.8'  //per ApplMessage
+	implementation name: 'unibo.qakactor22-3.0'
+	//implementation name: 'unibo.qakactor22-2.8'  //per ApplMessage
 
 
 }

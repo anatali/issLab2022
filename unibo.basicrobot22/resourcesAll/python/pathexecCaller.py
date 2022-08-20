@@ -9,8 +9,8 @@ sock       = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 calledName = "pathexec"
 
 ##PathTodo    = "'{\"path\":\"lrwwwwwwww\" , \"owner\":\"pathexecCaller\"}'"
-PathTodo	= "dopath(\"wwlwwlwwlwl\",\"pythonCaller\")"
-requestMsg  = "msg(dopath,request,pythonCaller,RECEIVER,PAYLOAD,1)".replace("RECEIVER",calledName).replace("PAYLOAD",PathTodo)
+PathTodo	= "dopath(\"wlwwlwlwwl\")"
+requestMsg  = "msg(dopath,request,pythoncaller,RECEIVER,PAYLOAD,1)".replace("RECEIVER",calledName).replace("PAYLOAD",PathTodo)
 alarm       = "msg(alarm,event,python,none,alarm(fire),3)"
 
 def connect(port) :
@@ -32,9 +32,23 @@ def emit( event ) :
 
 def work() :
     sendMsg( requestMsg ) 
-    ##time.sleep(1.5)
-    ##emit( alarm )
+    handleAnswer()
 
+def handleAnswer() :
+    print("handleAnswer " )
+    while True:  ##client wants to maintain the connection
+        reply = ''
+        while True:
+            answer = sock.recv(50)
+            ## print("answer len=", len(answer))
+            if len(answer) <= 0 :
+                break
+            reply += answer.decode("utf-8")
+            ## print("reply=", reply)
+            if reply.endswith("\n") :
+                break
+        print("final reply=", reply)
+        break
 
 def terminate() :
     sock.close()

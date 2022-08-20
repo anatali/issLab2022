@@ -1,15 +1,12 @@
 package rx
 
  
-import it.unibo.kactor.ApplMessage
+
 import alice.tuprolog.Struct
 import alice.tuprolog.Term
 import java.io.PrintWriter
 import java.io.FileWriter
-import java.io.ObjectOutputStream
-import java.io.FileOutputStream
 import it.unibo.kactor.ActorBasic
-import java.io.File
 import it.unibo.kactor.IApplMessage
 
 

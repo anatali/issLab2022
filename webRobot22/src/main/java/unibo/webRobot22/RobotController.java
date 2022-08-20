@@ -74,7 +74,7 @@ public class RobotController {
         //Uso basicrobto22 sulla porta 8020
         //robotName  = "basicrobot";
         if( usingTcp ) RobotUtils.connectWithRobotUsingTcp(ipaddr);
-        //Attivo comunque una connessione CoAP per osservare basicrobot
+        //Attivo comunque una connessione CoAP (per osservare basicrobot e dopath)
         CoapConnection conn = RobotUtils.connectWithRobotUsingCoap(ipaddr);
         conn.observeResource( new RobotCoapObserver() );
         return buildThePage(viewmodel);
@@ -89,7 +89,8 @@ public class RobotController {
         } catch (Exception e) {
             ColorsOut.outerr("RobotController | doMove ERROR:"+e.getMessage());
         }
-        return mainPage;
+        //return mainPage;
+        return buildThePage(viewmodel);
     }
 
     @PostMapping("/dopath")
@@ -102,7 +103,8 @@ public class RobotController {
         } catch (Exception e) {
             ColorsOut.outerr("RobotController | dopath ERROR:"+e.getMessage());
         }
-        return mainPage;
+        //return mainPage;
+        return buildThePage(viewmodel);
     }
 
 

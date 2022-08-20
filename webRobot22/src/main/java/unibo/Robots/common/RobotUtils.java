@@ -11,6 +11,7 @@ import unibo.comm22.coap.CoapConnection;
 import unibo.comm22.interfaces.Interaction2021;
 import unibo.comm22.tcp.TcpClientSupport;
 import unibo.comm22.utils.ColorsOut;
+import unibo.comm22.utils.CommSystemConfig;
 import unibo.comm22.utils.CommUtils;
 import unibo.webRobot22.PathCoapObserver;
 import unibo.webRobot22.RobotCoapObserver;
@@ -25,21 +26,27 @@ public class RobotUtils {
 
     public static void connectWithRobotUsingTcp(String addr){
          try {
-            conn = TcpClientSupport.connect(addr, robotPort, 10);
-            ColorsOut.outappl("HIController | connect Tcp conn:" + conn , ColorsOut.CYAN);
-        }catch(Exception e){
+             CommSystemConfig.tracing = true;
+             conn = TcpClientSupport.connect(addr, robotPort, 10);
+             ColorsOut.out("RobotUtils | connect Tcp conn:" + conn );
+             ColorsOut.outappl("RobotUtils | connect Tcp conn:" + conn , ColorsOut.CYAN);
+             //sendMsg("basicrobot", "r");
+         }catch(Exception e){
             ColorsOut.outerr("RobotUtils | connectWithRobotUsingTcp ERROR:"+e.getMessage());
         }
     }
     public static CoapConnection connectWithRobotUsingCoap(String addr){
         try {
+            CommSystemConfig.tracing = true;
             String ctxqakdest       = "ctxbasicrobot";
             String qakdestination 	= "basicrobot";
             String path   = ctxqakdest+"/"+qakdestination;
             conn           = new CoapConnection(addr+":"+robotPort, path);
             connToPathexec = new CoapConnection(addr+":"+robotPort, ctxqakdest+"/pathexec" );
             ((CoapConnection)connToPathexec).observeResource( new PathCoapObserver() );
-            ColorsOut.outappl("HIController | connect Coap conn:" + conn , ColorsOut.CYAN);
+            ColorsOut.out("RobotUtils | connect Tcp conn:" + conn );
+            ColorsOut.outappl("RobotUtils | connect Coap conn:" + conn , ColorsOut.CYAN);
+            //sendMsg("basicrobot", "l");
         }catch(Exception e){
             ColorsOut.outerr("RobotUtils | connectWithRobotUsingTcp ERROR:"+e.getMessage());
         }
@@ -70,25 +77,25 @@ public class RobotUtils {
     public static void sendMsg(String robotName, String cmd){
         try {
             IApplMessage msg =  moveAril(robotName,cmd);
-            ColorsOut.outappl("RobotUtils | sendMsg msg:" + msg + " conn=" + conn, ColorsOut.BLUE);
+            ColorsOut.outappl("RobotUtilsss | sendMsg msg:" + msg + " conn=" + conn, ColorsOut.BLUE);
             /*
             if( msg.isRequest() ){
                 String answer = conn.request( msg.toString() );
                 ColorsOut.outappl("RobotUtils | answer:" + answer  , ColorsOut.BLUE);
             }
             else */
-                conn.forward( msg.toString() );
+            conn.forward( msg.toString() );
         } catch (Exception e) {
-            ColorsOut.outerr("RobotUtils | sendMsg ERROR:"+e.getMessage());
+            ColorsOut.outerr("RobotUtils | sendMsg on:" + conn + " ERROR:"+e.getMessage());
         }
     }
     public static void doThePath( String path ){
         try {
             String msg = ""+ CommUtils.buildRequest("webgui", "dopath", "dopath("+path+")", "pathexec");
-            ColorsOut.outappl("RobotUtils | sendMsg msg:" + msg + " conn=" + conn, ColorsOut.BLUE);
+            ColorsOut.outappl("RobotUtils doThePath |  msg:" + msg + " connToPathexec=" + connToPathexec, ColorsOut.BLUE);
             connToPathexec.forward( msg );
         } catch (Exception e) {
-            ColorsOut.outerr("RobotUtils | sendMsg ERROR:"+e.getMessage());
+            ColorsOut.outerr("RobotUtils doThePath |  ERROR:"+e.getMessage());
         }
     }
 

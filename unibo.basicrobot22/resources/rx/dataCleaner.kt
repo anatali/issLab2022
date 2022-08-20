@@ -1,9 +1,5 @@
 package rx
- 
 
-import it.unibo.kactor.MsgUtil
-import kotlinx.coroutines.delay
-import it.unibo.kactor.ApplMessage
 import alice.tuprolog.Term
 import alice.tuprolog.Struct
 import it.unibo.kactor.*

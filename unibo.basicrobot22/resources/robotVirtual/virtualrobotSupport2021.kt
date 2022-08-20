@@ -1,25 +1,12 @@
 package robotVirtual
 
-import java.io.PrintWriter
-import java.net.Socket
 import org.json.JSONObject
-import java.io.BufferedReader
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import java.io.InputStreamReader
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.channels.SendChannel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.Job
 import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.MsgUtil
-import it.unibo.kactor.ApplMessage
-import unibo.actor22comm.wshttp.WsHttpConnection
-import unibo.actor22comm.interfaces.Interaction2021
+import unibo.comm22.wshttp.WsHttpConnection
+import unibo.comm22.interfaces.Interaction2021
 import unibo.robot.MsgRobotUtil
-import unibo.actor22comm.ws.WsConnection
- 
-//import it.unibo.interaction.MsgRobotUtil
+import unibo.comm22.ws.WsConnection
 
  //A support for using the virtual robot
  
@@ -41,14 +28,15 @@ object virtualrobotSupport2021 {
 		println("virtualrobotSupport2021 | init ... ")
 		//WsHttpConnection.trace = false
 	}
-	
+/*
 val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
      fun(scope, support ) {
 		val obs  = WsSupportObserver( owner.getName() )
         println("virtualrobotSupport2021 | doafterConn REGISTER an observer for the WsHttpConnection")
 		support.addObserver( obs )
 }
-	
+
+*/
 
 
 	fun create( owner: ActorBasic, hostNameStr: String, portStr: String, trace : Boolean = false  ){
@@ -58,18 +46,17 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
             hostName         = hostNameStr
             port             = Integer.parseInt(portStr)
              try {
-				//WsHttpConnection.trace = true
             	support21    = WsHttpConnection.createForHttp( "$hostNameStr:$portStr" ) ///api/move built-in
 				support21ws  = WsConnection.create( "$hostNameStr:8091" )    
             	//println("		--- virtualrobotSupport2021 |  created (ws) $hostNameStr:$portStr $support21 $support21ws")	
 				//support21ws.wsconnect( doafterConn )  //2021
 //2022 Il POJO it.unibo.qak21.basicrobot informa basicrobot di una collisione				 
-				val obs  = WsSupportObserver( owner.getName() )
+				val obs  = WsSupportObserver( owner.getName(), this )
 				(support21ws as WsConnection).addObserver(obs) 			  
 //				//ACTIVATE the robotsonar as the beginning of a pipe
-				robotsonar = virtualrobotSonarSupportActor("robotsonar", null)
-				owner.context!!.addInternalActor(robotsonar)  
-			  	println("		--- virtualrobotSupport2021 | has created the robotsonar")	
+//				robotsonar = virtualrobotSonarSupportActor("robotsonar", null)  //JUne2022
+//				owner.context!!.addInternalActor(robotsonar)  					//JUne2022
+//			  	println("		--- virtualrobotSupport2021 | has created the robotsonar")
 			 }catch( e:Exception ){
                  println("		--- virtualrobotSupport2021 | ERROR $e")
              }	
@@ -80,11 +67,10 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 	}
 
     fun move(cmd: String) {	//cmd is written in application-language
-		//println("		--- virtualrobotSupport2021 |  moveeeeeeeeeeeeeeeeeeeeee $cmd ")
+		println("		--- virtualrobotSupport2021 |  moveeeeeeeeeeeeeeeeeeeeee $cmd ")
 		val msg = translate( cmd )
 		trace("move  $msg")
 		if( cmd == "w" || cmd == "s"){  //doing aysnch
-			//println("		--- virtualrobotSupport2021 |  wwwwwwwwwwwwwwwwwwwwwwwwww $support21ws")
 			support21ws.forward(msg)	//aysnch => no immediate answer 
 			return
 		}

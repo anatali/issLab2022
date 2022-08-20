@@ -14,6 +14,7 @@ class Envsonarhandler ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 		return "s0"
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		val interruptedStateTransitions = mutableListOf<Transition>()
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State

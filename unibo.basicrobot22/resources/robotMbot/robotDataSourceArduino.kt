@@ -13,10 +13,12 @@ import alice.tuprolog.Struct
 import it.unibo.`is`.interfaces.protocols.IConnInteraction
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.GlobalScope
+import unibo.comm22.interfaces.Interaction2021
+import unibo.comm22.utils.CommUtils
 
 
 class robotDataSourceArduino( name : String, val owner : ActorBasic ,
-					val conn : IConnInteraction) : ActorBasic(name, owner.scope){
+					val conn : Interaction2021) : ActorBasic(name, owner.scope){
 	
 companion object {
 	val eventId = "sonarRobot"
@@ -38,12 +40,12 @@ companion object {
 		GlobalScope.launch{	//to allow message handling
 			while (true) {
 			try {
- 				var curDataFromArduino = conn.receiveALine()
+ 				var curDataFromArduino = conn.receiveMsg()
    				var v = curDataFromArduino.toDouble()
    				var dataSonar = v.toInt();
   	 			//println("   	%%% $name | elabData: $dataSonar | ${counter++}"    )
 
- 				var event = MsgUtil.buildEvent( name,"sonarRobot","sonar( $dataSonar )")								
+ 				var event = CommUtils.buildEvent( name,"sonarRobot","sonar( $dataSonar )")
   				//println("   	%%% $name | robotDataSourceArduino event: ${ event } owner=${owner.name}"   );
 				//owner.emit(  event )
 				emitLocalStreamEvent( event )

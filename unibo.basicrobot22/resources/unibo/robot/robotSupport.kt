@@ -1,28 +1,13 @@
 package unibo.robot
 /*
  -------------------------------------------------------------------------------------------------
- A factory that creates the proper support for each specific robot type
- 
- NOV 2019:
- The operation create accept as last argument (filter) an ActorBasic to be used
- as a data-stream handler
- 
- The operation subscribeToFilter subscribes to the given data-stream handler
- (dsh) another ActorBasic that should work as a data-stream handler
- -------------------------------------------------------------------------------------------------
  */
 
-import it.unibo.`is`.interfaces.protocols.IConnInteraction
 import it.unibo.kactor.ActorBasic
-import it.unibo.kactor.ActorBasicFsm
 import org.json.JSONObject
+import unibo.comm22.utils.CommSystemConfig
 import java.io.File
-import it.unibo.kactor.MsgUtil
-import it.unibo.kactor.QakContext
-import kotlinx.coroutines.runBlocking
-import robotMbot.mbotSupport.conn
 
-//import robotMbot.robotDataSourceArduino
  
 
 
@@ -42,12 +27,15 @@ object robotSupport{
 		val jsonObject   = JSONObject( config )
 		val hostAddr     = jsonObject.getString("ipvirtualrobot") 
 		robotKind        = jsonObject.getString("type") 
-		val robotPort    = jsonObject.getString("port") 
+		val robotPort    = jsonObject.getString("port")
+		CommSystemConfig.tracing = jsonObject.getBoolean("commtrace")
 		println( "		--- robotSupport | CREATING for $robotKind host=$hostAddr port=$robotPort owner=$owner" )
 
 		when( robotKind ){		
 			//"mockrobot"  ->  { robotMock.mockrobotSupport.create(  ) }
-			"virtual"    ->  { robotVirtual.virtualrobotSupport2021.create( owner, hostAddr, robotPort) }
+			"virtual"    ->  {
+				robotVirtual.virtualrobotSupport2021.create( owner, hostAddr, robotPort)
+			}
   			"realnano"   ->  {
 				robotNano.nanoSupport.create( owner )
  				val realsonar = robotNano.sonarHCSR04SupportActor("realsonar")

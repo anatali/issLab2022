@@ -14,6 +14,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 		return "s0"
 	}
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
+		val interruptedStateTransitions = mutableListOf<Transition>()
 		
 		  var StepTime      = 0L
 		  var StartTime     = 0L     
@@ -32,8 +33,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						 ){ var robotsonar = context!!.hasActor("realsonar")  
 						        	   if(robotsonar != null) unibo.robot.robotSupport.createSonarPipe(robotsonar) 
 						}
-						unibo.robot.robotSupport.move( "l"  )
-						unibo.robot.robotSupport.move( "r"  )
+						unibo.robot.robotSupport.move( "a"  )
+						unibo.robot.robotSupport.move( "d"  )
 						updateResourceRep( "basicrobot(start)"  
 						)
 					}
@@ -53,6 +54,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("cmd(MOVE)"), Term.createTerm("cmd(MOVE)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
+								 CurrentMove = payloadArg(0)  
 								unibo.robot.robotSupport.move( payloadArg(0)  )
 								updateResourceRep( "moveactivated(${payloadArg(0)})"  
 								)
@@ -62,15 +64,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("handleObstacle") { //this:State
 					action { //it:State
-						unibo.robot.robotSupport.move( "h"  )
 						updateResourceRep( "obstacle(${CurrentMove})"  
 						)
-						if(  CurrentMove == "w" 
-						 ){unibo.robot.robotSupport.move( "s"  )
-						delay(100) 
-						unibo.robot.robotSupport.move( "h"  )
-						}
-						emit("info", "info(obstacledoing(w))" ) 
 					}
 					 transition( edgeName="goto",targetState="work", cond=doswitch() )
 				}	 
@@ -112,8 +107,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					action { //it:State
 						Duration = getDuration(StartTime)
 						unibo.robot.robotSupport.move( "h"  )
-						 var TunedDuration = Duration;  
-									TunedDuration = Duration * 5 / 6
+						 var TunedDuration =  Duration * 5 / 6  
 						println("basicrobot | stepFail duration=$Duration TunedDuration=$TunedDuration")
 						unibo.robot.robotSupport.move( "s"  )
 						delay(TunedDuration)
