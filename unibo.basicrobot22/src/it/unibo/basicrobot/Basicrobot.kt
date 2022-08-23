@@ -107,7 +107,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					action { //it:State
 						Duration = getDuration(StartTime)
 						unibo.robot.robotSupport.move( "h"  )
-						 var TunedDuration =  Duration * 5 / 6  
+						 var TunedDuration   =  ((StepTime - Duration) * 15 / 100).toLong()    
 						println("basicrobot | stepFail duration=$Duration TunedDuration=$TunedDuration")
 						unibo.robot.robotSupport.move( "s"  )
 						delay(TunedDuration)

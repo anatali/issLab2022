@@ -128,10 +128,12 @@ QActor basicrobot context ctxbasicrobot{
   	}
 	Goto work  
  
-	State stepFail{  		
+	State stepFail{  	 	
 		setDuration Duration from StartTime
 		run unibo.robot.robotSupport.move( "h" )  //stop the (real) robot
-		[# var TunedDuration =  Duration * 5 / 6 #]
+		//[# var TunedDuration =  Duration * 5 / 6 #]
+		//[# var TunedDuration   = kotlin.math.round( (StepTime - Duration) * 15 / 100 ) #]
+		[# var TunedDuration   =  ((StepTime - Duration) * 15 / 100).toLong()   #]
 		println("basicrobot | stepFail duration=$Duration TunedDuration=$TunedDuration")
 			run unibo.robot.robotSupport.move( "s" )
 			delayVar TunedDuration 

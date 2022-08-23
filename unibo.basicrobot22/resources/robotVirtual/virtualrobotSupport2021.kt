@@ -67,7 +67,7 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 	}
 
     fun move(cmd: String) {	//cmd is written in application-language
-		println("		--- virtualrobotSupport2021 |  moveeeeeeeeeeeeeeeeeeeeee $cmd ")
+		println("		--- basicrobot22 virtualrobotSupport2021 |  moveee  $cmd ")
 		val msg = translate( cmd )
 		trace("move  $msg")
 		if( cmd == "w" || cmd == "s"){  //doing aysnch
@@ -76,7 +76,7 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 		}
 		//Comunicazione sincrona con il VirtualRobot via HTTP
 		val answer = support21.forward(msg) //,"$hostName:$port/api/move"
-		trace("		--- virtualrobotSupport2021 | answer=$answer")
+		trace("		--- basicrobot22 virtualrobotSupport2021 | answer=$answer")
 		//REMEMBER: answer={"endmove":"true","move":"alarm"} alarm means halt
 		val ajson = JSONObject(answer)
 		if( ajson.has("endmove") && ajson.get("endmove")=="false"){
