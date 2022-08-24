@@ -1,0 +1,81 @@
+//https://dl.bintray.com/jetbrains/kotlin/eclipse-plugin/0.8.19/
+
+System  demo0g     //-trace -msglog
+//mqttBroker "localhost" : 1883 eventTopic "demo0/events"
+ 
+  
+Request start : start(_)
+Reply done : done(_)
+
+Request atob : atob(_)
+Reply btoa : btoa(_)
+Request btoc : btoc(_)
+Reply ctob : ctob(_)
+ 
+Context ctxtesta ip [host="localhost" port=8095]
+Context ctxtestb ip [host="localhost" port=8096]
+Context ctxtestc ip [host="localhost" port=8097]
+ 
+
+QActor componenta context ctxtesta{
+	State s0 initial {
+		printCurrentMessage
+		updateResource [# "componenta(s0)" #]
+		discardMsg Off
+ 	}
+ 	//Transition t0 whenRequest start -> s1
+ 	Goto s1
+ 	 
+ 	State s1 {
+ 		printCurrentMessage
+ 		updateResource [# "componenta(s1)" #]
+ 		request componentb -m atob : atob(11)
+ 	}
+ 	Transition t0 whenReply btoa -> s2
+ 	
+ 	State s2 {
+ 		printCurrentMessage
+ 		updateResource [# "componenta(s2)" #]
+ 		//replyTo start with done : done(12)
+ 		println("Componenta | DONE")
+ 	}
+}
+
+QActor componentb context ctxtestb{
+	State s0 initial {
+		printCurrentMessage
+		updateResource [# "componentb(s0)" #]
+		discardMsg Off
+ 	}
+ 	Transition t0 whenRequest atob -> s1
+ 	
+ 	State s1 {
+ 		printCurrentMessage
+ 		updateResource [# "componentb(s1)" #]
+ 		request componentc -m btoc : btoc(13)
+ 	}
+ 	Transition t0 whenReply ctob -> s2
+ 	
+ 	State s2 {
+ 		printCurrentMessage
+ 		updateResource [# "componentb(s2)" #]
+ 		replyTo atob with btoa : btoa(14)
+ 		println("Componentb | DONE")
+ 	}
+}
+
+QActor componentc context ctxtestc{
+	State s0 initial {
+		printCurrentMessage
+		updateResource [# "componentc(s0)" #]
+		discardMsg Off
+ 	}
+ 	Transition t0 whenRequest btoc -> s2
+ 	 
+ 	State s2 {
+ 		printCurrentMessage
+ 		updateResource [# "componentc(s2)" #]
+ 		replyTo btoc with ctob : ctob(15)
+ 		println("Componentc | DONE")
+ 	}
+}

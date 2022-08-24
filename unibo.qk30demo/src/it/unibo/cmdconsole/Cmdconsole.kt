@@ -25,7 +25,7 @@ class Cmdconsole ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("alarmSimulation") { //this:State
 					action { //it:State
-						delay(2000) 
+						delay(3000) 
 						emit("alarm", "alarm($N)" ) 
 						 N = N+1  
 					}

@@ -240,6 +240,50 @@ Ad esempio,   la <em>WasteServiceStatusGUI</em>  potrebbe essere realizzata come
 Il componente QAk che definisce la logica di <em>wastewervicewtatusgui</em> potrebbe essere ‘dimenticato’
 o (forse, preferibilmente) <span class="blue">riusato</span> all’interno di questa web-application.</p>
 </section>
+<section id="estensioni-estate-2022">
+<h2>Estensioni estate 2022<a class="headerlink" href="#estensioni-estate-2022" title="Permalink to this headline">¶</a></h2>
+<p>Nuova versione dei plugin qak:</p>
+<ul class="simple">
+<li><p><span class="blue">it.unibo.Qactork_1.3.1</span></p></li>
+<li><p><span class="blue">it.unibo.Qactork.ide_1.3.1</span></p></li>
+<li><p><span class="blue">it.unibo.Qactork.ui_1.3.1</span></p></li>
+</ul>
+<p>Nuova versione del supporto run-time: <span class="blue">unibo.qakactor22-3.1</span></p>
+<section id="nuove-features">
+<h3>Nuove features<a class="headerlink" href="#nuove-features" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Si genera codice Python che, eseguito, costruisce una rappresentazione grafica del modello qak corrente.
+Le icone usate dal programma, sono memorizzate in: <em>it.unibo.issLabStart/userDocs/img/IconeQak/</em></p></li>
+<li><p>Un <em>dispatch</em> può essere gestito come <span class="blue">interrupt</span> specificando la transizione <span class="brown">whenInterrupt</span> che porta a uno stato
+che, eseguendo la primitiva <span class="brown">returnFromInterrupt</span>, ripristina l’insieme delle transizioni dello stato ‘interrotto’
+(quello che ha eseguito <em>whenInterrupt</em>). Questa feature è stata solleciata da <em>Hu</em>.</p></li>
+<li><p>Primitiva <span class="brown">observeResource A</span> che Possibilità che un attore <span class="blue">Obs</span> funga da CoAP oberver delle informazioni emesse da un
+attore <span class="blue">A</span> mediante la primitiva <span class="blue">updateResourse</span>.
+Presso <span class="blue">Obs</span> viene attivato un CoAP-client verso <span class="blue">A</span>. Questo client provvede a trasformare ogni messaggio ricevuto via CoAP
+da <span class="blue">A</span> in un dispatch</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dispatch</span> <span class="n">coapUpdate</span><span class="p">:</span> <span class="n">coapUpdate</span><span class="p">(</span><span class="n">RESOURCE</span><span class="p">,</span> <span class="n">VALUE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Questa feature è stata proposta  da <em>Lenzi</em> che ne ha fornito una prima realizzazione.</p>
+</li>
+<li><p>Possibilità di specificare <strong>più contesti</strong> nello stesso nodo <span class="blue">localhost</span>. Questa feature è stata proposta  da <em>Giannatempo</em>
+che ne ha fornito una prima realizzazione.</p></li>
+</ul>
+</section>
+<section id="unibo-qk30demo">
+<h3>unibo.qk30demo<a class="headerlink" href="#unibo-qk30demo" title="Permalink to this headline">¶</a></h3>
+<p>Un esempio delle nuove features viene fornito nel modello <em>boundaryqak30.qak</em>  del progetto <span class="blue">unibo.qk30demo</span>.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/boundaryqak30Arch.png"><img alt="_images/boundaryqak30Arch.png" class="align-center" src="_images/boundaryqak30Arch.png" style="width: 60%;" /></a>
+</div></blockquote>
+<p>L’oggetto Kotlin <em>externalCoapObserver.kt</em> realizza un observer eseterno dell’attore <em>boundaryqak30</em> che si affianca all’attore-observer
+interno al modello di nome <em>applobserver</em>.</p>
+<p>L’attore <em>cmdconsole.kt</em> emette un evento <em>alarm</em> ogni 3 secondi che viene gestito da <em>applobserver</em> come esempio di uso degli eventi
+(e di alternativa al meccanismo di CoAP-osservabilità)</p>
+</section>
+</section>
 </section>
 
 
@@ -308,6 +352,11 @@ o (forse, preferibilmente) <span class="blue">riusato</span> all’interno di qu
 <li class="toctree-l2"><a class="reference internal" href="#precisazioni-del-commitente">Precisazioni del commitente</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#note-dopo-le-interazioni-in-rete">Note dopo le interazioni in rete</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#come-organizzare-gli-sprint">Come organizzare gli sprint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#estensioni-estate-2022">Estensioni estate 2022</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nuove-features">Nuove features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unibo-qk30demo">unibo.qk30demo</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="webRobot22.html">webrobot22</a></li>

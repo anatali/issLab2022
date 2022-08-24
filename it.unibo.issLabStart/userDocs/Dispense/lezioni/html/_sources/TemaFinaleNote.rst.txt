@@ -1,5 +1,6 @@
 .. role:: red 
 .. role:: blue 
+.. role:: brown 
 .. role:: remark
 .. role:: worktodo
 
@@ -234,3 +235,55 @@ un componente ptrebbe anche essere realizzato non come un QAk actor.
 Ad esempio,   la *WasteServiceStatusGUI*  potrebbe essere realizzata come web-application.
 Il componente QAk che definisce la logica di *wastewervicewtatusgui* potrebbe essere 'dimenticato'
 o (forse, preferibilmente) :blue:`riusato` all'interno di questa web-application.
+
+--------------------------------------------
+Estensioni estate 2022
+--------------------------------------------
+
+Nuova versione dei plugin qak:
+
+- :blue:`it.unibo.Qactork_1.3.1`
+- :blue:`it.unibo.Qactork.ide_1.3.1`
+- :blue:`it.unibo.Qactork.ui_1.3.1`
+
+Nuova versione del supporto run-time: :blue:`unibo.qakactor22-3.1`
+
+
+++++++++++++++++++++++++++++
+Nuove features
+++++++++++++++++++++++++++++
+
+- Si genera codice Python che, eseguito, costruisce una rappresentazione grafica del modello qak corrente.
+  Le icone usate dal programma, sono memorizzate in: *it.unibo.issLabStart/userDocs/img/IconeQak/*
+- Un *dispatch* può essere gestito come :blue:`interrupt` specificando la transizione :brown:`whenInterrupt` che porta a uno stato 
+  che, eseguendo la primitiva :brown:`returnFromInterrupt`, ripristina l'insieme delle transizioni dello stato 'interrotto'
+  (quello che ha eseguito *whenInterrupt*). Questa feature è stata solleciata da *Hu*.
+- Primitiva :brown:`observeResource A` che Possibilità che un attore :blue:`Obs` funga da CoAP oberver delle informazioni emesse da un
+  attore :blue:`A` mediante la primitiva :blue:`updateResourse`. 
+  Presso :blue:`Obs` viene attivato un CoAP-client verso :blue:`A`. Questo client provvede a trasformare ogni messaggio ricevuto via CoAP 
+  da :blue:`A` in un dispatch 
+  
+   .. code:: 
+      
+      Dispatch coapUpdate: coapUpdate(RESOURCE, VALUE)
+
+  Questa feature è stata proposta  da *Lenzi* che ne ha fornito una prima realizzazione.
+- Possibilità di specificare **più contesti** nello stesso nodo :blue:`localhost`. Questa feature è stata proposta  da *Giannatempo*
+  che ne ha fornito una prima realizzazione.
+
+++++++++++++++++++++++++++++
+unibo.qk30demo
+++++++++++++++++++++++++++++
+
+Un esempio delle nuove features viene fornito nel modello *boundaryqak30.qak*  del progetto :blue:`unibo.qk30demo`.
+
+   .. image::  ./_static/img/TF22/boundaryqak30Arch.png 
+     :align: center 
+     :width: 60%
+
+
+L'oggetto Kotlin *externalCoapObserver.kt* realizza un observer eseterno dell'attore *boundaryqak30* che si affianca all'attore-observer
+interno al modello di nome *applobserver*.
+
+L'attore *cmdconsole.kt* emette un evento *alarm* ogni 3 secondi che viene gestito da *applobserver* come esempio di uso degli eventi
+(e di alternativa al meccanismo di CoAP-osservabilità)
