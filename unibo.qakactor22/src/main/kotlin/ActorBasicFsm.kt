@@ -11,32 +11,27 @@ import java.util.NoSuchElementException
 ================================================================
  */
 class State(val stateName : String, val scope: CoroutineScope ) {
-    private var edgeList          = mutableListOf<Transition>()
+    private var _edgeList          = mutableListOf<Transition>()
     private val stateEnterAction  = mutableListOf< suspend (State) -> Unit>()
     private val myself : State    = this
+    // Versione pubblica immutabile
+    val edgeList : List<Transition>
+        get() = _edgeList // non basta assegnare a edgeList _edgeList, visto che è var e può
+                          // cambiare riferimento
 
     fun transition(edgeName: String, targetState: String, cond: Transition.() -> Unit ) {
-        val trans = Transition(edgeName, targetState, null)
+        val trans = Transition(edgeName, targetState)
         //println("      trans $name $targetState")
         trans.cond() //set eventHandler (given by user) See fireIf
-        edgeList.add(trans)
+        _edgeList.add(trans)
     }
     //Aug2022
     //Called by a state as a transition
     fun interrupthandle(edgeName: String, targetState: String, cond: Transition.() -> Unit, storage: MutableList<Transition> ) {
-        val trans = Transition(edgeName, targetState, edgeList)
+        val trans = Transition(edgeName, targetState, _edgeList, isInterrupt = true)
         //println("      trans $name $targetState")
         trans.cond() //set eventHandler (given by user) See fireIf
-        edgeList.add(trans)
-        //AUG2022: ottengo la lista delle transizioni dello stato (con interrupt)
-        //L'operazione resume deve ripristinare questa lista nello stato che gestisce l'interrupt
-        //invocando storeTransitionsOfStateInterrupted
-        /*
-        if( storage.size > 0 ) {                     //The storage must be empty
-             System.exit(1)
-        }*/
-        edgeList.forEach{ storage.add(it) }  //Ricopio
-        //println("&&&& ${stateName} interrupthandle ${storage.size}")
+        _edgeList.add(trans)
     }
     //Add an action which will be called when the state is entered
     fun action(  a:  suspend (State) -> Unit) {
@@ -61,16 +56,16 @@ class State(val stateName : String, val scope: CoroutineScope ) {
     //Get the appropriate Edge for the Message
     fun getTransitionForMessage(msg: IApplMessage): Transition? {
         //println("State $name       | getTransitionForMessage  $msg  list=${edgeList.size} ")
-        val first = edgeList.firstOrNull { it.canHandleMessage(msg) }
+        val first = _edgeList.firstOrNull { it.canHandleMessage(msg) }
         return first
     }
 
-    fun storeTransitionsOfStateInterrupted( t: MutableList<Transition> ) {
+    fun storeTransitionsOfStateInterrupted( t: List<Transition> ) {
         //println("&&&&  $stateName storeTransitionsOfStateInterrupted ${t}")
-        edgeList  = mutableListOf<Transition>()   //clear
-        t.forEach { edgeList.add(it) }   //Ricopio
+        _edgeList  = mutableListOf<Transition>()   //clear
+        t.forEach { _edgeList.add(it) }   //Ricopio
         //t.clear()                      //NOOO: Reset the storage (sideeffect)
-     }
+    }
 }
 
 /*
@@ -79,11 +74,14 @@ class State(val stateName : String, val scope: CoroutineScope ) {
 ================================================================
  */
 class Transition(val edgeName: String, val targetState: String,
-                 val globalEdges: MutableList<Transition>? ) {  //Aug2022
+                 private val _globalEdges: MutableList<Transition>? = null, //Aug2022
+                 val isInterrupt: Boolean = false, // Lenzi 3.0.1
+                 ) {
 
     lateinit var edgeEventHandler: ( IApplMessage ) -> Boolean  //MsgId previous: String
     private val actionList       = mutableListOf<(Transition) -> Unit>()
     //private val globalActionList = mutableListOf<Transition>()
+    val globalEdges : List<Transition>? = _globalEdges
 
     fun action(action: (Transition) -> Unit) { //MEALY?
         //println("Transition  | add ACTION:  $action")
@@ -128,6 +126,8 @@ abstract class ActorBasicFsm(  qafsmname:  String,
 
     private val stateList = mutableListOf<State>()
     private val msgQueueStore = mutableListOf<IApplMessage>()
+
+    private var interruptStateTransitions : List<Transition>? = null
  
     //================================== STRUCTURAL =======================================
     fun state(stateName: String, build: State.() -> Unit) {
@@ -203,11 +203,22 @@ abstract class ActorBasicFsm(  qafsmname:  String,
    }
 
     //Aug2022
-    fun returnFromInterrupt( t: MutableList<Transition> ) {
-        //println("&&&&  ${currentState.stateName} returnFromInterrupt ${t.size}")
-        currentState.storeTransitionsOfStateInterrupted( t )
-    }
+    //Lenzi 25/08: Deprecato, non necessario passare dall'esterno
+    // mantenuto per retrocompatibilità con Qak <3.0
+    @Deprecated("Passing list no longer needed since Qak 3.0.1", ReplaceWith("returnFromInterrupt()"))
+    fun returnFromInterrupt( t: MutableList<Transition> ) = returnFromInterrupt()
 
+    fun returnFromInterrupt() {
+        //println("&&&&  ${currentState.stateName} returnFromInterrupt ${t.size}")
+        // Copia immutabile per gestire multithreading ecc.
+        val currentInterruptTransitions = interruptStateTransitions
+        if (currentInterruptTransitions != null) {
+            currentState.storeTransitionsOfStateInterrupted(currentInterruptTransitions)
+        } else {
+            ColorsOut.outerr("$tt ActorBasicFsm $name | State: ${currentState.stateName}, tried to return from interrupt when not inside an interrupt!")
+        }
+        interruptStateTransitions = null
+    }
 
     suspend fun elabMsgInState( ) {
         sysUtil.traceprintln("$tt ActorBasicFsm $name | elabMsgInState in ${currentState.stateName} $currentMsg")
@@ -286,6 +297,13 @@ abstract class ActorBasicFsm(  qafsmname:  String,
         val trans = currentState.getTransitionForMessage(msg)
         //sysUtil.traceprintln("$tt ActorBasicFsm $name | checkTransition, $msg, curState=${currentState.stateName}, trans=$trans")
         return if (trans != null) {
+             if (trans.isInterrupt) {
+                if (interruptStateTransitions == null) {
+                    interruptStateTransitions = trans.globalEdges!!
+                } else {
+                    throw IllegalStateException("$tt ActorBasicFsm $name | Cannot nest interruptions!")
+                }
+             }
              trans.enterTransition {
                   getStateByName(it)
              }
