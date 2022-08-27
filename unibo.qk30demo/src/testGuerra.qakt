@@ -1,0 +1,138 @@
+System  testguerra
+
+Request  dopath    : dopath( PATH  )
+Reply dopathdone   : dopathdone( ARG )
+Reply dopathfail   : dopathfail( ARG )
+Dispatch stopPath : stopPath(X)
+Dispatch resumePath : resumePath(X)
+   
+Dispatch tick : tick(X)
+Event    demo : demo(X)   
+    
+Context ctx_wasteservice_proto_ctx ip [host="localhost" port=8050]
+
+QActor wastetruck context ctx_wasteservice_proto_ctx {
+	
+	State init initial{
+		delay 1000
+	}
+	Goto start
+	
+	State start{
+		printCurrentMessage
+		request pathexec -m dopath : dopath(wl)
+		delay 4000
+	}
+	//Goto start
+	Transition t0 whenReply dopathdone -> endJob
+	
+	State endJob{
+		println("########### wastetruck BYE ########### ")
+	}	
+}
+ 
+/*
+ * Lancia uno stop e una resume ogni Wait time
+ */
+QActor sonarshim context ctx_wasteservice_proto_ctx {
+	[#
+		var Val = 200
+		var Wait = 1500L
+		var N    = 3
+	#]
+
+	State scanWait initial {
+	}
+	Transition t0 whenTimeVar Wait -> scan
+	
+	State scan {
+		[# 
+			var PrevVal = Val
+			Val         = 200 - Val
+		#]
+		if [# PrevVal != Val #] {
+			//println("\tSonar: $N detected distance $Val ")
+			if [# PrevVal > 100 #]{
+			     [# N           = N-1 #]
+			     [# MsgUtil.outred("sonarshim | stopPath($N)") #]
+				forward pathexec -m stopPath : stopPath($N)
+			}
+			else {
+				forward pathexec -m resumePath : resumePath($N)
+			}
+			updateResource [# "$Val" #]			
+		}
+	}
+	Goto scanWait if [# N > 0 #] else endJob
+	
+	State endJob{
+		println("sonarshim BYE")
+	}
+}
+
+QActor pathexec context ctx_wasteservice_proto_ctx {
+	[# var Counter = 0 #]
+	State s0 initial{  	
+		printCurrentMessage
+	}	
+	Transition t1 whenRequest dopath -> doThePath
+				  whenInterrupt stopPath -> stopped
+	
+	State doThePath{
+		printCurrentMessage
+		[# Counter = 4 #]
+ 	}
+	Goto nextMove 
+	
+	State nextMove {
+		//printCurrentMessage
+		//println("pathexec | Move progress: ${5 - Counter}")
+		[# MsgUtil.outgreen("pathexec | Move progress: ${5 - Counter}") #]
+		[# Counter-- #]
+	}
+	Transition t2 whenTime      500      -> checkWorkEnded
+	              //whenMsg tick -> checkWorkEnded
+				  whenInterrupt stopPath -> stopped
+	  
+	State checkWorkEnded {	
+		//printCurrentMessage	
+		[# MsgUtil.outblue("pathexec | checkWorkEnded: ${Counter}") #]
+	}
+	Goto endWorkOk if [# Counter <= 0 #] else nextMove 
+	
+	State endWorkOk {
+		//printCurrentMessage
+		println("########### endWorkOk: PATH DONE ########### ")
+		emit demo : demo(1)
+		replyTo dopath with dopathdone : dopathdone( ok )
+	}
+	Goto s0  
+	 
+	State stopped {
+		printCurrentMessage
+		//println("pathexec stopped")
+		[# MsgUtil.outmagenta("pathexec | pathexec stopped") #]
+	}
+	Transition t3 whenMsg resumePath -> resumeFromStop
+	
+	State resumeFromStop {
+		//printCurrentMessage
+		//println("pathexec resumed")
+		[# MsgUtil.outblue("pathexec | pathexec resumed") #]
+		returnFromInterrupt
+	}
+} 
+/* 
+QActor timer context ctx_wasteservice_proto_ctx{
+	[# var N = 1 #]
+	State s0 initial{
+		delay 500
+		[# MsgUtil.outblue(" .... timer | emits $N ") #]
+		forward pathexec -m tick : tick($N)
+		[# N = N + 1 #] 
+	}
+	Goto s0 if [# N < 5 #] else endJob
+	State endJob{
+		println("timer BYE")
+	}	
+}*/
