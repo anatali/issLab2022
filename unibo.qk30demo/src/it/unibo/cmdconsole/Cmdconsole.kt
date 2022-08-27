@@ -20,7 +20,11 @@ class Cmdconsole ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				state("s0") { //this:State
 					action { //it:State
 						 consolegui.StartStopGui( "boundaryqak30", 8032 )  
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 					 transition( edgeName="goto",targetState="alarmSimulation", cond=doswitch() )
 				}	 
 				state("alarmSimulation") { //this:State
@@ -28,7 +32,11 @@ class Cmdconsole ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						delay(3000) 
 						emit("alarm", "alarm($N)" ) 
 						 N = N+1  
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 					 transition( edgeName="goto",targetState="alarmSimulation", cond=doswitch() )
 				}	 
 			}

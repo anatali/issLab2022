@@ -19,9 +19,13 @@ class Applobserver ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 				state("s0") { //this:State
 					action { //it:State
 						CoapObserverSupport(myself, "localhost","8032","ctxboundaryqak30","boundaryqak30")
+						//genTimer( actor, state )
 					}
-					 transition(edgeName="t05",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
-					transition(edgeName="t06",targetState="handleAlarm",cond=whenEvent("alarm"))
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t07",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
+					transition(edgeName="t08",targetState="handleAlarm",cond=whenEvent("alarm"))
 				}	 
 				state("handleUpdate") { //this:State
 					action { //it:State
@@ -29,9 +33,13 @@ class Applobserver ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 MsgUtil.outgreen("applobserver OBSERVES: ${payloadArg(1)} FROM ${payloadArg(0)} ")  
 						}
+						//genTimer( actor, state )
 					}
-					 transition(edgeName="t07",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
-					transition(edgeName="t08",targetState="handleAlarm",cond=whenEvent("alarm"))
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t09",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
+					transition(edgeName="t010",targetState="handleAlarm",cond=whenEvent("alarm"))
 				}	 
 				state("handleAlarm") { //this:State
 					action { //it:State
@@ -39,9 +47,13 @@ class Applobserver ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 						                        currentMsg.msgContent()) ) { //set msgArgList
 								 MsgUtil.outmagenta("applobserver handles ALARM: ${payloadArg(0)}")  
 						}
+						//genTimer( actor, state )
 					}
-					 transition(edgeName="t09",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
-					transition(edgeName="t010",targetState="handleAlarm",cond=whenEvent("alarm"))
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t011",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
+					transition(edgeName="t012",targetState="handleAlarm",cond=whenEvent("alarm"))
 				}	 
 			}
 		}

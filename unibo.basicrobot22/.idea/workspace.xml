@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4c3c3110-410d-4cbf-9548-c0723381ed26" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot22.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot22.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot22.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/.idea/modules/unibo.demo0g.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/.idea/modules/unibo.demo0g.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/.idea/modules/unibo.demo0g.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/resources/connQak/connQakBase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/resources/connQak/connQakCoap.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/resources/connQak/connQakHttp.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/resources/connQak/connQakMqtt.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/resources/connQak/connQakTcp.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.qk30demo/resources/connQak/sysConnKb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basicrobotConfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/basicrobotConfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build2022.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build2022.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/robotVirtual/virtualrobotSupport2021.kt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/robotVirtual/virtualrobotSupport2021.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/basicrobot.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/basicrobot.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.comm22/src/unibo/comm22/tcp/TcpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.comm22/src/unibo/comm22/tcp/TcpServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/ContextMsgHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/ContextMsgHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/NodeProxy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/NodeProxy.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/QakContextServer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/QakContextServer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/sysUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qakactor22/src/main/kotlin/sysUtil.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qk30demo/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/Arch_boundaryqak30.py" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qk30demo/Arch_boundaryqak30.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/boundaryqak30.pl" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qk30demo/boundaryqak30.pl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/build2022.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qk30demo/build2022.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qk30demo/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/boundaryqak30.qakt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qk30demo/src/boundaryqak30.qak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/it/unibo/componenta/Componenta.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/it/unibo/componentb/Componentb.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/it/unibo/componentc/Componentc.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/it/unibo/ctxtesta/MainCtxtesta.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/it/unibo/ctxtestb/MainCtxtestb.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/it/unibo/ctxtestc/MainCtxtestc.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.qk30demo/src/moreContexts.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.qk30demo/src/moreContexts.qakt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.comm22-1.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.comm22-1.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibolibs/unibo.qakactor22-3.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../unibolibs/unibo.qakactor22-3.1.jar" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="2A9HDQROGNgSpSp61HzK3RkUYw9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Didattica2021\issLab2021\unibo.basicrobot22" />
+      <recent name="C:\Didattica2021\issLab2021\unibo.basicrobot22\resources" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MainCtxbasicrobotKt">
+    <configuration name="BasicrobotCoapObserverKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="unibo.basicrobot.main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="observers.BasicrobotCoapObserverKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConsoleGuiSimpleKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="unibo.basicrobot.main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="consoles.ConsoleGuiSimpleKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainCtxbasicrobotKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="unibo.basicrobot22.main" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="it.unibo.ctxbasicrobot.MainCtxbasicrobotKt" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainCtxbasicrobotKt" />
+        <item itemvalue="Application.MainCtxbasicrobotKt" />
+        <item itemvalue="Application.ConsoleGuiSimpleKt" />
+        <item itemvalue="Application.MainCtxbasicrobotKt" />
+        <item itemvalue="Application.MainCtxbasicrobotKt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4c3c3110-410d-4cbf-9548-c0723381ed26" name="Default Changelist" comment="" />
+      <created>1654414760896</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1654414760896</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>

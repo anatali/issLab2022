@@ -22,11 +22,11 @@ Reply   stepfail   : stepfail(DURATION, CAUSE)
 Dispatch coapUpdate: coapUpdate(RESOURCE, VALUE)
  
 Event alarm        : alarm(X)
- 
+  
 Context ctxboundaryqak30   ip [host="localhost" port=8032]
-Context ctxbasicrobot      ip [host="localhost" port=8020]   
-Context ctxconsole         ip [host="localhost" port=8042]
-Context ctxobserver        ip [host="localhost" port=8044]    
+Context ctxbasicrobot      ip [host="127.0.0.1" port=8020]   
+//Context ctxconsole         ip [host="localhost" port=8042]
+//Context ctxobserver        ip [host="localhost" port=8044]    
   
 ExternalQActor basicrobot context ctxbasicrobot  
  
@@ -37,8 +37,9 @@ QActor boundaryqak30 context ctxboundaryqak30{
 		[# NumStep     = 0; #] 
 		updateResource [# "waitingOn( edge_$NumStep )" #] 
  	}
-	Transition t0  whenMsg init -> coverNextEdge
-	
+	Transition t0  whenTime 5000 -> coverNextEdge   //inizia da solo dopo 5 sec
+				   whenMsg init -> coverNextEdge    //attivato da console
+	               whenInterrupt stop -> handleStop //interrotto prima di init
 
 	State coverNextEdge{  		  
    		delay 500 
@@ -59,13 +60,15 @@ QActor boundaryqak30 context ctxboundaryqak30{
 	Goto coverNextEdge if [# NumStep < 4 #] else endOfWork
 
   	State handleStop{
-  		printCurrentMessage
+  		//printCurrentMessage
+  		[# MsgUtil.outmagenta("boundaryqak30 |  stopped") #]
   		updateResource [# "stopped" #]
   	}
   	Transition t0 whenMsg resume -> exitFromStop
   	
   	State exitFromStop{
    		updateResource [# "resumed" #]
+  		[# MsgUtil.outgreen("boundaryqak30 |  resume") #]
   		returnFromInterrupt
   	}
  	 
@@ -79,7 +82,7 @@ QActor boundaryqak30 context ctxboundaryqak30{
 /*
  * Console
  */
-QActor cmdconsole context ctxconsole { //ctxconsole ctxboundaryqak30{
+QActor cmdconsole context ctxboundaryqak30 { //ctxconsole ctxboundaryqak30{
 [# var N=0 #]
 	State s0 initial{
 		[# consolegui.StartStopGui( "boundaryqak30", 8032 ) #]
@@ -109,9 +112,9 @@ QActor cmdconsole context ctxconsole { //ctxconsole ctxboundaryqak30{
 	}
 	Transition t0 whenMsg coapUpdate -> handleUpdate
  
- } 
+ }  
  */ 
-QActor applobserver context ctxobserver { //ctxobserver ctxboundaryqak30{
+QActor applobserver context ctxboundaryqak30 { //ctxobserver ctxboundaryqak30{
  	State s0 initial{
 		observeResource boundaryqak30
 	} 

@@ -22,8 +22,18 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						 NumStep     = 0;  
 						updateResourceRep( "waitingOn( edge_$NumStep )"  
 						)
+						//genTimer( actor, state )
 					}
-					 transition(edgeName="t00",targetState="coverNextEdge",cond=whenDispatch("init"))
+					//After Lenzi Aug2002
+					sysaction { //it:State
+				 	 		//sysaction { //it:State
+				 	 		  stateTimer = TimerActor("timer_s0", 
+				 	 			scope, context!!, "local_tout_boundaryqak30_s0", 5000.toLong() )
+				 	 		//}
+					}	 	 
+					 transition(edgeName="t00",targetState="coverNextEdge",cond=whenTimeout("local_tout_boundaryqak30_s0"))   
+					transition(edgeName="t01",targetState="coverNextEdge",cond=whenDispatch("init"))
+					interrupthandle(edgeName="t02",targetState="handleStop",cond=whenDispatch("stop"),interruptedStateTransitions)
 				}	 
 				state("coverNextEdge") { //this:State
 					action { //it:State
@@ -31,10 +41,14 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						updateResourceRep( "doingastep $NumStep"  
 						)
 						request("step", "step(350)" ,"basicrobot" )  
+						//genTimer( actor, state )
 					}
-					 transition(edgeName="t01",targetState="coverNextEdge",cond=whenReply("stepdone"))
-					transition(edgeName="t02",targetState="otherEdge",cond=whenReply("stepfail"))
-					interrupthandle(edgeName="t03",targetState="handleStop",cond=whenDispatch("stop"),interruptedStateTransitions)
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t03",targetState="coverNextEdge",cond=whenReply("stepdone"))
+					transition(edgeName="t04",targetState="otherEdge",cond=whenReply("stepfail"))
+					interrupthandle(edgeName="t05",targetState="handleStop",cond=whenDispatch("stop"),interruptedStateTransitions)
 				}	 
 				state("otherEdge") { //this:State
 					action { //it:State
@@ -43,7 +57,11 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						updateResourceRep( "covering( edge_$NumStep)"  
 						)
 						forward("cmd", "cmd(l)" ,"basicrobot" ) 
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 					 transition( edgeName="goto",targetState="coverNextEdge", cond=doswitchGuarded({ NumStep < 4  
 					}) )
 					transition( edgeName="goto",targetState="endOfWork", cond=doswitchGuarded({! ( NumStep < 4  
@@ -51,25 +69,38 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				}	 
 				state("handleStop") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
+						 MsgUtil.outmagenta("boundaryqak30 |  stopped")  
 						updateResourceRep( "stopped"  
 						)
+						//genTimer( actor, state )
 					}
-					 transition(edgeName="t04",targetState="exitFromStop",cond=whenDispatch("resume"))
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t06",targetState="exitFromStop",cond=whenDispatch("resume"))
 				}	 
 				state("exitFromStop") { //this:State
 					action { //it:State
 						updateResourceRep( "resumed"  
 						)
+						 MsgUtil.outgreen("boundaryqak30 |  resume")  
 						returnFromInterrupt(interruptedStateTransitions)
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 				}	 
 				state("endOfWork") { //this:State
 					action { //it:State
 						updateResourceRep( "athomeagain"  
 						)
 						println("$name in ${currentState.stateName} | $currentMsg")
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 			}
