@@ -19,6 +19,16 @@ class Cmdconsole ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
+						request("ready", "ready(tostart)" ,"boundaryqak30" )  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t08",targetState="alarmSimulation",cond=whenReply("oktogo"))
+				}	 
+				state("s00") { //this:State
+					action { //it:State
 						 consolegui.StartStopGui( "boundaryqak30", 8032 )  
 						//genTimer( actor, state )
 					}

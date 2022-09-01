@@ -24,8 +24,8 @@ class Applobserver ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t07",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
-					transition(edgeName="t08",targetState="handleAlarm",cond=whenEvent("alarm"))
+					 transition(edgeName="t09",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
+					transition(edgeName="t010",targetState="handleAlarm",cond=whenEvent("alarm"))
 				}	 
 				state("handleUpdate") { //this:State
 					action { //it:State
@@ -38,8 +38,8 @@ class Applobserver ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t09",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
-					transition(edgeName="t010",targetState="handleAlarm",cond=whenEvent("alarm"))
+					 transition(edgeName="t011",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
+					transition(edgeName="t012",targetState="handleAlarm",cond=whenEvent("alarm"))
 				}	 
 				state("handleAlarm") { //this:State
 					action { //it:State
@@ -52,8 +52,8 @@ class Applobserver ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( nam
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t011",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
-					transition(edgeName="t012",targetState="handleAlarm",cond=whenEvent("alarm"))
+					 transition(edgeName="t013",targetState="handleUpdate",cond=whenDispatch("coapUpdate"))
+					transition(edgeName="t014",targetState="handleAlarm",cond=whenEvent("alarm"))
 				}	 
 			}
 		}

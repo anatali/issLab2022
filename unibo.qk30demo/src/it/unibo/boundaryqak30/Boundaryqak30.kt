@@ -20,20 +20,31 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 				state("s0") { //this:State
 					action { //it:State
 						 NumStep     = 0;  
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t00",targetState="s00",cond=whenRequest("ready"))
+				}	 
+				state("s00") { //this:State
+					action { //it:State
+						 NumStep     = 0;  
 						updateResourceRep( "waitingOn( edge_$NumStep )"  
 						)
+						answer("ready", "oktogo", "oktogo(boundaryqak30)"   )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 				 	 		//sysaction { //it:State
-				 	 		  stateTimer = TimerActor("timer_s0", 
-				 	 			scope, context!!, "local_tout_boundaryqak30_s0", 5000.toLong() )
+				 	 		  stateTimer = TimerActor("timer_s00", 
+				 	 			scope, context!!, "local_tout_boundaryqak30_s00", 5000.toLong() )
 				 	 		//}
 					}	 	 
-					 transition(edgeName="t00",targetState="coverNextEdge",cond=whenTimeout("local_tout_boundaryqak30_s0"))   
-					transition(edgeName="t01",targetState="coverNextEdge",cond=whenDispatch("init"))
-					interrupthandle(edgeName="t02",targetState="handleStop",cond=whenDispatch("stop"),interruptedStateTransitions)
+					 transition(edgeName="t01",targetState="coverNextEdge",cond=whenTimeout("local_tout_boundaryqak30_s00"))   
+					transition(edgeName="t02",targetState="coverNextEdge",cond=whenDispatch("init"))
+					interrupthandle(edgeName="t03",targetState="handleStop",cond=whenDispatch("stop"),interruptedStateTransitions)
 				}	 
 				state("coverNextEdge") { //this:State
 					action { //it:State
@@ -46,9 +57,9 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t03",targetState="coverNextEdge",cond=whenReply("stepdone"))
-					transition(edgeName="t04",targetState="otherEdge",cond=whenReply("stepfail"))
-					interrupthandle(edgeName="t05",targetState="handleStop",cond=whenDispatch("stop"),interruptedStateTransitions)
+					 transition(edgeName="t04",targetState="coverNextEdge",cond=whenReply("stepdone"))
+					transition(edgeName="t05",targetState="otherEdge",cond=whenReply("stepfail"))
+					interrupthandle(edgeName="t06",targetState="handleStop",cond=whenDispatch("stop"),interruptedStateTransitions)
 				}	 
 				state("otherEdge") { //this:State
 					action { //it:State
@@ -77,7 +88,7 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t06",targetState="exitFromStop",cond=whenDispatch("resume"))
+					 transition(edgeName="t07",targetState="exitFromStop",cond=whenDispatch("resume"))
 				}	 
 				state("exitFromStop") { //this:State
 					action { //it:State

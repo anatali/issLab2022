@@ -1,0 +1,109 @@
+System tf22sprint0 
+ 
+Request depositrequest : depositrequest(MATERIAL, TRUCKLOAD)
+Reply loadaccept       : loadaccept(MATERIAL, TRUCKLOAD)
+Reply loadrejected     : loadrejected(MATERIAL, TRUCKLOAD)
+ 
+Request todocmd        : todocmd(MATERIAL, TRUCKLOAD)
+Reply   todocmddanswer : todocmddanswer( RESULT )
+ 
+Dispatch guiupdate     : guiupdate(Args)
+
+Event  alarm           : alarm(X)
+Event  resume          : resume(X)
+
+/* Messages for basicrobot */
+Dispatch cmd        : cmd(MOVE) 
+Request step       : step( TIME )	
+Reply   stepdone   : stepdone(V) 
+Reply   stepfail   : stepfail(DT, REASON)
+
+Context ctxwasteservice ip [ host="localhost" port=8013 ]
+Context ctxbasicrobot   ip [ host="127.0.0.1" port=8020 ]
+Context ctxdriver       ip [ host="127.0.0.1" port=8040 ]
+Context ctxrasp         ip [ host="127.0.0.1" port=8070 ]
+
+ExternalQActor basicrobot context ctxbasicrobot
+
+QActor wasteservice context ctxwasteservice {
+	State s0 initial { 
+ 		println("the wasteservice is waiting ... ")
+  		forward wastewervicewtatusgui -m guiupdate : guiupdate("waiting for deposit request")
+	}
+	Transition t0 whenRequest depositrequest -> handlerequest
+	
+	State handlerequest{ 
+  		request transporttrolley -m todocmd : todocmd($Material,$TruckLoad)
+	}
+	Transition t0 whenReply todocmddanswer -> handlemtrolleyanswer
+	
+	State handlemtrolleyanswer{
+		println("the wasteservice has received the answer ")
+		replyTo depositrequest with loadaccept : loadaccept(glass,20)
+	}
+ }
+
+QActor transporttrolley context ctxwasteservice {
+	[# var InterruptedState = "none" #]
+	State s0 initial {
+   		forward wastewervicewtatusgui -m guiupdate : guiupdate("trolley waiting for cmd ...")
+ 	}
+	Transition t0 whenRequest todocmd  -> todocmdhandle
+	              whenEvent alarm      -> handleAlarm
+ 	
+	State todocmdhandle{
+		println("the transporttrolley is doing ..")
+		forward basicrobot -m cmd  : cmd(r)
+		request basicrobot -m step : step(350)
+   		forward wastewervicewtatusgui -m guiupdate : guiupdate("trolley is doing ...")
+	}
+	Transition t0 whenReply stepdone -> todoMove  
+	              whenEvent alarm    -> handleAlarm
+					
+	State todoMove{
+		
+	}
+	
+	State handleAlarm{
+		
+	}
+	Transition t0 whenEvent resume -> todointerrupthandling
+	
+	State todointerrupthandling{
+		
+	}
+ }
+ 
+QActor wastewervicewtatusgui context ctxwasteservice {
+	State s0 initial {
+		println("the gui is waiting ..")
+	}	
+	Transition t0 whenMsg guiupdate -> doguiupdate
+
+	State doguiupdate{
+		onMsg( guiupdate : guiupdate(ARG) ){
+				println("GUI:${payloadArg(0)}")
+		}
+	}
+	Goto s0
+}
+
+QActor driversimulator context ctxdriver {
+	State s0 initial {
+		println("driversimulator")
+		request wasteservice -m depositrequest :  depositrequest(glass,22)
+	}
+	Transition t0 whenReply loadaccept -> handleAccept
+	
+	State handleAccept{
+		printCurrentMessage
+ 	}
+
+}
+
+QActor sonaronrasp context ctxrasp{
+	State s0 initial {
+		emit alarm : alarm(distance)
+		emit resume : resume(1)
+	}
+}
