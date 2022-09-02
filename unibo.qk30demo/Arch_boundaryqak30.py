@@ -27,11 +27,11 @@ with Diagram('boundaryqak30Arch', show=False, outformat='png', graph_attr=grapha
           cmdconsole=Custom('cmdconsole','./qakicons/symActorSmall.png')
      with Cluster('ctxobserver', graph_attr=nodeattr):
           applobserver=Custom('applobserver','./qakicons/symActorSmall.png')
-     boundaryqak30 >> Edge(color='green', style='dashed', xlabel='oktogo') >> sys 
-     boundaryqak30 >> Edge(color='magenta', style='solid', xlabel='step') >> basicrobot
-     boundaryqak30 >> Edge(color='blue', style='solid', xlabel='cmd') >> basicrobot
-     cmdconsole >> Edge(color='magenta', style='solid', xlabel='ready') >> boundaryqak30
-     cmdconsole >> Edge( xlabel='alarm', **eventedgeattr) >> sys
-     boundaryqak30 >> Edge(color='blue', style='solid', xlabel='coapUpdate') >> applobserver
-     sys >> Edge(color='red', style='dashed', xlabel='alarm') >> applobserver
+     boundaryqak30 >> Edge(color='darkgreen', style='dashed', xlabel='readyok', fontcolor='darkgreen') >> cmdconsole
+     boundaryqak30 >> Edge(color='magenta', style='solid', xlabel='step', fontcolor='magenta') >> basicrobot
+     boundaryqak30 >> Edge(color='blue', style='solid', xlabel='cmd', fontcolor='blue') >> basicrobot
+     cmdconsole >> Edge(color='magenta', style='solid', xlabel='ready', fontcolor='magenta') >> boundaryqak30
+     cmdconsole >> Edge( xlabel='alarm', **eventedgeattr, fontcolor='red') >> sys
+     boundaryqak30 >> Edge(color='blue', style='solid', xlabel='coapUpdate', fontcolor='blue') >> applobserver
+     sys >> Edge(color='red', style='dashed', xlabel='alarm', fontcolor='red') >> applobserver
 diag

@@ -242,11 +242,11 @@ Estensioni estate 2022
 
 Nuova versione dei plugin qak:
 
-- :blue:`it.unibo.Qactork_1.3.1`
-- :blue:`it.unibo.Qactork.ide_1.3.1`
-- :blue:`it.unibo.Qactork.ui_1.3.1`
+- :blue:`it.unibo.Qactork_1.3.2`
+- :blue:`it.unibo.Qactork.ide_1.3.2`
+- :blue:`it.unibo.Qactork.ui_1.3.2`
 
-Nuova versione del supporto run-time: :blue:`unibo.qakactor22-3.1`
+Nuova versione del supporto run-time: :blue:`unibo.qakactor22-3.2`
 
 
 ++++++++++++++++++++++++++++
@@ -270,6 +270,18 @@ Nuove features
   Questa feature è stata proposta  da *Lenzi* che ne ha fornito una prima realizzazione.
 - Possibilità di specificare **più contesti** nello stesso nodo :blue:`localhost`. Questa feature è stata proposta  da *Giannatempo*
   che ne ha fornito una prima realizzazione.
+- (2 Settembre 2022) Per poter visualizzare in un diagramma **anche le risposte**, 
+  la operazione Qak :blue:`replyTo` può essere terminata 
+  da una frase **opzionale** *caller==* che indica il chiamante cui la risposta si intende inviata. Ad esempio:
+  
+  .. code::
+
+     replyTo ready with readyok : readyok(boundaryqak30) caller== cmdconsole
+   
+  Se il sender della richiesta cui si risponde non è quello indicato dopo *caller==*,  
+  si genera - a runtime - un avviso di errore in colore rosso, insieme
+  a un segnale acustico. L'applicazion e prosegue, ma il digramma risulta sbagliato e l'errore va corretto 
+  agendo sul modello.
 
 ++++++++++++++++++++++++++++
 unibo.qk30demo
@@ -282,8 +294,13 @@ Un esempio delle nuove features viene fornito nel modello *boundaryqak30.qak*  d
      :width: 60%
 
 
-L'oggetto Kotlin *externalCoapObserver.kt* realizza un observer eseterno dell'attore *boundaryqak30* che si affianca all'attore-observer
-interno al modello di nome *applobserver*.
+L'attore *cmdconsole* invia la richiesta *ready* a boundaryqak30 e quando riceve la **risposta** (*readyok*)
+mostra all'utente una GUI (realizzata in Java).
 
-L'attore *cmdconsole.kt* emette un evento *alarm* ogni 3 secondi che viene gestito da *applobserver* come esempio di uso degli eventi
-(e di alternativa al meccanismo di CoAP-osservabilità)
+Successivamente, la console emette un evento *alarm* ogni 5 secondi; questo evento 
+viene gestito da *applobserver* come esempio di uso degli eventi
+(e di alternativa al meccanismo di CoAP-osservabilità).
+
+L'oggetto Kotlin *externalCoapObserver.kt* è un 'alieno' (definito nella directory *resources/observers*) 
+che realizza un observer dell'attore *boundaryqak30*.
+Questo observer si affianca all'attore-observer interno al modello, di nome *applobserver*.

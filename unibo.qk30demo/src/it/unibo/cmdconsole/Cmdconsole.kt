@@ -25,7 +25,7 @@ class Cmdconsole ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t08",targetState="alarmSimulation",cond=whenReply("oktogo"))
+					 transition(edgeName="t08",targetState="s00",cond=whenReply("readyok"))
 				}	 
 				state("s00") { //this:State
 					action { //it:State
@@ -39,7 +39,7 @@ class Cmdconsole ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("alarmSimulation") { //this:State
 					action { //it:State
-						delay(3000) 
+						delay(5000) 
 						emit("alarm", "alarm($N)" ) 
 						 N = N+1  
 						//genTimer( actor, state )

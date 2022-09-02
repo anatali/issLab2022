@@ -12,7 +12,7 @@ Dispatch init      : init(X)
 Dispatch resume    : resume(X)
 Dispatch stop      : stop(X) 
 Request  ready     : ready(X)
-Reply    oktogo    : oktogo(X)   //To ready
+Reply    readyok   : readyok(X)   //To ready
 
 //Related to the basicrobot
 Dispatch cmd       : cmd(MOVE)     
@@ -40,12 +40,12 @@ QActor boundaryqak30 context ctxboundaryqak30{
  	}
  	Transition t0 whenRequest ready -> s00
 
- 
+  
 	State s00 {
 		[# NumStep     = 0; #] 
 		updateResource [# "waitingOn( edge_$NumStep )" #] 
-		replyTo ready with oktogo : oktogo(boundaryqak30)
- 	}
+		replyTo ready with readyok : readyok(boundaryqak30) caller== cmdconsole
+ 	} 
 	Transition t0  whenTime 5000 -> coverNextEdge   //inizia da solo dopo 5 sec
 				   whenMsg init -> coverNextEdge    //attivato da console
 	               whenInterrupt stop -> handleStop //interrotto prima di init
@@ -96,7 +96,7 @@ QActor cmdconsole context ctxconsole { //ctxconsole ctxboundaryqak30{
 	State s0  initial{
  		request boundaryqak30 -m ready : ready(tostart)
 	}
-	Transition t0 whenReply oktogo -> alarmSimulation
+	Transition t0 whenReply readyok -> s00
 
 	State s00 {
 		[# consolegui.StartStopGui( "boundaryqak30", 8032 ) #]
@@ -104,7 +104,7 @@ QActor cmdconsole context ctxconsole { //ctxconsole ctxboundaryqak30{
 	Goto alarmSimulation
 	
 	State alarmSimulation{
-		delay 3000
+		delay 5000
 		emit alarm : alarm($N)
 		[# N = N+1 #]
 	}
@@ -128,6 +128,8 @@ QActor cmdconsole context ctxconsole { //ctxconsole ctxboundaryqak30{
  
  }  
  */ 
+ 
+ 
 QActor applobserver context ctxobserver { //ctxobserver ctxboundaryqak30{
  	State s0 initial{
 		observeResource boundaryqak30

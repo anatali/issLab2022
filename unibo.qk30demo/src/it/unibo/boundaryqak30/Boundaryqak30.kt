@@ -32,7 +32,7 @@ class Boundaryqak30 ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( na
 						 NumStep     = 0;  
 						updateResourceRep( "waitingOn( edge_$NumStep )"  
 						)
-						answer("ready", "oktogo", "oktogo(boundaryqak30)"   )  
+						answer("ready", "readyok", "readyok(boundaryqak30)","cmdconsole"   )  
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002

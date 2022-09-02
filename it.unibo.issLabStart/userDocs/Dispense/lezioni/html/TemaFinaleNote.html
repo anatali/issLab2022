@@ -244,11 +244,11 @@ o (forse, preferibilmente) <span class="blue">riusato</span> all’interno di qu
 <h2>Estensioni estate 2022<a class="headerlink" href="#estensioni-estate-2022" title="Permalink to this headline">¶</a></h2>
 <p>Nuova versione dei plugin qak:</p>
 <ul class="simple">
-<li><p><span class="blue">it.unibo.Qactork_1.3.1</span></p></li>
-<li><p><span class="blue">it.unibo.Qactork.ide_1.3.1</span></p></li>
-<li><p><span class="blue">it.unibo.Qactork.ui_1.3.1</span></p></li>
+<li><p><span class="blue">it.unibo.Qactork_1.3.2</span></p></li>
+<li><p><span class="blue">it.unibo.Qactork.ide_1.3.2</span></p></li>
+<li><p><span class="blue">it.unibo.Qactork.ui_1.3.2</span></p></li>
 </ul>
-<p>Nuova versione del supporto run-time: <span class="blue">unibo.qakactor22-3.1</span></p>
+<p>Nuova versione del supporto run-time: <span class="blue">unibo.qakactor22-3.2</span></p>
 <section id="nuove-features">
 <h3>Nuove features<a class="headerlink" href="#nuove-features" title="Permalink to this headline">¶</a></h3>
 <ul>
@@ -270,6 +270,17 @@ da <span class="blue">A</span> in un dispatch</p>
 </li>
 <li><p>Possibilità di specificare <strong>più contesti</strong> nello stesso nodo <span class="blue">localhost</span>. Questa feature è stata proposta  da <em>Giannatempo</em>
 che ne ha fornito una prima realizzazione.</p></li>
+<li><p>(2 Settembre 2022) Per poter visualizzare in un diagramma <strong>anche le risposte</strong>,
+la operazione Qak <span class="blue">replyTo</span> può essere terminata
+da una frase <strong>opzionale</strong> <em>caller==</em> che indica il chiamante cui la risposta si intende inviata. Ad esempio:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">replyTo</span> <span class="n">ready</span> <span class="k">with</span> <span class="n">readyok</span> <span class="p">:</span> <span class="n">readyok</span><span class="p">(</span><span class="n">boundaryqak30</span><span class="p">)</span> <span class="n">caller</span><span class="o">==</span> <span class="n">cmdconsole</span>
+</pre></div>
+</div>
+<p>Se il sender della richiesta cui si risponde non è quello indicato dopo <em>caller==</em>,
+si genera - a runtime - un avviso di errore in colore rosso, insieme
+a un segnale acustico. L’applicazion e prosegue, ma il digramma risulta sbagliato e l’errore va corretto
+agendo sul modello.</p>
+</li>
 </ul>
 </section>
 <section id="unibo-qk30demo">
@@ -278,10 +289,14 @@ che ne ha fornito una prima realizzazione.</p></li>
 <blockquote>
 <div><a class="reference internal image-reference" href="_images/boundaryqak30Arch.png"><img alt="_images/boundaryqak30Arch.png" class="align-center" src="_images/boundaryqak30Arch.png" style="width: 60%;" /></a>
 </div></blockquote>
-<p>L’oggetto Kotlin <em>externalCoapObserver.kt</em> realizza un observer eseterno dell’attore <em>boundaryqak30</em> che si affianca all’attore-observer
-interno al modello di nome <em>applobserver</em>.</p>
-<p>L’attore <em>cmdconsole.kt</em> emette un evento <em>alarm</em> ogni 3 secondi che viene gestito da <em>applobserver</em> come esempio di uso degli eventi
-(e di alternativa al meccanismo di CoAP-osservabilità)</p>
+<p>L’attore <em>cmdconsole</em> invia la richiesta <em>ready</em> a boundaryqak30 e quando riceve la <strong>risposta</strong> (<em>readyok</em>)
+mostra all’utente una GUI (realizzata in Java).</p>
+<p>Successivamente, la console emette un evento <em>alarm</em> ogni 5 secondi; questo evento
+viene gestito da <em>applobserver</em> come esempio di uso degli eventi
+(e di alternativa al meccanismo di CoAP-osservabilità).</p>
+<p>L’oggetto Kotlin <em>externalCoapObserver.kt</em> è un ‘alieno’ (definito nella directory <em>resources/observers</em>)
+che realizza un observer dell’attore <em>boundaryqak30</em>.
+Questo observer si affianca all’attore-observer interno al modello, di nome <em>applobserver</em>.</p>
 </section>
 </section>
 </section>
