@@ -59,7 +59,9 @@ private CoapObserveRelation relation = null;
 	}
 
 	public void removeObserve() {
-		relation.proactiveCancel();	
+		MsgUtil.outred("REMOVING OBSERVER: " + relation.getCurrent().getCode());
+		relation.proactiveCancel();
+		MsgUtil.outred("REMOVED OBSERVER: " + relation.getCurrent().getCode());
 	}
 	public void  observeResource( CoapHandler handler  ) {
 		relation = client.observe( handler );
@@ -108,35 +110,23 @@ private CoapObserveRelation relation = null;
 		cs.readTheResource();
 	}
 	public static void startAfterRemoteResourcePerhapsCreated() { //TEST_C
-		MsgUtil.outblue("startAfterRemoteResourceCreated");
-		//TEST STARTS BEFORE APP
-
+		MsgUtil.outblue("startAfterRemoteResourcePerhapsCreated");
 		CoapInteractionTest cs = new CoapInteractionTest();
-		cs.connectTo("localhost:8065","ctxresource1/resource1",true);
-		cs.readTheResource(); 	//qui readTheResource reads v=null
-		//CoapInteractionTest legge null (dopo un po) come per startBeforRemoteContextCreated
-		//INSERENDO il delay riesce a connettersi,  perdendo qualche update
-		//CommUtils.delay(3000);
 
 		new Thread(){
 			public void run(){
 				MainCtxresource1Kt.main();
 			}
 		}.start();
-
-
-		//TEST STARTS AFTER APP
-		//Se non faccio TEST STARTS BEFORE APP e decommento la parte che segue 
-		//sono sicuro che prima creo l'app, poi faccio il test
-/*
-        CommUtils.delay(2000); 		
-		CoapInteractionTest cs = new CoapInteractionTest();
+        //Attivo subito il test sperando di arrivare prima di
+		//resourceCtx.addActorResource(actor).
+		//In tal caso si vede il messaggio REMOVING OBSERVER
 		cs.connectTo("localhost:8065","ctxresource1/resource1",true);
 		for( int i=1; i<=3; i++){
 			cs.readTheResource();
 			CommUtils.delay(1000);
 		}
-*/
+
 	}
 
 	
@@ -153,8 +143,10 @@ private CoapObserveRelation relation = null;
 	 *         PRIMA che l'attivazione di resource1 sia completata,
 	 *         in modo che CoapServer ( attivato  da QakContext alla sua istanziazione ) 
 	 *         POTREBBE ricevere una richiesta per una risorsa che ancora non esiste.
-	 *         
-	 *    sysUtil.createActor -> QakContext.addactor( actor ) -> resourceCtx.addActorResource( actor )
+	 *         sysUtil.createActor -> QakContext.addactoractor) -> resourceCtx.addActorResource(actor)
+	 *         Output:
+	 *         	 tutto bene con possibile emissione (random) di un messaggio
+	 *           REMOVING OBSERVER nel caso la risorsa sia in corso di creazione
 	 */
 
 	public static void main(String[] args) {
