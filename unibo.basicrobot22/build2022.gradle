@@ -78,7 +78,7 @@ dependencies {
     /* UNIBO *************************************************************************************************************** */
     implementation name: 'uniboInterfaces'
     implementation name: '2p301'
-	implementation name: 'unibo.qakactor22-3.1'
+	implementation name: 'unibo.qakactor22-3.2'
 	implementation name: 'unibo.comm22-1.1'
 
     /* AIMA **************************************************************************************************************** */

@@ -87,8 +87,8 @@ implementation group: 'org.scream3r', name: 'jssc', version: '2.8.0'
     implementation name: 'uniboInterfaces'
     implementation name: '2p301'
     //implementation name: 'unibo.qakactor22-2.8'
-    implementation name: 'unibo.qakactor22-3.1'
-    implementation name: 'unibo.comm22-1.1'
+    implementation name: 'unibo.qakactor22-3.4'
+    implementation name: 'unibo.comm22-1.4'
     //implementation name: 'unibonoawtsupports'  //required by the old infrastructure
 	//implementation name: 'unibo.actor22-1.1'
 

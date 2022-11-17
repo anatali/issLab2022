@@ -1,0 +1,7 @@
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"execcmd", "msgId":"cmd"}
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"handleObstacle", "msgId":"obstacle"}
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"work", "nextstate":"endwork", "msgId":"end"}
+{"actor":"basicrobot", "msgType":"dispatch", "curstate":"doStep", "nextstate":"stepFail", "msgId":"obstacle"}
+{"actor":"envsonarhandler", "msgType":"dispatch", "curstate":"s0", "nextstate":"dontcare", "msgId":"cmd"}
+{"actor":"pathobs", "msgType":"dispatch", "curstate":"s0", "nextstate":"handleUpdate", "msgId":"coapUpdate"}
+{"actor":"pathobs", "msgType":"dispatch", "curstate":"handleUpdate", "nextstate":"handleUpdate", "msgId":"coapUpdate"}

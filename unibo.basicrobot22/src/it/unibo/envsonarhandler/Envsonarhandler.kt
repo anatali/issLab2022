@@ -19,20 +19,32 @@ class Envsonarhandler ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( 
 				state("s0") { //this:State
 					action { //it:State
 						println("envsonarhandler | (RE)START")
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 					 transition(edgeName="t16",targetState="dontcare",cond=whenDispatch("cmd"))
 					transition(edgeName="t17",targetState="handleEnvSonar",cond=whenEvent("sonar"))
 				}	 
 				state("dontcare") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 					 transition( edgeName="goto",targetState="s0", cond=doswitch() )
 				}	 
 				state("handleEnvSonar") { //this:State
 					action { //it:State
 						println("$name in ${currentState.stateName} | $currentMsg")
+						//genTimer( actor, state )
 					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
 					 transition(edgeName="t18",targetState="handleEnvSonar",cond=whenEvent("sonar"))
 				}	 
 			}

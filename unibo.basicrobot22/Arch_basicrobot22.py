@@ -26,9 +26,9 @@ with Diagram('basicrobot22Arch', show=False, outformat='png', graph_attr=graphat
           pathobs=Custom('pathobs','./qakicons/symActorSmall.png')
           datacleaner=Custom('datacleaner(coded)','./qakicons/codedQActor.png')
           distancefilter=Custom('distancefilter(coded)','./qakicons/codedQActor.png')
-     sys >> Edge(color='red', style='dashed', xlabel='sonar') >> envsonarhandler
-     pathexec >> Edge(color='blue', style='solid', xlabel='cmd') >> basicrobot
-     pathexec >> Edge(color='magenta', style='solid', xlabel='step') >> basicrobot
-     sys >> Edge(color='red', style='dashed', xlabel='alarm') >> pathexec
-     pathexec >> Edge(color='blue', style='solid', xlabel='coapUpdate') >> pathobs
+     sys >> Edge(color='red', style='dashed', xlabel='sonar', fontcolor='red') >> envsonarhandler
+     pathexec >> Edge(color='blue', style='solid', xlabel='cmd', fontcolor='blue') >> basicrobot
+     pathexec >> Edge(color='magenta', style='solid', xlabel='step', fontcolor='magenta') >> basicrobot
+     sys >> Edge(color='red', style='dashed', xlabel='alarm', fontcolor='red') >> pathexec
+     pathexec >> Edge(color='blue', style='solid', xlabel='coapUpdate', fontcolor='blue') >> pathobs
 diag
