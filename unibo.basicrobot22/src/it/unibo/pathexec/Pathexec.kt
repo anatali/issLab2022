@@ -80,10 +80,8 @@ class Pathexec ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name, s
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
-				 	 		//sysaction { //it:State
-				 	 		  stateTimer = TimerActor("timer_doMoveTurn", 
-				 	 			scope, context!!, "local_tout_pathexec_doMoveTurn", 300.toLong() )
-				 	 		//}
+				 	 		stateTimer = TimerActor("timer_doMoveTurn", 
+				 	 					  scope, context!!, "local_tout_pathexec_doMoveTurn", 300.toLong() )
 					}	 	 
 					 transition(edgeName="t010",targetState="nextMove",cond=whenTimeout("local_tout_pathexec_doMoveTurn"))   
 				}	 

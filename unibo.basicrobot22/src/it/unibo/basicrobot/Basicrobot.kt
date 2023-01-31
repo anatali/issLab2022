@@ -33,8 +33,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						 ){ var robotsonar = context!!.hasActor("realsonar")  
 						        	   if(robotsonar != null) unibo.robot.robotSupport.createSonarPipe(robotsonar) 
 						}
-						unibo.robot.robotSupport.move( "l"  )
-						unibo.robot.robotSupport.move( "r"  )
+						unibo.robot.robotSupport.move( "a"  )
+						unibo.robot.robotSupport.move( "d"  )
 						updateResourceRep( "basicrobot(start)"  
 						)
 						//genTimer( actor, state )
@@ -111,10 +111,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
-				 	 		//sysaction { //it:State
-				 	 		  stateTimer = TimerActor("timer_doStep", 
-				 	 			scope, context!!, "local_tout_basicrobot_doStep", StepTime )
-				 	 		//}
+				 	 		stateTimer = TimerActor("timer_doStep", 
+				 	 					  scope, context!!, "local_tout_basicrobot_doStep", StepTime )
 					}	 	 
 					 transition(edgeName="t04",targetState="stepDone",cond=whenTimeout("local_tout_basicrobot_doStep"))   
 					transition(edgeName="t05",targetState="stepFail",cond=whenDispatch("obstacle"))
@@ -137,7 +135,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					action { //it:State
 						Duration = getDuration(StartTime)
 						unibo.robot.robotSupport.move( "h"  )
-						 var TunedDuration =  Duration * 5 / 6  
+						 var TunedDuration   =  ((StepTime - Duration) * 15 / 100).toLong()    
 						println("basicrobot | stepFail duration=$Duration TunedDuration=$TunedDuration")
 						unibo.robot.robotSupport.move( "s"  )
 						delay(TunedDuration)

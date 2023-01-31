@@ -1,7 +1,9 @@
 version: '3'
 services:
   wenv:
-    image: docker.io/natbodocker/virtualrobotdisi:4.0
+    #image: docker.io/natbodocker/virtualrobotdisi23:1.0
+    image: virtualrobotdisi23:1.0
+    #image: docker.io/natbodocker/virtualrobotdisi:4.0
     #image: virtualrobotdisi:4.0
     ports:
       - 8090:8090 

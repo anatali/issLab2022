@@ -178,7 +178,8 @@ QActor envsonarhandler context ctxbasicrobot{
  * 
 
  */
- 
+
+/* 
 QActor pathexec context ctxbasicrobot{ 
 [# var CurMoveTodo = ""    //Upcase, since var to be used in guards
    var StepTime    = "300"
@@ -255,6 +256,14 @@ QActor pathexec context ctxbasicrobot{
 
 } 
 
+*/
+
+/*
+ * Un actor che opera come observer delle info emeese via coap da pathexec
+*/
+
+
+/* 
 QActor pathobs context ctxbasicrobot{
 	State s0 initial{  	
 		observeResource pathexec
@@ -267,4 +276,4 @@ QActor pathobs context ctxbasicrobot{
 		}
 	}
 	Transition t0 whenMsg coapUpdate -> handleUpdate
-}
+}*/
