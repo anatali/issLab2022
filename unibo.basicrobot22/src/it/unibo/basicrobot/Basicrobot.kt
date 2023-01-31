@@ -33,8 +33,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						 ){ var robotsonar = context!!.hasActor("realsonar")  
 						        	   if(robotsonar != null) unibo.robot.robotSupport.createSonarPipe(robotsonar) 
 						}
-						unibo.robot.robotSupport.move( "a"  )
-						unibo.robot.robotSupport.move( "d"  )
+						unibo.robot.robotSupport.move( "l"  )
+						unibo.robot.robotSupport.move( "r"  )
 						updateResourceRep( "basicrobot(start)"  
 						)
 						//genTimer( actor, state )
@@ -135,7 +135,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 					action { //it:State
 						Duration = getDuration(StartTime)
 						unibo.robot.robotSupport.move( "h"  )
-						 var TunedDuration   =  ((StepTime - Duration) * 15 / 100).toLong()    
+						 var TunedDuration =  Duration * 5 / 6  
 						println("basicrobot | stepFail duration=$Duration TunedDuration=$TunedDuration")
 						unibo.robot.robotSupport.move( "s"  )
 						delay(TunedDuration)

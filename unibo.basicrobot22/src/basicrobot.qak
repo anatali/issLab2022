@@ -8,8 +8,8 @@
 System  /* -trace  */   basicrobot22  
 //mqttBroker "broker.hivemq.com" : 1883 eventTopic "unibo/basicrobot"   //broker.hivemq.com
 
-Dispatch cmd       	: cmd(MOVE)     
-Dispatch end       	: end(ARG)  
+Dispatch cmd       	: cmd(MOVE)      
+Dispatch end       	: end(ARG)   
   
 Request step       : step( TIME )	
 Reply   stepdone   : stepdone(V)  
@@ -120,6 +120,7 @@ QActor basicrobot context ctxbasicrobot{
     	 
 	
 	State stepDone{   
+		printCurrentMessage
  		run unibo.robot.robotSupport.move( "h" )  //stop the real robot already done ???
 		updateResource [# "stepDone($StepTime)" #]
    		//emit info : info( stepdone($StepTime) )
@@ -129,6 +130,7 @@ QActor basicrobot context ctxbasicrobot{
 	Goto work  
  
 	State stepFail{  	 	
+		printCurrentMessage
 		setDuration Duration from StartTime
 		run unibo.robot.robotSupport.move( "h" )  //stop the (real) robot
 		//[# var TunedDuration =  Duration * 5 / 6 #]

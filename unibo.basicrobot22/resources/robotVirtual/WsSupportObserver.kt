@@ -26,26 +26,26 @@ class WsSupportObserver( val owner:String, val vrsupport : virtualrobotSupport20
 		}
 	}
 	override fun update( data : String ) {
- 		ColorsOut.out("WsSupportObserver update $data owner=$owner   ", ColorsOut.MAGENTA);
+ 		ColorsOut.outappl("WsSupportObserver update $data owner=$owner   ", ColorsOut.MAGENTA);
         val msgJson = JSONObject(data)
         //println("       &&& WsSupportObserver  | update msgJson=$msgJson" ) //${ aboutThreads()}
 		val ownerActor = sysUtil.getActor(owner)
 		if( ownerActor == null ) {
 			val ev = CommUtils.buildEvent( "wsconn", "wsEvent", data  );
-			ColorsOut.out("       &&& WsSupportObserver  | ownerActor null ev=$ev", ColorsOut.MAGENTA )
+			ColorsOut.outappl("       &&& WsSupportObserver  | ownerActor null ev=$ev", ColorsOut.MAGENTA )
 			return
 		}
 		var target : String
 
 		if( msgJson.has("collision") ){
 			var move = msgJson.getString("collision")
-			ColorsOut.outappl("WsSupportObserver move=$move}", ColorsOut.GREEN);
-			if( move == "moveForward") backALittle()
+			ColorsOut.outappl("WsSupportObserver move=$move", ColorsOut.GREEN);
+			//if( move == "moveForward") backALittle()
  		}
 		if( msgJson.has("target")   ){
 			target = msgJson.getString("target")
 			runBlocking {
-				ColorsOut.out("WsSupportObserver emits:obstacle($target)}", ColorsOut.GREEN);
+				ColorsOut.outappl("WsSupportObserver emits:obstacle($target)}", ColorsOut.GREEN);
 				ownerActor!!.emit("obstacle","obstacle($target)")
 			}
 		}

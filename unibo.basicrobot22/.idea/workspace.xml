@@ -5,30 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4c3c3110-410d-4cbf-9548-c0723381ed26" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../unibo.actor22/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../unibo.actor22/.idea/unibo.actor22.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/qakrestappl_Transitions.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.actor22/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.actor22/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.planner22/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.planner22/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../unibo.planner22/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.4.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot22.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot22.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot22.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/unibo.basicrobot22.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/unibo.basicrobot22.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.settings/org.eclipse.buildship.core.prefs" beforeDir="false" afterPath="$PROJECT_DIR$/.settings/org.eclipse.buildship.core.prefs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api_basicrobot.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Api_basicrobot.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api_basicrobot22.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Api_basicrobot22.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Arch_basicrobot22.py" beforeDir="false" afterPath="$PROJECT_DIR$/Arch_basicrobot22.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transitions_basicrobot.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transitions_basicrobot22.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/basicrobot22.pl" beforeDir="false" afterPath="$PROJECT_DIR$/basicrobot22.pl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basicrobot22.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/basicrobot22.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/robotMbot/ISensorObserverFromArduino.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/robotMbot/ISensorObserverFromArduino.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/robotMbot/JSSCSerialComm.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/robotMbot/JSSCSerialComm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/robotMbot/SerialPortConnSupport.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/robotMbot/SerialPortConnSupport.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/connQak/ConnectionType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/connQak/ConnectionType.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/connQak/SysConnKbKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/connQak/SysConnKbKt.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/connQak/connQakBase$Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/connQak/connQakBase$Companion.class" afterDir="false" />
@@ -46,26 +43,13 @@
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/consoles/ConsoleGuiSimpleKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/consoles/ConsoleGuiSimpleKt.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/consoles/consoleGuiSimple.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/consoles/consoleGuiSimple.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$1$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$7$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$7$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$7.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$8$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$8$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$9$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$9$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1$9.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot$getBody$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/basicrobot/Basicrobot.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/ctxbasicrobot/MainCtxbasicrobotKt$main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/ctxbasicrobot/MainCtxbasicrobotKt$main$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/ctxbasicrobot/MainCtxbasicrobotKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/ctxbasicrobot/MainCtxbasicrobotKt.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/envsonarhandler/Envsonarhandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/envsonarhandler/Envsonarhandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$6$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$6$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$7$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$7$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$8$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$8$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec$getBody$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathexec/Pathexec.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathobs/Pathobs.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/it/unibo/pathobs/Pathobs.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/observers/BasicrobotCoapObserverKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/observers/BasicrobotCoapObserverKt.class" afterDir="false" />
@@ -80,6 +64,7 @@
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/robotNano/nanoSupport.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/robotNano/nanoSupport.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/robotNano/sonarHCSR04Support.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/robotNano/sonarHCSR04Support.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/robotNano/sonarHCSR04SupportActor.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/robotNano/sonarHCSR04SupportActor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/WsSupportObserver$update$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/WsSupportObserver$update$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/WsSupportObserver.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/WsSupportObserver.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/virtualrobotSonarSupportActor$Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/virtualrobotSonarSupportActor$Companion.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/virtualrobotSonarSupportActor.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/kotlin/main/robotVirtual/virtualrobotSonarSupportActor.class" afterDir="false" />
@@ -116,29 +101,32 @@
       <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab.values.at" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/id-to-file.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.keystream.len" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.len" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.len" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab.values.at" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/caches-jvm/lookups/lookups.tab_i" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/kotlin/compileKotlin/last-build.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/compileKotlin/last-build.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/unibo.basicrobot22-2.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/kotlin/unibobasicrobot2220jar-classes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/kotlin/unibobasicrobot2220jar-classes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/scripts/unibo.basicrobot22" beforeDir="false" afterPath="$PROJECT_DIR$/build/scripts/unibo.basicrobot22" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/scripts/unibo.basicrobot22.bat" beforeDir="false" afterPath="$PROJECT_DIR$/build/scripts/unibo.basicrobot22.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/robotVirtual/WsSupportObserver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/robotVirtual/WsSupportObserver.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/basicrobot.qak" beforeDir="false" afterPath="$PROJECT_DIR$/src/basicrobot.qak" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/basicrobot/Basicrobot.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/ctxbasicrobot/MainCtxbasicrobot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/it/unibo/pathexec/Pathexec.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/it/unibo/pathexec/Pathexec.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.mapperQak22/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/.idea/modules/it.unibo.mapqak22.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/mapRoomEmpty.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.mapperQak22/mapRoomEmpty.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/mapRoomEmpty.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.mapperQak22/mapRoomEmpty.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/mapWithObst2019.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.mapperQak22/mapWithObst2019.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/mapWithObst2019.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.mapperQak22/mapWithObst2019.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/src/mapperqak22.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.mapperQak22/src/mapperqak22.qakt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.mapperQak22/src/mapwithobstqak22.qak" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.mapperQak22/src/mapwithobstqak22.qak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.planner22/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.planner22/.classpath" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../unibo.planner22/.project" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.planner22/.project" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.planner22/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.planner22/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../unibo.planner22/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../unibo.planner22/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -147,6 +135,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="2A9HDQROGNgSpSp61HzK3RkUYw9" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -161,7 +152,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Didattica2023/issLab2023/QakRestFacade" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.27586207" />
@@ -173,66 +164,48 @@
       <recent name="C:\Didattica2021\issLab2021\unibo.basicrobot22\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ConsoleGuiSimpleKt">
-    <configuration name="BasicrobotCoapObserverKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="unibo.basicrobot22.main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="observers.BasicrobotCoapObserverKt" />
-      <option name="WORKING_DIRECTORY" />
+  <component name="RunManager" selected="Kotlin.ConsoleGuiSimpleKt (1)">
+    <configuration name="ConsoleGuiSimpleKt (1)" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="consoles.ConsoleGuiSimpleKt" />
+      <module name="unibo.basicrobot.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="ConsoleGuiSimpleKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="unibo.basicrobot22.main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
       <option name="MAIN_CLASS_NAME" value="consoles.ConsoleGuiSimpleKt" />
-      <option name="WORKING_DIRECTORY" />
+      <module name="unibo.basicrobot22.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainCtxbasicrobotKt (1)" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="it.unibo.ctxbasicrobot.MainCtxbasicrobotKt" />
+      <module name="unibo.basicrobot.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="MainCtxbasicrobotKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="unibo.basicrobot22.main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
       <option name="MAIN_CLASS_NAME" value="it.unibo.ctxbasicrobot.MainCtxbasicrobotKt" />
-      <option name="WORKING_DIRECTORY" />
+      <module name="unibo.basicrobot22.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="PathexecCoapObserverKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <module name="unibo.basicrobot22.main" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
       <option name="MAIN_CLASS_NAME" value="observers.PathexecCoapObserverKt" />
-      <option name="WORKING_DIRECTORY" />
+      <module name="unibo.basicrobot22.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ConsoleGuiSimpleKt" />
-        <item itemvalue="Application.MainCtxbasicrobotKt" />
-        <item itemvalue="Application.ConsoleGuiSimpleKt" />
-        <item itemvalue="Application.MainCtxbasicrobotKt" />
-        <item itemvalue="Application.ConsoleGuiSimpleKt" />
+        <item itemvalue="Kotlin.ConsoleGuiSimpleKt (1)" />
+        <item itemvalue="Kotlin.MainCtxbasicrobotKt (1)" />
+        <item itemvalue="Kotlin.ConsoleGuiSimpleKt" />
+        <item itemvalue="Kotlin.MainCtxbasicrobotKt" />
       </list>
     </recent_temporary>
   </component>

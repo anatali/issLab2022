@@ -23,8 +23,8 @@
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.11.0" level="project" />
     <orderEntry type="library" name="Gradle: :uniboInterfaces:" level="project" />
     <orderEntry type="library" name="Gradle: :2p301:" level="project" />
-    <orderEntry type="library" name="Gradle: :unibo.qakactor22-3.1:" level="project" />
-    <orderEntry type="library" name="Gradle: :unibo.comm22-1.1:" level="project" />
+    <orderEntry type="library" name="Gradle: :unibo.qakactor22-3.4:" level="project" />
+    <orderEntry type="library" name="Gradle: :unibo.comm22-1.4:" level="project" />
     <orderEntry type="library" name="Gradle: :unibo.planner22-1.0:" level="project" />
     <orderEntry type="library" name="Gradle: com.googlecode.aima-java:aima-core:3.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.6.0" level="project" />
@@ -53,4 +53,5 @@
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents.core5:httpcore5-h2:5.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.eclipse.californium:californium-legal:3.5.0" level="project" />
   </component>
+  <component name="TestModuleProperties" production-module="unibo.basicrobot22.main" />
 </module>
