@@ -33,8 +33,8 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						 ){ var robotsonar = context!!.hasActor("realsonar")  
 						        	   if(robotsonar != null) unibo.robot.robotSupport.createSonarPipe(robotsonar) 
 						}
-						unibo.robot.robotSupport.move( "a"  )
-						unibo.robot.robotSupport.move( "d"  )
+						unibo.robot.robotSupport.move( "l"  )
+						unibo.robot.robotSupport.move( "r"  )
 						updateResourceRep( "basicrobot(start)"  
 						)
 						//genTimer( actor, state )
@@ -100,7 +100,7 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 						println("$name in ${currentState.stateName} | $currentMsg")
 						if( checkMsgContent( Term.createTerm("step(TIME)"), Term.createTerm("step(T)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-									StepTime     = payloadArg(0).toLong()  	 
+									StepTime = payloadArg(0).toLong() 	 
 								updateResourceRep( "step(${StepTime})"  
 								)
 						}
@@ -119,7 +119,6 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("stepDone") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
 						unibo.robot.robotSupport.move( "h"  )
 						updateResourceRep( "stepDone($StepTime)"  
 						)
@@ -134,11 +133,10 @@ class Basicrobot ( name: String, scope: CoroutineScope  ) : ActorBasicFsm( name,
 				}	 
 				state("stepFail") { //this:State
 					action { //it:State
-						println("$name in ${currentState.stateName} | $currentMsg")
 						Duration = getDuration(StartTime)
 						unibo.robot.robotSupport.move( "h"  )
-						 var TunedDuration   =  ((Duration * 0.80)).toLong()    
-						println("basicrobot | stepFail duration=$Duration  TunedDuration=$TunedDuration")
+						 var TunedDuration =  Duration * 5 / 6  
+						println("basicrobot | stepFail duration=$Duration TunedDuration=$TunedDuration")
 						unibo.robot.robotSupport.move( "s"  )
 						delay(TunedDuration)
 						unibo.robot.robotSupport.move( "h"  )

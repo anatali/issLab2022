@@ -8,8 +8,6 @@ import org.json.JSONObject
 import unibo.comm22.utils.CommSystemConfig
 import java.io.File
 
- 
-
 
 object robotSupport{
 	lateinit var robotKind  :  String
