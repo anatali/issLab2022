@@ -35,48 +35,17 @@ class WsSupportObserver( val owner:String, val vrsupport : virtualrobotSupport20
 			ColorsOut.outappl("       &&& WsSupportObserver  | ownerActor null ev=$ev", ColorsOut.MAGENTA )
 			return
 		}
-		//var target : String
-		/*
-		if( msgJson.has("endmove") ){
-			var result = msgJson.getString("endmove")
-			//var result = msgJson.getString("endmove")
-			if( result=="true"){
-				ColorsOut.outappl("WsSupportObserver endmove true", ColorsOut.MAGENTA);
-				runBlocking {
-					//ColorsOut.outappl("WsSupportObserver emits:obstacle($target)}", ColorsOut.GREEN);
-					ownerActor!!.forward("movedone","movedone(true)", owner)
-				}
-			}else{
-				runBlocking {
-					//ColorsOut.outappl("WsSupportObserver endmove false", ColorsOut.MAGENTA);
-					ownerActor!!.forward("obstacle", "obstacle(unknown)", owner)
-				}
-			}
-			return;
-		}*/
+
 
 		if( msgJson.has("collision") ){
 			var move = msgJson.getString("collision")
 			ColorsOut.outappl("WsSupportObserver move=$move", ColorsOut.MAGENTA);
-			//if( move == "moveForward") backALittle()
 			runBlocking {
 				var target = "unknown";
 				ColorsOut.outappl("WsSupportObserver emits:obstacle($target)}", ColorsOut.GREEN);
 				ownerActor!!.emit("obstacle","obstacle($target)")
 			}
 		}
-
-/*
-		if( data.contains("-collision")){
-			var target = "unknown"; //msgJson.getString("target")
-			runBlocking {
-				ColorsOut.outappl("WsSupportObserver emits:obstacle($target)}", ColorsOut.GREEN);
-				ownerActor!!.emit("obstacle","obstacle($target)")
-			}
-		}
-*/
-
-
 
 	}
 	
