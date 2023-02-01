@@ -71,7 +71,7 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 		println("		--- basicrobot22 virtualrobotSupport2021 |  moveee  $cmd ")
 		val msg = translate( cmd )
 		trace("move  $msg")
-		if( cmd == "w" || cmd == "s" || cmd == "h"){  //doing aysnch
+		if( cmd == "w" || cmd == "s" || cmd == "h" ){  //doing aysnch
 			support21ws.forward(msg)	//aysnch => no immediate answer
 			if( cmd == "h" ) CommUtils.delay(50)  //attendo la fine dell'halt
 			return
