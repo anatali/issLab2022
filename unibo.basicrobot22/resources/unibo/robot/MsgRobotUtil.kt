@@ -7,7 +7,7 @@ object MsgRobotUtil {
 	val backwardMsg  = "{\"robotmove\":\"moveBackward\", \"time\": 400}"
 	val turnLeftMsg  = "{\"robotmove\":\"turnLeft\", \"time\": 300}"
 	val turnRightMsg = "{\"robotmove\":\"turnRight\", \"time\": 300}"
-	val haltMsg      = "{\"robotmove\":\"alarm\", \"time\": 100}"
+	val haltMsg      = "{\"robotmove\":\"alarm\", \"time\": 10}"
 	
 	val wMsg  = "w"
 	val lMsg  = "l"

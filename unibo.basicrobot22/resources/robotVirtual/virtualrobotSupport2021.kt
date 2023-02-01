@@ -5,6 +5,7 @@ import kotlinx.coroutines.launch
 import it.unibo.kactor.ActorBasic
 import unibo.comm22.wshttp.WsHttpConnection
 import unibo.comm22.interfaces.Interaction2021
+import unibo.comm22.utils.CommUtils
 import unibo.robot.MsgRobotUtil
 import unibo.comm22.ws.WsConnection
 
@@ -70,13 +71,14 @@ val doafterConn : (CoroutineScope, WsHttpConnection) -> Unit =
 		println("		--- basicrobot22 virtualrobotSupport2021 |  moveee  $cmd ")
 		val msg = translate( cmd )
 		trace("move  $msg")
-		if( cmd == "w" || cmd == "s"){  //doing aysnch
-			support21ws.forward(msg)	//aysnch => no immediate answer 
+		if( cmd == "w" || cmd == "s" || cmd == "h"){  //doing aysnch
+			support21ws.forward(msg)	//aysnch => no immediate answer
+			if( cmd == "h" ) CommUtils.delay(50)  //attendo la fine dell'halt
 			return
 		}
 		//Comunicazione sincrona con il VirtualRobot via HTTP
 		val answer = support21.forward(msg) //,"$hostName:$port/api/move"
-		trace("		--- basicrobot22 virtualrobotSupport2021 | answer=$answer")
+		println("		--- basicrobot22 virtualrobotSupport2021 | answer=$answer")
 		//REMEMBER: answer={"endmove":"true","move":"alarm"} alarm means halt
 		val ajson = JSONObject(answer)
 		if( ajson.has("endmove") && ajson.get("endmove")=="false"){

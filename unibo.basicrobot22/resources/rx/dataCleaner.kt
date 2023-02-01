@@ -16,12 +16,9 @@ val LimitHigh = 150
   		elabData( msg )
  	}
 
- 	
-
-
 	  suspend fun elabData( msg: IApplMessage ){ //OPTIMISTIC		 
  		val data  = (Term.createTerm( msg.msgContent() ) as Struct).getArg(0).toString()
-  		//println("$tt $name |  data = $data ")
+  		println("$tt $name | elabData  $data ")
 		val Distance = Integer.parseInt( data ) 
  		if( Distance > LimitLow && Distance < LimitHigh ){
 			emitLocalStreamEvent( msg ) //propagate
