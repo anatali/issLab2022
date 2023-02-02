@@ -119,8 +119,8 @@ QActor basicrobot context ctxbasicrobot{
  		whenMsg  obstacle     -> stepFail		
     	 
 	State stepDone{   
-		printCurrentMessage
- 		run unibo.robot.robotSupport.move( "h" )  //stop the (real) robot 
+ 		run unibo.robot.robotSupport.move( "h" )  //stop the (real) robot
+		//printCurrentMessage
 		updateResource [# "stepDone($StepTime)" #]
    		//emit info : info( stepdone($StepTime) )
    		replyTo step with stepdone : stepdone(ok)
@@ -129,9 +129,9 @@ QActor basicrobot context ctxbasicrobot{
 	Goto work  
  
 	State stepFail{  	 	
-		printCurrentMessage
-		setDuration Duration from StartTime
 		run unibo.robot.robotSupport.move( "h" )  //stop the (real) robot
+		//printCurrentMessage
+		setDuration Duration from StartTime
 		[# var TunedDuration   =  ((Duration * 0.80)).toLong()   #]
 		println("basicrobot | stepFail duration=$Duration  TunedDuration=$TunedDuration")
 			run unibo.robot.robotSupport.move( "s" )
